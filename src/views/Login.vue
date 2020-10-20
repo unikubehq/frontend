@@ -69,7 +69,7 @@ export default class Home extends Vue {
   errors = []
 
   login(): void {
-    somecall(this.username, this.password);
+    console.log(this);
   }
 }
 </script>

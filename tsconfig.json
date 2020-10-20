@@ -17,7 +17,8 @@
       "mocha",
       "chai",
       "vuetify",
-      "vue-apollo"
+      "vue-apollo",
+      "vue-cli-plugin-apollo/types"
     ],
     "paths": {
       "@/*": [
