@@ -1,0 +1,23 @@
+overwrite: true
+schema: "http://localhost:8090"
+documents: "src/**/*.graphql"
+generates:
+  src/generated/graphql.ts:
+    config:
+      federation: true
+      omitOperationSuffix: false
+      operationResultSuffix: 'Result'
+      dedupeOperationSuffix: true
+      typesPrefix: T
+      namingConvention:
+        transformUnderscore: true
+    plugins:
+      - add:
+          content: '/* eslint-disable */'
+      - typescript
+      - typescript-operations
+      - typescript-document-nodes
+hooks:
+  afterOneFileWrite:
+    - eslint --fix
+

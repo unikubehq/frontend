@@ -1,0 +1,118 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type ApplicationNode {
+    clusterlevel(level: String): [ClusterLevelNode]
+    deployments(level: String, switchable: Boolean): [DeploymentNode]
+    description: String
+    dirname: String!
+    environments: [ClusterLevelNode!]!
+    id: UUID!
+    namespace: String!
+    project: ProjectNode!
+    title: String!
+    type: String!
+}
+
+type ClusterLevelNode {
+    application: ApplicationNode!
+    deployments: [DeploymentNode!]!
+    description: String
+    id: UUID!
+    specsUrl: String
+    title: String!
+    type: ClusterLevelType!
+    valuesPath: String!
+}
+
+type DeploymentNode {
+    clusterlevel: ClusterLevelNode!
+    description: String
+    id: UUID!
+    isSwitchable: Boolean!
+    ports: String!
+    title: String!
+}
+
+type ErrorType {
+    field: String!
+    messages: [String!]!
+}
+
+type Mutation {
+    createProject(input: ProjectMutationInput!): ProjectMutationPayload
+}
+
+type OrganizationNode {
+    created: DateTime!
+    description: String
+    id: UUID!
+    title: String!
+}
+
+type ProjectMutationPayload {
+    clientMutationId: String
+    errors: [ErrorType]
+    project: ProjectNode
+}
+
+type ProjectNode {
+    accessToken: String!
+    accessUsername: String!
+    applications: [ApplicationNode!]!
+    created: DateTime!
+    currentCommit: String!
+    description: String
+    id: UUID!
+    repoDir: String!
+    specRepository: String!
+    specRepositoryBranch: String
+    specType: ProjectSpecType!
+    title: String!
+}
+
+type Query {
+    allUsers: [UserNode]
+    organizations: [OrganizationNode]
+    users: [UserNode]
+}
+
+type UserNode {
+    email: String!
+    firstName: String!
+    id: UUID!
+    lastName: String!
+}
+
+enum ClusterLevelType {
+    LOCAL
+    REMOTE
+}
+
+enum ProjectSpecType {
+    HELM
+    PLAIN
+}
+
+input ProjectMutationInput {
+    accessToken: String!
+    accessUsername: String!
+    clientMutationId: String
+    currentCommit: String
+    description: String
+    id: ID
+    repoDir: String
+    specRepository: String!
+    specRepositoryBranch: String!
+    specType: String!
+    title: String!
+}
+
+
+scalar UUID
+
+scalar DateTime
