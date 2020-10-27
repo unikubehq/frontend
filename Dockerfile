@@ -16,6 +16,8 @@ COPY public /code/public
 ### Build ENV variables
 ARG VUE_APP_BASE_URL
 ARG VUE_APP_PUBLIC_PATH
+ARG VUE_APP_I18N_LOCALE=en
+ARG VUE_APP_I18N_FALLBACK_LOCALE=en
 
 ### Build
 ENTRYPOINT ["npm", "run"]

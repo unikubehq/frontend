@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    {{ $t("hello2") }}
     {{ organizations }}
     <v-main>
       <router-view></router-view>
