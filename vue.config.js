@@ -1,7 +1,23 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const SentryCliPlugin = require('@sentry/webpack-plugin');
+
 module.exports = {
   transpileDependencies: [
     'vuetify',
   ],
+  configureWebpack: {
+    plugins: [
+      new SentryCliPlugin({
+        // sentry-cli configuration
+        authToken: process.env.SENTRY_AUTH_TOKEN,
+        dryRun: true,
+        // webpack specific configuration
+        include: '.',
+        ignore: ['node_modules', 'babel.config.js', 'apollo.config.js', '.eslintrc.js'],
+        release: '0.0.1',
+      }),
+    ],
+  },
   chainWebpack: (config) => {
     config.module
       .rule('i18n')
