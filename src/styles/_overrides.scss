@@ -1,0 +1,47 @@
+.v-application {
+  letter-spacing: -0.2px;
+}
+.v-text-field--outlined .v-label {
+  left: -40px !important;
+}
+.v-application--is-ltr .v-text-field--outlined legend {
+  display: none;
+}
+.v-input.v-text-field.v-text-field--enclosed {
+  padding-top: 25px;
+}
+.theme--light.v-label {
+  font-weight: 500;
+}
+.theme--light.v-label:not(.v-label--is-disabled) {
+  color: $unikube-blue !important;
+}
+.v-btn:not(.v-btn--text):not(.v-btn--outlined):hover:before {
+  opacity: 0 !important;
+}
+.v-btn.primary:hover {
+  background-color: $green-dark-1 !important;
+}
+.v-application--is-ltr .v-text-field .v-label:not(.v-label--is-disabled) {
+  color: $unikube-blue !important;
+}
+.v-application--is-ltr .v-text-field .v-label.v-label--is-disabled {
+  color: #C4CCD4;
+}
+.theme--light.v-input--is-disabled ::placeholder,
+.theme--light.v-input--is-disabled ::placeholder {
+  color: #DCE0E5 !important;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color: $unikube-blue;
+  -webkit-box-shadow: 0 0 0px 1000px #fff inset;
+  transition: background-color 5000s ease-in-out 0s;
+}

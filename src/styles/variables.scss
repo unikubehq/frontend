@@ -1,0 +1,60 @@
+@import "ci";
+$body-font-family: 'DM Sans', sans-serif;
+$headings: (
+  'h1': (
+    'weight': 500,
+    'size': 30px,
+    'line-height': 39px
+  ),
+  'h2': (
+    'weight': 500,
+    'size': 24px,
+    'line-height': 31px
+  ),
+  'h3': (
+    'weight': 500,
+    'size': 22px,
+    'line-height': 29px
+  ),
+  'h4': (
+    'weight': 500,
+  ),
+  'h5': (
+    'weight': 500
+  ),
+  'h6': (
+    'weight': 500
+  ),
+);
+$material-light: (
+  'background': #FCFCFD,
+  'text-fields': (
+        'filled': #fff,
+        'filled-hover': #fff,
+        'outlined': #C4CCD4,
+        'outlined-hover': #A1A9B2,
+        'outlined-disabled': #C4CCD4,
+  ),
+  'text': (
+    'primary': $unikube-blue,
+    'secondary': $grey-1,
+    'link': $unikube-green,
+    'link-hover': $green-dark-1,
+  ),
+  'input': (
+    'solo-inverted-focused-label': #ff0000,
+  )
+);
+/* v-text-field adaptions */
+$text-field-border-radius: 4px;
+$text-field-outlined-fieldset-border: 1px solid $unikube-green !default;
+$text-field-outlined-fieldset-top: 0;
+$text-field-filled-full-width-outlined-slot-min-height: 48px;
+$text-field-filled-margin-top: 0;
+$text-field-outlined-label-position-y: -37px;
+$text-field-enclosed-prepend-append-margin-top: 12px;
+$text-field-append-prepend-margin: 8px;
+
+/* v-btn adaption */
+$btn-text-transform: none;
+$btn-letter-spacing: -0.2px;

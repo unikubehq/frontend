@@ -1,7 +1,5 @@
 <template>
   <v-app>
-    {{ $t("hello2") }}
-    {{ organizations }}
     <v-main>
       <router-view></router-view>
     </v-main>
@@ -36,3 +34,8 @@ export default Vue.extend({
   },
 });
 </script>
+
+<style lang="scss">
+@import "styles/main";
+
+</style>

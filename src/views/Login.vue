@@ -7,45 +7,56 @@
       </v-col>
     </v-row>
     <v-row align="center" justify="center">
-      <v-col cols="12" sm="8" md="4">
-        <h1>Sign In</h1>
-        <v-card class="elevation-12">
-          <v-toolbar color="primary" dark flat>
-            <v-toolbar-title>Login form</v-toolbar-title>
-            <v-spacer />
-          </v-toolbar>
-          <v-card-text>
-            <v-form>
-              <v-text-field
-                label="Login"
-                name="login"
-                prepend-icon="person"
-                type="text"
-                v-model="username"
-                @keyup.enter="login"
-                :error-messages="errors.username"
-              />
+      <v-col cols="12" sm="8" md="3">
+        <h1 class="text-h1">Sign In</h1>
+        <p class="text--secondary">New to Unikube? <a href="/register">Register</a></p>
+        <v-form>
+          <v-text-field
+            label="Email Address"
+            name="login"
+            filled
+            outlined
+            type="text"
+            placeholder="Enter Email Address"
+            v-model="username"
+            @keyup.enter="login"
+            :error-messages="errors.username"
+            prepend-inner-icon="$vuetify.icons.user"
+          />
 
-              <v-text-field
-                id="password"
-                label="Password"
-                name="password"
-                prepend-icon="lock"
-                type="password"
-                v-model="password"
-                @keyup.enter="login"
-                :error-messages="errors.password"
-              />
+          <v-text-field
+            id="password"
+            label="Password"
+            name="password"
+            filled
+            outlined
+            :type="clearText ? 'text' : 'password'"
+            placeholder="Enter Password"
+            v-model="password"
+            @keyup.enter="login"
+            :error-messages="errors.password"
+            prepend-inner-icon="$vuetify.icons.password"
+          >
+            <template v-slot:append>
+              <v-icon @click="clearText = !clearText"
+                      :class="{'v-textfield--show-password': clearText}">$vuetify.icons.eye</v-icon>
+            </template>
+          </v-text-field>
+            <div class="d-flex justify-space-between align-center">
+                  <v-checkbox v-model="remember" :ripple="false">
+              <template v-slot:label>
+                <div class="v-label--secondary">
+                  Remember this device
+                </div>
+              </template>
+            </v-checkbox>
+            <a href="" class="link--secondary">Forgot Password?</a>
+            </div>
+          <v-btn block color="primary" large elevation="0" :ripple="false">Sign In</v-btn>
               <div class="error" v-if="errors && errors.detail">
                 {{ errors.detail }}
               </div>
             </v-form>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer />
-            <v-btn color="primary" @click="login">Login</v-btn>
-          </v-card-actions>
-        </v-card>
       </v-col>
     </v-row>
   </v-container>
@@ -66,10 +77,18 @@ export default class Home extends Vue {
 
   password = ''
 
+  remember = false
+
+  clearText = false
+
   errors = []
 
   login(): void {
     console.log(this);
+  }
+
+  created() {
+    console.log(this.$vuetify.icons.values.eye);
   }
 }
 </script>
