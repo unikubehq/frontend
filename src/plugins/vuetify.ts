@@ -4,8 +4,10 @@ import Vue from 'vue';
 import Vuetify from 'vuetify/lib';
 
 import HidePassword from '@/components/icons/HidePassword.vue';
+import ShowPassword from '@/components/icons/ShowPassword.vue';
 import Password from '@/components/icons/Password.vue';
 import User from '@/components/icons/User.vue';
+import Email from '@/components/icons/Email.vue';
 import CheckboxChecked from '@/components/icons/CheckboxChecked.vue';
 import CheckboxUnchecked from '@/components/icons/CheckboxUnchecked.vue';
 
@@ -26,8 +28,14 @@ export default new Vuetify({
       eye: {
         component: HidePassword,
       },
+      eyeOpen: {
+        component: ShowPassword,
+      },
       user: {
         component: User,
+      },
+      email: {
+        component: Email,
       },
       password: {
         component: Password,

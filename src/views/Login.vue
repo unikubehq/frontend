@@ -9,7 +9,7 @@
                  max-width="150"/>
         </v-col>
         <v-col cols="12" sm="8" md="3">
-          <h1 class="text-h1">Sign In</h1>
+          <h1 class="text-h1">{{ $i18n.login }}</h1>
           <p class="text--secondary">New to Unikube? <a href="/register">Register</a></p>
           <v-form>
             <v-text-field
@@ -22,7 +22,7 @@
                 v-model="username"
                 @keyup.enter="login"
                 :error-messages="errors.username"
-                prepend-inner-icon="$vuetify.icons.user"
+                prepend-inner-icon="$vuetify.icons.email"
             />
 
             <v-text-field
@@ -37,12 +37,9 @@
                 @keyup.enter="login"
                 :error-messages="errors.password"
                 prepend-inner-icon="$vuetify.icons.password"
+                :append-icon="clearText ? '$vuetify.icons.eyeOpen' : '$vuetify.icons.eye'"
+                @click:append="clearText = !clearText"
             >
-              <template v-slot:append>
-                <v-icon @click="clearText = !clearText"
-                        :class="{'v-textfield--show-password': clearText}">$vuetify.icons.eye
-                </v-icon>
-              </template>
             </v-text-field>
             <div class="d-flex justify-space-between align-center">
               <v-checkbox v-model="remember" :ripple="false">
