@@ -58,3 +58,36 @@ $text-field-append-prepend-margin: 8px;
 /* v-btn adaption */
 $btn-text-transform: none;
 $btn-letter-spacing: -0.2px;
+
+/* elevation adaptions */
+$shadow-key-umbra-opacity: rgba(183, 183, 183, 0.15) !default;
+$shadow-key-penumbra-opacity: rgba(183, 183, 183, 0.15) !default;
+$shadow-key-ambient-opacity: rgba(183, 183, 183, 0.15) !default;
+
+$shadow-key-umbra: (
+    0: (0px 0px 0px 0px $shadow-key-umbra-opacity),
+    1: (0px 2px 1px -1px $shadow-key-umbra-opacity),
+    2: (0px 3px 1px -2px $shadow-key-umbra-opacity),
+    3: (0px 3px 3px -2px $shadow-key-umbra-opacity),
+    4: (0px 2px 4px -1px $shadow-key-umbra-opacity),
+    5: (0px 2px 40px 0px $shadow-key-umbra-opacity),
+    6: (0px 3px 5px -1px $shadow-key-umbra-opacity),
+    7: (0px 4px 5px -2px $shadow-key-umbra-opacity),
+    8: (0px 5px 5px -3px $shadow-key-umbra-opacity),
+    9: (0px 5px 6px -3px $shadow-key-umbra-opacity),
+    10: (0px 6px 6px -3px $shadow-key-umbra-opacity),
+    11: (0px 6px 7px -4px $shadow-key-umbra-opacity),
+    12: (0px 7px 8px -4px $shadow-key-umbra-opacity),
+    13: (0px 7px 8px -4px $shadow-key-umbra-opacity),
+    14: (0px 7px 9px -4px $shadow-key-umbra-opacity),
+    15: (0px 8px 9px -5px $shadow-key-umbra-opacity),
+    16: (0px 8px 10px -5px $shadow-key-umbra-opacity),
+    17: (0px 8px 11px -5px $shadow-key-umbra-opacity),
+    18: (0px 9px 11px -5px $shadow-key-umbra-opacity),
+    19: (0px 9px 12px -6px $shadow-key-umbra-opacity),
+    20: (0px 10px 13px -6px $shadow-key-umbra-opacity),
+    21: (0px 10px 13px -6px $shadow-key-umbra-opacity),
+    22: (0px 10px 14px -6px $shadow-key-umbra-opacity),
+    23: (0px 11px 14px -7px $shadow-key-umbra-opacity),
+    24: (0px 11px 15px -7px $shadow-key-umbra-opacity)
+);
