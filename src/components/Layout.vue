@@ -85,5 +85,4 @@ export default class Layout extends Vue {
 </script>
 
 <style scoped>
-
 </style>
