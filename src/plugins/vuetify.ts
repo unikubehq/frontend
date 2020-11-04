@@ -13,6 +13,7 @@ import Permission from '@/components/icons/Permission.vue';
 import Activity from '@/components/icons/Activity.vue';
 import Help from '@/components/icons/Help.vue';
 import Settings from '@/components/icons/Settings.vue';
+import ArrowDownWhite from '@/components/icons/ArrowDownWhite.vue';
 import Email from '@/components/icons/Email.vue';
 import CreateOrganization from '@/components/icons/CreateOrganization.vue';
 import JoinOrganization from '@/components/icons/JoinOrganization.vue';
@@ -77,6 +78,9 @@ export default new Vuetify({
       },
       createOrganization: {
         component: CreateOrganization,
+      },
+      arrowDownWhite: {
+        component: ArrowDownWhite,
       },
     },
   },

@@ -8,6 +8,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { OrganizationsQuery, TOrganizationsQueryResult } from '@/generated/graphql';
+import gql from 'graphql-tag';
 
 export default Vue.extend({
   name: 'App',
@@ -21,6 +22,11 @@ export default Vue.extend({
   },
   created() {
     console.log(123);
+    this.$apollo.mutate(gql`mutation createReview (input)`, {
+      variables: {
+        input: this.form.name,
+      },
+    });
     this.$apollo.query(OrganizationsQuery).then(
       (result: TOrganizationsQueryResult) => {
         if (result && result.organizations) {

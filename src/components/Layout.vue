@@ -45,8 +45,15 @@
               </v-list-item-avatar>
 
               <v-list-item-content>
-                <v-list-item-title class="font-weight-bold">The Orange Co</v-list-item-title>
-                <v-list-item-subtitle>Organization ID: 8900998</v-list-item-subtitle>
+                <v-list-item-title class="font-weight-bold">
+                  The Orange Co
+                </v-list-item-title>
+                <v-list-item-subtitle>
+                  Organization ID: 8900998
+                  <v-icon small class="float-right organization-dropdown--arrow">
+                    $vuetify.icons.arrowDownWhite
+                  </v-icon>
+                </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </template>
