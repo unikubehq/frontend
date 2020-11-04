@@ -20,8 +20,23 @@ const routes: Array<RouteConfig> = [
     children: [
       {
         path: '/overview',
-        name: 'Overview',
+        name: 'overview',
         component: () => import(/* webpackChunkName: "about" */ '../views/Overview.vue'),
+      },
+      {
+        path: '/activities',
+        name: 'activities',
+        component: () => import(/* webpackChunkName: "about" */ '../views/Activities.vue'),
+      },
+      {
+        path: '/permissions',
+        name: 'permissions',
+        component: () => import(/* webpackChunkName: "about" */ '../views/Permissions.vue'),
+      },
+      {
+        path: '/settings',
+        name: 'settings',
+        component: () => import(/* webpackChunkName: "about" */ '../views/Settings.vue'),
       },
     ],
   },

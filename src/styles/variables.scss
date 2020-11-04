@@ -64,6 +64,7 @@ $shadow-key-umbra-opacity: rgba(183, 183, 183, 0.15) !default;
 $shadow-key-penumbra-opacity: rgba(183, 183, 183, 0.15) !default;
 $shadow-key-ambient-opacity: rgba(183, 183, 183, 0.15) !default;
 
+// Only 5 is overwritten atm
 $shadow-key-umbra: (
     0: (0px 0px 0px 0px $shadow-key-umbra-opacity),
     1: (0px 2px 1px -1px $shadow-key-umbra-opacity),
