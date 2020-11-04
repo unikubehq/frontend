@@ -54,11 +54,35 @@
           <v-list>
             <v-list-item
                 v-for="organization in organizations"
-                :key="organization"
+                :key="organization.id"
                 link
                 :ripple="false"
+                two-line
             >
-              <v-list-item-title v-text="organization.title"></v-list-item-title>
+              <v-list-item-avatar class="organization-dropdown--icon">
+                <v-img src="@/assets/img/gsuite.svg" max-width="35" contain/>
+              </v-list-item-avatar>
+              <v-list-item-content>
+                <v-list-item-title v-text="organization.title"></v-list-item-title>
+                <v-list-item-subtitle v-text="organization.id"/>
+              </v-list-item-content>
+            </v-list-item>
+            <v-divider />
+            <v-list-item link>
+                <v-list-item-icon class="organization-dropdown--icon">
+                  <v-icon>$vuetify.icons.createOrganization</v-icon>
+                </v-list-item-icon>
+              <v-list-item-title class="text--secondary">
+                Create New Organization
+              </v-list-item-title>
+            </v-list-item>
+            <v-list-item link>
+                <v-list-item-icon class="organization-dropdown--icon">
+                  <v-icon>$vuetify.icons.joinOrganization</v-icon>
+                </v-list-item-icon>
+              <v-list-item-title class="text--secondary">
+                Join Another Organization
+              </v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -106,7 +130,8 @@ export default class Layout extends Vue {
   ];
 
   organizations = [
-    { title: 'Blueshoe', id: 12321321321 },
+    { title: 'Google', id: 12321321321, avatar: '@/assets/img/gsuite.svg' },
+    { title: 'Github', id: 12321321322, avatar: '@/assets/img/github.svg' },
   ]
 
   mounted() {

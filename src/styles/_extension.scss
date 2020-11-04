@@ -53,3 +53,12 @@
   border-right: 7px solid transparent;
   border-bottom: 7px solid #fff;
 }
+
+.v-application--is-ltr .v-list-item__avatar.organization-dropdown--icon:first-child {
+  margin-right: 15px;
+  margin-left: 9px;
+}
+.v-application--is-ltr .v-list-item__icon.organization-dropdown--icon:first-child {
+  margin-right: 10px;
+  margin-left: 14px;
+}

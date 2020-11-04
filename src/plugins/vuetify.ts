@@ -14,6 +14,8 @@ import Activity from '@/components/icons/Activity.vue';
 import Help from '@/components/icons/Help.vue';
 import Settings from '@/components/icons/Settings.vue';
 import Email from '@/components/icons/Email.vue';
+import CreateOrganization from '@/components/icons/CreateOrganization.vue';
+import JoinOrganization from '@/components/icons/JoinOrganization.vue';
 import CheckboxChecked from '@/components/icons/CheckboxChecked.vue';
 import CheckboxUnchecked from '@/components/icons/CheckboxUnchecked.vue';
 
@@ -69,6 +71,12 @@ export default new Vuetify({
       },
       settings: {
         component: Settings,
+      },
+      joinOrganization: {
+        component: JoinOrganization,
+      },
+      createOrganization: {
+        component: CreateOrganization,
       },
     },
   },
