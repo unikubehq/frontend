@@ -3,6 +3,8 @@ import '@mdi/font/css/materialdesignicons.css';
 import Vue from 'vue';
 import Vuetify from 'vuetify/lib';
 
+import AccountBlue from '@/components/icons/AccountBlue.vue';
+import DropdownSmallGrey from '@/components/icons/DropdownSmallGrey.vue';
 import HidePassword from '@/components/icons/HidePassword.vue';
 import ShowPassword from '@/components/icons/ShowPassword.vue';
 import Password from '@/components/icons/Password.vue';
@@ -15,6 +17,8 @@ import Help from '@/components/icons/Help.vue';
 import Settings from '@/components/icons/Settings.vue';
 import ArrowDownWhite from '@/components/icons/ArrowDownWhite.vue';
 import Email from '@/components/icons/Email.vue';
+import Logout from '@/components/icons/Logout.vue';
+import NotificationBlue from '@/components/icons/NotificationBlue.vue';
 import CreateOrganization from '@/components/icons/CreateOrganization.vue';
 import JoinOrganization from '@/components/icons/JoinOrganization.vue';
 import CheckboxChecked from '@/components/icons/CheckboxChecked.vue';
@@ -34,6 +38,9 @@ export default new Vuetify({
   icons: {
     iconfont: 'mdi',
     values: {
+      accountBlue: {
+        component: AccountBlue,
+      },
       eye: {
         component: HidePassword,
       },
@@ -43,11 +50,20 @@ export default new Vuetify({
       burger: {
         component: Burger,
       },
+      dropdown: {
+        component: DropdownSmallGrey,
+      },
       user: {
         component: User,
       },
       email: {
         component: Email,
+      },
+      logout: {
+        component: Logout,
+      },
+      notificationBlue: {
+        component: NotificationBlue,
       },
       password: {
         component: Password,

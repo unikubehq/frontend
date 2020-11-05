@@ -49,3 +49,10 @@ select:-webkit-autofill:focus {
   overflow-y: visible;
   overflow-x: visible;
 }
+.v-text-field--outlined.v-input--has-state.error--text fieldset {
+  border: 1px solid #ff5252;
+}
+
+.v-toolbar__content {
+  justify-content: space-between;
+}

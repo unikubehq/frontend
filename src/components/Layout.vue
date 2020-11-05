@@ -116,6 +116,48 @@
     </v-navigation-drawer>
     <v-app-bar app color="white" elevation="5" height="75">
       <v-toolbar-title class="font-weight-medium">Overview</v-toolbar-title>
+      <div class="d-flex flex-row justify-space-around align-center" style="width: 385px;">
+        <v-icon width="32" height="32">$vuetify.icons.notificationBlue</v-icon>
+        <div>
+        <v-menu
+          v-model="menu"
+          offset-y
+          nudge-bottom="5"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              color="343d6f"
+              v-bind="attrs"
+              v-on="on"
+              text
+            >
+              <div class="d-flex flex-column">
+                <h3>Robert Stein</h3>
+                <p class="mb-0">Administrator</p>
+              </div>
+            </v-btn>
+
+          </template>
+            <v-card>
+              <v-list>
+                <v-list-item>
+                  <v-list-item-icon>
+                    <v-icon>$vuetify.icons.accountBlue</v-icon>
+                  </v-list-item-icon>
+                  Account Settings
+                </v-list-item>
+                <v-list-item>
+                  <v-list-item-icon>
+                    <v-icon>$vuetify.icons.logout</v-icon>
+                  </v-list-item-icon>
+                  Logout
+                </v-list-item>
+              </v-list>
+            </v-card>
+        </v-menu>
+        <v-icon small>$vuetify.icons.dropdown</v-icon>
+      </div>
+      </div>
     </v-app-bar>
     <v-main>
       <router-view></router-view>
@@ -140,6 +182,8 @@ export default class Layout extends Vue {
     { title: 'Google', id: 12321321321, avatar: '@/assets/img/gsuite.svg' },
     { title: 'Github', id: 12321321322, avatar: '@/assets/img/github.svg' },
   ]
+
+  menu = false;
 
   mounted() {
     if (!this.$route.name === 'Overview') {
