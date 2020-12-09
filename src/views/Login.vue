@@ -106,7 +106,7 @@ import UI from '@/store/modules/ui';
     },
   },
 })
-export default class Home extends Vue {
+export default class Login extends Vue {
   email = '';
 
   password = '';
