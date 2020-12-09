@@ -56,3 +56,20 @@ select:-webkit-autofill:focus {
 .v-toolbar__content {
   justify-content: space-between;
 }
+
+.v-tab {
+  text-transform: none !important;
+  letter-spacing: 0.2px !important;
+  &--active {
+    background-color: #fff;
+    color: $unikube-blue !important;
+
+  }
+}
+
+.v-input--switch__thumb.theme--light {
+  left: 5px !important;
+}
+.v-input--switch__thumb.theme--light.primary--text {
+  color: white !important;
+}

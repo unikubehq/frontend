@@ -125,9 +125,52 @@
       </v-list>
     </v-navigation-drawer>
     <v-app-bar app color="white" elevation="5" height="75">
-      <v-toolbar-title class="font-weight-medium">Overview</v-toolbar-title>
-      <div class="d-flex flex-row justify-space-around align-center" style="width: 385px;">
-        <v-icon width="32" height="32">$vuetify.icons.notificationBlue</v-icon>
+      <v-toolbar-title class="font-weight-medium text-capitalize">
+        {{ currentRoute }}
+      </v-toolbar-title>
+      <div class="d-flex flex-row justify-space-around align-center" style="width: 350px;">
+        <v-menu
+          v-model="notificationsMenu"
+          offset-y
+          nudge-bottom="5"
+          nudge-left="290"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              v-bind="attrs"
+              v-on="on"
+              text
+            >
+              <v-badge
+                :content="notifications"
+                :value="notifications"
+                color="#ff5e5b"
+                overlap
+              >
+                <v-icon
+                  width="40"
+                  height="40"
+                  @click="increment"
+                >
+                  $vuetify.icons.notificationBlue
+                </v-icon>
+              </v-badge>
+            </v-btn>
+          </template>
+          <v-card
+            width="340"
+          >
+            <v-card-title>
+              Notifications
+            </v-card-title>
+            <v-divider></v-divider>
+            <v-card-text>
+              Notification 1
+            </v-card-text>
+          </v-card>
+        </v-menu>
+
+        <v-divider vertical class="ml-3"></v-divider>
         <div>
         <v-menu
           v-model="menu"
@@ -141,10 +184,14 @@
               v-on="on"
               text
             >
-              <div class="d-flex flex-column">
-                <h3>Robert Stein</h3>
+              <v-avatar class="mr-3">
+                <img src="https://randomuser.me/api/portraits/women/81.jpg">
+              </v-avatar>
+              <div class="d-flex flex-column text-left">
+                <h3 class="mb-0">Robert Stein</h3>
                 <p class="mb-0">Administrator</p>
               </div>
+              <v-icon class="ml-4" small>$vuetify.icons.dropdown</v-icon>
             </v-btn>
 
           </template>
@@ -165,7 +212,6 @@
               </v-list>
             </v-card>
         </v-menu>
-        <v-icon small>$vuetify.icons.dropdown</v-icon>
       </div>
       </div>
     </v-app-bar>
@@ -201,10 +247,22 @@ export default class Layout extends Vue {
     this.mini = !this.mini;
   }
 
+  notifications = 0;
+
+  notificationsMenu = false;
+
+  increment() {
+    this.notifications += 1;
+  }
+
   mounted() {
     if (!this.$route.name === 'Overview') {
       this.$router.push({ name: 'Overview' });
     }
+  }
+
+  get currentRoute() {
+    return this.$route.name;
   }
 }
 </script>
