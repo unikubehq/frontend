@@ -13,11 +13,12 @@
 .v-navigation-drawer {
    background-image: linear-gradient(18deg, #0e132e -13%, #252e65 64%);
 }
-.navigation-item {
-  border-left: 4px solid transparent;
+.v-list-item.navigation-item {
+  padding-left: 20px;
 }
-.navigation-item--is-active {
+.v-list-item.navigation-item--is-active {
   border-left: 4px solid $unikube-green;
+  padding-left: 16px;
 }
 .theme--dark.v-list-item--link.navigation-item::before {
   opacity: 1;

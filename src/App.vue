@@ -22,11 +22,6 @@ export default Vue.extend({
   },
   created() {
     console.log(123);
-    this.$apollo.mutate(gql`mutation createReview (input)`, {
-      variables: {
-        input: this.form.name,
-      },
-    });
     this.$apollo.query(OrganizationsQuery).then(
       (result: TOrganizationsQueryResult) => {
         if (result && result.organizations) {
