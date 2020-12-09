@@ -1,0 +1,23 @@
+.modal-card {
+  &__headline {
+    padding: 64px 72px 16px;
+  }
+  &__paragraph {
+    padding-left: 72px;
+    padding-right: 72px;
+    margin-bottom: 32px;
+  }
+  &__divider {
+    margin-left: 72px;
+    margin-right: 72px;
+  }
+  &__actions {
+    flex-direction: column;
+  }
+  &__button {
+    align-self: flex-end;
+    margin-top: 29px;
+    margin-bottom: 66px;
+    margin-right: 72px;
+  }
+}

@@ -9,21 +9,32 @@
                  max-width="150"/>
         </v-col>
         <v-col cols="12" sm="8" md="3">
-          <h1 class="text-h1">Login</h1>
+          <h1 class="text-h1">{{ $t('Register') }}</h1>
           <p class="text--secondary">
-            {{ $t('New to Unikube?') }}
-            <router-link to="/register">{{ $t('Register')}}</router-link>
-          </p>
+            {{ $t('Already registered?') }}
+            <router-link to="/login">{{ $t('Sign in') }}</router-link></p>
           <v-form>
             <v-text-field
-                :label="$t('Email Address')"
+                :label="$t('Full Name')"
+                name="fullname"
+                filled
+                outlined
+                type="text"
+                :placeholder="$t('Enter Full Name')"
+                v-model="fullName"
+                :error-messages="fullnameErrors"
+                prepend-inner-icon="$vuetify.icons.user"
+                @blur="$v.fullName.$touch()"
+            />
+            <v-text-field
+                label="Email Address"
                 name="login"
                 filled
                 outlined
                 type="text"
-                :placeholder="$t('Enter Email Address')"
+                placeholder="Enter Email Address"
                 v-model="username"
-                @keyup.enter="login"
+                @keyup.enter="register"
                 :error-messages="usernameErrors"
                 prepend-inner-icon="$vuetify.icons.email"
                 @blur="$v.username.$touch()"
@@ -31,36 +42,38 @@
 
             <v-text-field
                 id="password"
-                :label="$t('Password')"
+                label="Password"
                 name="password"
                 filled
                 outlined
                 :type="clearText ? 'text' : 'password'"
-                :placeholder="$t('Enter Password')"
+                placeholder="Enter Password"
                 v-model="password"
-                @keyup.enter="login"
+                @keyup.enter="register"
+                :error-messages="passwordErrors"
+                prepend-inner-icon="$vuetify.icons.password"
+                :append-icon="clearText ? '$vuetify.icons.eyeOpen' : '$vuetify.icons.eye'"
+                @blur="$v.password.$touch()"
+                @click:append="clearText = !clearText"
+            >
+            </v-text-field>
+            <v-text-field
+                id="retypePassword"
+                label="Password (again)"
+                name="retypePassword"
+                filled
+                outlined
+                :type="clearText ? 'text' : 'password'"
+                placeholder="Enter Password"
+                v-model="retypePassword"
+                @keyup.enter="register"
                 :error-messages="passwordErrors"
                 prepend-inner-icon="$vuetify.icons.password"
                 :append-icon="clearText ? '$vuetify.icons.eyeOpen' : '$vuetify.icons.eye'"
                 @click:append="clearText = !clearText"
-                @blur="$v.password.$touch()"
             >
             </v-text-field>
-            <div class="d-flex justify-space-between align-center">
-              <v-checkbox v-model="remember" :ripple="false">
-                <template v-slot:label>
-                  <div class="v-label--secondary">
-                    {{ $t('Remember this device')}}
-                  </div>
-                </template>
-              </v-checkbox>
-              <router-link class="link--secondary" to="/forgot-password">
-                {{ $t('Forgot password?') }}
-              </router-link>
-            </div>
-            <v-btn block color="primary" large elevation="0" :ripple="false">
-              {{ $t('Sign In') }}
-            </v-btn>
+            <v-btn block color="primary" large elevation="0" :ripple="false">Register</v-btn>
             <div class="error" v-if="errors && errors.detail">
               {{ errors.detail }}
             </div>
@@ -68,7 +81,7 @@
         </v-col>
         <v-col cols="12" class="text-center mt-1" align-self="center">
           <span class="text--secondary">
-            {{ $t('Or continue with') }}
+            Or continue with
           </span>
           <div class="d-flex justify-center my-4">
             <!-- todo add links for sso / sso logic -->
@@ -89,23 +102,33 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { required, email } from 'vuelidate/lib/validators';
+import {
+  required, email, sameAs,
+} from 'vuelidate/lib/validators';
 
-@Component({
-  validations: {
-    username: {
-      required,
-      email,
+  @Component({
+    validations: {
+      fullName: {
+        required,
+      },
+      username: {
+        required,
+        email,
+      },
+      password: {
+        required,
+        sameAs: sameAs(function () { return this.retypePassword; }),
+      },
     },
-    password: {
-      required,
-    },
-  },
-})
+  })
 export default class Home extends Vue {
+  fullName = '';
+
   username = '';
 
   password = '';
+
+  retypePassword = '';
 
   remember = false;
 
@@ -113,12 +136,20 @@ export default class Home extends Vue {
 
   errors = [];
 
-  login(): void {
+  register(): void {
     console.log(this);
   }
 
   created(): void {
     console.log(this.$vuetify.icons.values.eye);
+  }
+
+  get fullnameErrors() {
+    const errors = [];
+    if (!this.$v.fullName.required) {
+      errors.push(this.$t('requiredError'));
+    }
+    return this.$v.fullName.$dirty ? errors : [];
   }
 
   get usernameErrors() {
@@ -136,6 +167,9 @@ export default class Home extends Vue {
     const errors = [];
     if (!this.$v.password.required) {
       errors.push(this.$t('requiredError'));
+    }
+    if (!this.$v.password.sameAs) {
+      errors.push(this.$t('Passwords must match.'));
     }
     return this.$v.password.$dirty ? errors : [];
   }

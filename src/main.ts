@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueApollo from 'vue-apollo';
 import VueI18n from 'vue-i18n';
+import Vuelidate from 'vuelidate';
 import * as Sentry from '@sentry/browser';
 import * as Integrations from '@sentry/integrations';
 import App from './App.vue';
@@ -13,6 +14,7 @@ import LocaleMessages = VueI18n.LocaleMessages;
 Vue.config.productionTip = false;
 Vue.use(VueApollo);
 Vue.use(VueI18n);
+Vue.use(Vuelidate);
 
 if (process.env.NODE_ENV === 'production') {
   Sentry.init({
@@ -40,7 +42,7 @@ function loadLocaleMessages() {
 }
 
 const i18n = new VueI18n({
-  locale: 'en',
+  locale: 'de',
   fallbackLocale: 'en',
   messages: loadLocaleMessages(),
 });

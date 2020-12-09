@@ -1,3 +1,5 @@
 {
-  "hello2": "englisch"
+  "hello2": "englisch",
+  "requiredError": "This field is required.",
+  "emailError": "This is not a valid email address."
 }

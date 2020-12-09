@@ -1,3 +1,19 @@
 {
-  "hello2": "deutsch"
+  "hello2": "deutsch",
+  "requiredError": "Dieses Feld ist ein Pflichtfeld.",
+  "emailError": "Dies ist keine valide Email-Adresse.",
+  "New to Unikube?": "Neu bei Unikube?",
+  "Register": "Registrieren",
+  "Email Address": "Email-Adresse",
+  "Password": "Passwort",
+  "Enter Email Address": "Email-Adresse eingeben",
+  "Enter Password": "Passwort eingeben",
+  "Remember this device": "Dieses Gerät merken",
+  "Forgot password?": "Passwort vergessen?",
+  "Sign In": "Anmelden",
+  "Or continue with": "Anmelden mit",
+  "Already registered?": "Bereits registriert?",
+  "Full Name": "Vor- und Nachname",
+  "Enter Full Name": "Vor- und Nachname eingeben",
+  "Passwords must match.": "Passwörter müssen übereinstimmen."
 }
