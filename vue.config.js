@@ -1,5 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const SentryCliPlugin = require('@sentry/webpack-plugin');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+process.env.VUE_APP_VERSION = require('./package.json').version;
 
 module.exports = {
   transpileDependencies: [
@@ -14,7 +16,7 @@ module.exports = {
         // webpack specific configuration
         include: '.',
         ignore: ['node_modules', 'babel.config.js', 'apollo.config.js', '.eslintrc.js'],
-        release: '0.0.1',
+        release: process.env.VUE_APP_VERSION,
       }),
     ],
   },

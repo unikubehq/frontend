@@ -8,7 +8,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import { OrganizationsQuery, TOrganizationsQueryResult } from '@/generated/graphql';
-import gql from 'graphql-tag';
 
 export default Vue.extend({
   name: 'App',

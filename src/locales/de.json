@@ -1,6 +1,7 @@
 {
   "hello2": "deutsch",
   "requiredError": "Dieses Feld ist ein Pflichtfeld.",
+  "minLengthError": "Diese Eingabe ist zu kurz.",
   "emailError": "Dies ist keine valide Email-Adresse.",
   "New to Unikube?": "Neu bei Unikube?",
   "Register": "Registrieren",

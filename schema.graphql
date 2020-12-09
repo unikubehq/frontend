@@ -5,28 +5,42 @@ schema {
     mutation: Mutation
 }
 
-type ApplicationNode {
-    clusterlevel(level: String): [ClusterLevelNode]
-    deployments(level: String, switchable: Boolean): [DeploymentNode]
-    description: String
-    dirname: String!
-    environments: [ClusterLevelNode!]!
-    id: UUID!
-    namespace: String!
-    project: ProjectNode!
-    title: String!
-    type: String!
+type AddressNode {
+    formatted: String!
+    id: ID!
+    invoiceAddress: [OrganizationNode!]!
+    latitude: Float
+    locality: LocaltyNode
+    longitude: Float
+    primaryAddress: [OrganizationNode!]!
+    raw: String!
+    route: String!
+    streetNumber: String!
 }
 
 type ClusterLevelNode {
-    application: ApplicationNode!
     deployments: [DeploymentNode!]!
     description: String
     id: UUID!
-    specsUrl: String
+    package: PackageNode!
+    sopsCredentials: SOPSProviderNode
     title: String!
     type: ClusterLevelType!
     valuesPath: String!
+}
+
+type CountryNode {
+    code: String!
+    id: ID!
+    name: String!
+    states: [StateNode!]!
+}
+
+type CreateOrganization {
+    code: String
+    message: String
+    organization: OrganizationNode
+    success: Boolean
 }
 
 type DeploymentNode {
@@ -38,37 +52,51 @@ type DeploymentNode {
     title: String!
 }
 
-type ErrorType {
-    field: String!
-    messages: [String!]!
+type LocaltyNode {
+    addresses: [AddressNode!]!
+    id: ID!
+    name: String!
+    postalCode: String!
+    state: StateNode!
 }
 
 type Mutation {
-    createProject(input: ProjectMutationInput!): ProjectMutationPayload
+    createOrganization(title: String): CreateOrganization
 }
 
 type OrganizationNode {
     created: DateTime!
     description: String
     id: UUID!
+    invoiceTaxAddress: AddressNode
+    primaryAddress: AddressNode
+    slug: String!
     title: String!
 }
 
-type ProjectMutationPayload {
-    clientMutationId: String
-    errors: [ErrorType]
-    project: ProjectNode
+type PackageNode {
+    description: String
+    dirname: String!
+    environments: [ClusterLevelNode!]!
+    id: UUID!
+    namespace: String!
+    project: ProjectNode!
+    slug: String!
+    title: String!
+    type: String!
 }
 
 type ProjectNode {
     accessToken: String!
     accessUsername: String!
-    applications: [ApplicationNode!]!
     created: DateTime!
     currentCommit: String!
     description: String
     id: UUID!
+    members: [UserNode]
+    packages: [PackageNode]
     repoDir: String!
+    slug: String!
     specRepository: String!
     specRepositoryBranch: String
     specType: ProjectSpecType!
@@ -76,16 +104,46 @@ type ProjectNode {
 }
 
 type Query {
+    allClusterLevels: [ClusterLevelNode]
+    allDeployments: [DeploymentNode]
+    allOrganizations: [OrganizationNode]
+    allPackages: [PackageNode]
+    allProjects: [ProjectNode]
+    allSOPSProvider: [SOPSProviderNode]
     allUsers: [UserNode]
-    organizations: [OrganizationNode]
-    users: [UserNode]
+    myOrganization: OrganizationNode
+    package(id: UUID, slug: String): PackageNode
+    project(id: UUID, slug: String): ProjectNode
+}
+
+type SOPSProviderNode {
+    clusterlevelSet: [ClusterLevelNode!]!
+    id: ID!
+    username: String!
+}
+
+type StateNode {
+    code: String!
+    country: CountryNode!
+    id: ID!
+    localities: [LocaltyNode!]!
+    name: String!
 }
 
 type UserNode {
+    avatar: String!
+    created: DateTime!
+    dateJoined: DateTime!
     email: String!
     firstName: String!
     id: UUID!
+    isActive: Boolean!
+    isStaff: Boolean!
+    isSuperuser: Boolean!
+    lastLogin: DateTime
     lastName: String!
+    password: String!
+    salutation: String!
 }
 
 enum ClusterLevelType {
@@ -98,21 +156,7 @@ enum ProjectSpecType {
     PLAIN
 }
 
-input ProjectMutationInput {
-    accessToken: String!
-    accessUsername: String!
-    clientMutationId: String
-    currentCommit: String
-    description: String
-    id: ID
-    repoDir: String
-    specRepository: String!
-    specRepositoryBranch: String!
-    specType: String!
-    title: String!
-}
-
-
-scalar UUID
 
 scalar DateTime
+
+scalar UUID

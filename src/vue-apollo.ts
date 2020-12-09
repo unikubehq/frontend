@@ -5,7 +5,7 @@ import VueApollo from 'vue-apollo';
 import router from './router';
 
 const httpLink = createHttpLink({
-  uri: `${process.env.VUE_APP_BASE_URL}/graphql`,
+  uri: process.env.VUE_APP_GRAPHQL_URL,
 });
 
 const refreshLink = onError(({ networkError }: ErrorResponse) => {

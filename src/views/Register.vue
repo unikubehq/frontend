@@ -67,9 +67,10 @@
                 placeholder="Enter Password"
                 v-model="retypePassword"
                 @keyup.enter="register"
-                :error-messages="passwordErrors"
+                :error-messages="retypePasswordErrors"
                 prepend-inner-icon="$vuetify.icons.password"
                 :append-icon="clearText ? '$vuetify.icons.eyeOpen' : '$vuetify.icons.eye'"
+                @blur="$v.retypePassword.$touch()"
                 @click:append="clearText = !clearText"
             >
             </v-text-field>
@@ -103,8 +104,9 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import {
-  required, email, sameAs,
+  required, email, sameAs, minLength,
 } from 'vuelidate/lib/validators';
+import { TranslateResult } from 'vue-i18n';
 
   @Component({
     validations: {
@@ -117,7 +119,11 @@ import {
       },
       password: {
         required,
-        sameAs: sameAs(function () { return this.retypePassword; }),
+        minLength: minLength(8),
+      },
+      retypePassword: {
+        required,
+        sameAsPassword: sameAs('password'),
       },
     },
   })
@@ -144,7 +150,7 @@ export default class Home extends Vue {
     console.log(this.$vuetify.icons.values.eye);
   }
 
-  get fullnameErrors() {
+  get fullnameErrors(): TranslateResult[] {
     const errors = [];
     if (!this.$v.fullName.required) {
       errors.push(this.$t('requiredError'));
@@ -152,7 +158,7 @@ export default class Home extends Vue {
     return this.$v.fullName.$dirty ? errors : [];
   }
 
-  get usernameErrors() {
+  get usernameErrors(): TranslateResult[] {
     const errors = [];
     if (!this.$v.username.required) {
       errors.push(this.$t('requiredError'));
@@ -163,12 +169,23 @@ export default class Home extends Vue {
     return this.$v.username.$dirty ? errors : [];
   }
 
-  get passwordErrors() {
+  get passwordErrors(): TranslateResult[] {
     const errors = [];
     if (!this.$v.password.required) {
       errors.push(this.$t('requiredError'));
     }
-    if (!this.$v.password.sameAs) {
+    if (!this.$v.password.minLength) {
+      errors.push(this.$t('minLengthPassword'));
+    }
+    return this.$v.password.$dirty ? errors : [];
+  }
+
+  get retypePasswordErrors(): TranslateResult[] {
+    const errors = [];
+    if (!this.$v.retypePassword.required) {
+      errors.push(this.$t('requiredError'));
+    }
+    if (!this.$v.retypePassword.sameAsPassword) {
       errors.push(this.$t('Passwords must match.'));
     }
     return this.$v.password.$dirty ? errors : [];

@@ -90,6 +90,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { required, email } from 'vuelidate/lib/validators';
+import { TranslateResult } from 'vue-i18n';
 
 @Component({
   validations: {
@@ -121,7 +122,7 @@ export default class Home extends Vue {
     console.log(this.$vuetify.icons.values.eye);
   }
 
-  get usernameErrors() {
+  get usernameErrors(): TranslateResult[] {
     const errors = [];
     if (!this.$v.username.required) {
       errors.push(this.$t('requiredError'));
@@ -132,7 +133,7 @@ export default class Home extends Vue {
     return this.$v.username.$dirty ? errors : [];
   }
 
-  get passwordErrors() {
+  get passwordErrors(): TranslateResult[] {
     const errors = [];
     if (!this.$v.password.required) {
       errors.push(this.$t('requiredError'));
