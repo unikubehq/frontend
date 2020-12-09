@@ -16,5 +16,6 @@
   "Already registered?": "Bereits registriert?",
   "Full Name": "Vor- und Nachname",
   "Enter Full Name": "Vor- und Nachname eingeben",
-  "Passwords must match.": "Passwörter müssen übereinstimmen."
+  "Passwords must match.": "Passwörter müssen übereinstimmen.",
+  "loginFailedError": "Kein passender Nutzer gefunden."
 }

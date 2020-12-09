@@ -22,11 +22,11 @@
                 outlined
                 type="text"
                 :placeholder="$t('Enter Email Address')"
-                v-model="username"
+                v-model="email"
                 @keyup.enter="login"
-                :error-messages="usernameErrors"
+                :error-messages="emailErrors"
                 prepend-inner-icon="$vuetify.icons.email"
-                @blur="$v.username.$touch()"
+                @blur="$v.email.$touch()"
             />
 
             <v-text-field
@@ -46,6 +46,9 @@
                 @blur="$v.password.$touch()"
             >
             </v-text-field>
+            <v-alert dense outlined type="error" v-for="error in errors" :key="error">
+              {{ error }}
+            </v-alert>
             <div class="d-flex justify-space-between align-center">
               <v-checkbox v-model="remember" :ripple="false">
                 <template v-slot:label>
@@ -58,12 +61,9 @@
                 {{ $t('Forgot password?') }}
               </router-link>
             </div>
-            <v-btn block color="primary" large elevation="0" :ripple="false">
+            <v-btn block color="primary" large elevation="0" :ripple="false" @click="login">
               {{ $t('Sign In') }}
             </v-btn>
-            <div class="error" v-if="errors && errors.detail">
-              {{ errors.detail }}
-            </div>
           </v-form>
         </v-col>
         <v-col cols="12" class="text-center mt-1" align-self="center">
@@ -91,10 +91,13 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { required, email } from 'vuelidate/lib/validators';
 import { TranslateResult } from 'vue-i18n';
+import { getModule } from 'vuex-module-decorators';
+import Auth from '@/store/modules/auth';
+import UI from '@/store/modules/ui';
 
 @Component({
   validations: {
-    username: {
+    email: {
       required,
       email,
     },
@@ -104,7 +107,7 @@ import { TranslateResult } from 'vue-i18n';
   },
 })
 export default class Home extends Vue {
-  username = '';
+  email = '';
 
   password = '';
 
@@ -112,25 +115,48 @@ export default class Home extends Vue {
 
   clearText = false;
 
-  errors = [];
+  errors: TranslateResult[] = [];
 
   login(): void {
-    console.log(this);
+    this.errors = [];
+    this.$v.$touch();
+    if (!this.$v.$invalid) {
+      const ui = getModule(UI, this.$store);
+      const auth = getModule(Auth, this.$store);
+      ui.setOverlay(true);
+      // eslint-disable-next-line no-undef
+      const credentials: LoginCredentials = {
+        email: this.email,
+        password: this.password,
+      };
+      auth.authenticate(credentials).then((result) => {
+        ui.setOverlay(false);
+        if (result) {
+          this.$router.push({
+            name: 'overview',
+          });
+        } else {
+          this.errors.push(
+            this.$t('loginFailedError'),
+          );
+        }
+      });
+    }
   }
 
   created(): void {
     console.log(this.$vuetify.icons.values.eye);
   }
 
-  get usernameErrors(): TranslateResult[] {
+  get emailErrors(): TranslateResult[] {
     const errors = [];
-    if (!this.$v.username.required) {
+    if (!this.$v.email.required) {
       errors.push(this.$t('requiredError'));
     }
-    if (!this.$v.username.email) {
+    if (!this.$v.email.email) {
       errors.push(this.$t('emailError'));
     }
-    return this.$v.username.$dirty ? errors : [];
+    return this.$v.email.$dirty ? errors : [];
   }
 
   get passwordErrors(): TranslateResult[] {

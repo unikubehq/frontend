@@ -8,6 +8,7 @@ npm install
 Create a file called `.env.development.local`:
 ```dotenv
 VUE_APP_GRAPHQL_URL=http://localhost:8090/graphql
+VUE_APP_AUTH_URL=http://localhost:8090
 ```
 
 Run [docu-compose](https://gitlab.blueshoe.de/unikube/docu-compose/) locally.

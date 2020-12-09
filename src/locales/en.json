@@ -2,5 +2,6 @@
   "hello2": "englisch",
   "requiredError": "This field is required.",
   "minLengthError": "This field does not satisfy the minimal length requirement.",
-  "emailError": "This is not a valid email address."
+  "emailError": "This is not a valid email address.",
+  "loginFailedError": "No matching account found."
 }

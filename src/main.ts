@@ -4,11 +4,11 @@ import VueI18n from 'vue-i18n';
 import Vuelidate from 'vuelidate';
 import * as Sentry from '@sentry/browser';
 import * as Integrations from '@sentry/integrations';
-import App from './App.vue';
-import router from './router';
-import store from './store';
-import vuetify from './plugins/vuetify';
-import apolloProvider from './vue-apollo';
+import router from '@/router';
+import App from '@/App.vue';
+import store from '@/store';
+import vuetify from '@/plugins/vuetify';
+import apolloProvider from '@/vue-apollo';
 import LocaleMessages = VueI18n.LocaleMessages;
 
 Vue.config.productionTip = false;
