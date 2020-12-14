@@ -23,6 +23,7 @@ import CreateOrganization from '@/components/icons/CreateOrganization.vue';
 import JoinOrganization from '@/components/icons/JoinOrganization.vue';
 import CheckboxChecked from '@/components/icons/CheckboxChecked.vue';
 import CheckboxUnchecked from '@/components/icons/CheckboxUnchecked.vue';
+import PersonalInfo from '@/components/icons/PersonalInfo.vue';
 
 Vue.use(Vuetify);
 
@@ -97,6 +98,9 @@ export default new Vuetify({
       },
       arrowDownWhite: {
         component: ArrowDownWhite,
+      },
+      personalInfo: {
+        component: PersonalInfo,
       },
     },
   },

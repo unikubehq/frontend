@@ -25,7 +25,10 @@
         <a href="#" class="text--secondary">Remove Picture</a>
       </v-col>
       <v-col cols="8" class="mt-8">
-        <h2>Personal Info</h2>
+        <v-row>
+          <v-icon large>$vuetify.icons.personalInfo</v-icon>
+          <h2 class="d-inline ml-2">Personal Info</h2>
+        </v-row>
         <v-form>
           <v-text-field
             :label="$t('Full Name')"
