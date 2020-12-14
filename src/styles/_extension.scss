@@ -13,8 +13,31 @@
 .v-navigation-drawer {
    background-image: linear-gradient(18deg, #0e132e -13%, #252e65 64%);
 }
-.v-list-item.navigation-item {
-  padding-left: 20px;
+.v-navigation-drawer {
+  .v-list-item {
+    padding-left: 20px;
+  }
+}
+.v-navigation-drawer--mini-variant {
+  .v-list-item.navigation-item {
+    padding-left: 16px;
+  }
+  .v-list-item.navigation-item--is-active {
+    padding-left: 12px;
+  }
+  .v-list-item > .organization-dropdown--arrow:not(:first-child) {
+    float: none !important;
+    width: 100% !important;
+    clip: unset !important;
+    position: relative !important;
+    height: 0;
+    text-align: center;
+  }
+  .organization-dropdown--item {
+    &:after {
+      margin-top: -48px;
+    }
+  }
 }
 .v-list-item.navigation-item--is-active {
   border-left: 4px solid $unikube-green;

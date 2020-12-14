@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-navigation-drawer app dark width="300">
+    <v-navigation-drawer app dark width="300" :mini-variant="mini" mini-variant-width="96">
       <template slot="append">
         <v-img src="@/assets/img/navigation_background.svg"/>
         <v-list style="position:absolute; bottom: 10px; left: 0; width: 100%;">
@@ -8,27 +8,32 @@
             <v-list-item-icon>
               <v-icon>$vuetify.icons.help</v-icon>
             </v-list-item-icon>
-            Help
+            <v-list-item-content>
+              <v-list-item-title>Help</v-list-item-title>
+            </v-list-item-content>
           </v-list-item>
         </v-list>
       </template>
       <template slot="prepend">
-        <v-list-item class="mt-2">
+        <v-list-item class="mt-2" :ripple="false">
           <v-list-item-content>
             <v-list-item-title class="title">
-              <div class="d-flex justify-space-between">
+              <div class="d-flex"
+                  :class="{'justify-space-between': !mini, 'justify-center': mini}">
                 <v-img src="@/assets/img/Unikube-Logo-H-NoShadow_light.svg"
-                    max-height="45" max-width="164" contain/>
-                <v-icon medium class="d-block mr-3 mt-2">
-                  $vuetify.icons.burger
-                </v-icon>
+                    max-height="45" max-width="164" contain v-if="!mini"/>
+                <v-btn  icon @click="toggleMini" :ripple="false">
+                  <v-icon medium class="d-block mt-2">
+                    $vuetify.icons.burger
+                  </v-icon>
+                </v-btn>
               </div>
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item class="mt-5">
           <v-list-item-content>
-            <v-list-item-title class="subtitle-2 text-uppercase">
+            <v-list-item-title class="subtitle-2 text-uppercase" v-if="!mini">
               Organizations
             </v-list-item-title>
           </v-list-item-content>
@@ -39,7 +44,9 @@
             rounded="0"
         >
           <template v-slot:activator="{ attrs, on }">
-            <v-list-item class="mt-2" two-line v-bind="attrs" v-on="on" :ripple="false">
+            <v-list-item class="mt-2 organization-dropdown--item" two-line v-bind="attrs" v-on="on"
+                :ripple="false"
+                :class="{'flex-wrap': mini}">
               <v-list-item-avatar>
                 <img src="https://randomuser.me/api/portraits/women/81.jpg">
               </v-list-item-avatar>
@@ -50,11 +57,14 @@
                 </v-list-item-title>
                 <v-list-item-subtitle>
                   Organization ID: 8900998
-                  <v-icon small class="float-right organization-dropdown--arrow">
-                    $vuetify.icons.arrowDownWhite
-                  </v-icon>
                 </v-list-item-subtitle>
               </v-list-item-content>
+              <v-icon small class="float-right organization-dropdown--arrow" v-if="!mini">
+                $vuetify.icons.arrowDownWhite
+              </v-icon>
+              <v-icon small class="organization-dropdown--arrow" v-if="mini">
+                $vuetify.icons.arrowDownWhite
+              </v-icon>
             </v-list-item>
           </template>
           <div class="organization-dropdown--notch"></div>
@@ -184,6 +194,12 @@ export default class Layout extends Vue {
   ]
 
   menu = false;
+
+  mini = false;
+
+  toggleMini() {
+    this.mini = !this.mini;
+  }
 
   mounted() {
     if (!this.$route.name === 'Overview') {
