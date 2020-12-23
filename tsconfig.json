@@ -18,7 +18,8 @@
       "chai",
       "vuetify",
       "vue-apollo",
-      "vue-cli-plugin-apollo/types"
+      //"vue-cli-plugin-apollo/types",
+      "jest"
     ],
     "paths": {
       "@/*": [
