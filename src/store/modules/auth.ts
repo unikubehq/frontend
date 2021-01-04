@@ -56,10 +56,7 @@ export default class Auth extends VuexModule {
         this.context.dispatch('scheduleRefresh');
       });
       return true;
-    }).catch((err) => {
-      console.error(err);
-      return false;
-    });
+    }).catch(() => false);
   }
 
   @Action

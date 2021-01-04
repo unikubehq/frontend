@@ -1,5 +1,5 @@
 import jwtDecode, { JwtPayload } from 'jwt-decode';
-import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 
 export default class AuthClient {
   http: AxiosInstance;
@@ -17,11 +17,7 @@ export default class AuthClient {
       }).then((res) => {
         resolve(AuthClient.createTokenResponseFromAxiosResponse(res));
       }).catch((err) => {
-        const tokenResponse: TokenResponse = {
-          success: false,
-          code: err.response.status,
-        };
-        reject(tokenResponse);
+        reject(AuthClient.createErrorResponse(err));
       });
     });
   }
@@ -33,11 +29,7 @@ export default class AuthClient {
       }).then((res) => {
         resolve(AuthClient.createTokenResponseFromAxiosResponse(res));
       }).catch((err) => {
-        const tokenResponse: TokenResponse = {
-          success: false,
-          code: err.response.status,
-        };
-        reject(tokenResponse);
+        reject(AuthClient.createErrorResponse(err));
       });
     });
   }
@@ -50,6 +42,19 @@ export default class AuthClient {
       exp: token.exp,
       success: res.status === 200,
       code: res.status,
+    };
+  }
+
+  private static createErrorResponse(err: AxiosError): TokenResponse {
+    if (err.response) {
+      return {
+        success: false,
+        code: err.response.status,
+      };
+    }
+    return {
+      success: false,
+      code: 900,
     };
   }
 }
