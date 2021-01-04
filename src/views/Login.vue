@@ -144,10 +144,6 @@ export default class Login extends Vue {
     }
   }
 
-  created(): void {
-    console.log(this.$vuetify.icons.values.eye);
-  }
-
   get emailErrors(): TranslateResult[] {
     const errors = [];
     if (!this.$v.email.required) {

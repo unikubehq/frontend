@@ -84,7 +84,6 @@ export default class Auth extends VuexModule {
      * token.
      */
     if (this.expiryDate) {
-      console.log(this.expiryDate);
       const now = new Date();
       const expiryDate = new Date(parseInt(this.expiryDate, 10) * 1000);
       let timeout: number;
@@ -101,29 +100,10 @@ export default class Auth extends VuexModule {
 
   @Action
   logout(): void {
-    // this.context.commit('context/resetCurrentOrganization', null, { root: true });
-    // this.context.dispatch('resetAbilities');
     this.context.commit('resetExpiry');
     this.context.commit('resetRefreshToken');
     this.context.commit('resetAccessToken');
   }
-
-  // @Action
-  // resetAbilities() {
-  //   this.context.getters.ability.update([]);
-  // }
-
-  // @Action
-  // updatePermissions() {
-  //   axios.get('/api/permissions/', {
-  //     headers: {
-  //       Authorization: `Bearer ${this.accessToken}`,
-  //     },
-  //   }).then((res) => {
-  //     this.context.getters.ability.update(res.data.abilities);
-  //     commit('setAbilities', res.data.abilities)
-  // });
-  // }
 
   @Action
   updateToken(res: TokenResponse): void {
@@ -132,6 +112,5 @@ export default class Auth extends VuexModule {
       this.context.commit('setRefreshToken', res.refresh);
     }
     this.context.commit('setExpiry', res.exp);
-    // this.context.dispatch('updatePermissions');
   }
 }
