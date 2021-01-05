@@ -24,6 +24,12 @@ import JoinOrganization from '@/components/icons/JoinOrganization.vue';
 import CheckboxChecked from '@/components/icons/CheckboxChecked.vue';
 import CheckboxUnchecked from '@/components/icons/CheckboxUnchecked.vue';
 import PersonalInfo from '@/components/icons/PersonalInfo.vue';
+import NoProjectsFound from '@/components/icons/NoProjectsFound.vue';
+import AddProject from '@/components/icons/AddProject.vue';
+import Search from '@/components/icons/Search.vue';
+import Project from '@/components/icons/Project.vue';
+import Delete from '@/components/icons/Delete.vue';
+import Edit from '@/components/icons/Edit.vue';
 
 Vue.use(Vuetify);
 
@@ -101,6 +107,24 @@ export default new Vuetify({
       },
       personalInfo: {
         component: PersonalInfo,
+      },
+      noProjectsFound: {
+        component: NoProjectsFound,
+      },
+      addProject: {
+        component: AddProject,
+      },
+      search: {
+        component: Search,
+      },
+      project: {
+        component: Project,
+      },
+      delete: {
+        component: Delete,
+      },
+      edit: {
+        component: Edit,
       },
     },
   },

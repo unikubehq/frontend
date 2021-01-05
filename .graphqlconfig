@@ -4,7 +4,7 @@
   "extensions": {
     "endpoints": {
       "Default GraphQL Endpoint": {
-        "url": "http://localhost:8090/graphql",
+        "url": "https://apollo.dev.unikube.io/",
         "headers": {
           "user-agent": "JS GraphQL"
         },

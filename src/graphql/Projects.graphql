@@ -1,0 +1,57 @@
+query ProjectsQuery($limit: Int, $offset: Int) {
+    allProjects(limit: $limit, offset: $offset) {
+        totalCount
+        results {
+            title,
+            modified,
+            description,
+            currentCommit,
+            id,
+            packages {
+                resultCount,
+            }
+            members {
+                user {
+                    firstName,
+                    lastName,
+                    avatar,
+                }
+            }
+        }
+    }
+}
+mutation CreateProject(
+  $title: String!
+  $description: String!
+  $specRepository: String!
+  $specType: String!
+  $accessUsername: String!
+  $accessToken: String!
+  $specRepositoryBranch: String!
+) {
+  createUpdateProject(
+    input: {
+      title: $title
+      description: $description
+      specRepository: $specRepository
+      specType: $specType
+      specRepositoryBranch: $specRepositoryBranch
+      accessUsername: $accessUsername
+      accessToken: $accessToken
+    }
+  ) {
+    project {
+      title
+    }
+    errors {
+      messages
+      field
+    }
+  }
+}
+
+mutation DeleteProject($id: UUID) {
+  deleteProject(id: $id) {
+    ok
+  }
+}

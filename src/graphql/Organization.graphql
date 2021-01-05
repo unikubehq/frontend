@@ -1,6 +1,9 @@
 query OrganizationsQuery {
-  organizations {
-    title,
-    description,
+  allOrganizations(limit:3) {
+      results {
+          title,
+          avatarUrl,
+          id
+      }
   }
 }

@@ -70,7 +70,7 @@
           <div class="organization-dropdown--notch"></div>
           <v-list>
             <v-list-item
-                v-for="organization in organizations"
+                v-for="organization in allOrganizations.results"
                 :key="organization.id"
                 link
                 :ripple="false"
@@ -224,8 +224,15 @@
 <script>
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import { OrganizationsQuery } from '@/generated/graphql';
 
-@Component()
+@Component({
+  apollo: {
+    allOrganizations: {
+      query: OrganizationsQuery,
+    },
+  },
+})
 export default class Layout extends Vue {
   items = [
     { icon: '$vuetify.icons.overview', title: 'Overview', to: 'overview' },

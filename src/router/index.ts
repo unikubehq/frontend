@@ -50,6 +50,16 @@ const routes: Array<RouteConfig> = [
         name: 'settings',
         component: () => import(/* webpackChunkName: "about" */ '../views/Settings.vue'),
       },
+      {
+        path: '/create-project',
+        name: 'create New Project',
+        component: () => import(/* webpackChunkName: "about" */ '../views/createProject/CreateProject.vue'),
+      },
+      {
+        path: '/create-project/add-members',
+        name: 'Create New Project',
+        component: () => import('../views/createProject/AddTeamMember.vue'),
+      },
     ],
   },
 ];

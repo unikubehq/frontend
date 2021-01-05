@@ -10,7 +10,7 @@ type AddressNode {
     id: ID!
     invoiceAddress: [OrganizationNode!]!
     latitude: Float
-    locality: LocaltyNode
+    locality: LocalityNode
     longitude: Float
     primaryAddress: [OrganizationNode!]!
     raw: String!
@@ -19,14 +19,24 @@ type AddressNode {
 }
 
 type ClusterLevelNode {
+    created: DateTime!
     deployments: [DeploymentNode!]!
     description: String
     id: UUID!
+    modified: DateTime!
     package: PackageNode!
     sopsCredentials: SOPSProviderNode
     title: String!
     type: ClusterLevelType!
     valuesPath: String!
+}
+
+type ClusterLevelNodePage {
+    limit: Int
+    offset: Int
+    resultCount: Int
+    results: [ClusterLevelNode]
+    totalCount: Int
 }
 
 type CountryNode {
@@ -36,23 +46,41 @@ type CountryNode {
     states: [StateNode!]!
 }
 
-type CreateOrganization {
-    code: String
-    message: String
-    organization: OrganizationNode
-    success: Boolean
+type CreateUpdateProjectPayload {
+    clientMutationId: String
+    errors: [ErrorType]
+    project: ProjectNode
+}
+
+type DeleteProject {
+    ok: Boolean
 }
 
 type DeploymentNode {
     clusterlevel: ClusterLevelNode!
+    created: DateTime!
     description: String
     id: UUID!
     isSwitchable: Boolean!
+    modified: DateTime!
     ports: String!
     title: String!
 }
 
-type LocaltyNode {
+type DeploymentNodePage {
+    limit: Int
+    offset: Int
+    resultCount: Int
+    results: [DeploymentNode]
+    totalCount: Int
+}
+
+type ErrorType {
+    field: String!
+    messages: [String!]!
+}
+
+type LocalityNode {
     addresses: [AddressNode!]!
     id: ID!
     name: String!
@@ -61,29 +89,81 @@ type LocaltyNode {
 }
 
 type Mutation {
-    createOrganization(title: String): CreateOrganization
+    createUpdateProject(input: CreateUpdateProjectInput!): CreateUpdateProjectPayload
+    deleteProject(id: UUID): DeleteProject
+    upsertOrganization(input: UpsertOrganizationInput!): UpsertOrganizationPayload
+}
+
+type NotificationSettingsNode {
+    created: DateTime!
+    id: UUID!
+    invitationAccept: Boolean!
+    invitationDecline: Boolean!
+    memberAdd: Boolean!
+    memberDelete: Boolean!
+    memberEdit: Boolean!
+    modified: DateTime!
+    projectAdd: Boolean!
+    projectDelete: Boolean!
+    projectEdit: Boolean!
+    usersettings: UserSettingsNode
 }
 
 type OrganizationNode {
+    avatarUrl: String
     created: DateTime!
     description: String
     id: UUID!
     invoiceTaxAddress: AddressNode
+    members: [OrganizationUserNode!]!
+    modified: DateTime!
     primaryAddress: AddressNode
+    projects(limit: Int, offset: Int): ProjectNodePage
     slug: String!
     title: String!
 }
 
+type OrganizationNodePage {
+    limit: Int
+    offset: Int
+    resultCount: Int
+    results: [OrganizationNode]
+    totalCount: Int
+}
+
+type OrganizationUserNode {
+    created: DateTime!
+    id: UUID!
+    modified: DateTime!
+    organization: OrganizationNode!
+    role: OrganizationUserRole!
+    user: UserNode!
+}
+
 type PackageNode {
+    created: DateTime!
     description: String
     dirname: String!
     environments: [ClusterLevelNode!]!
     id: UUID!
+    modified: DateTime!
     namespace: String!
     project: ProjectNode!
     slug: String!
     title: String!
     type: String!
+}
+
+type PackageNodePage {
+    limit: Int
+    offset: Int
+    resultCount: Int
+    results: [PackageNode]
+    totalCount: Int
+}
+
+type PleaseRemoveMeNode {
+    text: String
 }
 
 type ProjectNode {
@@ -93,8 +173,9 @@ type ProjectNode {
     currentCommit: String!
     description: String
     id: UUID!
-    members: [UserNode]
-    packages: [PackageNode]
+    members: [ProjectUserNode!]!
+    modified: DateTime!
+    packages(limit: Int, offset: Int): PackageNodePage
     repoDir: String!
     slug: String!
     specRepository: String!
@@ -103,37 +184,79 @@ type ProjectNode {
     title: String!
 }
 
+type ProjectNodePage {
+    limit: Int
+    offset: Int
+    resultCount: Int
+    results: [ProjectNode]
+    totalCount: Int
+}
+
+type ProjectUserNode {
+    created: DateTime!
+    id: UUID!
+    modified: DateTime!
+    project: ProjectNode!
+    role: ProjectUserRole!
+    user: UserNode
+}
+
 type Query {
-    allClusterLevels: [ClusterLevelNode]
-    allDeployments: [DeploymentNode]
-    allOrganizations: [OrganizationNode]
-    allPackages: [PackageNode]
-    allProjects: [ProjectNode]
-    allSOPSProvider: [SOPSProviderNode]
-    allUsers: [UserNode]
+    allClusterLevels(limit: Int, offset: Int): ClusterLevelNodePage
+    allDeployments(limit: Int, offset: Int): DeploymentNodePage
+    allOrganizations(limit: Int, offset: Int): OrganizationNodePage
+    allPackages(limit: Int, offset: Int): PackageNodePage
+    allProjects(limit: Int, offset: Int): ProjectNodePage
+    allSOPSProvider(limit: Int, offset: Int): SOPSProviderNodePage
+    allUsers(limit: Int, offset: Int): UserNodePage
+    assets: PleaseRemoveMeNode
+    audits: PleaseRemoveMeNode
+    collaborations: PleaseRemoveMeNode
     myOrganization: OrganizationNode
     package(id: UUID, slug: String): PackageNode
+    payments: PleaseRemoveMeNode
     project(id: UUID, slug: String): ProjectNode
 }
 
 type SOPSProviderNode {
     clusterlevelSet: [ClusterLevelNode!]!
+    created: DateTime!
     id: ID!
+    modified: DateTime!
     username: String!
+}
+
+type SOPSProviderNodePage {
+    limit: Int
+    offset: Int
+    resultCount: Int
+    results: [SOPSProviderNode]
+    totalCount: Int
 }
 
 type StateNode {
     code: String!
     country: CountryNode!
     id: ID!
-    localities: [LocaltyNode!]!
+    localities: [LocalityNode!]!
     name: String!
+}
+
+type UpsertOrganizationPayload {
+    avatarUrl: String
+    clientMutationId: String
+    code: String
+    errors: [ErrorType]
+    id: String
+    instance: OrganizationNode
+    message: String
+    success: Boolean
+    title: String
 }
 
 type UserNode {
     avatar: String!
     created: DateTime!
-    dateJoined: DateTime!
     email: String!
     firstName: String!
     id: UUID!
@@ -142,8 +265,27 @@ type UserNode {
     isSuperuser: Boolean!
     lastLogin: DateTime
     lastName: String!
+    modified: DateTime!
+    organizations: [OrganizationUserNode!]!
     password: String!
     salutation: String!
+    settings: [UserSettingsNode!]!
+}
+
+type UserNodePage {
+    limit: Int
+    offset: Int
+    resultCount: Int
+    results: [UserNode]
+    totalCount: Int
+}
+
+type UserSettingsNode {
+    created: DateTime!
+    id: UUID!
+    modified: DateTime!
+    notifications: NotificationSettingsNode!
+    user: UserNode!
 }
 
 enum ClusterLevelType {
@@ -151,9 +293,39 @@ enum ClusterLevelType {
     REMOTE
 }
 
+enum OrganizationUserRole {
+    ADMIN
+    MEMBER
+}
+
 enum ProjectSpecType {
     HELM
     PLAIN
+}
+
+enum ProjectUserRole {
+    ADMIN
+    MEMBER
+}
+
+input CreateUpdateProjectInput {
+    accessToken: String!
+    accessUsername: String!
+    clientMutationId: String
+    currentCommit: String
+    description: String
+    id: ID
+    specRepository: String!
+    specRepositoryBranch: String!
+    specType: String!
+    title: String!
+}
+
+input UpsertOrganizationInput {
+    avatarUrl: String
+    clientMutationId: String
+    id: String
+    title: String!
 }
 
 
