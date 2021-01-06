@@ -12,7 +12,7 @@ export default class AuthClient {
 
   public authenticate(credentials: LoginCredentials): Promise<TokenResponse> {
     return new Promise((resolve, reject) => {
-      this.http.post('/auth/token/', {
+      this.http.post('/auth/', {
         ...credentials,
       }).then((res) => {
         resolve(AuthClient.createTokenResponseFromAxiosResponse(res));
@@ -24,7 +24,8 @@ export default class AuthClient {
 
   public refresh(refreshToken: string): Promise<TokenResponse> {
     return new Promise((resolve, reject) => {
-      this.http.post('/auth/token/refresh/', {
+      // TODO add auth header with auth token to identify the user
+      this.http.post('/auth/refresh/', {
         refresh: refreshToken,
       }).then((res) => {
         resolve(AuthClient.createTokenResponseFromAxiosResponse(res));
