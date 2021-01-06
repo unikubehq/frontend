@@ -90,3 +90,12 @@
   margin-right: 2px;
   margin-top: -5px;
 }
+.avatar-initials {
+  color: $green-light-5;
+}
+.v-avatar .initials-avatar{
+  border: 3px solid white !important;
+  &:not(:first-child) {
+    margin-left: -1em;
+  }
+}

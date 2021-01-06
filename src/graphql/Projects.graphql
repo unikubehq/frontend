@@ -7,6 +7,7 @@ query ProjectsQuery($limit: Int, $offset: Int) {
             description,
             currentCommit,
             id,
+            slug,
             packages {
                 resultCount,
             }
@@ -20,6 +21,69 @@ query ProjectsQuery($limit: Int, $offset: Int) {
         }
     }
 }
+
+query ProjectDetailQuery($slug: String) {
+    project(slug: $slug) {
+        created,
+        modified,
+        title,
+        description,
+        slug,
+        id,
+        specRepository,
+        specRepositoryBranch,
+        specType,
+        repoDir,
+        currentCommit,
+        accessUsername,
+        accessToken,
+        creator {
+            firstName,
+            lastName,
+        }
+        members {
+            user {
+                firstName,
+                lastName,
+                avatar,
+            }
+            role,
+        },
+        packages {
+            totalCount,
+            results {
+                modified,
+                title,
+                description,
+                type,
+                namespace,
+                id,
+                environments {
+                    deployments {
+                        title,
+                        id,
+                    }
+                }
+            }
+        }
+
+    }
+}
+
+query ProjectDetailOtherProjectsQuery {
+    allProjects(limit: 1000) {
+        results {
+            title,
+            modified,
+            slug,
+            id,
+            packages {
+                totalCount
+            }
+        }
+    }
+}
+
 mutation CreateProject(
   $title: String!
   $description: String!
@@ -49,6 +113,39 @@ mutation CreateProject(
     }
   }
 }
+
+mutation UpdateProject(
+  $title: String!
+  $description: String!
+  $specRepository: String!
+  $specType: String!
+  $accessUsername: String!
+  $accessToken: String!
+  $specRepositoryBranch: String!
+  $id: ID
+) {
+  createUpdateProject(
+    input: {
+      title: $title
+      description: $description
+      specRepository: $specRepository
+      specType: $specType
+      specRepositoryBranch: $specRepositoryBranch
+      accessUsername: $accessUsername
+      accessToken: $accessToken
+      id: $id
+    }
+  ) {
+    project {
+      title
+    }
+    errors {
+      messages
+      field
+    }
+  }
+}
+
 
 mutation DeleteProject($id: UUID) {
   deleteProject(id: $id) {

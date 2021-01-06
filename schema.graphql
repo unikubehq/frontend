@@ -170,6 +170,7 @@ type ProjectNode {
     accessToken: String!
     accessUsername: String!
     created: DateTime!
+    creator: UserNode
     currentCommit: String!
     description: String
     id: UUID!
@@ -194,6 +195,7 @@ type ProjectNodePage {
 
 type ProjectUserNode {
     created: DateTime!
+    creator: Boolean!
     id: UUID!
     modified: DateTime!
     project: ProjectNode!

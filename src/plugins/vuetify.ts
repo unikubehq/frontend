@@ -30,6 +30,7 @@ import Search from '@/components/icons/Search.vue';
 import Project from '@/components/icons/Project.vue';
 import Delete from '@/components/icons/Delete.vue';
 import Edit from '@/components/icons/Edit.vue';
+import Deployments from '@/components/icons/Deployments.vue';
 
 Vue.use(Vuetify);
 
@@ -125,6 +126,9 @@ export default new Vuetify({
       },
       edit: {
         component: Edit,
+      },
+      deployments: {
+        component: Deployments,
       },
     },
   },

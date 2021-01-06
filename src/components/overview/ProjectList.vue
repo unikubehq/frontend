@@ -24,14 +24,16 @@
             <p>{{ project.description }}</p>
           </v-col>
           <v-col class="text-right">
-            <v-icon size="24">$vuetify.icons.edit</v-icon>
+            <router-link :to="'/project/' + project.slug + '?edit=true'">
+              <v-icon size="24">$vuetify.icons.edit</v-icon>
+            </router-link>
             <v-divider style="height: 24px" class="mx-4" vertical></v-divider>
             <v-icon @click="deleteProject(project.id)" size="24">$vuetify.icons.delete</v-icon>
           </v-col>
         </v-row>
         <v-row class="white">
           <v-divider class="px-5"></v-divider>
-          <router-link to="/">
+          <router-link :to="'/project/' + project.slug ">
             <v-icon class="project-card__detail" size="24">$vuetify.icons.dropdown</v-icon>
           </router-link>
         </v-row>
@@ -52,9 +54,14 @@
           </v-col>
           <v-divider vertical></v-divider>
           <v-col class="text-right">
-            <v-avatar color="primary" v-for="initials in avatarInitials" :key="initials">
+            <v-avatar
+              class="initials-avatar"
+              color="primary"
+              v-for="initials in avatarInitials"
+              :key="initials"
+            >
 <!--              <img v-if="user.avatar" :src="user.avatar">-->
-              <span class="project-card__avatar-initials">{{ initials }}</span>
+              <span class="avatar-initials">{{ initials }}</span>
             </v-avatar>
           </v-col>
         </v-row>
@@ -72,7 +79,7 @@ export default class ProjectList extends Vue {
 
   drawer = false;
 
-  get modifiedDate(): Date {
+  get modifiedDate(): string {
     return new Date(this.project.modified).toDateString();
   }
 
@@ -101,18 +108,9 @@ export default class ProjectList extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.v-avatar {
-  border: 3px solid white !important;
-  &:not(:first-child) {
-    margin-left: -1em;
-  }
-}
 .project-card{
   &__wrapper {
     box-shadow: 0 2px 40px 0 rgba(183, 183, 183, 0.15);
-  }
-  &__avatar-initials {
-    color: $green-light-5;
   }
   &__detail {
     transform: rotate(-90deg);

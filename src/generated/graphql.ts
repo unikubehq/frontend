@@ -216,6 +216,7 @@ export type TProjectNode = {
   accessUsername: Scalars['String'];
   accessToken: Scalars['String'];
   members: Array<TProjectUserNode>;
+  creator?: Maybe<TUserNode>;
   packages?: Maybe<TPackageNodePage>;
 };
 
@@ -238,6 +239,7 @@ export type TProjectUserNode = {
   project: TProjectNode;
   user?: Maybe<TUserNode>;
   role: TProjectUserRole;
+  creator: Scalars['Boolean'];
 };
 
 export enum TProjectUserRole {
@@ -481,7 +483,7 @@ export type TProjectsQueryResult = (
     & Pick<TProjectNodePage, '[object Object]'>
     & { results?: Maybe<Array<Maybe<(
       { __typename?: 'ProjectNode' }
-      & Pick<TProjectNode, '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]'>
+      & Pick<TProjectNode, '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]'>
       & { packages?: Maybe<(
         { __typename?: 'PackageNodePage' }
         & Pick<TPackageNodePage, '[object Object]'>
@@ -491,6 +493,62 @@ export type TProjectsQueryResult = (
           { __typename?: 'UserNode' }
           & Pick<TUserNode, '[object Object]' | '[object Object]' | '[object Object]'>
         )> }
+      )> }
+    )>>> }
+  )> }
+);
+
+export type TProjectDetailQueryVariables = Exact<{
+  slug?: Maybe<Scalars['String']>;
+}>;
+
+
+export type TProjectDetailQueryResult = (
+  { __typename?: 'Query' }
+  & { project?: Maybe<(
+    { __typename?: 'ProjectNode' }
+    & Pick<TProjectNode, '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]'>
+    & { creator?: Maybe<(
+      { __typename?: 'UserNode' }
+      & Pick<TUserNode, '[object Object]' | '[object Object]'>
+    )>, members: Array<(
+      { __typename?: 'ProjectUserNode' }
+      & Pick<TProjectUserNode, '[object Object]'>
+      & { user?: Maybe<(
+        { __typename?: 'UserNode' }
+        & Pick<TUserNode, '[object Object]' | '[object Object]' | '[object Object]'>
+      )> }
+    )>, packages?: Maybe<(
+      { __typename?: 'PackageNodePage' }
+      & Pick<TPackageNodePage, '[object Object]'>
+      & { results?: Maybe<Array<Maybe<(
+        { __typename?: 'PackageNode' }
+        & Pick<TPackageNode, '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]'>
+        & { environments: Array<(
+          { __typename?: 'ClusterLevelNode' }
+          & { deployments: Array<(
+            { __typename?: 'DeploymentNode' }
+            & Pick<TDeploymentNode, '[object Object]' | '[object Object]'>
+          )> }
+        )> }
+      )>>> }
+    )> }
+  )> }
+);
+
+export type TProjectDetailOtherProjectsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type TProjectDetailOtherProjectsQueryResult = (
+  { __typename?: 'Query' }
+  & { allProjects?: Maybe<(
+    { __typename?: 'ProjectNodePage' }
+    & { results?: Maybe<Array<Maybe<(
+      { __typename?: 'ProjectNode' }
+      & Pick<TProjectNode, '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]'>
+      & { packages?: Maybe<(
+        { __typename?: 'PackageNodePage' }
+        & Pick<TPackageNodePage, '[object Object]'>
       )> }
     )>>> }
   )> }
@@ -508,6 +566,32 @@ export type TCreateProjectMutationVariables = Exact<{
 
 
 export type TCreateProjectMutationResult = (
+  { __typename?: 'Mutation' }
+  & { createUpdateProject?: Maybe<(
+    { __typename?: 'CreateUpdateProjectPayload' }
+    & { project?: Maybe<(
+      { __typename?: 'ProjectNode' }
+      & Pick<TProjectNode, '[object Object]'>
+    )>, errors?: Maybe<Array<Maybe<(
+      { __typename?: 'ErrorType' }
+      & Pick<TErrorType, '[object Object]' | '[object Object]'>
+    )>>> }
+  )> }
+);
+
+export type TUpdateProjectMutationVariables = Exact<{
+  title: Scalars['String'];
+  description: Scalars['String'];
+  specRepository: Scalars['String'];
+  specType: Scalars['String'];
+  accessUsername: Scalars['String'];
+  accessToken: Scalars['String'];
+  specRepositoryBranch: Scalars['String'];
+  id?: Maybe<Scalars['ID']>;
+}>;
+
+
+export type TUpdateProjectMutationResult = (
   { __typename?: 'Mutation' }
   & { createUpdateProject?: Maybe<(
     { __typename?: 'CreateUpdateProjectPayload' }
@@ -556,6 +640,7 @@ export const ProjectsQuery = gql`
       description
       currentCommit
       id
+      slug
       packages {
         resultCount
       }
@@ -570,9 +655,85 @@ export const ProjectsQuery = gql`
   }
 }
     `;
+export const ProjectDetailQuery = gql`
+    query ProjectDetailQuery($slug: String) {
+  project(slug: $slug) {
+    created
+    modified
+    title
+    description
+    slug
+    id
+    specRepository
+    specRepositoryBranch
+    specType
+    repoDir
+    currentCommit
+    accessUsername
+    accessToken
+    creator {
+      firstName
+      lastName
+    }
+    members {
+      user {
+        firstName
+        lastName
+        avatar
+      }
+      role
+    }
+    packages {
+      totalCount
+      results {
+        modified
+        title
+        description
+        type
+        namespace
+        id
+        environments {
+          deployments {
+            title
+            id
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+export const ProjectDetailOtherProjectsQuery = gql`
+    query ProjectDetailOtherProjectsQuery {
+  allProjects(limit: 1000) {
+    results {
+      title
+      modified
+      slug
+      id
+      packages {
+        totalCount
+      }
+    }
+  }
+}
+    `;
 export const CreateProject = gql`
     mutation CreateProject($title: String!, $description: String!, $specRepository: String!, $specType: String!, $accessUsername: String!, $accessToken: String!, $specRepositoryBranch: String!) {
   createUpdateProject(input: {title: $title, description: $description, specRepository: $specRepository, specType: $specType, specRepositoryBranch: $specRepositoryBranch, accessUsername: $accessUsername, accessToken: $accessToken}) {
+    project {
+      title
+    }
+    errors {
+      messages
+      field
+    }
+  }
+}
+    `;
+export const UpdateProject = gql`
+    mutation UpdateProject($title: String!, $description: String!, $specRepository: String!, $specType: String!, $accessUsername: String!, $accessToken: String!, $specRepositoryBranch: String!, $id: ID) {
+  createUpdateProject(input: {title: $title, description: $description, specRepository: $specRepository, specType: $specType, specRepositoryBranch: $specRepositoryBranch, accessUsername: $accessUsername, accessToken: $accessToken, id: $id}) {
     project {
       title
     }

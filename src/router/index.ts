@@ -60,6 +60,11 @@ const routes: Array<RouteConfig> = [
         name: 'Create New Project',
         component: () => import('../views/createProject/AddTeamMember.vue'),
       },
+      {
+        path: '/project/:slug',
+        name: 'Project Detail',
+        component: () => import('../views/projectDetail/ProjectDetail.vue'),
+      },
     ],
   },
 ];

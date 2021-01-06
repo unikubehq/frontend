@@ -1,6 +1,7 @@
 <template>
   <v-container>
-    <h2>Enter Your Project Details Below</h2>
+    <h2 v-if="editMode">Edit Project</h2>
+    <h2 v-else>Enter Your Project Details Below</h2>
     <v-form class="pa-10 white create-form">
       <v-row>
         <v-col>
@@ -130,8 +131,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { CreateProject } from '@/generated/graphql';
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import { CreateProject, UpdateProject, TProjectNode } from '@/generated/graphql';
 import { required, url } from 'vuelidate/lib/validators';
 import VueI18n from 'vue-i18n';
 import TranslateResult = VueI18n.TranslateResult;
@@ -157,6 +158,10 @@ import TranslateResult = VueI18n.TranslateResult;
   },
 })
 export default class CreateProjectView extends Vue {
+  @Prop() readonly editMode: boolean | undefined
+
+  @Prop() readonly project: TProjectNode | undefined
+
   title = '';
 
   description = '';
@@ -172,6 +177,8 @@ export default class CreateProjectView extends Vue {
   accessToken = '';
 
   repoDir = '';
+
+  id = '';
 
   specTypeChoices = ['plain', 'helm']
 
@@ -222,9 +229,32 @@ export default class CreateProjectView extends Vue {
     return this.$v.$invalid;
   }
 
+  handleEditMode(): void {
+    if (this.project) {
+      this.title = this.project.title;
+      this.description = this.project.description;
+      this.repoDir = this.project.repoDir;
+      this.specRepository = this.project.specRepository;
+      this.specRepositoryBranch = this.project.specRepositoryBranch;
+      this.specType = this.project.specType;
+      this.accessUsername = this.project.accessUsername;
+      this.accessToken = this.project.accessUsername;
+      this.id = this.project.id;
+    }
+  }
+
+  mounted(): void {
+    if (this.editMode) {
+      this.handleEditMode();
+      this.$nextTick(() => {
+        this.handleEditMode();
+      });
+    }
+  }
+
   submit(): void {
     this.$apollo.mutate({
-      mutation: CreateProject,
+      mutation: this.editMode ? UpdateProject : CreateProject,
       variables: {
         title: this.title,
         description: this.description,
@@ -233,12 +263,15 @@ export default class CreateProjectView extends Vue {
         accessUsername: this.accessUsername,
         accessToken: this.accessToken,
         specRepositoryBranch: this.specRepositoryBranch,
+        id: this.id,
       },
     })
       .then((data) => {
         console.log(data.data);
         if (data.data.createUpdateProject.project) {
-          this.$router.push('create-project/add-members');
+          if (this.editMode) {
+            this.$router.go(-1);
+          } else this.$router.push('create-project/add-members');
         }
       })
       .catch((err) => console.log(err));

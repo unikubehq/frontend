@@ -241,10 +241,10 @@ Component.registerHooks([
 })
 export default class Layout extends Vue {
   items = [
-    { icon: '$vuetify.icons.overview', title: 'Overview', to: 'overview' },
-    { icon: '$vuetify.icons.permission', title: 'Permissions', to: 'permissions' },
-    { icon: '$vuetify.icons.activity', title: 'Activity', to: 'activities' },
-    { icon: '$vuetify.icons.settings', title: 'Settings', to: 'settings' },
+    { icon: '$vuetify.icons.overview', title: 'Overview', to: '/overview' },
+    { icon: '$vuetify.icons.permission', title: 'Permissions', to: '/permissions' },
+    { icon: '$vuetify.icons.activity', title: 'Activity', to: '/activities' },
+    { icon: '$vuetify.icons.settings', title: 'Settings', to: '/settings' },
   ];
 
   organizations = [
