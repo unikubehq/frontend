@@ -10,8 +10,10 @@
             filled
             outlined
             type="text"
+            :error-messages="titleErrors"
             :placeholder="$t('Enter Project Name')"
             v-model="title"
+            @blur="$v.title.$touch()"
             prepend-inner-icon="$vuetify.icons.user"
           />
         </v-col>
@@ -50,7 +52,9 @@
             type="text"
             :placeholder="$t('Enter Specification Repository')"
             v-model="specRepository"
+            :error-messages="specRepositoryErrors"
             prepend-inner-icon="$vuetify.icons.user"
+            @blur="$v.specRepository.$touch()"
           />
         </v-col>
       </v-row>
@@ -64,7 +68,9 @@
             type="text"
             :placeholder="$t('Enter Repository Branch')"
             v-model="specRepositoryBranch"
+            :error-messages="specRepositoryBranchErrors"
             prepend-inner-icon="$vuetify.icons.user"
+            @blur="$v.specRepositoryBranch.$touch()"
           />
         </v-col>
         <v-col>
@@ -91,7 +97,9 @@
             type="text"
             :placeholder="$t('Enter Access Username')"
             v-model="accessUsername"
+            :error-messages="accessUsernameErrors"
             prepend-inner-icon="$vuetify.icons.user"
+            @blur="$v.accessUsername.$touch()"
           />
         </v-col>
         <v-col>
@@ -103,7 +111,9 @@
             type="text"
             :placeholder="$t('Enter Access Token')"
             v-model="accessToken"
+            :error-messages="accessTokenErrors"
             prepend-inner-icon="$vuetify.icons.user"
+            @blur="$v.accessToken.$touch()"
           />
         </v-col>
       </v-row>
@@ -112,6 +122,7 @@
           large
           color="primary"
           @click="submit"
+          :disabled="disableButton"
         >Next</v-btn>
       </v-row>
     </v-form>
@@ -121,8 +132,30 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { CreateProject } from '@/generated/graphql';
+import { required, url } from 'vuelidate/lib/validators';
+import VueI18n from 'vue-i18n';
+import TranslateResult = VueI18n.TranslateResult;
 
-@Component()
+@Component({
+  validations: {
+    title: {
+      required,
+    },
+    specRepository: {
+      required,
+      url,
+    },
+    specRepositoryBranch: {
+      required,
+    },
+    accessUsername: {
+      required,
+    },
+    accessToken: {
+      required,
+    },
+  },
+})
 export default class CreateProjectView extends Vue {
   title = '';
 
@@ -141,6 +174,53 @@ export default class CreateProjectView extends Vue {
   repoDir = '';
 
   specTypeChoices = ['plain', 'helm']
+
+  get titleErrors(): TranslateResult[] {
+    const errors = [];
+    if (!this.$v.title.required) {
+      errors.push(this.$t('requiredError'));
+    }
+    return this.$v.title.$dirty ? errors : [];
+  }
+
+  get specRepositoryErrors(): TranslateResult[] {
+    const errors = [];
+    if (!this.$v.specRepository.required) {
+      errors.push(this.$t('requiredError'));
+    }
+    if (!this.$v.specRepository.url) {
+      errors.push('Please enter a valid url.');
+    }
+    return this.$v.specRepository.$dirty ? errors : [];
+  }
+
+  get specRepositoryBranchErrors(): TranslateResult[] {
+    const errors = [];
+    if (!this.$v.specRepositoryBranch.required) {
+      errors.push(this.$t('requiredError'));
+    }
+    return this.$v.specRepositoryBranch.$dirty ? errors : [];
+  }
+
+  get accessUsernameErrors(): TranslateResult[] {
+    const errors = [];
+    if (!this.$v.accessUsername.required) {
+      errors.push(this.$t('requiredError'));
+    }
+    return this.$v.accessUsername.$dirty ? errors : [];
+  }
+
+  get accessTokenErrors(): TranslateResult[] {
+    const errors = [];
+    if (!this.$v.accessToken.required) {
+      errors.push(this.$t('requiredError'));
+    }
+    return this.$v.accessToken.$dirty ? errors : [];
+  }
+
+  get disableButton(): boolean {
+    return this.$v.$invalid;
+  }
 
   submit(): void {
     this.$apollo.mutate({

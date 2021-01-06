@@ -226,6 +226,12 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import { OrganizationsQuery } from '@/generated/graphql';
 
+Component.registerHooks([
+  'beforeRouteEnter',
+  'beforeRouteUpdate',
+  'beforeRouteLeave',
+]);
+
 @Component({
   apollo: {
     allOrganizations: {

@@ -26,9 +26,7 @@
           <v-col class="text-right">
             <v-icon size="24">$vuetify.icons.edit</v-icon>
             <v-divider style="height: 24px" class="mx-4" vertical></v-divider>
-            <v-btn @click="deleteProject(project.id)">
-              <v-icon size="24">$vuetify.icons.delete</v-icon>
-            </v-btn>
+            <v-icon @click="deleteProject(project.id)" size="24">$vuetify.icons.delete</v-icon>
           </v-col>
         </v-row>
         <v-row class="white">
@@ -71,6 +69,8 @@ import { TProjectNode, DeleteProject } from '@/generated/graphql';
 @Component()
 export default class ProjectList extends Vue {
   @Prop(TProjectNode) readonly project: TProjectNode | undefined
+
+  drawer = false;
 
   get modifiedDate(): Date {
     return new Date(this.project.modified).toDateString();
