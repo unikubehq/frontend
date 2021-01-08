@@ -1,29 +1,59 @@
 <template>
-<div>
-
   <div>
-    <h1>Add Team Member to {{ project.title }}</h1>
-  </div>
-  <v-form class="white">
+<v-container class="pl-12 text--white" style="background-color: #252e65">
+  <h1 class="text-h1 mt-5" style="color: white;">Add Team Member</h1>
+</v-container>
+    <v-container class="px-12">
+      <v-form class="white">
 
-    <v-text-field
-                :label="$t('Email Address')"
-                name="login"
-                filled
-                outlined
-                type="text"
-                :placeholder="$t('Enter Email Address')"
-                v-model="email"
-                :error-messages="emailErrors"
-                prepend-inner-icon="$vuetify.icons.email"
-                @blur="$v.email.$touch()"
-            />
-    <v-select
-      :items="projectChoices"
-      v-model="projectChoice"
-    ></v-select>
-  </v-form>
-</div>
+        <v-text-field
+          :label="$t('Email Address')"
+          name="email"
+          filled
+          outlined
+          type="text"
+          :placeholder="$t('Enter Email Address')"
+          v-model="email"
+          :error-messages="emailErrors"
+          prepend-inner-icon="$vuetify.icons.email"
+          @blur="$v.email.$touch()"
+        />
+        <v-select
+          :items="projectChoices"
+          v-model="projectChoice"
+          outlined
+          label="Project"
+          prepend-inner-icon="$vuetify.icons.organization"
+        ></v-select>
+        <v-select
+          label="Access to"
+          :items="applicationChoices"
+          outlined
+          prepend-inner-icon="$vuetify.icons.organization"
+          placeholder="Select Applications"
+          multiple
+        ></v-select>
+        <v-select
+          label="Role"
+          :items="['Admin', 'Member']"
+          outlined
+          prepend-inner-icon="$vuetify.icons.organization"
+          placeholder="Select Role"
+        ></v-select>
+        <v-divider class="mb-3"></v-divider>
+        <v-btn
+          color="primary"
+          right
+          absolute
+          class="mr-8"
+          large
+          width="204px"
+          height="48px"
+          @click="$emit('done')"
+        >Add Member</v-btn>
+      </v-form>
+    </v-container>
+  </div>
 </template>
 
 <script lang="ts">
@@ -51,6 +81,12 @@ export default class AddTeamMember extends Vue {
     return otherProjects;
   }
 
+  get applicationChoices(): Array<string> {
+    const applications = [];
+    this.project?.packages.results.map((x) => applications.push(x.title));
+    return applications;
+  }
+
   set initialProjectChoice(title: string) {
     this.projectChoice = title;
   }
@@ -58,5 +94,4 @@ export default class AddTeamMember extends Vue {
 </script>
 
 <style scoped>
-
 </style>

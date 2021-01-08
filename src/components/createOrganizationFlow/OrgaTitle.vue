@@ -84,9 +84,6 @@
               :disabled="enableButton"
             >
               Next
-              <v-icon size="20px">
-                $vuetify.icons.arrowRightWhite
-              </v-icon>
             </v-btn>
             <div class="error" v-if="errors && errors.detail">
               {{ errors.detail }}

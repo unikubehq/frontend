@@ -1,6 +1,6 @@
 <template>
   <v-container>
-  <project-bar></project-bar>
+    <project-bar></project-bar>
     <v-tabs vertical background-color="#f7f7f7" class="project-detail__wrapper">
       <div class="project-detail__top-tab">Browse other Projects</div>
       <v-tab
@@ -11,20 +11,20 @@
         :key="project.id"
         v-model="tab"
       >
-      <v-row no-gutters>
-        <v-col cols="12" class="mb-2">
-          <h4 class="mb-4">{{ project.title }}</h4>
-          <v-divider></v-divider>
-        </v-col>
-        <v-col cols="6">
-          <h4>{{ project.packages.totalCount }}</h4>
-          <small>No. of Applications</small>
-        </v-col>
-        <v-col cols="6" class="text-right">
-          <h4>{{ verboseDate(project.modified) }}</h4>
-          <small>No. of Applications</small>
-        </v-col>
-      </v-row>
+        <v-row no-gutters>
+          <v-col cols="12" class="mb-2">
+            <h4 class="mb-4">{{ project.title }}</h4>
+            <v-divider></v-divider>
+          </v-col>
+          <v-col cols="6">
+            <h4>{{ project.packages.totalCount }}</h4>
+            <small>No. of Applications</small>
+          </v-col>
+          <v-col cols="6" class="text-right">
+            <h4>{{ verboseDate(project.modified) }}</h4>
+            <small>No. of Applications</small>
+          </v-col>
+        </v-row>
       </v-tab>
       <v-tabs-items v-model="tab">
         <v-tab-item>
@@ -40,11 +40,11 @@
               </v-col>
               <v-col cols="3">
                 <v-btn
-                outlined
-                plain
-                color="#a1a9b2"
-                width="144"
-                @click="setEdit"
+                  outlined
+                  plain
+                  color="#a1a9b2"
+                  width="144"
+                  @click="setEdit"
                 >
                   <v-icon size="24">
                     $vuetify.icons.edit
@@ -63,12 +63,12 @@
               </v-col>
               <v-col cols="3">
                 <v-btn
-                outlined
-                plain
-                color="#a1a9b2"
-                width="144"
+                  outlined
+                  plain
+                  color="#a1a9b2"
+                  width="144"
                 >
-                  <v-icon size="24" @click="memberDrawer = true">
+                  <v-icon size="24">
                     $vuetify.icons.delete
                   </v-icon>
                   Delete Project
@@ -103,7 +103,7 @@
                                   size="40"
                                 >
                                   <span class="avatar-initials">
-                                    {{ user.user.firstName[0] }}{{ user.user.lastName[0]}}
+                                    {{ user.user.firstName[0] }}{{ user.user.lastName[0] }}
                                   </span>
                                 </v-avatar>
                               </v-col>
@@ -122,7 +122,7 @@
                                 :key="deployment.id"
                                 class="deployment-badge mr-3 px-4 py-2"
                               >
-                                {{ deployment.title}}
+                                {{ deployment.title }}
                               </span>
                             </v-col>
                           </v-card-text>
@@ -137,7 +137,7 @@
                       <template v-slot:default>
                         <thead class="member-thead">
                         <tr>
-                          <th class="text-left text--white">Name</th>
+                          <th class="text-left">Name</th>
                           <th class="text-left">Access to</th>
                           <th class="text-left">Role</th>
                           <th class="text-left">Last Online</th>
@@ -146,7 +146,7 @@
                         </thead>
                         <tbody>
                         <tr v-for="member in project.members" :key="member.id" class=" mb-3">
-                          <td class="d-flex">
+                          <td class="d-flex pa-2 pb-12">
                             <v-avatar class="mr-3" size="40">
                               <img src="https://randomuser.me/api/portraits/women/81.jpg">
                             </v-avatar>
@@ -157,14 +157,21 @@
                               <p class="mb-0">{{ member.user.email }}</p>
                             </div>
                           </td>
-                          <td>Admin</td>
-                          <td>{{ member.role }}</td>
-                          <td>{{ member.user.lastLogin }}</td>
-                          <td>
+                          <td class="pa-2">Admin</td>
+                          <td class="pa-2">{{ member.role }}</td>
+                          <td class="pa-2">{{ member.user.lastLogin }}</td>
+                          <td class="pa-2">
                             <v-icon size="24">$vuetify.icons.edit</v-icon>
                             <v-icon size="24">$vuetify.icons.delete</v-icon>
                           </td>
                         </tr>
+                        <v-btn :ripple="false" plain elevation="0" @click="memberDrawer = true"
+                               color="rgb(252,252,253)" class="mt-2">
+                          <v-icon size="24" class="mr-2">
+                            $vuetify.icons.addRound
+                          </v-icon>
+                          Add another
+                        </v-btn>
                         </tbody>
                       </template>
                     </v-simple-table>
@@ -183,10 +190,16 @@
       temporary
       right
       absolute
-      width="400"
+      width="650"
       light
-      v-model="memberDrawer">
-      <add-team-member :project="project" :other-projects="allProjects.results"></add-team-member>
+      class="no-bg-drawer"
+      v-model="memberDrawer"
+    >
+      <add-team-member
+        :project="project"
+        :other-projects="allProjects.results"
+        v-on:done="memberDrawer = false"
+      ></add-team-member>
     </v-navigation-drawer>
   </v-container>
 </template>
@@ -247,13 +260,15 @@ export default class ProjectDetail extends Vue {
 
 <style lang="scss" scoped>
 .v-tabs--vertical > .v-tabs-bar .v-tab {
-  height: 130px!important;
+  height: 130px !important;
 }
+
 .project-detail {
   &__wrapper {
     box-shadow: 0 2px 40px 0 rgba(183, 183, 183, 0.15);
     border-radius: 8px;
   }
+
   &__top-tab {
     background-color: #9eaed7;
     color: white;
@@ -261,29 +276,35 @@ export default class ProjectDetail extends Vue {
     border-top-left-radius: 8px;
   }
 }
-  .deployment-badge {
-    font-weight: 500;
-    background-color: #f3f4f9;
-    color: #9eaed7;
-  }
-  .tab-count-badge {
-    background-color: $unikube-green;
-    color: white;
-    padding: 4px 8px;
-    font-size: 12px;
-    margin-left: 8px;
-    border-radius: 4px;
-  }
-  .member-thead {
-    background-color: #9eaed7;
-  }
-  th:first-child {
-    border-top-left-radius: 6px;
-  }
-  th:last-child {
-    border-top-right-radius: 6px;
-  }
-  .theme--light.v-data-table > .v-data-table__wrapper > table > thead > tr > th {
-    color: white;
-  }
+
+.deployment-badge {
+  font-weight: 500;
+  background-color: #f3f4f9;
+  color: #9eaed7;
+}
+
+.tab-count-badge {
+  background-color: $unikube-green;
+  color: white;
+  padding: 4px 8px;
+  font-size: 12px;
+  margin-left: 8px;
+  border-radius: 4px;
+}
+
+.member-thead {
+  background-color: #9eaed7;
+}
+
+th:first-child {
+  border-top-left-radius: 6px;
+}
+
+th:last-child {
+  border-top-right-radius: 6px;
+}
+
+.theme--light.v-data-table > .v-data-table__wrapper > table > thead > tr > th {
+  color: white;
+}
 </style>
