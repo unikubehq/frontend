@@ -8,117 +8,50 @@
           <v-img class="d-inline-block" src="@/assets/img/Unikube-Logo-H.svg"
                  max-width="150"/>
         </v-col>
-        <v-col cols="12" sm="8" md="3">
-          <h1 class="text-h1">Create New Organization</h1>
-          <p class="text--secondary">
-            Fill up your organization details below
-          </p>
-          <v-form class="text-center">
-            <v-dialog
-              v-model="dialog"
-              width="500"
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-badge
-                  bottom
-                  offset-x="20"
-                  offset-y="20"
-                  content="+"
-                >
-                  <v-avatar
-                    height="96"
-                    width="96"
-                    class="mt-6"
-                    v-bind="attrs"
-                    v-on="on"
-                  >
-                    <img :src="imgSrc">
-                  </v-avatar>
-              </v-badge>
-              </template>
-              <v-card>
-                <v-card-title>
-                  Upload Photo
-                </v-card-title>
-                <v-card-text class="text-center">
-                  <vue2-dropzone
-                    ref="myVueDropzone"
-                    id="dropzone"
-                    :options="dropzoneOptions"
-                    @vdropzone-success="handleUpload"
-                  >
-                  </vue2-dropzone>
-                </v-card-text>
-                <v-divider></v-divider>
-                <v-card-actions class="justify-center">
-                  <v-btn
-                    color="primary"
-                    large
-                    elevation="0"
-                    :ripple="false"
-                    @click="dialog = false"
-                  >
-                    Save
-                  </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-            <v-text-field
-                class="mt-6"
-                id="organizationName"
-                label="Organization Name"
-                name="organizationName"
-                filled
-                outlined
-                placeholder="Enter Organization Name"
-                v-model="title"
-                prepend-inner-icon="$vuetify.icons.organization"
-            >
-            </v-text-field>
-            <v-btn block color="primary" large elevation="0" :ripple="false"
-                   class="">
-              Next
-              <v-icon size="20px">
-                $vuetify.icons.arrowRightWhite
-              </v-icon>
-            </v-btn>
-            <div class="error" v-if="errors && errors.detail">
-              {{ errors.detail }}
-            </div>
-          </v-form>
-        </v-col>
+        <orga-title v-if="step === 0" v-on:success="orgaCreation"></orga-title>
+        <create-organization-project
+          v-if="step === 1"
+          v-on:success="nextStep"
+        ></create-organization-project>
+        <orga-members v-if="step === 2" v-on:success="nextStep()"></orga-members>
+        <orga-done v-if="step === 3" :orgaId="organizationId" :orgaTitle="organizationTitle">
+        </orga-done>
       </v-row>
     </v-container>
   </v-main>
+
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import vue2Dropzone from 'vue2-dropzone';
-import 'vue2-dropzone/dist/vue2Dropzone.min.css';
+import OrgaTitle from '@/components/createOrganizationFlow/OrgaTitle.vue';
+import CreateOrganizationProject
+  from '@/components/createOrganizationFlow/CreateOrganizationProject.vue';
+import OrgaMembers from '@/components/createOrganizationFlow/OrgaMembers.vue';
+import OrgaDone from '@/components/createOrganizationFlow/OrgaDone.vue';
 
 @Component({
   components: {
-    vue2Dropzone,
+    OrgaTitle,
+    CreateOrganizationProject,
+    OrgaMembers,
+    OrgaDone,
   },
 })
 export default class CreateOrganization extends Vue {
-  title = '';
+  step = 0;
 
-  dialog = false;
+  organizationId = '';
 
-  imgSrc = 'https://cdn.zeplin.io/5f84546964e43c2749571f59/assets/2192D830-FF56-4E41-8DBA-F504CEFA64FC.svg';
+  organizationTitle = '';
 
-  dropzoneOptions = {
-    url: 'https://httpbin.org/post',
-    thumbnailWidth: 150,
-    maxFilesize: 0.5,
-    headers: { 'My-Awesome-Header': 'header value' },
-  };
+  nextStep(): void {
+    this.step += 1;
+  }
 
-  handleUpload(e: never):void {
-    console.log(e.previewTemplate);
-    // eslint-disable-next-line prefer-destructuring
-    this.imgSrc = e.payload[0].dataURL;
+  orgaCreation(id, title): void {
+    this.organizationId = id;
+    this.organizationTitle = title;
+    this.step += 1;
   }
 }
 </script>
@@ -130,10 +63,21 @@ export default class CreateOrganization extends Vue {
   right: -60px;
   opacity: 0.1;
 }
-.dropzone {
-  border: dashed 1px #e5e5e5;
-  width: 400px;
-  height: 225px;
+
+/* Enter and leave animations can use different */
+/* durations and timing functions.              */
+.slide-fade-enter-active {
+  transition: all .3s ease;
 }
 
+.slide-fade-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+
+.slide-fade-enter, .slide-fade-leave-to
+  /* .slide-fade-leave-active below version 2.1.8 */
+{
+  transform: translateX(10px);
+  opacity: 0;
+}
 </style>

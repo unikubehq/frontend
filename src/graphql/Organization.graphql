@@ -7,3 +7,19 @@ query OrganizationsQuery {
       }
   }
 }
+
+mutation CreateOrganizationMutation($title: String!) {
+    upsertOrganization(
+        input: {
+            title: $title
+        }
+    ) {
+        title,
+        id,
+        success,
+        errors {
+            field,
+            messages,
+        },
+    }
+}

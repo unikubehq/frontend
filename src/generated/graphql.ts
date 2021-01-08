@@ -142,13 +142,6 @@ export type TOrganizationNode = {
   primaryAddress?: Maybe<TAddressNode>;
   avatarUrl?: Maybe<Scalars['String']>;
   members: Array<TOrganizationUserNode>;
-  projects?: Maybe<TProjectNodePage>;
-};
-
-
-export type TOrganizationNodeProjectsArgs = {
-  offset?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
 };
 
 export type TAddressNode = {
@@ -191,6 +184,45 @@ export type TCountryNode = {
   states: Array<TStateNode>;
 };
 
+export enum TOrganizationUserRole {
+  Admin = 'ADMIN',
+  Member = 'MEMBER'
+}
+
+export type TUserSettingsNode = {
+  __typename?: 'UserSettingsNode';
+  created: Scalars['DateTime'];
+  modified: Scalars['DateTime'];
+  id: Scalars['UUID'];
+  user: TUserNode;
+  notifications: TNotificationSettingsNode;
+};
+
+export type TNotificationSettingsNode = {
+  __typename?: 'NotificationSettingsNode';
+  created: Scalars['DateTime'];
+  modified: Scalars['DateTime'];
+  id: Scalars['UUID'];
+  projectAdd: Scalars['Boolean'];
+  projectEdit: Scalars['Boolean'];
+  projectDelete: Scalars['Boolean'];
+  memberAdd: Scalars['Boolean'];
+  memberEdit: Scalars['Boolean'];
+  memberDelete: Scalars['Boolean'];
+  invitationAccept: Scalars['Boolean'];
+  invitationDecline: Scalars['Boolean'];
+  usersettings?: Maybe<TUserSettingsNode>;
+};
+
+export type TOrganizationNodePage = {
+  __typename?: 'OrganizationNodePage';
+  totalCount?: Maybe<Scalars['Int']>;
+  resultCount?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+  results?: Maybe<Array<Maybe<TOrganizationNode>>>;
+};
+
 export type TProjectNodePage = {
   __typename?: 'ProjectNodePage';
   totalCount?: Maybe<Scalars['Int']>;
@@ -214,9 +246,10 @@ export type TProjectNode = {
   repoDir: Scalars['String'];
   currentCommit: Scalars['String'];
   currentCommitDateTime?: Maybe<Scalars['DateTime']>;
+  repositoryStatus: TProjectRepositoryStatus;
   accessUsername: Scalars['String'];
   accessToken: Scalars['String'];
-  cloneStatus: TProjectCloneStatus;
+  organization?: Maybe<TOrganizationNode>;
   members: Array<TProjectUserNode>;
   creator?: Maybe<TUserNode>;
   packages?: Maybe<TPackageNodePage>;
@@ -233,14 +266,16 @@ export enum TProjectSpecType {
   Helm = 'HELM'
 }
 
-export enum TProjectCloneStatus {
+export enum TProjectRepositoryStatus {
   Unknown = 'UNKNOWN',
-  Pending = 'PENDING',
+  CloningPending = 'CLONING_PENDING',
   Cloning = 'CLONING',
-  Failed = 'FAILED',
-  Successful = 'SUCCESSFUL',
+  CloningFailed = 'CLONING_FAILED',
+  CloningSuccessful = 'CLONING_SUCCESSFUL',
   BranchUnavailable = 'BRANCH_UNAVAILABLE',
-  AuthFailed = 'AUTH_FAILED'
+  AuthFailed = 'AUTH_FAILED',
+  ParsingFailed = 'PARSING_FAILED',
+  Ok = 'OK'
 }
 
 export type TProjectUserNode = {
@@ -321,45 +356,6 @@ export type TDeploymentNode = {
   ports: Scalars['String'];
   clusterlevel: TClusterLevelNode;
   isSwitchable: Scalars['Boolean'];
-};
-
-export enum TOrganizationUserRole {
-  Admin = 'ADMIN',
-  Member = 'MEMBER'
-}
-
-export type TUserSettingsNode = {
-  __typename?: 'UserSettingsNode';
-  created: Scalars['DateTime'];
-  modified: Scalars['DateTime'];
-  id: Scalars['UUID'];
-  user: TUserNode;
-  notifications: TNotificationSettingsNode;
-};
-
-export type TNotificationSettingsNode = {
-  __typename?: 'NotificationSettingsNode';
-  created: Scalars['DateTime'];
-  modified: Scalars['DateTime'];
-  id: Scalars['UUID'];
-  projectAdd: Scalars['Boolean'];
-  projectEdit: Scalars['Boolean'];
-  projectDelete: Scalars['Boolean'];
-  memberAdd: Scalars['Boolean'];
-  memberEdit: Scalars['Boolean'];
-  memberDelete: Scalars['Boolean'];
-  invitationAccept: Scalars['Boolean'];
-  invitationDecline: Scalars['Boolean'];
-  usersettings?: Maybe<TUserSettingsNode>;
-};
-
-export type TOrganizationNodePage = {
-  __typename?: 'OrganizationNodePage';
-  totalCount?: Maybe<Scalars['Int']>;
-  resultCount?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-  results?: Maybe<Array<Maybe<TOrganizationNode>>>;
 };
 
 export type TClusterLevelNodePage = {
@@ -478,6 +474,23 @@ export type TOrganizationsQueryResult = (
     & { results?: Maybe<Array<Maybe<(
       { __typename?: 'OrganizationNode' }
       & Pick<TOrganizationNode, '[object Object]' | '[object Object]' | '[object Object]'>
+    )>>> }
+  )> }
+);
+
+export type TCreateOrganizationMutationVariables = Exact<{
+  title: Scalars['String'];
+}>;
+
+
+export type TCreateOrganizationMutationResult = (
+  { __typename?: 'Mutation' }
+  & { upsertOrganization?: Maybe<(
+    { __typename?: 'UpsertOrganizationPayload' }
+    & Pick<TUpsertOrganizationPayload, '[object Object]' | '[object Object]' | '[object Object]'>
+    & { errors?: Maybe<Array<Maybe<(
+      { __typename?: 'ErrorType' }
+      & Pick<TErrorType, '[object Object]' | '[object Object]'>
     )>>> }
   )> }
 );
@@ -638,6 +651,19 @@ export const OrganizationsQuery = gql`
       title
       avatarUrl
       id
+    }
+  }
+}
+    `;
+export const CreateOrganizationMutation = gql`
+    mutation CreateOrganizationMutation($title: String!) {
+  upsertOrganization(input: {title: $title}) {
+    title
+    id
+    success
+    errors {
+      field
+      messages
     }
   }
 }

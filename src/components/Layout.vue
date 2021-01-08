@@ -85,7 +85,7 @@
               </v-list-item-content>
             </v-list-item>
             <v-divider />
-            <v-list-item link>
+            <v-list-item link  to="/create-organization">
                 <v-list-item-icon class="organization-dropdown--icon">
                   <v-icon>$vuetify.icons.createOrganization</v-icon>
                 </v-list-item-icon>
