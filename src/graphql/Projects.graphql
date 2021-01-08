@@ -42,10 +42,13 @@ query ProjectDetailQuery($slug: String) {
             lastName,
         }
         members {
+            id,
             user {
                 firstName,
                 lastName,
                 avatar,
+                lastLogin,
+                email,
             }
             role,
         },

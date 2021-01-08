@@ -31,6 +31,8 @@ import Project from '@/components/icons/Project.vue';
 import Delete from '@/components/icons/Delete.vue';
 import Edit from '@/components/icons/Edit.vue';
 import Deployments from '@/components/icons/Deployments.vue';
+import Organization from '@/components/icons/Organization.vue';
+import ArrowRightWhite from '@/components/icons/ArrowRightWhite.vue';
 
 Vue.use(Vuetify);
 
@@ -129,6 +131,12 @@ export default new Vuetify({
       },
       deployments: {
         component: Deployments,
+      },
+      organization: {
+        component: Organization,
+      },
+      arrowRightWhite: {
+        component: ArrowRightWhite,
       },
     },
   },

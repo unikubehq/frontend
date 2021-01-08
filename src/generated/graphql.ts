@@ -213,8 +213,10 @@ export type TProjectNode = {
   specType: TProjectSpecType;
   repoDir: Scalars['String'];
   currentCommit: Scalars['String'];
+  currentCommitDateTime?: Maybe<Scalars['DateTime']>;
   accessUsername: Scalars['String'];
   accessToken: Scalars['String'];
+  cloneStatus: TProjectCloneStatus;
   members: Array<TProjectUserNode>;
   creator?: Maybe<TUserNode>;
   packages?: Maybe<TPackageNodePage>;
@@ -229,6 +231,16 @@ export type TProjectNodePackagesArgs = {
 export enum TProjectSpecType {
   Plain = 'PLAIN',
   Helm = 'HELM'
+}
+
+export enum TProjectCloneStatus {
+  Unknown = 'UNKNOWN',
+  Pending = 'PENDING',
+  Cloning = 'CLONING',
+  Failed = 'FAILED',
+  Successful = 'SUCCESSFUL',
+  BranchUnavailable = 'BRANCH_UNAVAILABLE',
+  AuthFailed = 'AUTH_FAILED'
 }
 
 export type TProjectUserNode = {
@@ -513,10 +525,10 @@ export type TProjectDetailQueryResult = (
       & Pick<TUserNode, '[object Object]' | '[object Object]'>
     )>, members: Array<(
       { __typename?: 'ProjectUserNode' }
-      & Pick<TProjectUserNode, '[object Object]'>
+      & Pick<TProjectUserNode, '[object Object]' | '[object Object]'>
       & { user?: Maybe<(
         { __typename?: 'UserNode' }
-        & Pick<TUserNode, '[object Object]' | '[object Object]' | '[object Object]'>
+        & Pick<TUserNode, '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]'>
       )> }
     )>, packages?: Maybe<(
       { __typename?: 'PackageNodePage' }
@@ -676,10 +688,13 @@ export const ProjectDetailQuery = gql`
       lastName
     }
     members {
+      id
       user {
         firstName
         lastName
         avatar
+        lastLogin
+        email
       }
       role
     }

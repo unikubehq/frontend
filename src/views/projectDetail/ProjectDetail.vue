@@ -1,8 +1,8 @@
 <template>
   <v-container>
   <project-bar></project-bar>
-    Project detail for {{ $route.params.slug }}
     <v-tabs vertical background-color="#f7f7f7" class="project-detail__wrapper">
+      <div class="project-detail__top-tab">Browse other Projects</div>
       <v-tab
         class="text-left"
         height="130px"
@@ -68,7 +68,7 @@
                 color="#a1a9b2"
                 width="144"
                 >
-                  <v-icon size="24">
+                  <v-icon size="24" @click="memberDrawer = true">
                     $vuetify.icons.delete
                   </v-icon>
                   Delete Project
@@ -102,7 +102,7 @@
                                   class="initials-avatar"
                                   size="40"
                                 >
-                                  <span class="project-card__avatar-initials">
+                                  <span class="avatar-initials">
                                     {{ user.user.firstName[0] }}{{ user.user.lastName[0]}}
                                   </span>
                                 </v-avatar>
@@ -131,6 +131,45 @@
                     </v-row>
                   </v-container>
                 </v-tab-item>
+                <v-tab-item>
+                  <v-container>
+                    <v-simple-table>
+                      <template v-slot:default>
+                        <thead class="member-thead">
+                        <tr>
+                          <th class="text-left text--white">Name</th>
+                          <th class="text-left">Access to</th>
+                          <th class="text-left">Role</th>
+                          <th class="text-left">Last Online</th>
+                          <th class="text-left">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="member in project.members" :key="member.id" class=" mb-3">
+                          <td class="d-flex">
+                            <v-avatar class="mr-3" size="40">
+                              <img src="https://randomuser.me/api/portraits/women/81.jpg">
+                            </v-avatar>
+                            <div class="d-flex flex-column">
+                              <h3 class="mb-0">
+                                {{ member.user.firstName }} {{ member.user.lastName }}
+                              </h3>
+                              <p class="mb-0">{{ member.user.email }}</p>
+                            </div>
+                          </td>
+                          <td>Admin</td>
+                          <td>{{ member.role }}</td>
+                          <td>{{ member.user.lastLogin }}</td>
+                          <td>
+                            <v-icon size="24">$vuetify.icons.edit</v-icon>
+                            <v-icon size="24">$vuetify.icons.delete</v-icon>
+                          </td>
+                        </tr>
+                        </tbody>
+                      </template>
+                    </v-simple-table>
+                  </v-container>
+                </v-tab-item>
               </v-tabs-items>
             </v-tabs>
           </v-container>
@@ -140,7 +179,15 @@
         </v-tab-item>
       </v-tabs-items>
     </v-tabs>
-
+    <v-navigation-drawer
+      temporary
+      right
+      absolute
+      width="400"
+      light
+      v-model="memberDrawer">
+      <add-team-member :project="project" :other-projects="allProjects.results"></add-team-member>
+    </v-navigation-drawer>
   </v-container>
 </template>
 
@@ -148,12 +195,14 @@
 import { Component, Vue } from 'vue-property-decorator';
 import ProjectBar from '@/components/overview/ProjectBar.vue';
 import CreateProjectView from '@/views/createProject/CreateProject.vue';
+import AddTeamMember from '@/views/createProject/AddTeamMember.vue';
 import { ProjectDetailQuery, ProjectDetailOtherProjectsQuery } from '@/generated/graphql';
 
 @Component({
   components: {
     ProjectBar,
     CreateProjectView,
+    AddTeamMember,
   },
   apollo: {
     project: {
@@ -183,6 +232,8 @@ export default class ProjectDetail extends Vue {
 
   innerTab = 0;
 
+  memberDrawer = false;
+
   // eslint-disable-next-line class-methods-use-this
   verboseDate(date: Date): string {
     return new Date(date).toDateString();
@@ -198,21 +249,41 @@ export default class ProjectDetail extends Vue {
 .v-tabs--vertical > .v-tabs-bar .v-tab {
   height: 130px!important;
 }
-.project-detail__wrapper {
-  box-shadow: 0 2px 40px 0 rgba(183, 183, 183, 0.15);
-  border-radius: 8px;
+.project-detail {
+  &__wrapper {
+    box-shadow: 0 2px 40px 0 rgba(183, 183, 183, 0.15);
+    border-radius: 8px;
+  }
+  &__top-tab {
+    background-color: #9eaed7;
+    color: white;
+    padding: 23px 14px;
+    border-top-left-radius: 8px;
+  }
 }
-.deployment-badge {
-  font-weight: 500;
-  background-color: #f3f4f9;
-  color: #9eaed7;
-}
-.tab-count-badge {
-  background-color: $unikube-green;
-  color: white;
-  padding: 4px 8px;
-  font-size: 12px;
-  margin-left: 8px;
-  border-radius: 4px;
-}
+  .deployment-badge {
+    font-weight: 500;
+    background-color: #f3f4f9;
+    color: #9eaed7;
+  }
+  .tab-count-badge {
+    background-color: $unikube-green;
+    color: white;
+    padding: 4px 8px;
+    font-size: 12px;
+    margin-left: 8px;
+    border-radius: 4px;
+  }
+  .member-thead {
+    background-color: #9eaed7;
+  }
+  th:first-child {
+    border-top-left-radius: 6px;
+  }
+  th:last-child {
+    border-top-right-radius: 6px;
+  }
+  .theme--light.v-data-table > .v-data-table__wrapper > table > thead > tr > th {
+    color: white;
+  }
 </style>

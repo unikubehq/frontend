@@ -28,7 +28,7 @@
         large
         elevation="0"
         :ripple="false"
-        to="create-project"
+        to="/create-project"
       >
         <v-icon class="ml-n2 mr-2">
           $vuetify.icons.addProject

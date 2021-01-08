@@ -119,12 +119,33 @@
         </v-col>
       </v-row>
       <v-row>
+        <v-col cols="10">
+          <v-btn
+            plain
+            color="white"
+            elevation="0"
+            @click="$router.go(-1)"
+            v-if="editMode"
+          >
+            Go Back
+          </v-btn>
+        </v-col>
+        <v-col cols="2">
+          <v-btn
+          large
+          color="primary"
+          @click="submit"
+          :disabled="disableButton"
+          v-if="editMode"
+        >Save</v-btn>
         <v-btn
           large
           color="primary"
           @click="submit"
           :disabled="disableButton"
+          v-else
         >Next</v-btn>
+        </v-col>
       </v-row>
     </v-form>
   </v-container>
@@ -236,7 +257,7 @@ export default class CreateProjectView extends Vue {
       this.repoDir = this.project.repoDir;
       this.specRepository = this.project.specRepository;
       this.specRepositoryBranch = this.project.specRepositoryBranch;
-      this.specType = this.project.specType;
+      this.specType = this.project.specType.toLowerCase();
       this.accessUsername = this.project.accessUsername;
       this.accessToken = this.project.accessUsername;
       this.id = this.project.id;
@@ -246,9 +267,6 @@ export default class CreateProjectView extends Vue {
   mounted(): void {
     if (this.editMode) {
       this.handleEditMode();
-      this.$nextTick(() => {
-        this.handleEditMode();
-      });
     }
   }
 
