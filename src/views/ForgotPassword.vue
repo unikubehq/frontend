@@ -103,10 +103,6 @@ export default class Home extends Vue {
     console.log(this);
   }
 
-  created(): void {
-    console.log(this.$vuetify.icons.values.eye);
-  }
-
   get usernameErrors(): TranslateResult[] {
     const errors = [];
     if (!this.$v.username.required) {
