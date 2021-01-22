@@ -5,6 +5,13 @@ schema {
     mutation: Mutation
 }
 
+union SOPSProviderNode = AWSKMSNode | PGPKeyNode
+
+type AWSKMSNode {
+    description: String
+    title: String!
+}
+
 type AddressNode {
     formatted: String!
     id: ID!
@@ -19,24 +26,16 @@ type AddressNode {
 }
 
 type ClusterLevelNode {
-    created: DateTime!
     deployments: [DeploymentNode!]!
     description: String
     id: UUID!
-    modified: DateTime!
     package: PackageNode!
     sopsCredentials: SOPSProviderNode
+    specsUrl: String
     title: String!
     type: ClusterLevelType!
     valuesPath: String!
-}
-
-type ClusterLevelNodePage {
-    limit: Int
-    offset: Int
-    resultCount: Int
-    results: [ClusterLevelNode]
-    totalCount: Int
+    valuesType: ClusterLevelValuesType
 }
 
 type CountryNode {
@@ -46,38 +45,51 @@ type CountryNode {
     states: [StateNode!]!
 }
 
+type CreateUpdateClusterLevelPayload {
+    clientMutationId: String
+    clusterLevel: ClusterLevelNode
+    errors: [ErrorType]
+}
+
 type CreateUpdateProjectPayload {
     clientMutationId: String
     errors: [ErrorType]
     project: ProjectNode
 }
 
+type CreateUpdateSOPS {
+    ok: Boolean
+}
+
+type DeleteClusterLevel {
+    ok: Boolean
+}
+
 type DeleteProject {
     ok: Boolean
 }
 
+type DeleteSOPS {
+    ok: Boolean
+}
+
 type DeploymentNode {
-    clusterlevel: ClusterLevelNode!
-    created: DateTime!
+    clusterLevel: ClusterLevelNode!
     description: String
     id: UUID!
     isSwitchable: Boolean!
-    modified: DateTime!
     ports: String!
     title: String!
-}
-
-type DeploymentNodePage {
-    limit: Int
-    offset: Int
-    resultCount: Int
-    results: [DeploymentNode]
-    totalCount: Int
 }
 
 type ErrorType {
     field: String!
     messages: [String!]!
+}
+
+type FileInformationNode {
+    encrypted: Boolean
+    path: String
 }
 
 type LocalityNode {
@@ -89,8 +101,12 @@ type LocalityNode {
 }
 
 type Mutation {
+    createUpdateClusterLevel(input: CreateUpdateClusterLevelInput!): CreateUpdateClusterLevelPayload
     createUpdateProject(input: CreateUpdateProjectInput!): CreateUpdateProjectPayload
+    createUpdateSops(sopsData: SOPSInputType!): CreateUpdateSOPS
+    deleteClusterLevel(id: UUID): DeleteClusterLevel
     deleteProject(id: UUID): DeleteProject
+    deleteSops(id: UUID): DeleteSOPS
     upsertOrganization(input: UpsertOrganizationInput!): UpsertOrganizationPayload
 }
 
@@ -118,7 +134,6 @@ type OrganizationNode {
     members: [OrganizationUserNode!]!
     modified: DateTime!
     primaryAddress: AddressNode
-    projects(limit: Int, offset: Int): ProjectNodePage
     slug: String!
     title: String!
 }
@@ -140,26 +155,24 @@ type OrganizationUserNode {
     user: UserNode!
 }
 
-type PackageNode {
-    created: DateTime!
+type PGPKeyNode {
     description: String
-    dirname: String!
-    environments: [ClusterLevelNode!]!
-    id: UUID!
-    modified: DateTime!
-    namespace: String!
-    project: ProjectNode!
-    slug: String!
     title: String!
-    type: String!
 }
 
-type PackageNodePage {
-    limit: Int
-    offset: Int
-    resultCount: Int
-    results: [PackageNode]
-    totalCount: Int
+type PackageNode {
+    clusterLevel(level: String): [ClusterLevelNode]
+    deployments(level: String, switchable: Boolean): [DeploymentNode]
+    description: String
+    dirPath: String!
+    environments: [ClusterLevelNode!]!
+    fileInformation: [FileInformationNode]
+    hash: String!
+    id: UUID!
+    namespace: String!
+    project: ProjectNode!
+    title: String!
+    type: String!
 }
 
 type PleaseRemoveMeNode {
@@ -172,12 +185,15 @@ type ProjectNode {
     created: DateTime!
     creator: UserNode
     currentCommit: String!
+    currentCommitDateTime: DateTime
     description: String
     id: UUID!
     members: [ProjectUserNode!]!
     modified: DateTime!
-    packages(limit: Int, offset: Int): PackageNodePage
+    organization: OrganizationNode
+    packages: [PackageNode!]!
     repoDir: String!
+    repositoryStatus: ProjectRepositoryStatus!
     slug: String!
     specRepository: String!
     specRepositoryBranch: String
@@ -204,36 +220,15 @@ type ProjectUserNode {
 }
 
 type Query {
-    allClusterLevels(limit: Int, offset: Int): ClusterLevelNodePage
-    allDeployments(limit: Int, offset: Int): DeploymentNodePage
     allOrganizations(limit: Int, offset: Int): OrganizationNodePage
-    allPackages(limit: Int, offset: Int): PackageNodePage
     allProjects(limit: Int, offset: Int): ProjectNodePage
-    allSOPSProvider(limit: Int, offset: Int): SOPSProviderNodePage
     allUsers(limit: Int, offset: Int): UserNodePage
     assets: PleaseRemoveMeNode
     audits: PleaseRemoveMeNode
     collaborations: PleaseRemoveMeNode
     myOrganization: OrganizationNode
-    package(id: UUID, slug: String): PackageNode
     payments: PleaseRemoveMeNode
     project(id: UUID, slug: String): ProjectNode
-}
-
-type SOPSProviderNode {
-    clusterlevelSet: [ClusterLevelNode!]!
-    created: DateTime!
-    id: ID!
-    modified: DateTime!
-    username: String!
-}
-
-type SOPSProviderNodePage {
-    limit: Int
-    offset: Int
-    resultCount: Int
-    results: [SOPSProviderNode]
-    totalCount: Int
 }
 
 type StateNode {
@@ -295,9 +290,26 @@ enum ClusterLevelType {
     REMOTE
 }
 
+enum ClusterLevelValuesType {
+    DIR
+    FILE
+}
+
 enum OrganizationUserRole {
     ADMIN
     MEMBER
+}
+
+enum ProjectRepositoryStatus {
+    AUTH_FAILED
+    BRANCH_UNAVAILABLE
+    CLONING
+    CLONING_FAILED
+    CLONING_PENDING
+    CLONING_SUCCESSFUL
+    OK
+    PARSING_FAILED
+    UNKNOWN
 }
 
 enum ProjectSpecType {
@@ -310,6 +322,23 @@ enum ProjectUserRole {
     MEMBER
 }
 
+enum SOPSTypeEnum {
+    awx
+    pgp
+}
+
+input CreateUpdateClusterLevelInput {
+    clientMutationId: String
+    description: String
+    id: ID
+    package: ID!
+    sopsCredentials: ID
+    title: String!
+    type: String!
+    valuesPath: String
+    valuesType: String
+}
+
 input CreateUpdateProjectInput {
     accessToken: String!
     accessUsername: String!
@@ -320,6 +349,17 @@ input CreateUpdateProjectInput {
     specRepository: String!
     specRepositoryBranch: String!
     specType: String!
+    title: String!
+}
+
+input SOPSInputType {
+    description: String
+    id: UUID
+    project: UUID!
+    secret1: String!
+    secret2: String
+    secret3: String
+    sopsType: SOPSTypeEnum!
     title: String!
 }
 
