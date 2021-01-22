@@ -10,7 +10,7 @@ WORKDIR /code
 COPY package*.json /code/
 RUN npm i
 COPY src /code/src
-COPY babel.config.js vue.config.js tsconfig.json codegen.yml .browserslistrc .eslintrc.js /code/
+COPY babel.config.js vue.config.js tsconfig.json codegen.yml .browserslistrc .eslintrc.js .eslintignore /code/
 COPY public /code/public
 
 ### Build ENV variables
