@@ -79,10 +79,9 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { TUserNode } from '@/generated/graphql';
-import { verboseDateMixin } from '@/components/mixins';
 
 @Component({})
-export default class MemberDetail extends verboseDateMixin {
+export default class MemberDetail extends Vue {
 @Prop() readonly user: TUserNode | undefined
 
   edit = false;
