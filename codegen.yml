@@ -11,6 +11,7 @@ generates:
       typesPrefix: T
       namingConvention:
         transformUnderscore: true
+      preResolveTypes: true
     plugins:
       - add:
           content: '/* eslint-disable */'

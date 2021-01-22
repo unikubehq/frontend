@@ -1,10 +1,10 @@
 <template>
   <v-container>
     <project-bar></project-bar>
-        <div v-for="project in allProjects.results" :key="project.title">
+        <div v-for="project in projectResults" :key="project.title">
           <v-skeleton-loader
             type="card-avatar, article"
-            v-if="$apolloData.queries.allProjects.loading"
+            v-if="loading"
           ></v-skeleton-loader>
           <project-list
             :project="project"
@@ -44,8 +44,10 @@
 <script lang="ts">
 import ProjectBar from '@/components/overview/ProjectBar.vue';
 import ProjectList from '@/components/overview/ProjectList.vue';
-import { Component, Vue } from 'vue-property-decorator';
-import { ProjectsQuery } from '@/generated/graphql';
+import { Component } from 'vue-property-decorator';
+import { ProjectsQuery, TProjectNode } from '@/generated/graphql';
+import { paginationMixin } from '@/components/mixins';
+import { mixins } from 'vue-class-component';
 
 Component.registerHooks([
   'beforeRouteUpdate',
@@ -68,21 +70,15 @@ Component.registerHooks([
     },
   },
 })
-export default class Overview extends Vue {
-  currentPage = 1;
-
-  limit = 3;
-
-  offset = 0;
-
+export default class Overview extends mixins(paginationMixin) {
   snackbar = false;
 
-  changeOffset(page: number): void {
-    this.offset = page > 1 ? (page - 1) * this.limit : 0;
+  get projectResults(): Array<TProjectNode> {
+    return this.$data.allProjects?.results;
   }
 
-  get listLength(): number {
-    return Math.ceil(this.$data.allProjects.totalCount / this.limit);
+  get loading(): boolean {
+    return this.$data.$apolloData.queries.allProjects.loading;
   }
 
   refetchProjects():void {

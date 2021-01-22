@@ -1,0 +1,19 @@
+query allUsersQuery($limit: Int, $offset: Int) {
+  allUsers(limit: $limit, offset: $offset) {
+    totalCount,
+    results {
+      lastLogin,
+      firstName,
+      lastName,
+      email,
+      avatar,
+      organizations {
+        organization {
+          title
+        }
+        role
+      },
+      id
+    }
+  }
+}

@@ -97,7 +97,6 @@ export default class ProjectList extends Vue {
       },
     })
       .then((data) => {
-        console.log(data);
         if (data.data.deleteProject.ok) {
           this.$emit('deletion');
         }

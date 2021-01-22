@@ -253,7 +253,7 @@ export default class ProjectDetail extends Vue {
   }
 
   setEdit(): void {
-    this.$router.push({ query: { edit: true } });
+    this.$router.push({ query: { edit: 'true' } });
   }
 }
 </script>

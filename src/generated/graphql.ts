@@ -467,33 +467,14 @@ export type TDeleteProject = {
 export type TOrganizationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type TOrganizationsQueryResult = (
-  { __typename?: 'Query' }
-  & { allOrganizations?: Maybe<(
-    { __typename?: 'OrganizationNodePage' }
-    & { results?: Maybe<Array<Maybe<(
-      { __typename?: 'OrganizationNode' }
-      & Pick<TOrganizationNode, '[object Object]' | '[object Object]' | '[object Object]'>
-    )>>> }
-  )> }
-);
+export type TOrganizationsQueryResult = { __typename?: 'Query', allOrganizations?: Maybe<{ __typename?: 'OrganizationNodePage', results?: Maybe<Array<Maybe<{ __typename?: 'OrganizationNode', title: string, avatarUrl?: Maybe<string>, id: any }>>> }> };
 
 export type TCreateOrganizationMutationVariables = Exact<{
   title: Scalars['String'];
 }>;
 
 
-export type TCreateOrganizationMutationResult = (
-  { __typename?: 'Mutation' }
-  & { upsertOrganization?: Maybe<(
-    { __typename?: 'UpsertOrganizationPayload' }
-    & Pick<TUpsertOrganizationPayload, '[object Object]' | '[object Object]' | '[object Object]'>
-    & { errors?: Maybe<Array<Maybe<(
-      { __typename?: 'ErrorType' }
-      & Pick<TErrorType, '[object Object]' | '[object Object]'>
-    )>>> }
-  )> }
-);
+export type TCreateOrganizationMutationResult = { __typename?: 'Mutation', upsertOrganization?: Maybe<{ __typename?: 'UpsertOrganizationPayload', title?: Maybe<string>, id?: Maybe<string>, success?: Maybe<boolean>, errors?: Maybe<Array<Maybe<{ __typename?: 'ErrorType', field: string, messages: Array<string> }>>> }> };
 
 export type TProjectsQueryVariables = Exact<{
   limit?: Maybe<Scalars['Int']>;
@@ -501,83 +482,19 @@ export type TProjectsQueryVariables = Exact<{
 }>;
 
 
-export type TProjectsQueryResult = (
-  { __typename?: 'Query' }
-  & { allProjects?: Maybe<(
-    { __typename?: 'ProjectNodePage' }
-    & Pick<TProjectNodePage, '[object Object]'>
-    & { results?: Maybe<Array<Maybe<(
-      { __typename?: 'ProjectNode' }
-      & Pick<TProjectNode, '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]'>
-      & { packages?: Maybe<(
-        { __typename?: 'PackageNodePage' }
-        & Pick<TPackageNodePage, '[object Object]'>
-      )>, members: Array<(
-        { __typename?: 'ProjectUserNode' }
-        & { user?: Maybe<(
-          { __typename?: 'UserNode' }
-          & Pick<TUserNode, '[object Object]' | '[object Object]' | '[object Object]'>
-        )> }
-      )> }
-    )>>> }
-  )> }
-);
+export type TProjectsQueryResult = { __typename?: 'Query', allProjects?: Maybe<{ __typename?: 'ProjectNodePage', totalCount?: Maybe<number>, results?: Maybe<Array<Maybe<{ __typename?: 'ProjectNode', title: string, modified: any, description?: Maybe<string>, currentCommit: string, id: any, slug: string, packages?: Maybe<{ __typename?: 'PackageNodePage', resultCount?: Maybe<number> }>, members: Array<{ __typename?: 'ProjectUserNode', user?: Maybe<{ __typename?: 'UserNode', firstName: string, lastName: string, avatar: string }> }> }>>> }> };
 
 export type TProjectDetailQueryVariables = Exact<{
   slug?: Maybe<Scalars['String']>;
 }>;
 
 
-export type TProjectDetailQueryResult = (
-  { __typename?: 'Query' }
-  & { project?: Maybe<(
-    { __typename?: 'ProjectNode' }
-    & Pick<TProjectNode, '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]'>
-    & { creator?: Maybe<(
-      { __typename?: 'UserNode' }
-      & Pick<TUserNode, '[object Object]' | '[object Object]'>
-    )>, members: Array<(
-      { __typename?: 'ProjectUserNode' }
-      & Pick<TProjectUserNode, '[object Object]' | '[object Object]'>
-      & { user?: Maybe<(
-        { __typename?: 'UserNode' }
-        & Pick<TUserNode, '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]'>
-      )> }
-    )>, packages?: Maybe<(
-      { __typename?: 'PackageNodePage' }
-      & Pick<TPackageNodePage, '[object Object]'>
-      & { results?: Maybe<Array<Maybe<(
-        { __typename?: 'PackageNode' }
-        & Pick<TPackageNode, '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]'>
-        & { environments: Array<(
-          { __typename?: 'ClusterLevelNode' }
-          & { deployments: Array<(
-            { __typename?: 'DeploymentNode' }
-            & Pick<TDeploymentNode, '[object Object]' | '[object Object]'>
-          )> }
-        )> }
-      )>>> }
-    )> }
-  )> }
-);
+export type TProjectDetailQueryResult = { __typename?: 'Query', project?: Maybe<{ __typename?: 'ProjectNode', created: any, modified: any, title: string, description?: Maybe<string>, slug: string, id: any, specRepository: string, specRepositoryBranch?: Maybe<string>, specType: TProjectSpecType, repoDir: string, currentCommit: string, accessUsername: string, accessToken: string, creator?: Maybe<{ __typename?: 'UserNode', firstName: string, lastName: string }>, members: Array<{ __typename?: 'ProjectUserNode', id: any, role: TProjectUserRole, user?: Maybe<{ __typename?: 'UserNode', firstName: string, lastName: string, avatar: string, lastLogin?: Maybe<any>, email: string }> }>, packages?: Maybe<{ __typename?: 'PackageNodePage', totalCount?: Maybe<number>, results?: Maybe<Array<Maybe<{ __typename?: 'PackageNode', modified: any, title: string, description?: Maybe<string>, type: string, namespace: string, id: any, environments: Array<{ __typename?: 'ClusterLevelNode', deployments: Array<{ __typename?: 'DeploymentNode', title: string, id: any }> }> }>>> }> }> };
 
 export type TProjectDetailOtherProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type TProjectDetailOtherProjectsQueryResult = (
-  { __typename?: 'Query' }
-  & { allProjects?: Maybe<(
-    { __typename?: 'ProjectNodePage' }
-    & { results?: Maybe<Array<Maybe<(
-      { __typename?: 'ProjectNode' }
-      & Pick<TProjectNode, '[object Object]' | '[object Object]' | '[object Object]' | '[object Object]'>
-      & { packages?: Maybe<(
-        { __typename?: 'PackageNodePage' }
-        & Pick<TPackageNodePage, '[object Object]'>
-      )> }
-    )>>> }
-  )> }
-);
+export type TProjectDetailOtherProjectsQueryResult = { __typename?: 'Query', allProjects?: Maybe<{ __typename?: 'ProjectNodePage', results?: Maybe<Array<Maybe<{ __typename?: 'ProjectNode', title: string, modified: any, slug: string, id: any, packages?: Maybe<{ __typename?: 'PackageNodePage', totalCount?: Maybe<number> }> }>>> }> };
 
 export type TCreateProjectMutationVariables = Exact<{
   title: Scalars['String'];
@@ -590,19 +507,7 @@ export type TCreateProjectMutationVariables = Exact<{
 }>;
 
 
-export type TCreateProjectMutationResult = (
-  { __typename?: 'Mutation' }
-  & { createUpdateProject?: Maybe<(
-    { __typename?: 'CreateUpdateProjectPayload' }
-    & { project?: Maybe<(
-      { __typename?: 'ProjectNode' }
-      & Pick<TProjectNode, '[object Object]'>
-    )>, errors?: Maybe<Array<Maybe<(
-      { __typename?: 'ErrorType' }
-      & Pick<TErrorType, '[object Object]' | '[object Object]'>
-    )>>> }
-  )> }
-);
+export type TCreateProjectMutationResult = { __typename?: 'Mutation', createUpdateProject?: Maybe<{ __typename?: 'CreateUpdateProjectPayload', project?: Maybe<{ __typename?: 'ProjectNode', title: string }>, errors?: Maybe<Array<Maybe<{ __typename?: 'ErrorType', messages: Array<string>, field: string }>>> }> };
 
 export type TUpdateProjectMutationVariables = Exact<{
   title: Scalars['String'];
@@ -616,32 +521,22 @@ export type TUpdateProjectMutationVariables = Exact<{
 }>;
 
 
-export type TUpdateProjectMutationResult = (
-  { __typename?: 'Mutation' }
-  & { createUpdateProject?: Maybe<(
-    { __typename?: 'CreateUpdateProjectPayload' }
-    & { project?: Maybe<(
-      { __typename?: 'ProjectNode' }
-      & Pick<TProjectNode, '[object Object]'>
-    )>, errors?: Maybe<Array<Maybe<(
-      { __typename?: 'ErrorType' }
-      & Pick<TErrorType, '[object Object]' | '[object Object]'>
-    )>>> }
-  )> }
-);
+export type TUpdateProjectMutationResult = { __typename?: 'Mutation', createUpdateProject?: Maybe<{ __typename?: 'CreateUpdateProjectPayload', project?: Maybe<{ __typename?: 'ProjectNode', title: string }>, errors?: Maybe<Array<Maybe<{ __typename?: 'ErrorType', messages: Array<string>, field: string }>>> }> };
 
 export type TDeleteProjectMutationVariables = Exact<{
   id?: Maybe<Scalars['UUID']>;
 }>;
 
 
-export type TDeleteProjectMutationResult = (
-  { __typename?: 'Mutation' }
-  & { deleteProject?: Maybe<(
-    { __typename?: 'DeleteProject' }
-    & Pick<TDeleteProject, '[object Object]'>
-  )> }
-);
+export type TDeleteProjectMutationResult = { __typename?: 'Mutation', deleteProject?: Maybe<{ __typename?: 'DeleteProject', ok?: Maybe<boolean> }> };
+
+export type TAllUsersQueryVariables = Exact<{
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+}>;
+
+
+export type TAllUsersQueryResult = { __typename?: 'Query', allUsers?: Maybe<{ __typename?: 'UserNodePage', totalCount?: Maybe<number>, results?: Maybe<Array<Maybe<{ __typename?: 'UserNode', lastLogin?: Maybe<any>, firstName: string, lastName: string, email: string, avatar: string, id: any, organizations: Array<{ __typename?: 'OrganizationUserNode', role: TOrganizationUserRole, organization: { __typename?: 'OrganizationNode', title: string } }> }>>> }> };
 
 
 export const OrganizationsQuery = gql`
@@ -789,6 +684,27 @@ export const DeleteProject = gql`
     mutation DeleteProject($id: UUID) {
   deleteProject(id: $id) {
     ok
+  }
+}
+    `;
+export const AllUsersQuery = gql`
+    query allUsersQuery($limit: Int, $offset: Int) {
+  allUsers(limit: $limit, offset: $offset) {
+    totalCount
+    results {
+      lastLogin
+      firstName
+      lastName
+      email
+      avatar
+      organizations {
+        organization {
+          title
+        }
+        role
+      }
+      id
+    }
   }
 }
     `;
