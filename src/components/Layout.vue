@@ -188,7 +188,7 @@
                 <img src="https://randomuser.me/api/portraits/women/81.jpg">
               </v-avatar>
               <div class="d-flex flex-column text-left">
-                <h3 class="mb-0">Robert Stein</h3>
+                <h3 class="mb-0">{{ username }}</h3>
                 <p class="mb-0">Administrator</p>
               </div>
               <v-icon class="ml-4" small>$vuetify.icons.dropdown</v-icon>
@@ -259,6 +259,10 @@ export default class Layout extends Vue {
     if (!this.$route.name === 'Overview') {
       this.$router.push({ name: 'Overview' });
     }
+  }
+
+  get username() {
+    return this.$store.state.auth.username;
   }
 
   get currentRoute() {

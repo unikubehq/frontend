@@ -8,25 +8,17 @@ import router from '@/router';
 import App from '@/App.vue';
 import store from '@/store';
 import vuetify from '@/plugins/vuetify';
+import jwtDecode from 'jwt-decode';
 import apolloProvider from '@/vue-apollo';
 import LocaleMessages = VueI18n.LocaleMessages;
 
-Vue.config.productionTip = false;
-Vue.use(VueApollo);
-Vue.use(VueI18n);
-Vue.use(Vuelidate);
-
-if (process.env.NODE_ENV === 'production') {
-  Sentry.init({
-    dsn: 'https://c373b22b8d5c41678f9f577f1800933c@sentry.blueshoe.de/43',
-    integrations: [
-      new Integrations.Vue({
-        Vue,
-        attachProps: true,
-      }),
-    ],
-  });
-}
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+const keycloak = new Keycloak({
+  url: process.env.VUE_APP_KEYCLOAK_URL,
+  realm: process.env.VUE_APP_KEYCLOAK_REALM,
+  clientId: process.env.VUE_APP_KEYCLOAK_CLIENT_ID,
+});
 
 function loadLocaleMessages() {
   const locales = require.context('./locales', true, /[A-Za-z0-9-_,\s]+\.json$/i);
@@ -41,17 +33,61 @@ function loadLocaleMessages() {
   return messages;
 }
 
-const i18n = new VueI18n({
-  locale: 'de',
-  fallbackLocale: 'en',
-  messages: loadLocaleMessages(),
-});
+keycloak.init({
+  onLoad: 'login-required',
+}).then((authenticated: boolean) => {
+  if (authenticated) {
+    console.log(keycloak);
+    keycloak.onTokenExpired = () => {
+      console.log('Token expired');
+    };
+    console.log(new Date(keycloak.tokenParsed.exp * 1000));
 
-new Vue({
-  router,
-  store,
-  vuetify,
-  i18n,
-  apolloProvider,
-  render: (h) => h(App),
-}).$mount('#app');
+    Vue.config.productionTip = false;
+    Vue.use(VueApollo);
+    Vue.use(VueI18n);
+    Vue.use(Vuelidate);
+
+    if (process.env.NODE_ENV === 'production') {
+      Sentry.init({
+        dsn: 'https://c373b22b8d5c41678f9f577f1800933c@sentry.blueshoe.de/43',
+        integrations: [
+          new Integrations.Vue({
+            Vue,
+            attachProps: true,
+          }),
+        ],
+      });
+    }
+
+    const i18n = new VueI18n({
+      locale: 'de',
+      fallbackLocale: 'en',
+      messages: loadLocaleMessages(),
+    });
+
+    store.commit('auth/setKeycloakClient', keycloak);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const authorization = new KeycloakAuthorization(keycloak);
+    authorization.ready.then(() => {
+      authorization.entitlement('gateway').then((rpt: string) => {
+        store.commit('auth/setRpt', rpt);
+      });
+    });
+
+    new Vue({
+      router,
+      store,
+      vuetify,
+      i18n,
+      apolloProvider,
+      render: (h) => h(App),
+    }).$mount('#app');
+    console.log(authenticated ? 'Authenticated.' : 'Not authenticated.');
+    console.log(keycloak.token);
+  } else {
+    console.log(authenticated ? 'Authenticated.' : 'Not authenticated.');
+    console.log(keycloak.token);
+  }
+});

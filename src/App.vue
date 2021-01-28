@@ -16,7 +16,6 @@
 import Vue from 'vue';
 import { OrganizationsQuery, TOrganizationsQueryResult } from '@/generated/graphql';
 import { getModule } from 'vuex-module-decorators';
-import Auth from '@/store/modules/auth';
 import UI from '@/store/modules/ui';
 
 export default Vue.extend({
@@ -36,8 +35,6 @@ export default Vue.extend({
     },
   },
   created() {
-    const auth = getModule(Auth, this.$store);
-    auth.refresh();
     this.$apollo.query(OrganizationsQuery).then(
       (result: TOrganizationsQueryResult) => {
         if (result && result.organizations) {

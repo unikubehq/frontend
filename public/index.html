@@ -19,6 +19,8 @@
       <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
     <div id="app"></div>
+    <script src="<%= VUE_APP_KEYCLOAK_URL %><%= VUE_APP_KEYCLOAK_JS %>"></script>
+    <script src="<%= VUE_APP_KEYCLOAK_URL %><%= VUE_APP_KEYCLOAK_AUTHZ_JS %>"></script>
     <!-- built files will be auto injected -->
   </body>
 </html>

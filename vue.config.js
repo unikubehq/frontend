@@ -9,6 +9,9 @@ module.exports = {
     'vuex-module-decorators',
   ],
   configureWebpack: {
+    devServer: {
+      disableHostCheck: true,
+    },
     plugins: [
       new SentryCliPlugin({
         // sentry-cli configuration
