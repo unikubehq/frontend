@@ -3,7 +3,7 @@ import {
 } from 'vuex-module-decorators';
 import jwtDecode from 'jwt-decode';
 
-@Module({ namespaced: true, name: 'auth' })
+@Module({ namespaced: true })
 export default class Auth extends VuexModule {
   accessToken = '';
 
@@ -24,6 +24,25 @@ export default class Auth extends VuexModule {
     this.rawRpt = rpt;
     this.rpt = jwtDecode(rpt);
     this.username = this.rpt.name;
+  }
+
+  @Action
+  scheduleRefresh() {
+    const token = this.client.tokenParsed;
+    if (token && token.exp) {
+      const now = new Date();
+      const expiryDate = new Date(token.exp * 1000);
+      let timeout: number;
+      timeout = expiryDate.getTime() - now.getTime(); // 30s offset
+      if (timeout < 0) {
+        timeout = 0;
+      }
+      console.debug(`Scheduling refresh JWT token in ${timeout / 1000}s`);
+
+      setTimeout(() => {
+        this.context.dispatch('refresh');
+      }, timeout);
+    }
   }
 
   @Mutation
@@ -61,16 +80,6 @@ export default class Auth extends VuexModule {
   }
 
   @Action
-  initKeycloak(): void {
-    this.client.init({
-      onLoad: 'login-required',
-    }).then((authenticated: boolean) => {
-      console.log(authenticated ? 'Authenticated.' : 'Not authenticated.');
-      console.log(this.client.token);
-    });
-  }
-
-  @Action
   logout(): void {
     this.context.commit('resetExpiry');
     this.context.commit('resetRefreshToken');
@@ -88,6 +97,10 @@ export default class Auth extends VuexModule {
 
   @Action
   refresh() {
-    this.client.refresh();
+    this.client.updateToken(30).then((refreshed: boolean) => {
+      if (refreshed) {
+        this.context.dispatch('scheduleRefresh');
+      }
+    });
   }
 }

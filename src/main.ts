@@ -37,12 +37,6 @@ keycloak.init({
   onLoad: 'login-required',
 }).then((authenticated: boolean) => {
   if (authenticated) {
-    console.log(keycloak);
-    keycloak.onTokenExpired = () => {
-      console.log('Token expired');
-    };
-    console.log(new Date(keycloak.tokenParsed.exp * 1000));
-
     Vue.config.productionTip = false;
     Vue.use(VueApollo);
     Vue.use(VueI18n);
@@ -67,6 +61,7 @@ keycloak.init({
     });
 
     store.commit('auth/setKeycloakClient', keycloak);
+    store.dispatch('auth/scheduleRefresh');
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const authorization = new KeycloakAuthorization(keycloak);
