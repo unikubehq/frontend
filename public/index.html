@@ -11,6 +11,65 @@
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
     <title><%= htmlWebpackPlugin.options.title %></title>
+    <style>
+        html, body {
+            padding: 0;
+            margin: 0;
+            border: 0;
+        }
+      .loading-pulse {
+        background-color: #CEFFE9;
+        /*padding: .8rem;*/
+        border-radius: 50%;
+        width: 4rem;
+        height: 4rem;
+        position: relative;
+        text-align: center;
+
+    }
+    .loading-pulse:after {
+        content: '';
+        position: absolute;
+        background-color: #CEFFE9;
+        opacity: 70%;
+        width: 5rem;
+        height: 5rem;
+        z-index: -1;
+        left: 50%;
+        top: 50%;
+        border-radius: 50%;
+        transform: translate(-50%,-50%);
+        animation: pulse 1s ease-out infinite;
+    }
+    .loading-pulse img {
+        margin-top: 0.7rem;
+        width: 2.5rem;
+    }
+    .loader {
+        position: absolute;
+        top:50%;
+        font-family: sans-serif;
+        left:50%;
+        transform: translateY(-50%) translateX(-50%);
+    }
+    @keyframes pulse {
+        0% {
+            opacity: 100%;
+            width: 4.5rem;
+            height: 4.5rem;
+        }
+        5% {
+            opacity: 90%;
+            width: 4.5rem;
+            height: 4.5rem;
+        }
+        100% {
+            opacity: 0;
+            width: 8rem;
+            height: 8rem;
+        }
+    }
+    </style>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
   </head>
@@ -18,6 +77,11 @@
     <noscript>
       <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
+    <div class="loader" id="loading-spinner">
+        <div class="loading-pulse">
+            <img src="<%= BASE_URL %>meta/Unikube-Logo-Icon.svg" alt="" srcset="">
+        </div>
+    </div>
     <div id="app"></div>
     <script src="<%= VUE_APP_KEYCLOAK_URL %><%= VUE_APP_KEYCLOAK_JS %>"></script>
     <script src="<%= VUE_APP_KEYCLOAK_URL %><%= VUE_APP_KEYCLOAK_AUTHZ_JS %>"></script>

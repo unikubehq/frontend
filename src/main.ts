@@ -8,7 +8,6 @@ import router from '@/router';
 import App from '@/App.vue';
 import store from '@/store';
 import vuetify from '@/plugins/vuetify';
-import jwtDecode from 'jwt-decode';
 import apolloProvider from '@/vue-apollo';
 import LocaleMessages = VueI18n.LocaleMessages;
 
@@ -37,6 +36,10 @@ keycloak.init({
   onLoad: 'login-required',
 }).then((authenticated: boolean) => {
   if (authenticated) {
+    const spinner = document.getElementById('loading-spinner');
+    if (spinner) {
+      spinner.remove();
+    }
     Vue.config.productionTip = false;
     Vue.use(VueApollo);
     Vue.use(VueI18n);
@@ -79,10 +82,7 @@ keycloak.init({
       apolloProvider,
       render: (h) => h(App),
     }).$mount('#app');
-    console.log(authenticated ? 'Authenticated.' : 'Not authenticated.');
-    console.log(keycloak.token);
   } else {
-    console.log(authenticated ? 'Authenticated.' : 'Not authenticated.');
-    console.log(keycloak.token);
+    console.log('Error: not authenticated.');
   }
 });
