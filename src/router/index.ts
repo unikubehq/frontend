@@ -1,27 +1,27 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
-import Login from '@/views/Login.vue';
-import Register from '@/views/Register.vue';
-import ForgotPassword from '@/views/ForgotPassword.vue';
+// import Login from '@/views/Login.vue';
+// import Register from '@/views/Register.vue';
+// import ForgotPassword from '@/views/ForgotPassword.vue';
 
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
-  {
-    path: '/login',
-    name: 'Login',
-    component: Login,
-  },
-  {
-    path: '/register',
-    name: 'Register',
-    component: Register,
-  },
-  {
-    path: '/forgot-password',
-    name: 'Forgot Password',
-    component: ForgotPassword,
-  },
+  // {
+  //   path: '/login',
+  //   name: 'Login',
+  //   component: Login,
+  // },
+  // {
+  //   path: '/register',
+  //   name: 'Register',
+  //   component: Register,
+  // },
+  // {
+  //   path: '/forgot-password',
+  //   name: 'Forgot Password',
+  //   component: ForgotPassword,
+  // },
   {
     path: '/',
     name: 'Home',
@@ -59,15 +59,15 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
 });
-
-router.beforeEach((to, from, next) => {
-  // Todo determine loggedIn state
-  const loggedIn = true;
-  if (to.name !== 'Login' && !loggedIn) {
-    next({ name: 'Login' });
-  } else {
-    next();
-  }
-});
+//
+// router.beforeEach((to, from, next) => {
+//   // Todo determine loggedIn state
+//   const loggedIn = true;
+//   if (to.name !== 'Login' && !loggedIn) {
+//     next({ name: 'Login' });
+//   } else {
+//     next();
+//   }
+// });
 
 export default router;
