@@ -14,36 +14,16 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { OrganizationsQuery, TOrganizationsQueryResult } from '@/generated/graphql';
 import { getModule } from 'vuex-module-decorators';
 import UI from '@/store/modules/ui';
 
 export default Vue.extend({
   name: 'App',
-  apollo: {
-    organizations: {
-      query: OrganizationsQuery,
-      result: (result: TOrganizationsQueryResult) => {
-        console.log(result.organizations);
-      },
-    },
-  },
   computed: {
     overlay() {
       const ui = getModule(UI, this.$store);
       return ui.overlay;
     },
-  },
-  created() {
-    this.$apollo.query(OrganizationsQuery).then(
-      (result: TOrganizationsQueryResult) => {
-        if (result && result.organizations) {
-          console.log(result.organizations.filter((val) => { console.log(val); return false; }));
-        } else {
-          console.log('this is shitty!');
-        }
-      },
-    );
   },
 });
 </script>

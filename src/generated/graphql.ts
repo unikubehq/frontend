@@ -168,7 +168,7 @@ export type TOrganizationsQueryResult = (
 
 export const OrganizationsQuery = gql`
     query OrganizationsQuery {
-  organizations {
+  allOrganizations {
     title
     description
   }

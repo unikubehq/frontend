@@ -221,11 +221,21 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import { OrganizationsQuery, TOrganizationsQueryResult } from '@/generated/graphql';
 
-@Component()
+@Component({
+  apollo: {
+    organizations: {
+      query: OrganizationsQuery,
+      result: (result: TOrganizationsQueryResult) => {
+        console.log(result.organizations);
+      },
+    },
+  },
+})
 export default class Layout extends Vue {
   items = [
     { icon: '$vuetify.icons.overview', title: 'Overview', to: 'overview' },
@@ -233,11 +243,6 @@ export default class Layout extends Vue {
     { icon: '$vuetify.icons.activity', title: 'Activity', to: 'activities' },
     { icon: '$vuetify.icons.settings', title: 'Settings', to: 'settings' },
   ];
-
-  organizations = [
-    { title: 'Google', id: 12321321321, avatar: '@/assets/img/gsuite.svg' },
-    { title: 'Github', id: 12321321322, avatar: '@/assets/img/github.svg' },
-  ]
 
   menu = false;
 
@@ -256,8 +261,8 @@ export default class Layout extends Vue {
   }
 
   mounted() {
-    if (!this.$route.name === 'Overview') {
-      this.$router.push({ name: 'Overview' });
+    if (this.$route.name !== 'Overview') {
+      this.$router.push({ name: 'overview' });
     }
   }
 

@@ -1,5 +1,5 @@
 overwrite: true
-schema: "http://localhost:8090"
+schema: "http://gateway.unikube.127.0.0.1.nip.io:8085/graphql"
 documents: "src/**/*.graphql"
 generates:
   src/generated/graphql.ts:
