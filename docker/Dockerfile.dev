@@ -32,9 +32,6 @@ RUN ["npm", "run", "build"]
 # Nginx
 FROM quay.io/bitnami/nginx:latest
 
-## Structure
-RUN mkdir /app
-WORKDIR /app
 
 ## Nginx config
 RUN ["rm", "/etc/nginx/conf.d/default.conf"]
