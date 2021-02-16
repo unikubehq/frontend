@@ -37,9 +37,6 @@ FROM quay.io/bitnami/nginx:latest
 COPY nginx/blueshoe.conf /etc/nginx/conf.d/
 EXPOSE 8080
 
-RUN chgrp -R nginx /var/cache/nginx /var/run /var/log/nginx && \
-    chmod -R 770 /var/cache/nginx /var/run /var/log/nginx
-
 ## Copy build assets from previous stage
 COPY --from=app /code/dist /app
 
