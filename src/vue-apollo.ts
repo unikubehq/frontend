@@ -15,17 +15,12 @@ const refreshLink = onError(({ networkError }: ErrorResponse) => {
   }
 });
 
-const authLink = setContext((_, { headers }) => {
-  // get the authentication token from local storage if it exists
-  const token = localStorage.getItem('token');
-  // return the headers to the context so httpLink can read them
-  return {
-    headers: {
-      ...headers,
-      authorization: token ? `Bearer ${store.state.auth.rawRpt}` : '',
-    },
-  };
-});
+const authLink = setContext((_, { headers }) => ({
+  headers: {
+    ...headers,
+    authorization: store.state.auth.rawRpt ? `Bearer ${store.state.auth.rawRpt}` : '',
+  },
+}));
 
 const cache = new InMemoryCache();
 
