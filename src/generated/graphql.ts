@@ -159,7 +159,7 @@ export type TOrganizationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type TOrganizationsQueryResult = (
   { __typename?: 'Query' }
-  & { organizations?: Maybe<Array<Maybe<(
+  & { results?: Maybe<Array<Maybe<(
     { __typename?: 'OrganizationNode' }
     & Pick<TOrganizationNode, 'title' | 'description'>
   )>>> }

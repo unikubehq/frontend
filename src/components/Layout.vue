@@ -70,7 +70,7 @@
           <div class="organization-dropdown--notch"></div>
           <v-list>
             <v-list-item
-                v-for="organization in organizations"
+                v-for="organization in organizations.results"
                 :key="organization.id"
                 link
                 :ripple="false"
@@ -231,7 +231,7 @@ import { OrganizationsQuery, TOrganizationsQueryResult } from '@/generated/graph
     organizations: {
       query: OrganizationsQuery,
       result: (result: TOrganizationsQueryResult) => {
-        console.log(result.organizations);
+        console.log(result.results);
       },
     },
   },
