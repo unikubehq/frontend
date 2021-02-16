@@ -70,7 +70,7 @@
           <div class="organization-dropdown--notch"></div>
           <v-list>
             <v-list-item
-                v-for="organization in organizations.results"
+                v-for="organization in allOrganizations.results"
                 :key="organization.id"
                 link
                 :ripple="false"
@@ -228,7 +228,7 @@ import { OrganizationsQuery, TOrganizationsQueryResult } from '@/generated/graph
 
 @Component({
   apollo: {
-    organizations: {
+    allOrganizations: {
       query: OrganizationsQuery,
       result: (result: TOrganizationsQueryResult) => {
         console.log(result.results);
