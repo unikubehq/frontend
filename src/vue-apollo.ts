@@ -29,8 +29,8 @@ const apolloClient = new ApolloClient({
   cache,
 });
 
-const apolloProvider = new VueApollo({
-  defaultClient: apolloClient,
-});
-
-export default apolloProvider;
+export default function setupApolloProvider() {
+  return new VueApollo({
+    defaultClient: apolloClient,
+  });
+}

@@ -8,7 +8,7 @@ import router from '@/router';
 import App from '@/App.vue';
 import store from '@/store';
 import vuetify from '@/plugins/vuetify';
-import apolloProvider from '@/vue-apollo';
+import setupApolloProvider from '@/vue-apollo';
 import LocaleMessages = VueI18n.LocaleMessages;
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -71,17 +71,17 @@ keycloak.init({
     authorization.ready.then(() => {
       authorization.entitlement('gateway').then((rpt: string) => {
         store.commit('auth/setRpt', rpt);
+        const apolloProvider = setupApolloProvider();
+        new Vue({
+          router,
+          store,
+          vuetify,
+          i18n,
+          apolloProvider,
+          render: (h) => h(App),
+        }).$mount('#app');
       });
     });
-
-    new Vue({
-      router,
-      store,
-      vuetify,
-      i18n,
-      apolloProvider,
-      render: (h) => h(App),
-    }).$mount('#app');
   } else {
     console.log('Error: not authenticated.');
   }
