@@ -2,6 +2,7 @@ import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client/core
 import { setContext } from '@apollo/client/link/context';
 import { ErrorResponse, onError } from '@apollo/client/link/error';
 import VueApollo from 'vue-apollo';
+import store from '@/store';
 import router from './router';
 
 const httpLink = createHttpLink({
@@ -21,7 +22,7 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : '',
+      authorization: token ? `Bearer ${store.state.auth.rawRpt}` : '',
     },
   };
 });
