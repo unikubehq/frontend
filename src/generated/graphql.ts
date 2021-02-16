@@ -169,8 +169,10 @@ export type TOrganizationsQueryResult = (
 export const OrganizationsQuery = gql`
     query OrganizationsQuery {
   allOrganizations {
-    title
-    description
+    results {
+        title
+        description
+    }
   }
 }
     `;

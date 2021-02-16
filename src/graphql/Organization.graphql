@@ -1,6 +1,8 @@
 query OrganizationsQuery {
   allOrganizations {
-    title,
-    description,
+    results {
+        title
+        description
+    }
   }
 }
