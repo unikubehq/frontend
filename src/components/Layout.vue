@@ -52,8 +52,10 @@
               </v-list-item-avatar>
 
               <v-list-item-content>
-                <v-list-item-title class="font-weight-bold">
-                  The Orange Co
+                <v-list-item-title
+                    class="font-weight-bold"
+                    v-if="$store.state.context.organization">
+                  {{ currentOrganizationName }}
                 </v-list-item-title>
                 <v-list-item-subtitle>
                   Organization ID: 8900998
@@ -68,7 +70,7 @@
             </v-list-item>
           </template>
           <div class="organization-dropdown--notch"></div>
-          <v-list>
+          <v-list v-if="allOrganizations">
             <v-list-item
                 v-for="organization in allOrganizations.results"
                 :key="organization.id"
@@ -230,8 +232,8 @@ import { OrganizationsQuery, TOrganizationsQueryResult } from '@/generated/graph
   apollo: {
     allOrganizations: {
       query: OrganizationsQuery,
-      result: (result: TOrganizationsQueryResult) => {
-        console.log(result.results);
+      result(result) {
+        this.$store.commit('context/setOrganization', result.data.allOrganizations.results[0]);
       },
     },
   },
@@ -264,6 +266,10 @@ export default class Layout extends Vue {
     if (this.$route.name !== 'Overview') {
       this.$router.push({ name: 'overview' });
     }
+  }
+
+  get currentOrganizationName(): string {
+    return this.$store.state.context.organization.title;
   }
 
   get username() {
