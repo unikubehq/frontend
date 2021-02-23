@@ -56,23 +56,21 @@
 
 </template>
 
-<script>
-export default {
-  name: 'OrganizationSettings.vue',
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
 
-  data() {
-    return {
-      organizationName: 'The Orange Co',
-      dataChanged: false,
-      dialog: false,
-    };
-  },
-  methods: {
-    setDataChanged() {
-      this.dataChanged = true;
-    },
-  },
-};
+@Component({})
+export default class OrganizationSettings extends Vue {
+  organizationName = 'The Orange Co'
+
+  dataChanged = false
+
+  dialog = false
+
+  setDataChanged(): void {
+    this.dataChanged = true;
+  }
+}
 </script>
 
 <style scoped>

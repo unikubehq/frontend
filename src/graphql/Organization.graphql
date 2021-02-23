@@ -6,3 +6,20 @@ query OrganizationsQuery {
     }
   }
 }
+
+mutation CreateOrganizationMutation($title: String!) {
+    createUpdateOrganization (
+        input: {
+            title: $title
+        }
+    ) {
+        organization {
+            title,
+            description
+        }
+        errors {
+            field,
+            messages,
+        },
+    }
+}

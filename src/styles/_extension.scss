@@ -90,3 +90,23 @@
   margin-right: 2px;
   margin-top: -5px;
 }
+.avatar-initials {
+  color: $green-light-5;
+  font-size: 16px;
+}
+.v-avatar .initials-avatar{
+  border: 3px solid white !important;
+  &:not(:first-child) {
+    margin-left: -1em;
+  }
+}
+.dz-image img {
+  border-radius: 50%;
+  border: 1px dashed black;
+  height: 175px;
+  width: 175px;
+}
+
+.no-bg-drawer {
+  background-image: none;
+}

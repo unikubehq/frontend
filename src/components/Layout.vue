@@ -87,7 +87,7 @@
               </v-list-item-content>
             </v-list-item>
             <v-divider />
-            <v-list-item link>
+            <v-list-item link  to="/create-organization">
                 <v-list-item-icon class="organization-dropdown--icon">
                   <v-icon>$vuetify.icons.createOrganization</v-icon>
                 </v-list-item-icon>
@@ -226,7 +226,13 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { OrganizationsQuery, TOrganizationsQueryResult } from '@/generated/graphql';
+import { OrganizationsQuery } from '@/generated/graphql';
+
+Component.registerHooks([
+  'beforeRouteEnter',
+  'beforeRouteUpdate',
+  'beforeRouteLeave',
+]);
 
 @Component({
   apollo: {
@@ -240,17 +246,17 @@ import { OrganizationsQuery, TOrganizationsQueryResult } from '@/generated/graph
 })
 export default class Layout extends Vue {
   items = [
-    { icon: '$vuetify.icons.overview', title: 'Overview', to: 'overview' },
-    { icon: '$vuetify.icons.permission', title: 'Permissions', to: 'permissions' },
-    { icon: '$vuetify.icons.activity', title: 'Activity', to: 'activities' },
-    { icon: '$vuetify.icons.settings', title: 'Settings', to: 'settings' },
+    { icon: '$vuetify.icons.overview', title: 'Overview', to: '/overview' },
+    { icon: '$vuetify.icons.permission', title: 'Permissions', to: '/permissions' },
+    { icon: '$vuetify.icons.activity', title: 'Activity', to: '/activities' },
+    { icon: '$vuetify.icons.settings', title: 'Settings', to: '/settings' },
   ];
 
   menu = false;
 
   mini = false;
 
-  toggleMini() {
+  toggleMini(): void {
     this.mini = !this.mini;
   }
 
@@ -258,11 +264,11 @@ export default class Layout extends Vue {
 
   notificationsMenu = false;
 
-  increment() {
+  increment(): void {
     this.notifications += 1;
   }
 
-  mounted() {
+  mounted(): void {
     if (this.$route.name !== 'Overview') {
       this.$router.push({ name: 'overview' });
     }
@@ -272,11 +278,11 @@ export default class Layout extends Vue {
     return this.$store.state.context.organization.title;
   }
 
-  get username() {
+  get username(): string {
     return this.$store.state.auth.username;
   }
 
-  get currentRoute() {
+  get currentRoute(): string | null | undefined {
     return this.$route.name;
   }
 }

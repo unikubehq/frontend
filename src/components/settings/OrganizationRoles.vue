@@ -78,28 +78,28 @@
 
 </template>
 
-<script>
-export default {
-  name: 'OrganizationRoles.vue',
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
 
-  data() {
-    return {
-      email: '',
-      dataChanged: false,
-      dialog: false,
-      select: { role: 'Admin' },
-      roles: [
-        { role: 'Admin' },
-        { role: 'Developer' },
-      ],
-    };
-  },
-  methods: {
-    setDataChanged() {
-      this.dataChanged = true;
-    },
-  },
-};
+@Component({})
+export default class OrganizationRoles extends Vue {
+  email = ''
+
+  dataChanged = false
+
+  dialog = false
+
+  select = { role: 'Admin' }
+
+  roles = [
+    { role: 'Admin' },
+    { role: 'Developer' },
+  ]
+
+  setDataChanged(): void {
+    this.dataChanged = true;
+  }
+}
 </script>
 
 <style scoped>

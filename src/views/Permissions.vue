@@ -1,11 +1,22 @@
 <template>
-<h1>hallo</h1>
+<div>
+  <member-list></member-list>
+</div>
 </template>
 
 <script>
-export default {
-  name: 'Permissions.vue',
-};
+import Vue from 'vue';
+import { Component } from 'vue-property-decorator';
+import MemberList from '@/components/permissions/MemberList.vue';
+
+@Component({
+  components: {
+    MemberList,
+  },
+})
+export default class Permissions extends Vue {
+
+}
 </script>
 
 <style scoped>

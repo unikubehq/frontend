@@ -58,11 +58,16 @@
 
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: 'NotificationSettings.vue',
 
-  data() {
+  data(): {
+    switch1: boolean
+    switch2: boolean
+    switch3: boolean
+    switch4: boolean
+    } {
     return {
       switch1: true,
       switch2: false,

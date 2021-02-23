@@ -1,27 +1,15 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
-// import Login from '@/views/Login.vue';
-// import Register from '@/views/Register.vue';
-// import ForgotPassword from '@/views/ForgotPassword.vue';
+import CreateOrganization from '@/views/organization/CreateOrganization.vue';
 
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
-  // {
-  //   path: '/login',
-  //   name: 'Login',
-  //   component: Login,
-  // },
-  // {
-  //   path: '/register',
-  //   name: 'Register',
-  //   component: Register,
-  // },
-  // {
-  //   path: '/forgot-password',
-  //   name: 'Forgot Password',
-  //   component: ForgotPassword,
-  // },
+  {
+    path: '/create-organization',
+    name: 'Create Organization',
+    component: CreateOrganization,
+  },
   {
     path: '/',
     name: 'Home',
@@ -49,6 +37,21 @@ const routes: Array<RouteConfig> = [
         path: '/settings',
         name: 'settings',
         component: () => import(/* webpackChunkName: "about" */ '../views/Settings.vue'),
+      },
+      {
+        path: '/create-project',
+        name: 'create New Project',
+        component: () => import(/* webpackChunkName: "about" */ '../views/createProject/CreateProject.vue'),
+      },
+      {
+        path: '/create-project/add-members',
+        name: 'Create New Project',
+        component: () => import('../views/createProject/AddTeamMember.vue'),
+      },
+      {
+        path: '/project/:slug',
+        name: 'Project Detail',
+        component: () => import('../views/projectDetail/ProjectDetail.vue'),
       },
     ],
   },

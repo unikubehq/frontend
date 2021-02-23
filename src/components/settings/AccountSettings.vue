@@ -137,28 +137,31 @@
 
 </template>
 
-<script>
-export default {
-  name: 'AccountSettings.vue',
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
 
-  data() {
-    return {
-      fullName: 'Robert Stein',
-      username: 'robert@blueshoe.de',
-      dataChanged: false,
-      clearText: false,
-      password: '',
-      newPassword: '',
-      reEnterNewPassword: '',
-      dialog: false,
-    };
-  },
-  methods: {
-    setDataChanged() {
-      this.dataChanged = true;
-    },
-  },
-};
+@Component({})
+export default class AccountSettings extends Vue {
+  fullName = 'Robert Stein'
+
+  username = 'robert@blueshoe.de'
+
+  dataChanged = false
+
+  clearText = false
+
+  password = ''
+
+  newPassword = ''
+
+  reEnterNewPassword = ''
+
+  dialog = false
+
+  setDataChanged(): void {
+    this.dataChanged = true;
+  }
+}
 </script>
 
 <style scoped>

@@ -1,0 +1,126 @@
+query ProjectsQuery($limit: Int, $offset: Int) {
+    allProjects(limit: $limit, offset: $offset) {
+        totalCount
+        results {
+            title,
+            description,
+            currentCommit,
+            id,
+            packages {
+                title,
+            }
+        }
+    }
+}
+
+query ProjectDetailQuery($slug: String) {
+    project(slug: $slug) {
+        created,
+        title,
+        description,
+        id,
+        specRepository,
+        specRepositoryBranch,
+        specType,
+        currentCommit,
+        accessUsername,
+        accessToken,
+        packages {
+            title,
+            description,
+            type,
+            namespace,
+            id,
+            environments {
+                deployments {
+                    title,
+                    id
+                }
+            }
+        }
+
+    }
+}
+
+query ProjectDetailOtherProjectsQuery {
+    allProjects(limit: 1000) {
+        results {
+            title,
+            id,
+            packages {
+                title
+            }
+        }
+    }
+}
+
+mutation CreateProject(
+  $title: String!
+  $description: String!
+  $specRepository: String!
+  $specType: String!
+  $accessUsername: String!
+  $accessToken: String!
+  $specRepositoryBranch: String!
+) {
+  createUpdateProject(
+    input: {
+      keycloakData: "",
+      title: $title
+      description: $description
+      specRepository: $specRepository
+      specType: $specType
+      specRepositoryBranch: $specRepositoryBranch
+      accessUsername: $accessUsername
+      accessToken: $accessToken
+    }
+  ) {
+    project {
+      title
+    }
+    errors {
+      messages
+      field
+    }
+  }
+}
+
+mutation UpdateProject(
+  $title: String!
+  $description: String!
+  $specRepository: String!
+  $specType: String!
+  $accessUsername: String!
+  $accessToken: String!
+  $specRepositoryBranch: String!
+  $id: ID
+) {
+  createUpdateProject(
+    input: {
+      keycloakData: "",
+      title: $title
+      description: $description
+      specRepository: $specRepository
+      specType: $specType
+      specRepositoryBranch: $specRepositoryBranch
+      accessUsername: $accessUsername
+      accessToken: $accessToken
+      id: $id
+    }
+  ) {
+    project {
+      title
+    }
+    errors {
+      messages
+      field
+    }
+  }
+}
+
+
+mutation DeleteProject($id: UUID) {
+  deleteProject(id: $id) {
+    ok
+  }
+}

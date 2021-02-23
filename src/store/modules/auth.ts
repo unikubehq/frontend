@@ -5,8 +5,10 @@ import jwtDecode from 'jwt-decode';
 
 @Module({ namespaced: true })
 export default class Auth extends VuexModule {
+  // eslint-disable-next-line
   client: any;
 
+  // eslint-disable-next-line
   rpt: any;
 
   rawRpt = '';
@@ -21,7 +23,7 @@ export default class Auth extends VuexModule {
   }
 
   @Action
-  scheduleRefresh() {
+  scheduleRefresh(): void {
     const token = this.client.tokenParsed;
     if (token && token.exp) {
       const now = new Date();
@@ -40,6 +42,7 @@ export default class Auth extends VuexModule {
   }
 
   @Mutation
+  // eslint-disable-next-line
   setKeycloakClient(keycloak: any): void {
     this.client = keycloak;
   }
@@ -50,7 +53,7 @@ export default class Auth extends VuexModule {
   }
 
   @Action
-  refresh() {
+  refresh(): void {
     this.client.updateToken(30).then((refreshed: boolean) => {
       if (refreshed) {
         this.context.dispatch('scheduleRefresh');

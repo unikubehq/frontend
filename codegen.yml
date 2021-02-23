@@ -1,5 +1,8 @@
 overwrite: true
-schema: "http://gateway.unikube.127.0.0.1.nip.io:8085/graphql"
+schema:
+  - http://gateway.unikube.127.0.0.1.nip.io:8085/graphql:
+      headers:
+        authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIzU1dDLUtzdzkyN0NxT3l2U2ZzVnc4dFFGaXdtWU1pSUgwRHFoOEhZbkR3In0.eyJleHAiOjE2MTQxMTMzOTMsImlhdCI6MTYxNDExMzMzMywiYXV0aF90aW1lIjoxNjE0MTEwNTExLCJqdGkiOiI1MzY3ZWFiOC00NDM2LTRmNDgtYWJhOC1kMDY1ZDc5NmMzOTQiLCJpc3MiOiJodHRwOi8va2V5Y2xvYWsuMTI3LjAuMC4xLm5pcC5pbzo4MDg1L2F1dGgvcmVhbG1zL3VuaWt1YmUiLCJhdWQiOlsiZ2F0ZXdheSIsImFjY291bnQiXSwic3ViIjoiNzYzMTE5MWYtOTVlMS00NmMzLWI3ZjQtYmNlMTRiMDA2ODQ5IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiZnJvbnRlbmQiLCJub25jZSI6ImZmNjNkNzk4LTE3ODEtNDlmNC05ODQ2LWNiMDk2YzAwNDRjNyIsInNlc3Npb25fc3RhdGUiOiIzN2EwNDA2Ni02YzdhLTRkNTItOGZkNS04OWQxMWRiOWRlNWMiLCJhY3IiOiIwIiwiYWxsb3dlZC1vcmlnaW5zIjpbIioiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBlbWFpbCBwcm9maWxlIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJNaWNoYWVsIE11c3Rlcm1hbm4iLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJ0ZXN0QGJsdWVzaG9lLmRlIiwiZ2l2ZW5fbmFtZSI6Ik1pY2hhZWwiLCJmYW1pbHlfbmFtZSI6Ik11c3Rlcm1hbm4iLCJlbWFpbCI6InRlc3RAYmx1ZXNob2UuZGUifQ.IsWJt_oiS-6q2gQnTQjLPUPi6GhiJ-FYFvAhWhT1HqNwsB4FFhuT7Wcodoofq8dFMGGrdZFzDU5NkeXWDMIfyJY8F--SQkxq4zxT9KA_So7cnKfqAZi8Ui9UI5QDj5u4AOhkOmjSFB13bzmN59LDafXpqCC2B1AxowD9ZRAs1m6pACOyOhH4l3w946kRCCW4pkSOvdlLdaG4UFFATZqNDE8fHKUY7CB8FmF7c8nK_BX-rZGoFFyRWyy-WuU9hKI5RcLVPTS3q-7l5W9OO-pPL_GKHl1elquHBS_t6XxLJ3ztYzHoYUN-MvrrMx7lmu5_Us_kBlIUe1v32mviz0n48A
 documents: "src/**/*.graphql"
 generates:
   src/generated/graphql.ts:
@@ -11,6 +14,7 @@ generates:
       typesPrefix: T
       namingConvention:
         transformUnderscore: true
+      preResolveTypes: true
     plugins:
       - add:
           content: '/* eslint-disable */'
