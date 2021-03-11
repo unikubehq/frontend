@@ -1,10 +1,23 @@
 query OrganizationsQuery {
   allOrganizations {
     results {
+        id,
         title
-        description
+        description,
+        avatarImage
     }
   }
+}
+
+query OrganizationQuery($id: UUID!) {
+    organization (
+        id: $id
+    ) {
+        title,
+        description,
+        avatarImage,
+        id
+    }
 }
 
 mutation CreateOrganizationMutation($title: String!) {

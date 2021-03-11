@@ -16,8 +16,15 @@
           <v-avatar
             height="96"
             width="96"
+              class="pointer"
           >
-            <img src="https://cdn.zeplin.io/5f84546964e43c2749571f59/assets/2192D830-FF56-4E41-8DBA-F504CEFA64FC.svg">
+            <label for="orga-avatar-file">
+              <input type="file"
+                  style="display: none;"
+                  id="orga-avatar-file"
+                  @change="handleUpload">
+              <v-img width="96" contain :src="this.previewUrl || this.$store.state.context.organization.avatarImage || 'https://cdn.zeplin.io/5f84546964e43c2749571f59/assets/2192D830-FF56-4E41-8DBA-F504CEFA64FC.svg'" ref="preview"></v-img>
+            </label>
           </v-avatar>
         </v-badge>
       </v-col>
@@ -58,14 +65,50 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { gql } from '@apollo/client/core';
+import store from '@/store';
 
 @Component({})
 export default class OrganizationSettings extends Vue {
-  organizationName = 'The Orange Co'
+  $refs!: {
+    preview: HTMLImageElement
+  }
+
+  previewUrl: string | null = null
 
   dataChanged = false
 
   dialog = false
+
+  get organizationName(): string {
+    return this.$store.state.context.organization.title;
+  }
+
+  handleUpload(e: {target: HTMLInputElement}): void {
+    if (e && e.target && e.target.files) {
+      const file = e.target.files[0];
+      this.previewUrl = URL.createObjectURL(file);
+      const formData = new FormData();
+      formData.append('avatar_image', file);
+      this.axios.post(`/orgas-http/upload-avatar/${this.$store.state.context.organization.id}/`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${this.$store.state.auth.rawRpt}`,
+        },
+      }).then((res) => {
+        // Update organization from graphql
+        // this.$apollo.query({
+        //   query: OrganizationQuery,
+        //   variables: {
+        //     id: this.$store.state.context.organization.id,
+        //   },
+        // });
+        // res.data.url
+      }).catch((err) => {
+        // Handle error
+      });
+    }
+  }
 
   setDataChanged(): void {
     this.dataChanged = true;
@@ -73,6 +116,8 @@ export default class OrganizationSettings extends Vue {
 }
 </script>
 
-<style scoped>
-
+<style>
+.pointer .v-image:hover {
+  cursor: pointer;
+}
 </style>

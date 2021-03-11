@@ -9,6 +9,8 @@ import App from '@/App.vue';
 import store from '@/store';
 import vuetify from '@/plugins/vuetify';
 import setupApolloProvider from '@/vue-apollo';
+import axios from 'axios';
+import VueAxios from 'vue-axios';
 import LocaleMessages = VueI18n.LocaleMessages;
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -41,9 +43,11 @@ keycloak.init({
       spinner.remove();
     }
     Vue.config.productionTip = false;
+    Vue.use(VueAxios, axios);
     Vue.use(VueApollo);
     Vue.use(VueI18n);
     Vue.use(Vuelidate);
+    Vue.axios.defaults.baseURL = process.env.VUE_APP_UPLOAD_URL;
 
     if (process.env.NODE_ENV === 'production') {
       Sentry.init({

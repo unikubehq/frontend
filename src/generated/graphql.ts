@@ -406,8 +406,10 @@ export const OrganizationsQuery = gql`
     query OrganizationsQuery {
   allOrganizations {
     results {
+      id
       title
-      description
+      description,
+      avatarImage
     }
   }
 }
