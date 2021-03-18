@@ -109,7 +109,7 @@
             name="accessToken"
             filled
             outlined
-            type="text"
+            type="password"
             :placeholder="$t('Enter Access Token')"
             v-model="accessToken"
             :error-messages="accessTokenErrors"
