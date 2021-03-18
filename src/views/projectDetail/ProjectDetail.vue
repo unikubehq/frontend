@@ -1,7 +1,8 @@
 <template>
   <v-container>
     <project-bar></project-bar>
-    <v-tabs vertical background-color="#f7f7f7" class="project-detail__wrapper">
+    <v-tabs vertical background-color="#f7f7f7" class="project-detail__wrapper"
+        v-if="allProjects && allProjects.results.length">
       <div class="project-detail__top-tab">Browse other Projects</div>
       <v-tab
         class="text-left"
@@ -196,6 +197,7 @@
       v-model="memberDrawer"
     >
       <add-team-member
+        v-if="allProjects"
         :project="project"
         :other-projects="allProjects.results"
         v-on:done="memberDrawer = false"
