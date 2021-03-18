@@ -195,6 +195,7 @@ type ProjectNode {
     repoDir: String!
     repositoryStatus: ProjectRepositoryStatus!
     slug: String!
+    sops: [SOPSProviderNode]
     specRepository: String!
     specRepositoryBranch: String
     specType: ProjectSpecType!
@@ -323,7 +324,7 @@ enum ProjectUserRole {
 }
 
 enum SOPSTypeEnum {
-    awx
+    aws
     pgp
 }
 

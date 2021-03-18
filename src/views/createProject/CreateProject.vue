@@ -148,6 +148,7 @@
         </v-col>
       </v-row>
     </v-form>
+    <sops-edit :project="project"></sops-edit>
   </v-container>
 </template>
 
@@ -155,10 +156,14 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { CreateProject, UpdateProject, TProjectNode } from '@/generated/graphql';
 import { required, url } from 'vuelidate/lib/validators';
+import SopsEdit from '@/views/projectDetail/SopsEdit.vue';
 import VueI18n from 'vue-i18n';
 import TranslateResult = VueI18n.TranslateResult;
 
 @Component({
+  components: {
+    SopsEdit,
+  },
   validations: {
     title: {
       required,
@@ -297,7 +302,7 @@ export default class CreateProjectView extends Vue {
 }
 </script>
 
-<style scoped>
+<style>
 .create-form {
     box-shadow: 0 2px 40px 0 rgba(183, 183, 183, 0.15);
 }

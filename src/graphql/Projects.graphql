@@ -9,7 +9,15 @@ query ProjectsQuery($limit: Int, $offset: Int) {
             id,
             slug,
             packages {
-                resultCount,
+                title,
+            }
+            sops {
+                ... on AWSKMSNode {
+                    title
+                },
+                ... on PGPKeyNode {
+                    title
+                },
             }
             members {
                 user {
@@ -53,21 +61,28 @@ query ProjectDetailQuery($slug: String) {
             role,
         },
         packages {
-            totalCount,
-            results {
-                modified,
-                title,
-                description,
-                type,
-                namespace,
-                id,
-                environments {
-                    deployments {
-                        title,
-                        id,
-                    }
+            title,
+            description,
+            type,
+            namespace,
+            id,
+            environments {
+                deployments {
+                    title,
+                    id,
                 }
             }
+
+        },
+        sops {
+            ... on AWSKMSNode {
+                title,
+                description
+            },
+            ... on PGPKeyNode {
+                title
+                description
+            },
         }
 
     }
@@ -81,7 +96,7 @@ query ProjectDetailOtherProjectsQuery {
             slug,
             id,
             packages {
-                totalCount
+                title
             }
         }
     }
@@ -154,4 +169,28 @@ mutation DeleteProject($id: UUID) {
   deleteProject(id: $id) {
     ok
   }
+}
+
+mutation createUpdateSops(
+    $title: String!
+    $description: String
+    $sopsType: SOPSTypeEnum!
+    $project: UUID!
+    $secret1: String!
+    $secret2: String
+    $secret3: String
+) {
+    createUpdateSops(
+        sopsData: {
+            title: $title
+            description: $description
+            sopsType: $sopsType
+            project: $project
+            secret1: $secret1
+            secret2: $secret2
+            secret3: $secret3
+        }
+    ) {
+        ok
+    }
 }

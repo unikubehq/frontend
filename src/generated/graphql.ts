@@ -25,11 +25,6 @@ export type TQuery = {
   myOrganization?: Maybe<TOrganizationNode>;
   allProjects?: Maybe<TProjectNodePage>;
   project?: Maybe<TProjectNode>;
-  allPackages?: Maybe<TPackageNodePage>;
-  allClusterLevels?: Maybe<TClusterLevelNodePage>;
-  allDeployments?: Maybe<TDeploymentNodePage>;
-  allSOPSProvider?: Maybe<TSopsProviderNodePage>;
-  package?: Maybe<TPackageNode>;
   assets?: Maybe<TPleaseRemoveMeNode>;
   audits?: Maybe<TPleaseRemoveMeNode>;
   payments?: Maybe<TPleaseRemoveMeNode>;
@@ -56,36 +51,6 @@ export type TQueryAllProjectsArgs = {
 
 
 export type TQueryProjectArgs = {
-  id?: Maybe<Scalars['UUID']>;
-  slug?: Maybe<Scalars['String']>;
-};
-
-
-export type TQueryAllPackagesArgs = {
-  offset?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-};
-
-
-export type TQueryAllClusterLevelsArgs = {
-  offset?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-};
-
-
-export type TQueryAllDeploymentsArgs = {
-  offset?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-};
-
-
-export type TQueryAllSopsProviderArgs = {
-  offset?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-};
-
-
-export type TQueryPackageArgs = {
   id?: Maybe<Scalars['UUID']>;
   slug?: Maybe<Scalars['String']>;
 };
@@ -234,10 +199,10 @@ export type TProjectNodePage = {
 
 export type TProjectNode = {
   __typename?: 'ProjectNode';
-  created: Scalars['DateTime'];
-  modified: Scalars['DateTime'];
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
+  created: Scalars['DateTime'];
+  modified: Scalars['DateTime'];
   slug: Scalars['String'];
   id: Scalars['UUID'];
   specRepository: Scalars['String'];
@@ -251,14 +216,9 @@ export type TProjectNode = {
   accessToken: Scalars['String'];
   organization?: Maybe<TOrganizationNode>;
   members: Array<TProjectUserNode>;
+  packages: Array<TPackageNode>;
   creator?: Maybe<TUserNode>;
-  packages?: Maybe<TPackageNodePage>;
-};
-
-
-export type TProjectNodePackagesArgs = {
-  offset?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
+  sops?: Maybe<Array<Maybe<TSopsProviderNode>>>;
 };
 
 export enum TProjectSpecType {
@@ -294,42 +254,51 @@ export enum TProjectUserRole {
   Member = 'MEMBER'
 }
 
-export type TPackageNodePage = {
-  __typename?: 'PackageNodePage';
-  totalCount?: Maybe<Scalars['Int']>;
-  resultCount?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-  results?: Maybe<Array<Maybe<TPackageNode>>>;
-};
-
 export type TPackageNode = {
   __typename?: 'PackageNode';
-  created: Scalars['DateTime'];
-  modified: Scalars['DateTime'];
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
-  slug: Scalars['String'];
   id: Scalars['UUID'];
   project: TProjectNode;
-  dirname: Scalars['String'];
+  dirPath: Scalars['String'];
   type: Scalars['String'];
   namespace: Scalars['String'];
+  hash: Scalars['String'];
+  fileInformation?: Maybe<Array<Maybe<TFileInformationNode>>>;
   environments: Array<TClusterLevelNode>;
+  deployments?: Maybe<Array<Maybe<TDeploymentNode>>>;
+  clusterLevel?: Maybe<Array<Maybe<TClusterLevelNode>>>;
+};
+
+
+export type TPackageNodeDeploymentsArgs = {
+  level?: Maybe<Scalars['String']>;
+  switchable?: Maybe<Scalars['Boolean']>;
+};
+
+
+export type TPackageNodeClusterLevelArgs = {
+  level?: Maybe<Scalars['String']>;
+};
+
+export type TFileInformationNode = {
+  __typename?: 'FileInformationNode';
+  path?: Maybe<Scalars['String']>;
+  encrypted?: Maybe<Scalars['Boolean']>;
 };
 
 export type TClusterLevelNode = {
   __typename?: 'ClusterLevelNode';
-  created: Scalars['DateTime'];
-  modified: Scalars['DateTime'];
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   id: Scalars['UUID'];
   package: TPackageNode;
   type: TClusterLevelType;
   valuesPath: Scalars['String'];
+  valuesType?: Maybe<TClusterLevelValuesType>;
   sopsCredentials?: Maybe<TSopsProviderNode>;
   deployments: Array<TDeploymentNode>;
+  specsUrl?: Maybe<Scalars['String']>;
 };
 
 export enum TClusterLevelType {
@@ -337,52 +306,33 @@ export enum TClusterLevelType {
   Remote = 'REMOTE'
 }
 
-export type TSopsProviderNode = {
-  __typename?: 'SOPSProviderNode';
-  created: Scalars['DateTime'];
-  modified: Scalars['DateTime'];
-  id: Scalars['ID'];
-  username: Scalars['String'];
-  clusterlevelSet: Array<TClusterLevelNode>;
+export enum TClusterLevelValuesType {
+  File = 'FILE',
+  Dir = 'DIR'
+}
+
+export type TSopsProviderNode = TAwskmsNode | TPgpKeyNode;
+
+export type TAwskmsNode = {
+  __typename?: 'AWSKMSNode';
+  title: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+};
+
+export type TPgpKeyNode = {
+  __typename?: 'PGPKeyNode';
+  title: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
 };
 
 export type TDeploymentNode = {
   __typename?: 'DeploymentNode';
-  created: Scalars['DateTime'];
-  modified: Scalars['DateTime'];
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   id: Scalars['UUID'];
   ports: Scalars['String'];
-  clusterlevel: TClusterLevelNode;
+  clusterLevel: TClusterLevelNode;
   isSwitchable: Scalars['Boolean'];
-};
-
-export type TClusterLevelNodePage = {
-  __typename?: 'ClusterLevelNodePage';
-  totalCount?: Maybe<Scalars['Int']>;
-  resultCount?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-  results?: Maybe<Array<Maybe<TClusterLevelNode>>>;
-};
-
-export type TDeploymentNodePage = {
-  __typename?: 'DeploymentNodePage';
-  totalCount?: Maybe<Scalars['Int']>;
-  resultCount?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-  results?: Maybe<Array<Maybe<TDeploymentNode>>>;
-};
-
-export type TSopsProviderNodePage = {
-  __typename?: 'SOPSProviderNodePage';
-  totalCount?: Maybe<Scalars['Int']>;
-  resultCount?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-  results?: Maybe<Array<Maybe<TSopsProviderNode>>>;
 };
 
 export type TPleaseRemoveMeNode = {
@@ -395,6 +345,10 @@ export type TMutation = {
   upsertOrganization?: Maybe<TUpsertOrganizationPayload>;
   createUpdateProject?: Maybe<TCreateUpdateProjectPayload>;
   deleteProject?: Maybe<TDeleteProject>;
+  createUpdateClusterLevel?: Maybe<TCreateUpdateClusterLevelPayload>;
+  deleteClusterLevel?: Maybe<TDeleteClusterLevel>;
+  createUpdateSops?: Maybe<TCreateUpdateSops>;
+  deleteSops?: Maybe<TDeleteSops>;
 };
 
 
@@ -409,6 +363,26 @@ export type TMutationCreateUpdateProjectArgs = {
 
 
 export type TMutationDeleteProjectArgs = {
+  id?: Maybe<Scalars['UUID']>;
+};
+
+
+export type TMutationCreateUpdateClusterLevelArgs = {
+  input: TCreateUpdateClusterLevelInput;
+};
+
+
+export type TMutationDeleteClusterLevelArgs = {
+  id?: Maybe<Scalars['UUID']>;
+};
+
+
+export type TMutationCreateUpdateSopsArgs = {
+  sopsData: TSopsInputType;
+};
+
+
+export type TMutationDeleteSopsArgs = {
   id?: Maybe<Scalars['UUID']>;
 };
 
@@ -463,6 +437,56 @@ export type TDeleteProject = {
   ok?: Maybe<Scalars['Boolean']>;
 };
 
+export type TCreateUpdateClusterLevelInput = {
+  title: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  type: Scalars['String'];
+  package: Scalars['ID'];
+  sopsCredentials?: Maybe<Scalars['ID']>;
+  valuesPath?: Maybe<Scalars['String']>;
+  valuesType?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['ID']>;
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+export type TCreateUpdateClusterLevelPayload = {
+  __typename?: 'CreateUpdateClusterLevelPayload';
+  clusterLevel?: Maybe<TClusterLevelNode>;
+  errors?: Maybe<Array<Maybe<TErrorType>>>;
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+export type TDeleteClusterLevel = {
+  __typename?: 'DeleteClusterLevel';
+  ok?: Maybe<Scalars['Boolean']>;
+};
+
+export type TSopsInputType = {
+  id?: Maybe<Scalars['UUID']>;
+  title: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  sopsType: TSopsTypeEnum;
+  project: Scalars['UUID'];
+  secret1: Scalars['String'];
+  secret2?: Maybe<Scalars['String']>;
+  secret3?: Maybe<Scalars['String']>;
+};
+
+export enum TSopsTypeEnum {
+  Aws = 'aws',
+  Pgp = 'pgp'
+}
+
+export type TCreateUpdateSops = {
+  __typename?: 'CreateUpdateSOPS';
+  ok?: Maybe<Scalars['Boolean']>;
+};
+
+export type TDeleteSops = {
+  __typename?: 'DeleteSOPS';
+  ok?: Maybe<Scalars['Boolean']>;
+};
+
 
 export type TOrganizationsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -482,19 +506,19 @@ export type TProjectsQueryVariables = Exact<{
 }>;
 
 
-export type TProjectsQueryResult = { __typename?: 'Query', allProjects?: Maybe<{ __typename?: 'ProjectNodePage', totalCount?: Maybe<number>, results?: Maybe<Array<Maybe<{ __typename?: 'ProjectNode', title: string, modified: any, description?: Maybe<string>, currentCommit: string, id: any, slug: string, packages?: Maybe<{ __typename?: 'PackageNodePage', resultCount?: Maybe<number> }>, members: Array<{ __typename?: 'ProjectUserNode', user?: Maybe<{ __typename?: 'UserNode', firstName: string, lastName: string, avatar: string }> }> }>>> }> };
+export type TProjectsQueryResult = { __typename?: 'Query', allProjects?: Maybe<{ __typename?: 'ProjectNodePage', totalCount?: Maybe<number>, results?: Maybe<Array<Maybe<{ __typename?: 'ProjectNode', title: string, modified: any, description?: Maybe<string>, currentCommit: string, id: any, slug: string, packages: Array<{ __typename?: 'PackageNode', title: string }>, sops?: Maybe<Array<Maybe<{ __typename?: 'AWSKMSNode', title: string } | { __typename?: 'PGPKeyNode', title: string }>>>, members: Array<{ __typename?: 'ProjectUserNode', user?: Maybe<{ __typename?: 'UserNode', firstName: string, lastName: string, avatar: string }> }> }>>> }> };
 
 export type TProjectDetailQueryVariables = Exact<{
   slug?: Maybe<Scalars['String']>;
 }>;
 
 
-export type TProjectDetailQueryResult = { __typename?: 'Query', project?: Maybe<{ __typename?: 'ProjectNode', created: any, modified: any, title: string, description?: Maybe<string>, slug: string, id: any, specRepository: string, specRepositoryBranch?: Maybe<string>, specType: TProjectSpecType, repoDir: string, currentCommit: string, accessUsername: string, accessToken: string, creator?: Maybe<{ __typename?: 'UserNode', firstName: string, lastName: string }>, members: Array<{ __typename?: 'ProjectUserNode', id: any, role: TProjectUserRole, user?: Maybe<{ __typename?: 'UserNode', firstName: string, lastName: string, avatar: string, lastLogin?: Maybe<any>, email: string }> }>, packages?: Maybe<{ __typename?: 'PackageNodePage', totalCount?: Maybe<number>, results?: Maybe<Array<Maybe<{ __typename?: 'PackageNode', modified: any, title: string, description?: Maybe<string>, type: string, namespace: string, id: any, environments: Array<{ __typename?: 'ClusterLevelNode', deployments: Array<{ __typename?: 'DeploymentNode', title: string, id: any }> }> }>>> }> }> };
+export type TProjectDetailQueryResult = { __typename?: 'Query', project?: Maybe<{ __typename?: 'ProjectNode', created: any, modified: any, title: string, description?: Maybe<string>, slug: string, id: any, specRepository: string, specRepositoryBranch?: Maybe<string>, specType: TProjectSpecType, repoDir: string, currentCommit: string, accessUsername: string, accessToken: string, creator?: Maybe<{ __typename?: 'UserNode', firstName: string, lastName: string }>, members: Array<{ __typename?: 'ProjectUserNode', id: any, role: TProjectUserRole, user?: Maybe<{ __typename?: 'UserNode', firstName: string, lastName: string, avatar: string, lastLogin?: Maybe<any>, email: string }> }>, packages: Array<{ __typename?: 'PackageNode', title: string, description?: Maybe<string>, type: string, namespace: string, id: any, environments: Array<{ __typename?: 'ClusterLevelNode', deployments: Array<{ __typename?: 'DeploymentNode', title: string, id: any }> }> }>, sops?: Maybe<Array<Maybe<{ __typename?: 'AWSKMSNode', title: string, description?: Maybe<string> } | { __typename?: 'PGPKeyNode', title: string, description?: Maybe<string> }>>> }> };
 
 export type TProjectDetailOtherProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type TProjectDetailOtherProjectsQueryResult = { __typename?: 'Query', allProjects?: Maybe<{ __typename?: 'ProjectNodePage', results?: Maybe<Array<Maybe<{ __typename?: 'ProjectNode', title: string, modified: any, slug: string, id: any, packages?: Maybe<{ __typename?: 'PackageNodePage', totalCount?: Maybe<number> }> }>>> }> };
+export type TProjectDetailOtherProjectsQueryResult = { __typename?: 'Query', allProjects?: Maybe<{ __typename?: 'ProjectNodePage', results?: Maybe<Array<Maybe<{ __typename?: 'ProjectNode', title: string, modified: any, slug: string, id: any, packages: Array<{ __typename?: 'PackageNode', title: string }> }>>> }> };
 
 export type TCreateProjectMutationVariables = Exact<{
   title: Scalars['String'];
@@ -529,6 +553,19 @@ export type TDeleteProjectMutationVariables = Exact<{
 
 
 export type TDeleteProjectMutationResult = { __typename?: 'Mutation', deleteProject?: Maybe<{ __typename?: 'DeleteProject', ok?: Maybe<boolean> }> };
+
+export type TCreateUpdateSopsMutationVariables = Exact<{
+  title: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  sopsType: TSopsTypeEnum;
+  project: Scalars['UUID'];
+  secret1: Scalars['String'];
+  secret2?: Maybe<Scalars['String']>;
+  secret3?: Maybe<Scalars['String']>;
+}>;
+
+
+export type TCreateUpdateSopsMutationResult = { __typename?: 'Mutation', createUpdateSops?: Maybe<{ __typename?: 'CreateUpdateSOPS', ok?: Maybe<boolean> }> };
 
 export type TAllUsersQueryVariables = Exact<{
   limit?: Maybe<Scalars['Int']>;
@@ -575,7 +612,15 @@ export const ProjectsQuery = gql`
       id
       slug
       packages {
-        resultCount
+        title
+      }
+      sops {
+        ... on AWSKMSNode {
+          title
+        }
+        ... on PGPKeyNode {
+          title
+        }
       }
       members {
         user {
@@ -620,20 +665,26 @@ export const ProjectDetailQuery = gql`
       role
     }
     packages {
-      totalCount
-      results {
-        modified
+      title
+      description
+      type
+      namespace
+      id
+      environments {
+        deployments {
+          title
+          id
+        }
+      }
+    }
+    sops {
+      ... on AWSKMSNode {
         title
         description
-        type
-        namespace
-        id
-        environments {
-          deployments {
-            title
-            id
-          }
-        }
+      }
+      ... on PGPKeyNode {
+        title
+        description
       }
     }
   }
@@ -648,7 +699,7 @@ export const ProjectDetailOtherProjectsQuery = gql`
       slug
       id
       packages {
-        totalCount
+        title
       }
     }
   }
@@ -683,6 +734,13 @@ export const UpdateProject = gql`
 export const DeleteProject = gql`
     mutation DeleteProject($id: UUID) {
   deleteProject(id: $id) {
+    ok
+  }
+}
+    `;
+export const CreateUpdateSops = gql`
+    mutation createUpdateSops($title: String!, $description: String, $sopsType: SOPSTypeEnum!, $project: UUID!, $secret1: String!, $secret2: String, $secret3: String) {
+  createUpdateSops(sopsData: {title: $title, description: $description, sopsType: $sopsType, project: $project, secret1: $secret1, secret2: $secret2, secret3: $secret3}) {
     ok
   }
 }
