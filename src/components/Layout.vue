@@ -269,7 +269,7 @@ export default class Layout extends Vue {
   }
 
   mounted(): void {
-    if (this.$route.name !== 'Overview') {
+    if (this.$route.name !== 'overview') {
       this.$router.push({ name: 'overview' });
     }
   }

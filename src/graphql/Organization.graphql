@@ -4,7 +4,6 @@ query OrganizationsQuery {
         id,
         title
         description,
-        avatarImage
     }
   }
 }
@@ -15,7 +14,6 @@ query OrganizationQuery($id: UUID!) {
     ) {
         title,
         description,
-        avatarImage,
         id
     }
 }

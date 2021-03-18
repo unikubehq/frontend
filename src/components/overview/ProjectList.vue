@@ -24,7 +24,7 @@
             <p>{{ project.description }}</p>
           </v-col>
           <v-col class="text-right">
-            <router-link :to="'/project/' + project.slug + '?edit=true'">
+            <router-link :to="'/project/' + project.id + '?edit=true'">
               <v-icon size="24">$vuetify.icons.edit</v-icon>
             </router-link>
             <v-divider style="height: 24px" class="mx-4" vertical></v-divider>
@@ -33,7 +33,7 @@
         </v-row>
         <v-row class="white">
           <v-divider class="px-5"></v-divider>
-          <router-link :to="'/project/' + project.slug ">
+          <router-link :to="'/project/' + project.id ">
             <v-icon class="project-card__detail" size="24">$vuetify.icons.dropdown</v-icon>
           </router-link>
         </v-row>

@@ -409,7 +409,6 @@ export const OrganizationsQuery = gql`
       id
       title
       description,
-      avatarImage
     }
   }
 }
@@ -445,8 +444,8 @@ export const ProjectsQuery = gql`
 }
     `;
 export const ProjectDetailQuery = gql`
-    query ProjectDetailQuery($slug: String) {
-  project(slug: $slug) {
+    query ProjectDetailQuery($id: UUID) {
+  project(id: $id) {
     created
     title
     description
@@ -475,7 +474,7 @@ export const ProjectDetailQuery = gql`
     `;
 export const ProjectDetailOtherProjectsQuery = gql`
     query ProjectDetailOtherProjectsQuery {
-  allProjects(limit: 1000) {
+  allProjects {
     results {
       title
       id

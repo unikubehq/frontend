@@ -13,8 +13,8 @@ query ProjectsQuery($limit: Int, $offset: Int) {
     }
 }
 
-query ProjectDetailQuery($slug: String) {
-    project(slug: $slug) {
+query ProjectDetailQuery($id: UUID) {
+    project(id: $id) {
         created,
         title,
         description,

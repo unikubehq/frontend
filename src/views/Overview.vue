@@ -64,8 +64,8 @@ Component.registerHooks([
       query: ProjectsQuery,
       variables() {
         return {
-          limit: this.limit,
-          offset: this.offset,
+          // limit: this.limit,
+          // offset: this.offset,
         };
       },
     },

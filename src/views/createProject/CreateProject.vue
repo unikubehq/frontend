@@ -152,7 +152,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import {
+  Component, Prop, Vue, Watch,
+} from 'vue-property-decorator';
 import { CreateProject, UpdateProject, TProjectNode } from '@/generated/graphql';
 import { required, url } from 'vuelidate/lib/validators';
 import VueI18n from 'vue-i18n';
@@ -251,7 +253,9 @@ export default class CreateProjectView extends Vue {
   }
 
   handleEditMode(): void {
+    console.log('handling edit mode');
     if (this.project) {
+      console.log('project available');
       this.title = this.project.title;
       this.description = this.project.description;
       this.specRepository = this.project.specRepository;
@@ -261,6 +265,11 @@ export default class CreateProjectView extends Vue {
       this.accessToken = this.project.accessUsername;
       this.id = this.project.id;
     }
+  }
+
+  @Watch('project')
+  handleProjectChange(): void {
+    this.handleEditMode();
   }
 
   mounted(): void {

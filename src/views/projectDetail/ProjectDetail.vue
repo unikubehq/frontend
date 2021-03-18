@@ -6,7 +6,7 @@
       <v-tab
         class="text-left"
         height="130px"
-        :to="'/project/' + project.slug"
+        :to="'/project/' + project.id"
         v-for="project in allProjects.results"
         :key="project.id"
         v-model="tab"
@@ -222,7 +222,7 @@ import { ProjectDetailQuery, ProjectDetailOtherProjectsQuery } from '@/generated
       query: ProjectDetailQuery,
       variables() {
         return {
-          slug: this.projectSlug,
+          id: this.projectSlug,
         };
       },
     },
