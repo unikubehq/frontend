@@ -57,7 +57,7 @@
               <v-col cols="6">
                 <small><b>Last Update:</b>{{ verboseDate(project.modified) }}</small>
               </v-col>
-              <v-col cols="3">
+              <v-col cols="3" v-if="project.creator">
                 <h4>{{ project.creator.firstName }} {{ project.creator.lastName }}</h4>
                 <small class="d-block">Created by</small>
               </v-col>
