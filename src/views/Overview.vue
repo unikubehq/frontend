@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <project-bar></project-bar>
-        <div v-for="project in projectResults" :key="project.title">
+        <div v-for="project in projectResults" :key="project.id">
           <v-skeleton-loader
             type="card-avatar, article"
             v-if="loading"
