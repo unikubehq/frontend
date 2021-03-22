@@ -4,6 +4,10 @@ import Vue from 'vue';
 import Vuetify from 'vuetify/lib';
 
 import AccountBlue from '@/components/icons/AccountBlue.vue';
+import Description from '@/components/icons/Description.vue';
+import AccessUser from '@/components/icons/AccessUser.vue';
+import AccessToken from '@/components/icons/AccessToken.vue';
+import Branch from '@/components/icons/Branch.vue';
 import DropdownSmallGrey from '@/components/icons/DropdownSmallGrey.vue';
 import HidePassword from '@/components/icons/HidePassword.vue';
 import ShowPassword from '@/components/icons/ShowPassword.vue';
@@ -19,6 +23,8 @@ import ArrowDownWhite from '@/components/icons/ArrowDownWhite.vue';
 import Email from '@/components/icons/Email.vue';
 import Logout from '@/components/icons/Logout.vue';
 import NotificationBlue from '@/components/icons/NotificationBlue.vue';
+import ProjectInput from '@/components/icons/ProjectInput.vue';
+import Repository from '@/components/icons/Repository.vue';
 import CreateOrganization from '@/components/icons/CreateOrganization.vue';
 import JoinOrganization from '@/components/icons/JoinOrganization.vue';
 import CheckboxChecked from '@/components/icons/CheckboxChecked.vue';
@@ -53,6 +59,24 @@ export default new Vuetify({
     values: {
       accountBlue: {
         component: AccountBlue,
+      },
+      description: {
+        component: Description,
+      },
+      accessUser: {
+        component: AccessUser,
+      },
+      accessToken: {
+        component: AccessToken,
+      },
+      branch: {
+        component: Branch,
+      },
+      repository: {
+        component: Repository,
+      },
+      projectInput: {
+        component: ProjectInput,
       },
       eye: {
         component: HidePassword,

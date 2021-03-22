@@ -8,15 +8,15 @@ query OrganizationsQuery {
   }
 }
 
-query OrganizationQuery($id: UUID!) {
-    organization (
-        id: $id
-    ) {
-        title,
-        description,
-        id
-    }
-}
+#query OrganizationQuery($id: UUID!) {
+#    organization (
+#        id: $id
+#    ) {
+#        title,
+#        description,
+#        id
+#    }
+#}
 
 mutation CreateOrganizationMutation($title: String!) {
     createUpdateOrganization (

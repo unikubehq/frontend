@@ -18,7 +18,7 @@
             <v-divider></v-divider>
           </v-col>
           <v-col cols="6">
-            <h4>{{ project.packages.totalCount }}</h4>
+            <h4>{{ project.packages.length }}</h4>
             <small>No. of Applications</small>
           </v-col>
           <v-col cols="6" class="text-right">
@@ -79,7 +79,7 @@
             <v-divider></v-divider>
             <v-tabs v-model="innerTab">
               <v-tab>
-                Applications <span class="tab-count-badge"> {{ project.packages.totalCount }}</span>
+                Applications <span class="tab-count-badge"> {{ project.packages.length }}</span>
               </v-tab>
               <v-tab>
                 Team Members <span class="tab-count-badge"> {{ project.members.length }}</span>
@@ -88,7 +88,7 @@
                 <v-tab-item>
                   <v-container>
                     <v-row>
-                      <v-col cols="6" v-for="pkg in project.packages.results" :key="pkg.id">
+                      <v-col cols="6" v-for="pkg in project.packages" :key="pkg.id">
                         <v-card outlined>
                           <v-card-title>
                             <v-row>
@@ -182,7 +182,11 @@
             </v-tabs>
           </v-container>
           <v-container v-else>
-            <create-project-view :edit-mode="true" :project="project"></create-project-view>
+            <create-project-view
+              :edit-mode="true"
+              :project="project"
+              @sops-created="handleSopsCreated"
+            ></create-project-view>
           </v-container>
         </v-tab-item>
       </v-tabs-items>
@@ -256,6 +260,11 @@ export default class ProjectDetail extends Vue {
 
   setEdit(): void {
     this.$router.push({ query: { edit: 'true' } });
+  }
+
+  handleSopsCreated(): void {
+    console.log('big fat yeet');
+    this.$apollo.queries.project.refetch();
   }
 }
 </script>

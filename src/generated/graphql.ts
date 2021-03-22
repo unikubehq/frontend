@@ -24,6 +24,7 @@ export type TQuery = {
   allOrganizations?: Maybe<TOrganizationNodePage>;
   allProjects?: Maybe<TProjectNodePage>;
   project?: Maybe<TProjectNode>;
+  clusterlevel?: Maybe<TClusterLevelNode>;
 };
 
 
@@ -42,6 +43,11 @@ export type TQueryAllProjectsArgs = {
 export type TQueryProjectArgs = {
   id?: Maybe<Scalars['UUID']>;
   slug?: Maybe<Scalars['String']>;
+};
+
+
+export type TQueryClusterlevelArgs = {
+  id?: Maybe<Scalars['UUID']>;
 };
 
 export type TOrganizationNodePage = {
@@ -86,9 +92,10 @@ export type TProjectNode = {
   currentCommitDateTime?: Maybe<Scalars['DateTime']>;
   repositoryStatus: TProjectRepositoryStatus;
   accessUsername: Scalars['String'];
-  accessToken?: Maybe<Scalars['Boolean']>;
+  accessToken?: Maybe<Scalars['String']>;
   organization?: Maybe<TOrganizationNode>;
   packages: Array<TPackageNode>;
+  sops?: Maybe<Array<Maybe<TSopsProviderNode>>>;
 };
 
 
@@ -172,6 +179,10 @@ export type TAwskmsNode = {
   __typename?: 'AWSKMSNode';
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
+  id: Scalars['UUID'];
+  project: TProjectNode;
+  accessKey: Scalars['String'];
+  secretAccessKey: Scalars['String'];
 };
 
 export type TPgpKeyNode = {
@@ -260,7 +271,6 @@ export type TErrorType = {
 export type TCreateUpdateProjectInput = {
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
-  keycloakData: Scalars['String'];
   specRepository: Scalars['String'];
   specRepositoryBranch?: Maybe<Scalars['String']>;
   specType: Scalars['String'];
@@ -268,6 +278,7 @@ export type TCreateUpdateProjectInput = {
   currentCommitDateTime?: Maybe<Scalars['DateTime']>;
   accessUsername?: Maybe<Scalars['String']>;
   accessToken?: Maybe<Scalars['String']>;
+  organization: Scalars['UUID'];
   id?: Maybe<Scalars['ID']>;
   clientMutationId?: Maybe<Scalars['String']>;
 };
@@ -338,7 +349,7 @@ export type TDeleteSops = {
 export type TOrganizationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type TOrganizationsQueryResult = { __typename?: 'Query', allOrganizations?: Maybe<{ __typename?: 'OrganizationNodePage', results?: Maybe<Array<Maybe<{ __typename?: 'OrganizationNode', title: string, description?: Maybe<string> }>>> }> };
+export type TOrganizationsQueryResult = { __typename?: 'Query', allOrganizations?: Maybe<{ __typename?: 'OrganizationNodePage', results?: Maybe<Array<Maybe<{ __typename?: 'OrganizationNode', id: any, title: string, description?: Maybe<string> }>>> }> };
 
 export type TCreateOrganizationMutationVariables = Exact<{
   title: Scalars['String'];
@@ -353,14 +364,14 @@ export type TProjectsQueryVariables = Exact<{
 }>;
 
 
-export type TProjectsQueryResult = { __typename?: 'Query', allProjects?: Maybe<{ __typename?: 'ProjectNodePage', totalCount?: Maybe<number>, results?: Maybe<Array<Maybe<{ __typename?: 'ProjectNode', title: string, description?: Maybe<string>, currentCommit: string, id: any, packages: Array<{ __typename?: 'PackageNode', title: string }> }>>> }> };
+export type TProjectsQueryResult = { __typename?: 'Query', allProjects?: Maybe<{ __typename?: 'ProjectNodePage', totalCount?: Maybe<number>, results?: Maybe<Array<Maybe<{ __typename?: 'ProjectNode', title: string, description?: Maybe<string>, currentCommit: string, id: any, packages: Array<{ __typename?: 'PackageNode', title: string }>, sops?: Maybe<Array<Maybe<{ __typename?: 'AWSKMSNode', title: string } | { __typename?: 'PGPKeyNode', title: string }>>> }>>> }> };
 
 export type TProjectDetailQueryVariables = Exact<{
-  slug?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['UUID']>;
 }>;
 
 
-export type TProjectDetailQueryResult = { __typename?: 'Query', project?: Maybe<{ __typename?: 'ProjectNode', created: any, title: string, description?: Maybe<string>, id: any, specRepository: string, specRepositoryBranch?: Maybe<string>, specType: TProjectSpecType, currentCommit: string, accessUsername: string, accessToken?: Maybe<boolean>, packages: Array<{ __typename?: 'PackageNode', title: string, description?: Maybe<string>, type: string, namespace: string, id: any, environments: Array<{ __typename?: 'ClusterLevelNode', deployments: Array<{ __typename?: 'DeploymentNode', title: string, id: any }> }> }> }> };
+export type TProjectDetailQueryResult = { __typename?: 'Query', project?: Maybe<{ __typename?: 'ProjectNode', created: any, title: string, description?: Maybe<string>, id: any, specRepository: string, specRepositoryBranch?: Maybe<string>, specType: TProjectSpecType, currentCommit: string, accessUsername: string, accessToken?: Maybe<string>, packages: Array<{ __typename?: 'PackageNode', title: string, description?: Maybe<string>, type: string, namespace: string, id: any, environments: Array<{ __typename?: 'ClusterLevelNode', deployments: Array<{ __typename?: 'DeploymentNode', title: string, id: any }> }> }>, sops?: Maybe<Array<Maybe<{ __typename?: 'AWSKMSNode', title: string, description?: Maybe<string> } | { __typename?: 'PGPKeyNode', title: string, description?: Maybe<string> }>>> }> };
 
 export type TProjectDetailOtherProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -375,6 +386,7 @@ export type TCreateProjectMutationVariables = Exact<{
   accessUsername: Scalars['String'];
   accessToken: Scalars['String'];
   specRepositoryBranch: Scalars['String'];
+  organization: Scalars['UUID'];
 }>;
 
 
@@ -389,6 +401,7 @@ export type TUpdateProjectMutationVariables = Exact<{
   accessToken: Scalars['String'];
   specRepositoryBranch: Scalars['String'];
   id?: Maybe<Scalars['ID']>;
+  organization: Scalars['UUID'];
 }>;
 
 
@@ -401,6 +414,19 @@ export type TDeleteProjectMutationVariables = Exact<{
 
 export type TDeleteProjectMutationResult = { __typename?: 'Mutation', deleteProject?: Maybe<{ __typename?: 'DeleteProject', ok?: Maybe<boolean> }> };
 
+export type TCreateUpdateSopsMutationVariables = Exact<{
+  title: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  sopsType: TSopsTypeEnum;
+  project: Scalars['UUID'];
+  secret1: Scalars['String'];
+  secret2?: Maybe<Scalars['String']>;
+  secret3?: Maybe<Scalars['String']>;
+}>;
+
+
+export type TCreateUpdateSopsMutationResult = { __typename?: 'Mutation', createUpdateSops?: Maybe<{ __typename?: 'CreateUpdateSOPS', ok?: Maybe<boolean> }> };
+
 
 export const OrganizationsQuery = gql`
     query OrganizationsQuery {
@@ -408,7 +434,7 @@ export const OrganizationsQuery = gql`
     results {
       id
       title
-      description,
+      description
     }
   }
 }
@@ -428,8 +454,8 @@ export const CreateOrganizationMutation = gql`
 }
     `;
 export const ProjectsQuery = gql`
-    query ProjectsQuery($limit: Int, $offset: Int) {
-  allProjects(limit: $limit, offset: $offset) {
+    query ProjectsQuery {
+  allProjects {
     totalCount
     results {
       title
@@ -438,6 +464,14 @@ export const ProjectsQuery = gql`
       id
       packages {
         title
+      }
+      sops {
+        ... on AWSKMSNode {
+          title
+        }
+        ... on PGPKeyNode {
+          title
+        }
       }
     }
   }
@@ -469,6 +503,16 @@ export const ProjectDetailQuery = gql`
         }
       }
     }
+    sops {
+      ... on AWSKMSNode {
+        title
+        description
+      }
+      ... on PGPKeyNode {
+        title
+        description
+      }
+    }
   }
 }
     `;
@@ -486,8 +530,8 @@ export const ProjectDetailOtherProjectsQuery = gql`
 }
     `;
 export const CreateProject = gql`
-    mutation CreateProject($title: String!, $description: String!, $specRepository: String!, $specType: String!, $accessUsername: String!, $accessToken: String!, $specRepositoryBranch: String!) {
-  createUpdateProject(input: {keycloakData: "", title: $title, description: $description, specRepository: $specRepository, specType: $specType, specRepositoryBranch: $specRepositoryBranch, accessUsername: $accessUsername, accessToken: $accessToken}) {
+    mutation CreateProject($title: String!, $description: String!, $specRepository: String!, $specType: String!, $accessUsername: String!, $accessToken: String!, $specRepositoryBranch: String!, $organization: UUID!) {
+  createUpdateProject(input: {title: $title, description: $description, specRepository: $specRepository, specType: $specType, specRepositoryBranch: $specRepositoryBranch, accessUsername: $accessUsername, accessToken: $accessToken, organization: $organization}) {
     project {
       title
     }
@@ -499,8 +543,8 @@ export const CreateProject = gql`
 }
     `;
 export const UpdateProject = gql`
-    mutation UpdateProject($title: String!, $description: String!, $specRepository: String!, $specType: String!, $accessUsername: String!, $accessToken: String!, $specRepositoryBranch: String!, $id: ID) {
-  createUpdateProject(input: {keycloakData: "", title: $title, description: $description, specRepository: $specRepository, specType: $specType, specRepositoryBranch: $specRepositoryBranch, accessUsername: $accessUsername, accessToken: $accessToken, id: $id}) {
+    mutation UpdateProject($title: String!, $description: String!, $specRepository: String!, $specType: String!, $accessUsername: String!, $accessToken: String!, $specRepositoryBranch: String!, $id: ID, $organization: UUID!) {
+  createUpdateProject(input: {title: $title, description: $description, specRepository: $specRepository, specType: $specType, specRepositoryBranch: $specRepositoryBranch, accessUsername: $accessUsername, accessToken: $accessToken, organization: $organization, id: $id}) {
     project {
       title
     }
@@ -514,6 +558,13 @@ export const UpdateProject = gql`
 export const DeleteProject = gql`
     mutation DeleteProject($id: UUID) {
   deleteProject(id: $id) {
+    ok
+  }
+}
+    `;
+export const CreateUpdateSops = gql`
+    mutation createUpdateSops($title: String!, $description: String, $sopsType: SOPSTypeEnum!, $project: UUID!, $secret1: String!, $secret2: String, $secret3: String) {
+  createUpdateSops(sopsData: {title: $title, description: $description, sopsType: $sopsType, project: $project, secret1: $secret1, secret2: $secret2, secret3: $secret3}) {
     ok
   }
 }

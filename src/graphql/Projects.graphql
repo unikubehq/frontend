@@ -9,6 +9,14 @@ query ProjectsQuery($limit: Int, $offset: Int) {
             packages {
                 title,
             }
+            sops {
+                ... on AWSKMSNode {
+                    title
+                },
+                ... on PGPKeyNode {
+                    title
+                },
+            }
         }
     }
 }
@@ -34,9 +42,20 @@ query ProjectDetailQuery($id: UUID) {
             environments {
                 deployments {
                     title,
-                    id
+                    id,
                 }
             }
+
+        },
+        sops {
+            ... on AWSKMSNode {
+                title,
+                description
+            },
+            ... on PGPKeyNode {
+                title
+                description
+            },
         }
 
     }
@@ -62,10 +81,10 @@ mutation CreateProject(
   $accessUsername: String!
   $accessToken: String!
   $specRepositoryBranch: String!
+  $organization: UUID!
 ) {
   createUpdateProject(
     input: {
-      keycloakData: "",
       title: $title
       description: $description
       specRepository: $specRepository
@@ -73,6 +92,7 @@ mutation CreateProject(
       specRepositoryBranch: $specRepositoryBranch
       accessUsername: $accessUsername
       accessToken: $accessToken
+      organization: $organization
     }
   ) {
     project {
@@ -94,10 +114,10 @@ mutation UpdateProject(
   $accessToken: String!
   $specRepositoryBranch: String!
   $id: ID
+  $organization: UUID!
 ) {
   createUpdateProject(
     input: {
-      keycloakData: "",
       title: $title
       description: $description
       specRepository: $specRepository
@@ -105,6 +125,7 @@ mutation UpdateProject(
       specRepositoryBranch: $specRepositoryBranch
       accessUsername: $accessUsername
       accessToken: $accessToken
+      organization: $organization
       id: $id
     }
   ) {
@@ -123,4 +144,28 @@ mutation DeleteProject($id: UUID) {
   deleteProject(id: $id) {
     ok
   }
+}
+
+mutation createUpdateSops(
+    $title: String!
+    $description: String
+    $sopsType: SOPSTypeEnum!
+    $project: UUID!
+    $secret1: String!
+    $secret2: String
+    $secret3: String
+) {
+    createUpdateSops(
+        sopsData: {
+            title: $title
+            description: $description
+            sopsType: $sopsType
+            project: $project
+            secret1: $secret1
+            secret2: $secret2
+            secret3: $secret3
+        }
+    ) {
+        ok
+    }
 }

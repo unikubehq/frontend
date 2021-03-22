@@ -2,7 +2,10 @@
   letter-spacing: -0.2px;
 }
 .v-text-field--outlined .v-label {
-  left: -40px !important;
+  left: -12px !important;
+}
+.v-text-field--outlined .v-input__prepend-inner ~ .v-text-field__slot .v-label {
+  left: -43px !important;
 }
 .v-application--is-ltr .v-text-field--outlined legend {
   display: none;

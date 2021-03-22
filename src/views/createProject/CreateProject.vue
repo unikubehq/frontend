@@ -4,7 +4,7 @@
     <h2 v-else>Enter Your Project Details Below</h2>
     <v-form class="pa-10 white create-form">
       <v-row>
-        <v-col>
+        <v-col cols="6">
           <v-text-field
             :label="$t('Project Name')"
             name="projectName"
@@ -15,10 +15,10 @@
             :placeholder="$t('Enter Project Name')"
             v-model="title"
             @blur="$v.title.$touch()"
-            prepend-inner-icon="$vuetify.icons.user"
+            prepend-inner-icon="$vuetify.icons.projectInput"
           />
         </v-col>
-        <v-col>
+        <v-col cols="6">
           <v-text-field
             :label="$t('Description')"
             name="description"
@@ -27,24 +27,10 @@
             type="text"
             :placeholder="$t('Enter Description')"
             v-model="description"
-            prepend-inner-icon="$vuetify.icons.user"
+            prepend-inner-icon="$vuetify.icons.description"
           />
         </v-col>
-      </v-row>
-      <v-row>
-        <v-col>
-          <v-text-field
-            :label="$t('Repository Directory')"
-            name="repoDirectory"
-            filled
-            outlined
-            type="text"
-            :placeholder="$t('Enter Repository Directory')"
-            v-model="repoDir"
-            prepend-inner-icon="$vuetify.icons.user"
-          />
-        </v-col>
-        <v-col>
+        <v-col cols="6">
           <v-text-field
             :label="$t('Specification Repository')"
             name="specRepo"
@@ -54,13 +40,11 @@
             :placeholder="$t('Enter Specification Repository')"
             v-model="specRepository"
             :error-messages="specRepositoryErrors"
-            prepend-inner-icon="$vuetify.icons.user"
+            prepend-inner-icon="$vuetify.icons.repository"
             @blur="$v.specRepository.$touch()"
           />
         </v-col>
-      </v-row>
-      <v-row>
-        <v-col>
+        <v-col cols="6">
           <v-text-field
             :label="$t('Specification Repository Branch')"
             name="specRepoBranch"
@@ -70,26 +54,11 @@
             :placeholder="$t('Enter Repository Branch')"
             v-model="specRepositoryBranch"
             :error-messages="specRepositoryBranchErrors"
-            prepend-inner-icon="$vuetify.icons.user"
+            prepend-inner-icon="$vuetify.icons.branch"
             @blur="$v.specRepositoryBranch.$touch()"
           />
         </v-col>
-        <v-col>
-          <v-select
-            :label="$t('Specification Type')"
-            name="specType"
-            filled
-            outlined
-            type="text"
-            :placeholder="$t('Enter Specification Type')"
-            v-model="specType"
-            :items="specTypeChoices"
-            prepend-inner-icon="$vuetify.icons.user"
-          />
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col>
+        <v-col cols="6">
           <v-text-field
             :label="$t('Access Username')"
             name="accessUsername"
@@ -99,11 +68,11 @@
             :placeholder="$t('Enter Access Username')"
             v-model="accessUsername"
             :error-messages="accessUsernameErrors"
-            prepend-inner-icon="$vuetify.icons.user"
+            prepend-inner-icon="$vuetify.icons.accessUser"
             @blur="$v.accessUsername.$touch()"
           />
         </v-col>
-        <v-col>
+        <v-col cols="6">
           <v-text-field
             :label="$t('Access Token')"
             name="accessToken"
@@ -113,8 +82,20 @@
             :placeholder="$t('Enter Access Token')"
             v-model="accessToken"
             :error-messages="accessTokenErrors"
-            prepend-inner-icon="$vuetify.icons.user"
+            prepend-inner-icon="$vuetify.icons.accessToken"
             @blur="$v.accessToken.$touch()"
+          />
+        </v-col>
+        <v-col cols="6">
+          <v-select
+            :label="$t('Specification Type')"
+            name="specType"
+            filled
+            outlined
+            type="text"
+            :placeholder="$t('Enter Specification Type')"
+            v-model="specType"
+            :items="specTypeChoices"
           />
         </v-col>
       </v-row>
@@ -148,6 +129,7 @@
         </v-col>
       </v-row>
     </v-form>
+    <sops-edit :project="project"></sops-edit>
   </v-container>
 </template>
 
@@ -157,10 +139,14 @@ import {
 } from 'vue-property-decorator';
 import { CreateProject, UpdateProject, TProjectNode } from '@/generated/graphql';
 import { required, url } from 'vuelidate/lib/validators';
+import SopsEdit from '@/views/projectDetail/SopsEdit.vue';
 import VueI18n from 'vue-i18n';
 import TranslateResult = VueI18n.TranslateResult;
 
 @Component({
+  components: {
+    SopsEdit,
+  },
   validations: {
     title: {
       required,
@@ -289,6 +275,7 @@ export default class CreateProjectView extends Vue {
         accessUsername: this.accessUsername,
         accessToken: this.accessToken,
         specRepositoryBranch: this.specRepositoryBranch,
+        organization: this.$store.state.context.organization.id,
         id: this.id,
       },
     })
@@ -305,7 +292,7 @@ export default class CreateProjectView extends Vue {
 }
 </script>
 
-<style scoped>
+<style>
 .create-form {
     box-shadow: 0 2px 40px 0 rgba(183, 183, 183, 0.15);
 }
