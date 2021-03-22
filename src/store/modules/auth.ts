@@ -56,6 +56,15 @@ export default class Auth extends VuexModule {
   refresh(): void {
     this.client.updateToken(30).then((refreshed: boolean) => {
       if (refreshed) {
+        console.log(this.client);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const authorization = new KeycloakAuthorization(this.client);
+        authorization.ready.then(() => {
+          authorization.entitlement('gateway').then((rpt: string) => {
+            this.context.commit('setRpt', rpt);
+          });
+        });
         this.context.dispatch('scheduleRefresh');
       }
     });
