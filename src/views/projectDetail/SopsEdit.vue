@@ -79,7 +79,7 @@
             name="secret1"
             filled
             outlined
-            type="text"
+            type="password"
             :placeholder="secret1Placeholder"
             v-model="secret1"
             prepend-inner-icon="$vuetify.icons.accessToken"
@@ -90,7 +90,7 @@
             name="secret2"
             filled
             outlined
-            type="text"
+            type="password"
             :placeholder="secret2Placeholder"
             v-model="secret2"
             prepend-inner-icon="$vuetify.icons.accessToken"
