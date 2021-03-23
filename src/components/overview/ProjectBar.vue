@@ -1,20 +1,19 @@
 <template>
   <v-row>
     <v-col class="d-flex align-center">
-      <h3>Projects List</h3>
+      <h2 style="font-weight: 500;">Projects List</h2>
     </v-col>
     <v-col class="d-flex flex-row align-center justify-space-between">
       <v-text-field
-        class="ma-2"
-        filled
         outlined
+         filled
         prepend-inner-icon="$vuetify.icons.search"
         placeholder="Search"
       ></v-text-field>
       <v-select
-        class="ma-2"
-        filled
+        class="mx-2"
         outlined
+         filled
         :items="orderChoices"
         v-model="orderChoice"
       >

@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h3>Sops</h3>
+    <h3 style="font-weight: 500;">Manage SOPS</h3>
     <div v-if="project.sops && project.sops.length">
     <v-card
         v-for="sops in project.sops"

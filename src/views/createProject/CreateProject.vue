@@ -1,10 +1,12 @@
 <template>
   <v-container>
+    <span class="text--disabled">{{ title }} ></span>
     <h2 v-if="editMode">Edit Project</h2>
     <h2 v-else>Enter Your Project Details Below</h2>
-    <v-form class="pa-10 white create-form">
+    <v-divider class="py-3"></v-divider>
+    <v-form>
       <v-row>
-        <v-col cols="6">
+        <v-col cols="6" class="py-0">
           <v-text-field
             :label="$t('Project Name')"
             name="projectName"
@@ -18,7 +20,7 @@
             prepend-inner-icon="$vuetify.icons.projectInput"
           />
         </v-col>
-        <v-col cols="6">
+        <v-col cols="6" class="py-0">
           <v-text-field
             :label="$t('Description')"
             name="description"
@@ -30,7 +32,7 @@
             prepend-inner-icon="$vuetify.icons.description"
           />
         </v-col>
-        <v-col cols="6">
+        <v-col cols="6" class="py-0">
           <v-text-field
             :label="$t('Specification Repository')"
             name="specRepo"
@@ -44,7 +46,7 @@
             @blur="$v.specRepository.$touch()"
           />
         </v-col>
-        <v-col cols="6">
+        <v-col cols="6" class="py-0">
           <v-text-field
             :label="$t('Specification Repository Branch')"
             name="specRepoBranch"
@@ -58,7 +60,7 @@
             @blur="$v.specRepositoryBranch.$touch()"
           />
         </v-col>
-        <v-col cols="6">
+        <v-col cols="6" class="py-0">
           <v-text-field
             :label="$t('Access Username')"
             name="accessUsername"
@@ -72,7 +74,7 @@
             @blur="$v.accessUsername.$touch()"
           />
         </v-col>
-        <v-col cols="6">
+        <v-col cols="6" class="py-0">
           <v-text-field
             :label="$t('Access Token')"
             name="accessToken"
@@ -86,7 +88,7 @@
             @blur="$v.accessToken.$touch()"
           />
         </v-col>
-        <v-col cols="6">
+        <v-col cols="6" class="py-0">
           <v-select
             :label="$t('Specification Type')"
             name="specType"
@@ -100,25 +102,37 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="10">
-          <v-btn
-            plain
-            color="white"
-            elevation="0"
+        <v-col cols="9">
+          <a
+            class="link--secondary"
             @click="$router.go(-1)"
             v-if="editMode"
           >
+            <v-icon
+                style="transform: rotate(180deg)"
+                class="mr-1"
+                small
+            >
+              $vuetify.icons.arrowRightGrey
+            </v-icon>
             Go Back
-          </v-btn>
+          </a>
         </v-col>
-        <v-col cols="2">
+        <v-col cols="3">
           <v-btn
+          block
           large
           color="primary"
+          :loading="saveLoading"
           @click="submit"
-          :disabled="disableButton"
+          :disabled="disableButton || saveLoading"
           v-if="editMode"
-        >Save</v-btn>
+        >
+            Save
+            <template v-slot:loader>
+              <span>Saving...</span>
+            </template>
+          </v-btn>
         <v-btn
           large
           color="primary"
@@ -191,6 +205,8 @@ export default class CreateProjectView extends Vue {
 
   specTypeChoices = ['plain', 'helm']
 
+  saveLoading = false
+
   get titleErrors(): TranslateResult[] {
     const errors = [];
     if (!this.$v.title.required) {
@@ -239,9 +255,7 @@ export default class CreateProjectView extends Vue {
   }
 
   handleEditMode(): void {
-    console.log('handling edit mode');
     if (this.project) {
-      console.log('project available');
       this.title = this.project.title;
       this.description = this.project.description;
       this.specRepository = this.project.specRepository;
@@ -265,6 +279,7 @@ export default class CreateProjectView extends Vue {
   }
 
   submit(): void {
+    this.saveLoading = true;
     this.$apollo.mutate({
       mutation: this.editMode ? UpdateProject : CreateProject,
       variables: {
@@ -281,19 +296,20 @@ export default class CreateProjectView extends Vue {
     })
       .then((data) => {
         console.log(data.data);
+        this.saveLoading = false;
         if (data.data.createUpdateProject.project) {
           if (this.editMode) {
             this.$router.go(-1);
           } else this.$router.push('create-project/add-members');
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        this.saveLoading = false;
+        console.log(err);
+      });
   }
 }
 </script>
 
 <style>
-.create-form {
-    box-shadow: 0 2px 40px 0 rgba(183, 183, 183, 0.15);
-}
 </style>

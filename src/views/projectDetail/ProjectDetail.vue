@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <project-bar></project-bar>
     <v-tabs vertical background-color="#f7f7f7" class="project-detail__wrapper"
         v-if="allProjects && allProjects.results.length">
@@ -283,7 +283,7 @@ export default class ProjectDetail extends Vue {
   &__top-tab {
     background-color: #9eaed7;
     color: white;
-    padding: 23px 14px;
+    padding: 14px 23px;
     border-top-left-radius: 8px;
   }
 }

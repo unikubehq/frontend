@@ -39,6 +39,7 @@ import Edit from '@/components/icons/Edit.vue';
 import Deployments from '@/components/icons/Deployments.vue';
 import Organization from '@/components/icons/Organization.vue';
 import ArrowRightWhite from '@/components/icons/ArrowRightWhite.vue';
+import ArrowRightGrey from '@/components/icons/ArrowRightGrey.vue';
 import AddRound from '@/components/icons/AddRound.vue';
 import Done from '@/components/icons/Done.vue';
 import Copy from '@/components/icons/Copy.vue';
@@ -164,6 +165,9 @@ export default new Vuetify({
       },
       arrowRightWhite: {
         component: ArrowRightWhite,
+      },
+      arrowRightGrey: {
+        component: ArrowRightGrey,
       },
       addRound: {
         component: AddRound,

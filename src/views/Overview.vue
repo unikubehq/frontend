@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid class="px-8">
     <project-bar></project-bar>
         <div v-for="project in projectResults" :key="project.id">
           <v-skeleton-loader

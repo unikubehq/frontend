@@ -8,7 +8,10 @@
 }
 .v-application a.link--secondary {
   color: $grey-1;
-  text-decoration: underline;
+  font-weight: 500;
+  .v-icon {
+    margin-top: -2px;
+  }
 }
 .v-navigation-drawer {
    background-image: linear-gradient(18deg, #0e132e -13%, #252e65 64%);
