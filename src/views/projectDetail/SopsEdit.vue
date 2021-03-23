@@ -158,29 +158,41 @@ export default class SopsEdit extends Vue {
   showForm = false;
 
   get secret1Label(): string {
-    return {
-      aws: this.$t('Access Key'),
-      pgp: this.$t('Key'),
-    }[this.sopsType];
+    const map = new Map();
+    map.set(
+      'aws', this.$t('Access Key'),
+    );
+    map.set(
+      'pgp', this.$t('Key'),
+    );
+    return map.get(this.sopsType);
   }
 
   get secret1Placeholder(): string {
-    return {
-      aws: this.$t('Enter Access Key'),
-      pgp: this.$t('Enter Key'),
-    }[this.sopsType];
+    const map = new Map();
+    map.set(
+      'aws', this.$t('Enter Access Key'),
+    );
+    map.set(
+      'pgp', this.$t('Enter Key'),
+    );
+    return map.get(this.sopsType);
   }
 
   get secret2Label(): string {
-    return {
-      aws: this.$t('Secret Access Key'),
-    }[this.sopsType];
+    const map = new Map();
+    map.set(
+      'aws', this.$t('Secret Access Key'),
+    );
+    return map.get(this.sopsType);
   }
 
   get secret2Placeholder(): string {
-    return {
-      aws: this.$t('Enter Secret Access Key'),
-    }[this.sopsType];
+    const map = new Map();
+    map.set(
+      'aws', this.$t('Enter Secret Access Key'),
+    );
+    return map.get(this.sopsType);
   }
 
   submit(): void {
