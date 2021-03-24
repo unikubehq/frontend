@@ -1,6 +1,6 @@
 <template>
   <div class="project-card__wrapper">
-    <v-row class="white px-5" align="center">
+    <v-row class="white pl-5 pr-10" align="center">
       <v-col cols="1">
         <v-icon size="48">$vuetify.icons.project</v-icon>
       </v-col>
@@ -8,7 +8,7 @@
         <h3 class="mb-0">{{ project.title}}</h3>
         <p>{{ project.description }}</p>
       </v-col>
-      <v-col class="text-right">
+      <v-col class="text-right pr-10">
         <router-link :to="'/project/' + project.id + '?edit=true'">
           <v-icon size="24">$vuetify.icons.edit</v-icon>
         </router-link>
@@ -16,13 +16,13 @@
         <v-icon @click="deleteProject(project.id)" size="24">$vuetify.icons.delete</v-icon>
       </v-col>
     </v-row>
-    <v-row class="white">
-      <v-divider class="px-5"></v-divider>
+    <v-row class="white px-7">
+      <v-divider class="mr-7"></v-divider>
       <router-link :to="'/project/' + project.id ">
         <v-icon class="project-card__detail" size="24">$vuetify.icons.dropdown</v-icon>
       </router-link>
     </v-row>
-    <v-row justify="space-around" class="white px-5 pt-3 pb-3">
+    <v-row justify="space-around" class="white pl-5 pt-3 pb-3 pr-10">
       <v-col>
         <h4>{{ project.currentCommit }}</h4>
         <small>Commit</small>
@@ -38,9 +38,10 @@
         <small>Last Update</small>
       </v-col>
       <v-divider vertical></v-divider>
-      <v-col class="text-right">
+      <v-col class="text-right pr-10">
         <v-avatar
-          class="initials-avatar"
+          size="46"
+          class="initials-avatar avatar-list-item"
           color="primary"
           v-for="initials in avatarInitials"
           :key="initials"

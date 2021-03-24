@@ -94,8 +94,18 @@
   margin-top: -5px;
 }
 .avatar-initials {
-  color: $green-light-5;
+  color: $green-dark-0;
   font-size: 16px;
+  font-weight: 700;
+}
+.v-application {
+  .v-avatar.primary {
+    background-color: $green-light-6 !important;
+    border: 3px solid #fff !important;
+  }
+}
+.avatar-list-item {
+  margin-left: -12px;
 }
 .v-avatar .initials-avatar{
   border: 3px solid white !important;
