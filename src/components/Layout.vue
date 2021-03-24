@@ -48,7 +48,9 @@
                 :ripple="false"
                 :class="{'flex-wrap': mini}">
               <v-list-item-avatar>
-                <img src="https://randomuser.me/api/portraits/women/81.jpg">
+                <img v-if="$store.state.context.organization"
+                    :src="$store.state.context.organization.avatarImage">
+                <img v-else src="" alt="">
               </v-list-item-avatar>
 
               <v-list-item-content>
@@ -79,7 +81,7 @@
                 two-line
             >
               <v-list-item-avatar class="organization-dropdown--icon">
-                <v-img src="@/assets/img/gsuite.svg" max-width="35" contain/>
+                <v-img :src="organization.avatarImage" max-width="35" contain/>
               </v-list-item-avatar>
               <v-list-item-content>
                 <v-list-item-title v-text="organization.title"></v-list-item-title>

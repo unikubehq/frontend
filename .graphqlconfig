@@ -1,16 +1,4 @@
 {
   "name": "Untitled GraphQL Schema",
-  "schemaPath": "schema.graphql",
-  "extensions": {
-    "endpoints": {
-      "Default GraphQL Endpoint": {
-        "url": "http://gateway.unikube.127.0.0.1.nip.io:8085/graphql",
-        "headers": {
-          "user-agent": "JS GraphQL",
-          "authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIzU1dDLUtzdzkyN0NxT3l2U2ZzVnc4dFFGaXdtWU1pSUgwRHFoOEhZbkR3In0.eyJleHAiOjE2MTQxMTI5MTMsImlhdCI6MTYxNDExMjg1MywiYXV0aF90aW1lIjoxNjE0MTEwNTExLCJqdGkiOiJmN2NhZTNkZS1jYWU5LTRlZTQtOGFkOS1lNmVhZjEwYzNhOWMiLCJpc3MiOiJodHRwOi8va2V5Y2xvYWsuMTI3LjAuMC4xLm5pcC5pbzo4MDg1L2F1dGgvcmVhbG1zL3VuaWt1YmUiLCJhdWQiOiJnYXRld2F5Iiwic3ViIjoiNzYzMTE5MWYtOTVlMS00NmMzLWI3ZjQtYmNlMTRiMDA2ODQ5IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiZnJvbnRlbmQiLCJzZXNzaW9uX3N0YXRlIjoiMzdhMDQwNjYtNmM3YS00ZDUyLThmZDUtODlkMTFkYjlkZTVjIiwiYWNyIjoiMCIsImFsbG93ZWQtb3JpZ2lucyI6WyIqIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwiYXV0aG9yaXphdGlvbiI6eyJwZXJtaXNzaW9ucyI6W3sicnNpZCI6IjJlZjAyNjFiLTQyZTgtNDU0Zi1iZDkxLTQwZDM0NDVkYmJlZiIsInJzbmFtZSI6IkRlZmF1bHQgUmVzb3VyY2UifSx7InNjb3BlcyI6WyJvcmdhbml6YXRpb246cHJvamVjdHM6YWRkIiwib3JnYW5pemF0aW9uOnByb2plY3RzOnZpZXciXSwicnNpZCI6IjY2YjdlMTk1LWIwNTMtNDg4Ni1iZjJlLTYzMzFhYWE3MDRkNyIsInJzbmFtZSI6Im9yZ2FuaXphdGlvbiBibHVlc2hvZSJ9XX0sInNjb3BlIjoib3BlbmlkIGVtYWlsIHByb2ZpbGUiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmFtZSI6Ik1pY2hhZWwgTXVzdGVybWFubiIsInByZWZlcnJlZF91c2VybmFtZSI6InRlc3RAYmx1ZXNob2UuZGUiLCJnaXZlbl9uYW1lIjoiTWljaGFlbCIsImZhbWlseV9uYW1lIjoiTXVzdGVybWFubiIsImVtYWlsIjoidGVzdEBibHVlc2hvZS5kZSJ9.XOweNTFpNF4jPMUpdnwMKfrmVq-CmkzUXNv4wJKZkslOwDz3Jd0jJnypb1A-tqqQ5O7XXKKTydJwqKcDVZg-Sx7lRX_CBHULpjEUkZzNppIV4dftiX2RovaBQ4sbh50ecbsNY7i4truYk5jDAWgGFvWxCHMpHd1kcLLyHFBrILIYwnzkDeXAOrjm_qazGglvAQS6iO8OA1-U7dPU9yEhG85U2IJGNUJl7UCc05XmhV9ZjBcw1I3d3jtyAC729tu4bLCDvDA83S6prYexiVw7v3ODa1BA7vdYRUFW3IZA5bWQfWhhcpsjtLSkQ7qjmXWUwKw8ZGs8qWawhXha65dYCg"
-        },
-        "introspect": false
-      }
-    }
-  }
+  "schemaPath": "schema.graphql"
 }

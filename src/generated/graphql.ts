@@ -22,8 +22,11 @@ export type Scalars = {
 export type TQuery = {
   __typename?: 'Query';
   allOrganizations?: Maybe<TOrganizationNodePage>;
+  organization?: Maybe<TOrganizationNode>;
   allProjects?: Maybe<TProjectNodePage>;
   project?: Maybe<TProjectNode>;
+  allPackages?: Maybe<TPackageNodePage>;
+  package?: Maybe<TPackageNode>;
   clusterlevel?: Maybe<TClusterLevelNode>;
 };
 
@@ -34,6 +37,11 @@ export type TQueryAllOrganizationsArgs = {
 };
 
 
+export type TQueryOrganizationArgs = {
+  id?: Maybe<Scalars['UUID']>;
+};
+
+
 export type TQueryAllProjectsArgs = {
   offset?: Maybe<Scalars['Int']>;
   limit?: Maybe<Scalars['Int']>;
@@ -41,6 +49,20 @@ export type TQueryAllProjectsArgs = {
 
 
 export type TQueryProjectArgs = {
+  id?: Maybe<Scalars['UUID']>;
+  slug?: Maybe<Scalars['String']>;
+};
+
+
+export type TQueryAllPackagesArgs = {
+  organizationId?: Maybe<Scalars['UUID']>;
+  projectId?: Maybe<Scalars['UUID']>;
+  offset?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+};
+
+
+export type TQueryPackageArgs = {
   id?: Maybe<Scalars['UUID']>;
   slug?: Maybe<Scalars['String']>;
 };
@@ -65,6 +87,7 @@ export type TOrganizationNode = {
   created: Scalars['DateTime'];
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
+  avatarImage?: Maybe<Scalars['String']>;
 };
 
 
@@ -180,15 +203,13 @@ export type TAwskmsNode = {
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   id: Scalars['UUID'];
-  project: TProjectNode;
-  accessKey: Scalars['String'];
-  secretAccessKey: Scalars['String'];
 };
 
 export type TPgpKeyNode = {
   __typename?: 'PGPKeyNode';
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
+  id: Scalars['UUID'];
 };
 
 export type TDeploymentNode = {
@@ -199,6 +220,15 @@ export type TDeploymentNode = {
   ports: Scalars['String'];
   clusterLevel: TClusterLevelNode;
   isSwitchable: Scalars['Boolean'];
+};
+
+export type TPackageNodePage = {
+  __typename?: 'PackageNodePage';
+  totalCount?: Maybe<Scalars['Int']>;
+  resultCount?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+  results?: Maybe<Array<Maybe<TPackageNode>>>;
 };
 
 export type TMutation = {
@@ -251,6 +281,7 @@ export type TCreateUpdateOrganizationInput = {
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   onTrial?: Maybe<Scalars['Boolean']>;
+  avatarImage?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['ID']>;
   clientMutationId?: Maybe<Scalars['String']>;
 };
@@ -349,7 +380,14 @@ export type TDeleteSops = {
 export type TOrganizationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type TOrganizationsQueryResult = { __typename?: 'Query', allOrganizations?: Maybe<{ __typename?: 'OrganizationNodePage', results?: Maybe<Array<Maybe<{ __typename?: 'OrganizationNode', id: any, title: string, description?: Maybe<string> }>>> }> };
+export type TOrganizationsQueryResult = { __typename?: 'Query', allOrganizations?: Maybe<{ __typename?: 'OrganizationNodePage', results?: Maybe<Array<Maybe<{ __typename?: 'OrganizationNode', id: any, title: string, description?: Maybe<string>, avatarImage?: Maybe<string> }>>> }> };
+
+export type TOrganizationQueryVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type TOrganizationQueryResult = { __typename?: 'Query', organization?: Maybe<{ __typename?: 'OrganizationNode', title: string, description?: Maybe<string>, id: any, avatarImage?: Maybe<string> }> };
 
 export type TCreateOrganizationMutationVariables = Exact<{
   title: Scalars['String'];
@@ -435,7 +473,18 @@ export const OrganizationsQuery = gql`
       id
       title
       description
+      avatarImage
     }
+  }
+}
+    `;
+export const OrganizationQuery = gql`
+    query OrganizationQuery($id: UUID!) {
+  organization(id: $id) {
+    title
+    description
+    id
+    avatarImage
   }
 }
     `;
@@ -454,8 +503,8 @@ export const CreateOrganizationMutation = gql`
 }
     `;
 export const ProjectsQuery = gql`
-    query ProjectsQuery {
-  allProjects {
+    query ProjectsQuery($limit: Int, $offset: Int) {
+  allProjects(limit: $limit, offset: $offset) {
     totalCount
     results {
       title
@@ -518,7 +567,7 @@ export const ProjectDetailQuery = gql`
     `;
 export const ProjectDetailOtherProjectsQuery = gql`
     query ProjectDetailOtherProjectsQuery {
-  allProjects {
+  allProjects(limit: 1000) {
     results {
       title
       id

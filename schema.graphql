@@ -1,241 +1,221 @@
-# This file was generated based on ".graphqlconfig". Do not edit manually.
-
 schema {
-    query: Query
-    mutation: Mutation
+  query: Query
+  mutation: Mutation
 }
-
-union SOPSProviderNode = AWSKMSNode | PGPKeyNode
-
-type AWSKMSNode {
-    description: String
-    title: String!
-}
-
-type ClusterLevelNode {
-    deployments: [DeploymentNode!]!
-    description: String
-    id: UUID!
-    package: PackageNode!
-    sopsCredentials: SOPSProviderNode
-    specsUrl: String
-    title: String!
-    type: ClusterLevelType!
-    valuesPath: String!
-    valuesType: ClusterLevelValuesType
-}
-
-type CreateUpdateClusterLevelPayload {
-    clientMutationId: String
-    clusterLevel: ClusterLevelNode
-    errors: [ErrorType]
-}
-
-type CreateUpdateOrganizationPayload {
-    clientMutationId: String
-    errors: [ErrorType]
-    organization: OrganizationNode
-}
-
-type CreateUpdateProjectPayload {
-    clientMutationId: String
-    errors: [ErrorType]
-    project: ProjectNode
-}
-
-type CreateUpdateSOPS {
-    ok: Boolean
-}
-
-type DeleteClusterLevel {
-    ok: Boolean
-}
-
-type DeleteProject {
-    ok: Boolean
-}
-
-type DeleteSOPS {
-    ok: Boolean
-}
-
-type DeploymentNode {
-    clusterLevel: ClusterLevelNode!
-    description: String
-    id: UUID!
-    isSwitchable: Boolean!
-    ports: String!
-    title: String!
-}
-
-type ErrorType {
-    field: String!
-    messages: [String!]!
-}
-
-type FileInformationNode {
-    encrypted: Boolean
-    path: String
-}
-
-type Mutation {
-    createUpdateClusterLevel(input: CreateUpdateClusterLevelInput!): CreateUpdateClusterLevelPayload
-    createUpdateOrganization(input: CreateUpdateOrganizationInput!): CreateUpdateOrganizationPayload
-    createUpdateProject(input: CreateUpdateProjectInput!): CreateUpdateProjectPayload
-    createUpdateSops(sopsData: SOPSInputType!): CreateUpdateSOPS
-    deleteClusterLevel(id: UUID): DeleteClusterLevel
-    deleteProject(id: UUID): DeleteProject
-    deleteSops(id: UUID): DeleteSOPS
-}
-
-type OrganizationNode {
-    created: DateTime!
-    description: String
-    id: UUID!
-    title: String!
-}
-
-type OrganizationNodePage {
-    limit: Int
-    offset: Int
-    resultCount: Int
-    results: [OrganizationNode]
-    totalCount: Int
-}
-
-type PGPKeyNode {
-    description: String
-    title: String!
-}
-
-type PackageNode {
-    clusterLevel(level: String): [ClusterLevelNode]
-    deployments(level: String, switchable: Boolean): [DeploymentNode]
-    description: String
-    dirPath: String!
-    environments: [ClusterLevelNode!]!
-    fileInformation: [FileInformationNode]
-    hash: String!
-    id: UUID!
-    namespace: String!
-    project: ProjectNode!
-    title: String!
-    type: String!
-}
-
-type ProjectNode {
-    accessToken: Boolean
-    accessUsername: String!
-    created: DateTime!
-    currentCommit: String!
-    currentCommitDateTime: DateTime
-    description: String
-    id: UUID!
-    keycloakData: JSONString!
-    organization: OrganizationNode
-    packages: [PackageNode!]!
-    repositoryStatus: ProjectRepositoryStatus!
-    specRepository: String!
-    specRepositoryBranch: String
-    specType: ProjectSpecType!
-    title: String!
-}
-
-type ProjectNodePage {
-    limit: Int
-    offset: Int
-    resultCount: Int
-    results: [ProjectNode]
-    totalCount: Int
-}
-
 type Query {
-    allOrganizations(limit: Int, offset: Int): OrganizationNodePage
-    allProjects(limit: Int, offset: Int): ProjectNodePage
-    project(id: UUID, slug: String): ProjectNode
+  allOrganizations(offset: Int, limit: Int): OrganizationNodePage
+  organization(id: UUID): OrganizationNode
+  allProjects(offset: Int, limit: Int): ProjectNodePage
+  project(id: UUID, slug: String): ProjectNode
+  allPackages(organizationId: UUID, projectId: UUID, offset: Int, limit: Int): PackageNodePage
+  package(id: UUID, slug: String): PackageNode
+  clusterlevel(id: UUID): ClusterLevelNode
 }
-
-enum ClusterLevelType {
-    LOCAL
-    REMOTE
+type OrganizationNodePage {
+  totalCount: Int
+  resultCount: Int
+  offset: Int
+  limit: Int
+  results: [OrganizationNode]
 }
-
-enum ClusterLevelValuesType {
-    DIR
-    FILE
+type OrganizationNode {
+  id: UUID!
+  created: DateTime!
+  title: String!
+  description: String
+  avatarImage: String
 }
-
-enum ProjectRepositoryStatus {
-    AUTH_FAILED
-    BRANCH_UNAVAILABLE
-    CLONING
-    CLONING_FAILED
-    CLONING_PENDING
-    CLONING_SUCCESSFUL
-    OK
-    PARSING_FAILED
-    UNKNOWN
-}
-
-enum ProjectSpecType {
-    HELM
-    PLAIN
-}
-
-enum SOPSTypeEnum {
-    aws
-    pgp
-}
-
-input CreateUpdateClusterLevelInput {
-    clientMutationId: String
-    description: String
-    id: ID
-    package: ID!
-    sopsCredentials: ID
-    title: String!
-    type: String!
-    valuesPath: String
-    valuesType: String
-}
-
-input CreateUpdateOrganizationInput {
-    clientMutationId: String
-    description: String
-    id: ID
-    onTrial: Boolean
-    title: String!
-}
-
-input CreateUpdateProjectInput {
-    accessToken: String
-    accessUsername: String
-    clientMutationId: String
-    currentCommit: String
-    currentCommitDateTime: DateTime
-    description: String
-    id: ID
-    keycloakData: String!
-    specRepository: String!
-    specRepositoryBranch: String
-    specType: String!
-    title: String!
-}
-
-input SOPSInputType {
-    description: String
-    id: UUID
-    project: UUID!
-    secret1: String!
-    secret2: String
-    secret3: String
-    sopsType: SOPSTypeEnum!
-    title: String!
-}
-
-
 scalar UUID
-
 scalar DateTime
-
+type ProjectNodePage {
+  totalCount: Int
+  resultCount: Int
+  offset: Int
+  limit: Int
+  results: [ProjectNode]
+}
+type ProjectNode {
+  title: String!
+  description: String
+  keycloakData: JSONString!
+  id: UUID!
+  specRepository: String!
+  specRepositoryBranch: String
+  created: DateTime!
+  specType: ProjectSpecType!
+  currentCommit: String!
+  currentCommitDateTime: DateTime
+  repositoryStatus: ProjectRepositoryStatus!
+  accessUsername: String!
+  accessToken: String
+  organization: OrganizationNode
+  packages: [PackageNode!]!
+  sops: [SOPSProviderNode]
+}
 scalar JSONString
+enum ProjectSpecType {
+  PLAIN
+  HELM
+}
+enum ProjectRepositoryStatus {
+  UNKNOWN
+  CLONING_PENDING
+  CLONING
+  CLONING_FAILED
+  CLONING_SUCCESSFUL
+  BRANCH_UNAVAILABLE
+  AUTH_FAILED
+  PARSING_FAILED
+  OK
+}
+type PackageNode {
+  title: String!
+  description: String
+  id: UUID!
+  project: ProjectNode!
+  dirPath: String!
+  type: String!
+  namespace: String!
+  fileInformation: [FileInformationNode]
+  hash: String!
+  environments: [ClusterLevelNode!]!
+  deployments(level: String, switchable: Boolean): [DeploymentNode]
+  clusterLevel(level: String): [ClusterLevelNode]
+}
+type FileInformationNode {
+  path: String
+  encrypted: Boolean
+}
+type ClusterLevelNode {
+  title: String!
+  description: String
+  id: UUID!
+  package: PackageNode!
+  type: ClusterLevelType!
+  valuesPath: String!
+  valuesType: ClusterLevelValuesType
+  sopsCredentials: SOPSProviderNode
+  deployments: [DeploymentNode!]!
+  specsUrl: String
+}
+enum ClusterLevelType {
+  LOCAL
+  REMOTE
+}
+enum ClusterLevelValuesType {
+  FILE
+  DIR
+}
+union SOPSProviderNode = AWSKMSNode | PGPKeyNode
+type AWSKMSNode {
+  title: String!
+  description: String
+  id: UUID!
+}
+type PGPKeyNode {
+  title: String!
+  description: String
+  id: UUID!
+}
+type DeploymentNode {
+  title: String!
+  description: String
+  id: UUID!
+  ports: String!
+  clusterLevel: ClusterLevelNode!
+  isSwitchable: Boolean!
+}
+type PackageNodePage {
+  totalCount: Int
+  resultCount: Int
+  offset: Int
+  limit: Int
+  results: [PackageNode]
+}
+type Mutation {
+  createUpdateOrganization(input: CreateUpdateOrganizationInput!): CreateUpdateOrganizationPayload
+  createUpdateProject(input: CreateUpdateProjectInput!): CreateUpdateProjectPayload
+  deleteProject(id: UUID): DeleteProject
+  createUpdateClusterLevel(input: CreateUpdateClusterLevelInput!): CreateUpdateClusterLevelPayload
+  deleteClusterLevel(id: UUID): DeleteClusterLevel
+  createUpdateSops(sopsData: SOPSInputType!): CreateUpdateSOPS
+  deleteSops(id: UUID): DeleteSOPS
+}
+input CreateUpdateOrganizationInput {
+  title: String!
+  description: String
+  onTrial: Boolean
+  avatarImage: String
+  id: ID
+  clientMutationId: String
+}
+type CreateUpdateOrganizationPayload {
+  organization: OrganizationNode
+  errors: [ErrorType]
+  clientMutationId: String
+}
+type ErrorType {
+  field: String!
+  messages: [String!]!
+}
+input CreateUpdateProjectInput {
+  title: String!
+  description: String
+  specRepository: String!
+  specRepositoryBranch: String
+  specType: String!
+  currentCommit: String
+  currentCommitDateTime: DateTime
+  accessUsername: String
+  accessToken: String
+  organization: UUID!
+  id: ID
+  clientMutationId: String
+}
+type CreateUpdateProjectPayload {
+  project: ProjectNode
+  errors: [ErrorType]
+  clientMutationId: String
+}
+type DeleteProject {
+  ok: Boolean
+}
+input CreateUpdateClusterLevelInput {
+  title: String!
+  description: String
+  type: String!
+  package: ID!
+  sopsCredentials: ID
+  valuesPath: String
+  valuesType: String
+  id: ID
+  clientMutationId: String
+}
+type CreateUpdateClusterLevelPayload {
+  clusterLevel: ClusterLevelNode
+  errors: [ErrorType]
+  clientMutationId: String
+}
+type DeleteClusterLevel {
+  ok: Boolean
+}
+input SOPSInputType {
+  id: UUID
+  title: String!
+  description: String
+  sopsType: SOPSTypeEnum!
+  project: UUID!
+  secret1: String!
+  secret2: String
+  secret3: String
+}
+enum SOPSTypeEnum {
+  aws
+  pgp
+}
+type CreateUpdateSOPS {
+  ok: Boolean
+}
+type DeleteSOPS {
+  ok: Boolean
+}

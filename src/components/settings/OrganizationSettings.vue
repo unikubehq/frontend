@@ -65,8 +65,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { gql } from '@apollo/client/core';
-import store from '@/store';
+import { OrganizationQuery } from '@/generated/graphql';
 
 @Component({})
 export default class OrganizationSettings extends Vue {
@@ -97,12 +96,15 @@ export default class OrganizationSettings extends Vue {
         },
       }).then((res) => {
         // Update organization from graphql
-        // this.$apollo.query({
-        //   query: OrganizationQuery,
-        //   variables: {
-        //     id: this.$store.state.context.organization.id,
-        //   },
-        // });
+        this.$apollo.query({
+          query: OrganizationQuery,
+          variables: {
+            id: this.$store.state.context.organization.id,
+          },
+        }).then((result) => {
+          console.log(result);
+          this.$store.commit('context/setOrganization', result.data.organization);
+        });
         // res.data.url
       }).catch((err) => {
         // Handle error

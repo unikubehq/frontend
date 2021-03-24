@@ -1,10 +1,14 @@
 overwrite: true
 schema:
-  - http://gateway.unikube.127.0.0.1.nip.io:8085/graphql:
-      headers:
-        authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIzU1dDLUtzdzkyN0NxT3l2U2ZzVnc4dFFGaXdtWU1pSUgwRHFoOEhZbkR3In0.eyJleHAiOjE2MTYwODA4OTEsImlhdCI6MTYxNjA4MDgzMSwiYXV0aF90aW1lIjoxNjE2MDcwOTk0LCJqdGkiOiJjNzk0MDgzMy03NWRkLTQyNjQtYjY4OC02ZjQ0Y2E3MTE2MDUiLCJpc3MiOiJodHRwOi8va2V5Y2xvYWsuMTI3LjAuMC4xLm5pcC5pbzo4MDg1L2F1dGgvcmVhbG1zL3VuaWt1YmUiLCJhdWQiOlsiZ2F0ZXdheSIsImFjY291bnQiXSwic3ViIjoiNzYzMTE5MWYtOTVlMS00NmMzLWI3ZjQtYmNlMTRiMDA2ODQ5IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiZnJvbnRlbmQiLCJub25jZSI6Ijk1NDgxMGNkLTI1NGUtNDg2Mi05ZWY4LTMxNzYwOTI2YTNkNiIsInNlc3Npb25fc3RhdGUiOiJiODI5MjE1OC0yODgyLTQ5ZTgtOTk5Mi1iNGQ2NzEzNmI2MzUiLCJhY3IiOiIwIiwiYWxsb3dlZC1vcmlnaW5zIjpbIioiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBlbWFpbCBwcm9maWxlIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJNaWNoYWVsIE11c3Rlcm1hbm4iLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJ0ZXN0QGJsdWVzaG9lLmRlIiwiZ2l2ZW5fbmFtZSI6Ik1pY2hhZWwiLCJmYW1pbHlfbmFtZSI6Ik11c3Rlcm1hbm4iLCJlbWFpbCI6InRlc3RAYmx1ZXNob2UuZGUifQ.dqh31SC30r_xfHiwxpiZGpL16wmSjaT6yAr2K8VQDJE_Q_LuXVx5CITfe8sC7tKr6HsYoTfGJbQGLP4NFvTfr-bV5YxcG6oKXjQbkkS3pNF5_0jbzhjAl270hDBF3vmBqa3E6N8DG9Jl38UTWRcAj3cp3M-KoJBwaiqtgD9gT5CXXknTN_Rjuw4TgXHf7pvFNxgLKxylit_QG4iMtcQrvoZL0V2RP13PXaX4IMeSg_g6d5P5BBPxoOCi3CT9ffvsnfNoeCABTzV2cDVHYDHzvB5T9fdS7zCjctIS_oYUqhAw6MyiaFd-NwxekDvxKw_1yL4qdzprwT38fZsA2kRg8A
+  - http://gateway.unikube.127.0.0.1.nip.io:8085/schema.json:
+      method: GET
 documents: "src/**/*.graphql"
 generates:
+  schema.graphql:
+    plugins:
+      - schema-ast
+    config:
+      includeDirectives: true
   src/generated/graphql.ts:
     config:
       federation: true
@@ -21,7 +25,7 @@ generates:
       - typescript
       - typescript-operations
       - typescript-document-nodes
-hooks:
-  afterOneFileWrite:
-    - eslint --fix
+    hooks:
+      afterOneFileWrite:
+        - eslint --fix
 
