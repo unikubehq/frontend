@@ -1,6 +1,6 @@
 <template>
   <v-container fluid class="px-8">
-    <project-bar></project-bar>
+    <project-bar @sort-change="sorting = $event"></project-bar>
         <div v-for="project in projectResults" :key="project.id">
           <v-skeleton-loader
             type="card-avatar, article"
@@ -50,6 +50,25 @@ import { paginationMixin } from '@/components/mixins';
 import { mixins } from 'vue-class-component';
 import { Route } from 'vue-router';
 
+const sortAscending = (a: TProjectNode, b: TProjectNode): number => {
+  if (a.title.toUpperCase() < b.title.toUpperCase()) {
+    return -1;
+  }
+  if (b.title.toUpperCase() < a.title.toUpperCase()) {
+    return 1;
+  }
+  return 0;
+};
+const sortDescending = (a: TProjectNode, b: TProjectNode): number => {
+  if (a.title.toUpperCase() < b.title.toUpperCase()) {
+    return 1;
+  }
+  if (b.title.toUpperCase() < a.title.toUpperCase()) {
+    return -1;
+  }
+  return 0;
+};
+
 Component.registerHooks([
   'beforeRouteUpdate',
 ]);
@@ -74,8 +93,19 @@ Component.registerHooks([
 export default class Overview extends mixins(paginationMixin) {
   snackbar = false;
 
+  sorting = 'az';
+
   get projectResults(): Array<TProjectNode> {
-    return this.$data.allProjects?.results;
+    let result = this.$data.allProjects?.results;
+    if (result) {
+      if (this.sorting === 'az') {
+        result = result.slice().sort(sortAscending);
+      } else {
+        result = result.slice().sort(sortDescending);
+      }
+      return result;
+    }
+    return [];
   }
 
   get loading(): boolean {

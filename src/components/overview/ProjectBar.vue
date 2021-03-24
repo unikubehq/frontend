@@ -16,10 +16,8 @@
          filled
         :items="orderChoices"
         v-model="orderChoice"
+        @change="$emit('sort-change', orderChoice)"
       >
-        <template v-slot:selection>
-          Sort: {{ orderChoice }}
-        </template>
       </v-select>
       <v-btn
         class="mb-2"
@@ -39,14 +37,21 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import VueI18n from 'vue-i18n';
+import TranslateResult = VueI18n.TranslateResult;
 
 @Component({})
 export default class ProjectBar extends Vue {
-  orderChoices = ['Foo', 'Fizz', 'Buzz']
-
-  orderChoice = 'Foo'
+  orderChoice = 'az'
 
   projects = []
+
+  get orderChoices(): Array<{[key:string]: TranslateResult}> {
+    return [
+      { value: 'az', text: this.$t('A-Z ascending') },
+      { value: 'za', text: this.$t('A-Z descending') },
+    ];
+  }
 }
 </script>
 <style scoped>
