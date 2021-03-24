@@ -11,6 +11,7 @@
         placeholder="Search"
       ></v-text-field>
       <v-select
+        prefix="Sort:"
         class="mx-2"
         outlined
          filled
