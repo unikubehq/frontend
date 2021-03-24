@@ -1,6 +1,7 @@
 <template>
   <v-container fluid class="px-8">
-    <project-bar @sort-change="sorting = $event"></project-bar>
+    <project-bar @sort-change="sorting = $event" @search-change="search = $event"></project-bar>
+      <div v-if="projectResults.length">
         <div v-for="project in projectResults" :key="project.id">
           <v-skeleton-loader
             type="card-avatar, article"
@@ -12,6 +13,23 @@
             class="mb-5"
             v-else
           ></project-list>
+        </div>
+      </div>
+      <div v-else>
+        <v-row :justify="'center'" :align="'center'" class="pt-16">
+          <v-col></v-col>
+          <v-col :justify="'center'" :align-self="'center'" class="text-center">
+            <v-icon size="120">
+              $vuetify.icons.noProjectsFound
+            </v-icon>
+            <h3>No Projects Found</h3>
+            <p>
+              <router-link to="/">Click Here</router-link>
+              to create your first project
+            </p>
+          </v-col>
+          <v-col></v-col>
+        </v-row>
       </div>
     <v-pagination
       :length="listLength"
@@ -95,6 +113,8 @@ export default class Overview extends mixins(paginationMixin) {
 
   sorting = 'az';
 
+  search = '';
+
   get projectResults(): Array<TProjectNode> {
     let result = this.$data.allProjects?.results;
     if (result) {
@@ -103,6 +123,14 @@ export default class Overview extends mixins(paginationMixin) {
       } else {
         result = result.slice().sort(sortDescending);
       }
+
+      if (this.search) {
+        result = result.filter(
+          (project: TProjectNode) => project.title.toLocaleLowerCase()
+            .includes(this.search.toLocaleLowerCase()),
+        );
+      }
+
       return result;
     }
     return [];

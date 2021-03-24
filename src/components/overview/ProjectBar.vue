@@ -4,12 +4,8 @@
       <h2 style="font-weight: 500;">Projects List</h2>
     </v-col>
     <v-col class="d-flex flex-row align-center justify-space-between">
-      <v-text-field
-        outlined
-         filled
-        prepend-inner-icon="$vuetify.icons.search"
-        placeholder="Search"
-      ></v-text-field>
+      <v-text-field outlined filled prepend-inner-icon="$vuetify.icons.search" v-model="search"
+          placeholder="Search" @input="$emit('search-change', search)"></v-text-field>
       <v-select
         prefix="Sort:"
         class="mx-2"
@@ -44,6 +40,8 @@ import TranslateResult = VueI18n.TranslateResult;
 @Component({})
 export default class ProjectBar extends Vue {
   orderChoice = 'az'
+
+  search = ''
 
   projects = []
 
