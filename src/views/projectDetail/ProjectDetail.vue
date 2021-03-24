@@ -182,11 +182,16 @@
             </v-tabs>
           </v-container>
           <v-container v-else>
-            <create-project-view
+            <div class="px-3">
+              <span class="text--disabled" v-if="project.title">{{ project.title }} ></span>
+              <h2 class="text--semi-bold">Edit Project</h2>
+              <v-divider></v-divider>
+            </div>
+            <project-form
               :edit-mode="true"
               :project="project"
               @sops-created="handleSopsCreated"
-            ></create-project-view>
+            ></project-form>
           </v-container>
         </v-tab-item>
       </v-tabs-items>
@@ -213,14 +218,14 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import ProjectBar from '@/components/overview/ProjectBar.vue';
-import CreateProjectView from '@/views/createProject/CreateProject.vue';
+import ProjectForm from '@/views/createProject/ProjectForm.vue';
 import AddTeamMember from '@/views/createProject/AddTeamMember.vue';
 import { ProjectDetailQuery, ProjectDetailOtherProjectsQuery } from '@/generated/graphql';
 
 @Component({
   components: {
     ProjectBar,
-    CreateProjectView,
+    ProjectForm,
     AddTeamMember,
   },
   apollo: {
