@@ -9,6 +9,7 @@ union SOPSProviderNode = AWSKMSNode | PGPKeyNode
 
 type AWSKMSNode {
     description: String
+    id: UUID!
     title: String!
 }
 
@@ -157,6 +158,7 @@ type OrganizationUserNode {
 
 type PGPKeyNode {
     description: String
+    id: UUID!
     title: String!
 }
 

@@ -86,7 +86,7 @@
               <v-tabs-items v-model="innerTab">
                 <v-tab-item>
                   <v-container>
-                    <v-row>
+                    <v-row v-if="!packageEdit">
                       <v-col cols="6" v-for="pkg in project.packages" :key="pkg.id">
                         <v-card outlined>
                           <v-card-title>
@@ -106,6 +106,17 @@
                                     {{ user.user.firstName[0] }}{{ user.user.lastName[0] }}
                                   </span>
                                 </v-avatar>
+                                <v-btn
+                                  outlined
+                                  plain
+                                  color="#a1a9b2"
+                                  width="50"
+                                  @click="setPackageEdit(pkg)"
+                                >
+                                  <v-icon size="24">
+                                    $vuetify.icons.edit
+                                  </v-icon>
+                                </v-btn>
                               </v-col>
                               <v-divider></v-divider>
                             </v-row>
@@ -128,6 +139,15 @@
                           </v-card-text>
                         </v-card>
                       </v-col>
+                    </v-row>
+                    <v-row v-else>
+                      <edit-package
+                        v-for="clusterLevel in packageToBeEdited.clusterLevel"
+                        v-bind:key="clusterLevel.id"
+                        :cluster-level="clusterLevel"
+                        :sopsProviders="sopsProviders"
+                        @change="packageEdit = false"
+                      ></edit-package>
                     </v-row>
                   </v-container>
                 </v-tab-item>
@@ -213,13 +233,20 @@ import { Component, Vue } from 'vue-property-decorator';
 import ProjectBar from '@/components/overview/ProjectBar.vue';
 import CreateProjectView from '@/views/createProject/CreateProject.vue';
 import AddTeamMember from '@/views/createProject/AddTeamMember.vue';
-import { ProjectDetailQuery, ProjectDetailOtherProjectsQuery } from '@/generated/graphql';
+import EditPackage from '@/components/EditPackage.vue';
+import {
+  ProjectDetailQuery,
+  ProjectDetailOtherProjectsQuery,
+  TPackageNode,
+  TSopsProviderNode,
+} from '@/generated/graphql';
 
 @Component({
   components: {
     ProjectBar,
     CreateProjectView,
     AddTeamMember,
+    EditPackage,
   },
   apollo: {
     project: {
@@ -249,6 +276,10 @@ export default class ProjectDetail extends Vue {
 
   innerTab = 0;
 
+  packageEdit = false;
+
+  packageToBeEdited: TPackageNode | undefined;
+
   memberDrawer = false;
 
   // eslint-disable-next-line class-methods-use-this
@@ -260,9 +291,17 @@ export default class ProjectDetail extends Vue {
     this.$router.push({ query: { edit: 'true' } });
   }
 
+  setPackageEdit(pkg: TPackageNode): void {
+    this.packageToBeEdited = pkg;
+    this.packageEdit = true;
+  }
+
   handleSopsCreated(): void {
-    console.log('big fat yeet');
     this.$apollo.queries.project.refetch();
+  }
+
+  get sopsProviders(): TSopsProviderNode[] {
+    return this.project.sops;
   }
 }
 </script>
