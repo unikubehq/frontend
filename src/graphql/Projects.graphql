@@ -11,10 +11,12 @@ query ProjectsQuery($limit: Int, $offset: Int) {
             }
             sops {
                 ... on AWSKMSNode {
-                    title
+                    title,
+                    id
                 },
                 ... on PGPKeyNode {
-                    title
+                    title,
+                    id
                 },
             }
         }
@@ -44,17 +46,40 @@ query ProjectDetailQuery($id: UUID) {
                     title,
                     id,
                 }
+            },
+            clusterLevel {
+                title,
+                description,
+                id,
+                package{
+                    id
+                },
+                type,
+                valuesPath,
+                valuesType,
+                sopsCredentials {
+                    ... on AWSKMSNode {
+                    title,
+                    id,
+                },
+                ... on PGPKeyNode {
+                    title,
+                    id,
+                },
+                },
             }
 
         },
         sops {
             ... on AWSKMSNode {
                 title,
-                description
+                description,
+                id
             },
             ... on PGPKeyNode {
                 title
-                description
+                description,
+                id
             },
         }
 
@@ -167,5 +192,36 @@ mutation createUpdateSops(
         }
     ) {
         ok
+    }
+}
+
+mutation createUpdateClusterLevel(
+    $title: String!
+    $description: String
+    $type: String!
+    $package: ID!
+    $sopsCredentials: ID
+    $valuesPath: String
+    $id: ID
+) {
+    createUpdateClusterLevel(
+        input: {
+                title: $title
+                description: $description
+                type: $type
+                package: $package
+                sopsCredentials: $sopsCredentials
+                valuesPath: $valuesPath
+                id: $id
+        }
+    ) {
+        clusterLevel {
+            title,
+            id
+        },
+        errors {
+            field,
+            messages
+        }
     }
 }

@@ -28,7 +28,7 @@
         </v-row>
       </v-tab>
       <v-tabs-items v-model="tab">
-        <v-tab-item>
+        <v-tab-item v-if="project">
           <v-container v-if="!$route.query.edit">
             <v-row>
               <v-col cols="6">
@@ -54,7 +54,7 @@
                 </v-btn>
               </v-col>
             </v-row>
-            <v-row align-content="flex-end">
+            <v-row>
               <v-col cols="6">
                 <small><b>Last Update:</b>{{ verboseDate(project.modified) }}</small>
               </v-col>
@@ -77,113 +77,133 @@
               </v-col>
             </v-row>
             <v-divider></v-divider>
-<!--   <v-tabs v-model="innerTab">-->
-<!--     <v-tab>-->
-<!--       Applications <span class="tab-count-badge"> {{ project.packages.length }}</span>-->
-<!--     </v-tab>-->
-<!--     <v-tab>-->
-<!--       Team Members <span class="tab-count-badge"> {{ project.members.length }}</span>-->
-<!--     </v-tab>-->
-<!--     <v-tabs-items v-model="innerTab">-->
-<!--       <v-tab-item>-->
-<!--         <v-container>-->
-<!--           <v-row>-->
-<!--             <v-col cols="6" v-for="pkg in project.packages" :key="pkg.id">-->
-<!--               <v-card outlined>-->
-<!--                 <v-card-title>-->
-<!--                   <v-row>-->
-<!--                     <v-col cols="9">-->
-<!--                       {{ pkg.title }}-->
-<!--                     </v-col>-->
-<!--                     <v-col cols="3" class="text-right">-->
-<!--                       <v-avatar-->
-<!--                         color="primary"-->
-<!--                         v-for="user in project.members"-->
-<!--                         :key="user.user.firstName"-->
-<!--                         class="initials-avatar"-->
-<!--                         size="40"-->
-<!--                       >-->
-<!--                         <span class="avatar-initials">-->
-<!--                           {{ user.user.firstName[0] }}{{ user.user.lastName[0] }}-->
-<!--                         </span>-->
-<!--                       </v-avatar>-->
-<!--                     </v-col>-->
-<!--                     <v-divider></v-divider>-->
-<!--                   </v-row>-->
-<!--                 </v-card-title>-->
-<!--                 <v-card-text>-->
-<!--                   <v-divider class="mb-2"></v-divider>-->
-<!--                   <v-col cols="12">-->
-<!--                     <v-icon>$vuetify.icons.deployments</v-icon>-->
-<!--                     Deployments-->
-<!--                   </v-col>-->
-<!--                   <v-col cols="12">-->
-<!--                     <span-->
-<!--                       v-for="deployment in pkg.environments[0].deployments"-->
-<!--                       :key="deployment.id"-->
-<!--                       class="deployment-badge mr-3 px-4 py-2"-->
-<!--                     >-->
-<!--                       {{ deployment.title }}-->
-<!--                     </span>-->
-<!--                   </v-col>-->
-<!--                 </v-card-text>-->
-<!--               </v-card>-->
-<!--             </v-col>-->
-<!--           </v-row>-->
-<!--         </v-container>-->
-<!--       </v-tab-item>-->
-<!--       <v-tab-item>-->
-<!--         <v-container>-->
-<!--           <v-simple-table>-->
-<!--             <template v-slot:default>-->
-<!--               <thead class="member-thead">-->
-<!--               <tr>-->
-<!--                 <th class="text-left">Name</th>-->
-<!--                 <th class="text-left">Access to</th>-->
-<!--                 <th class="text-left">Role</th>-->
-<!--                 <th class="text-left">Last Online</th>-->
-<!--                 <th class="text-left">Actions</th>-->
-<!--               </tr>-->
-<!--               </thead>-->
-<!--               <tbody>-->
-<!--               <tr v-for="member in project.members" :key="member.id" class=" mb-3">-->
-<!--                 <td class="d-flex pa-2 pb-12">-->
-<!--                   <v-avatar class="mr-3" size="40">-->
-<!--                     <img src="https://randomuser.me/api/portraits/women/81.jpg">-->
-<!--                   </v-avatar>-->
-<!--                   <div class="d-flex flex-column">-->
-<!--                     <h3 class="mb-0">-->
-<!--                       {{ member.user.firstName }} {{ member.user.lastName }}-->
-<!--                     </h3>-->
-<!--                     <p class="mb-0">{{ member.user.email }}</p>-->
-<!--                   </div>-->
-<!--                 </td>-->
-<!--                 <td class="pa-2">Admin</td>-->
-<!--                 <td class="pa-2">{{ member.role }}</td>-->
-<!--                 <td class="pa-2">{{ member.user.lastLogin }}</td>-->
-<!--                 <td class="pa-2">-->
-<!--                   <v-icon size="24">$vuetify.icons.edit</v-icon>-->
-<!--                   <v-icon size="24">$vuetify.icons.delete</v-icon>-->
-<!--                 </td>-->
-<!--               </tr>-->
-<!--               <v-btn :ripple="false" plain elevation="0" @click="memberDrawer = true"-->
-<!--                      color="rgb(252,252,253)" class="mt-2">-->
-<!--                 <v-icon size="24" class="mr-2">-->
-<!--                   $vuetify.icons.addRound-->
-<!--                 </v-icon>-->
-<!--                 Add another-->
-<!--               </v-btn>-->
-<!--               </tbody>-->
-<!--             </template>-->
-<!--           </v-simple-table>-->
-<!--         </v-container>-->
-<!--       </v-tab-item>-->
-<!--     </v-tabs-items>-->
-<!--   </v-tabs>-->
+            <v-tabs v-model="innerTab">
+              <v-tab>
+                Applications <span class="tab-count-badge"> {{ project.packages.length }}</span>
+              </v-tab>
+              <v-tab v-if="project.members">
+                Team Members <span class="tab-count-badge"> {{ project.members.length }}</span>
+              </v-tab>
+              <v-tabs-items v-model="innerTab">
+                <v-tab-item>
+                  <v-container>
+                    <v-row v-if="!packageEdit">
+                      <v-col cols="6" v-for="pkg in project.packages" :key="pkg.id">
+                        <v-card outlined>
+                          <v-card-title>
+                            <v-row>
+                              <v-col cols="9">
+                                {{ pkg.title }}
+                              </v-col>
+                              <v-col cols="3" class="text-right">
+                                <v-avatar
+                                  color="primary"
+                                  v-for="user in project.members"
+                                  :key="user.user.firstName"
+                                  class="initials-avatar"
+                                  size="40"
+                                >
+                                  <span class="avatar-initials">
+                                    {{ user.user.firstName[0] }}{{ user.user.lastName[0] }}
+                                  </span>
+                                </v-avatar>
+                                <v-btn
+                                  outlined
+                                  plain
+                                  color="#a1a9b2"
+                                  width="50"
+                                  @click="setPackageEdit(pkg)"
+                                >
+                                  <v-icon size="24">
+                                    $vuetify.icons.edit
+                                  </v-icon>
+                                </v-btn>
+                              </v-col>
+                              <v-divider></v-divider>
+                            </v-row>
+                          </v-card-title>
+                          <v-card-text>
+                            <v-divider class="mb-2"></v-divider>
+                            <v-col cols="12">
+                              <v-icon>$vuetify.icons.deployments</v-icon>
+                              Deployments
+                            </v-col>
+                            <v-col cols="12">
+                              <span
+                                v-for="deployment in pkg.environments[0].deployments"
+                                :key="deployment.id"
+                                class="deployment-badge mr-3 px-4 py-2"
+                              >
+                                {{ deployment.title }}
+                              </span>
+                            </v-col>
+                          </v-card-text>
+                        </v-card>
+                      </v-col>
+                    </v-row>
+                    <v-row v-else>
+                      <edit-package
+                        v-for="clusterLevel in packageToBeEdited.clusterLevel"
+                        v-bind:key="clusterLevel.id"
+                        :cluster-level="clusterLevel"
+                        :sopsProviders="project.sops"
+                        @change="packageEdit = false"
+                      ></edit-package>
+                    </v-row>
+                  </v-container>
+                </v-tab-item>
+                <v-tab-item>
+                  <v-container>
+                    <v-simple-table>
+                      <template v-slot:default>
+                        <thead class="member-thead">
+                        <tr>
+                          <th class="text-left">Name</th>
+                          <th class="text-left">Access to</th>
+                          <th class="text-left">Role</th>
+                          <th class="text-left">Last Online</th>
+                          <th class="text-left">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="member in project.members" :key="member.id" class=" mb-3">
+                          <td class="d-flex pa-2 pb-12">
+                            <v-avatar class="mr-3" size="40">
+                              <img src="https://randomuser.me/api/portraits/women/81.jpg">
+                            </v-avatar>
+                            <div class="d-flex flex-column">
+                              <h3 class="mb-0">
+                                {{ member.user.firstName }} {{ member.user.lastName }}
+                              </h3>
+                              <p class="mb-0">{{ member.user.email }}</p>
+                            </div>
+                          </td>
+                          <td class="pa-2">Admin</td>
+                          <td class="pa-2">{{ member.role }}</td>
+                          <td class="pa-2">{{ member.user.lastLogin }}</td>
+                          <td class="pa-2">
+                            <v-icon size="24">$vuetify.icons.edit</v-icon>
+                            <v-icon size="24">$vuetify.icons.delete</v-icon>
+                          </td>
+                        </tr>
+                        <v-btn :ripple="false" plain elevation="0" @click="memberDrawer = true"
+                               color="rgb(252,252,253)" class="mt-2">
+                          <v-icon size="24" class="mr-2">
+                            $vuetify.icons.addRound
+                          </v-icon>
+                          Add another
+                        </v-btn>
+                        </tbody>
+                      </template>
+                    </v-simple-table>
+                  </v-container>
+                </v-tab-item>
+              </v-tabs-items>
+            </v-tabs>
           </v-container>
           <v-container v-else>
             <div class="px-3">
-              <span class="text--disabled" v-if="project.title">{{ project.title }} ></span>
+              <span class="text--disabled" v-if="project">{{ project.title }} ></span>
               <h2 class="text--semi-bold">Edit Project</h2>
               <v-divider></v-divider>
             </div>
@@ -205,12 +225,12 @@
       class="no-bg-drawer"
       v-model="memberDrawer"
     >
-      <add-team-member
-        v-if="allProjects"
-        :project="project"
-        :other-projects="allProjects.results"
-        v-on:done="memberDrawer = false"
-      ></add-team-member>
+<!--      <add-team-member-->
+<!--        v-if="allProjects"-->
+<!--        :project="project"-->
+<!--        :other-projects="allProjects.results"-->
+<!--        v-on:done="memberDrawer = false"-->
+<!--      ></add-team-member>-->
     </v-navigation-drawer>
   </v-container>
 </template>
@@ -220,13 +240,20 @@ import { Component, Vue } from 'vue-property-decorator';
 import ProjectBar from '@/components/overview/ProjectBar.vue';
 import ProjectForm from '@/views/createProject/ProjectForm.vue';
 import AddTeamMember from '@/views/createProject/AddTeamMember.vue';
-import { ProjectDetailQuery, ProjectDetailOtherProjectsQuery } from '@/generated/graphql';
+import EditPackage from '@/components/EditPackage.vue';
+import {
+  ProjectDetailQuery,
+  ProjectDetailOtherProjectsQuery,
+  TPackageNode,
+  TProjectNode,
+} from '@/generated/graphql';
 
 @Component({
   components: {
     ProjectBar,
     ProjectForm,
     AddTeamMember,
+    EditPackage,
   },
   apollo: {
     project: {
@@ -256,7 +283,13 @@ export default class ProjectDetail extends Vue {
 
   innerTab = 0;
 
+  packageEdit = false;
+
+  packageToBeEdited: TPackageNode | undefined;
+
   memberDrawer = false;
+
+  project!: TProjectNode
 
   // eslint-disable-next-line class-methods-use-this
   verboseDate(date: Date): string {
@@ -267,8 +300,12 @@ export default class ProjectDetail extends Vue {
     this.$router.push({ query: { edit: 'true' } });
   }
 
+  setPackageEdit(pkg: TPackageNode): void {
+    this.packageToBeEdited = pkg;
+    this.packageEdit = true;
+  }
+
   handleSopsCreated(): void {
-    console.log('big fat yeet');
     this.$apollo.queries.project.refetch();
   }
 }
