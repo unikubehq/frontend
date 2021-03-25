@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pa-8">
+  <v-container class="px-8 py-2">
     <v-row>
       <v-col cols="12">
         <h2>Organization Settings</h2>
