@@ -53,7 +53,7 @@
                 <img v-else src="" alt="">
               </v-list-item-avatar>
 
-              <v-list-item-content>
+              <v-list-item-content v-if="$store.state.context.organization">
                 <v-list-item-title
                     class="font-weight-bold"
                     v-if="$store.state.context.organization">
