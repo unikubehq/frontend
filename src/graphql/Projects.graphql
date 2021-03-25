@@ -41,6 +41,10 @@ query ProjectDetailQuery($id: UUID) {
             type,
             namespace,
             id,
+            fileInformation {
+                path,
+                encrypted
+            }
             environments {
                 deployments {
                     title,

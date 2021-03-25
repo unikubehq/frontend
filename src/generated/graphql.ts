@@ -409,7 +409,7 @@ export type TProjectDetailQueryVariables = Exact<{
 }>;
 
 
-export type TProjectDetailQueryResult = { __typename?: 'Query', project?: Maybe<{ __typename?: 'ProjectNode', created: any, title: string, description?: Maybe<string>, id: any, specRepository: string, specRepositoryBranch?: Maybe<string>, specType: TProjectSpecType, currentCommit: string, accessUsername: string, accessToken?: Maybe<string>, packages: Array<{ __typename?: 'PackageNode', title: string, description?: Maybe<string>, type: string, namespace: string, id: any, environments: Array<{ __typename?: 'ClusterLevelNode', deployments: Array<{ __typename?: 'DeploymentNode', title: string, id: any }> }>, clusterLevel?: Maybe<Array<Maybe<{ __typename?: 'ClusterLevelNode', title: string, description?: Maybe<string>, id: any, type: TClusterLevelType, valuesPath: string, valuesType?: Maybe<TClusterLevelValuesType>, package: { __typename?: 'PackageNode', id: any }, sopsCredentials?: Maybe<{ __typename?: 'AWSKMSNode', title: string, id: any } | { __typename?: 'PGPKeyNode', title: string, id: any }> }>>> }>, sops?: Maybe<Array<Maybe<{ __typename?: 'AWSKMSNode', title: string, description?: Maybe<string>, id: any } | { __typename?: 'PGPKeyNode', title: string, description?: Maybe<string>, id: any }>>> }> };
+export type TProjectDetailQueryResult = { __typename?: 'Query', project?: Maybe<{ __typename?: 'ProjectNode', created: any, title: string, description?: Maybe<string>, id: any, specRepository: string, specRepositoryBranch?: Maybe<string>, specType: TProjectSpecType, currentCommit: string, accessUsername: string, accessToken?: Maybe<string>, packages: Array<{ __typename?: 'PackageNode', title: string, description?: Maybe<string>, type: string, namespace: string, id: any, fileInformation?: Maybe<Array<Maybe<{ __typename?: 'FileInformationNode', path?: Maybe<string>, encrypted?: Maybe<boolean> }>>>, environments: Array<{ __typename?: 'ClusterLevelNode', deployments: Array<{ __typename?: 'DeploymentNode', title: string, id: any }> }>, clusterLevel?: Maybe<Array<Maybe<{ __typename?: 'ClusterLevelNode', title: string, description?: Maybe<string>, id: any, type: TClusterLevelType, valuesPath: string, valuesType?: Maybe<TClusterLevelValuesType>, package: { __typename?: 'PackageNode', id: any }, sopsCredentials?: Maybe<{ __typename?: 'AWSKMSNode', title: string, id: any } | { __typename?: 'PGPKeyNode', title: string, id: any }> }>>> }>, sops?: Maybe<Array<Maybe<{ __typename?: 'AWSKMSNode', title: string, description?: Maybe<string>, id: any } | { __typename?: 'PGPKeyNode', title: string, description?: Maybe<string>, id: any }>>> }> };
 
 export type TProjectDetailOtherProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -560,6 +560,10 @@ export const ProjectDetailQuery = gql`
       type
       namespace
       id
+      fileInformation {
+        path
+        encrypted
+      }
       environments {
         deployments {
           title

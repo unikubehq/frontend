@@ -6,7 +6,7 @@
             <v-col>
                 <v-text-field
                   :label="$t('Title')"
-                  name="projectName"
+                  name="clusterLevelName"
                   filled
                   outlined
                   type="text"
@@ -17,7 +17,7 @@
                 />
                 <v-text-field
                   :label="$t('Description')"
-                  name="projectName"
+                  name="description"
                   filled
                   outlined
                   type="text"
@@ -27,7 +27,7 @@
                 />
                 <v-select
                   :label="$t('Sops')"
-                  name="specType"
+                  name="sops"
                   filled
                   outlined
                   type="text"
@@ -39,7 +39,7 @@
                 />
                 <v-select
                     :label="$t('Clusterlevel Type')"
-                    name="specType"
+                    name="type"
                     filled
                     outlined
                     type="text"
@@ -50,7 +50,7 @@
                   />
                 <v-select
                   :label="$t('Values Path')"
-                  name="specType"
+                  name="valuesPath"
                   filled
                   outlined
                   type="text"
@@ -59,7 +59,15 @@
                   :items="valuesPathChoices"
                   return-object
                   prepend-inner-icon="$vuetify.icons.user"
-                />
+                >
+                  <template v-slot:item="data">
+                    <v-icon class="mr-2" v-if="data.item.encrypted">
+                      $vuetify.icons.accessToken
+                    </v-icon>
+                    <span v-else class="mr-8"></span>
+                    {{ data.item.text }}
+                  </template>
+                </v-select>
               </v-col>
           </v-row>
           <v-row>
@@ -88,7 +96,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import {
-  CreateUpdateClusterLevel, TClusterLevelNode,
+  CreateUpdateClusterLevel, TClusterLevelNode, TFileInformationNode, TPackageNode,
   TSopsProviderNode,
 } from '@/generated/graphql';
 
@@ -103,6 +111,8 @@ export default class EditPackage extends Vue {
 
   @Prop() readonly sopsProviders: TSopsProviderNode[] | undefined
 
+  @Prop() readonly package!: TPackageNode
+
   title = this.clusterLevel?.title
 
   description = this.clusterLevel?.description
@@ -114,8 +124,6 @@ export default class EditPackage extends Vue {
   clusterLevelType = ''
 
   valuesPath = ''
-
-  valuesPathChoices = ['/', '/tmp']
 
   showForm = false;
 
@@ -133,7 +141,6 @@ export default class EditPackage extends Vue {
       },
     })
       .then((data) => {
-        console.log(data);
         if (data.data.createUpdateClusterLevel.errors.length === 0) {
           this.$emit('change');
         }
@@ -141,10 +148,22 @@ export default class EditPackage extends Vue {
       .catch((err) => console.log(err));
   }
 
+  get valuesPathChoices(): { text: string, value: string, encrypted: boolean }[] {
+    if (this.package?.fileInformation?.length) {
+      return this.package.fileInformation.map(
+        (fileInfo: TFileInformationNode | null) => ({
+          text: fileInfo?.path || '',
+          value: fileInfo?.path || '',
+          encrypted: fileInfo?.encrypted || false,
+        }),
+      );
+    }
+    return [];
+  }
+
   get sopsProviderChoices(): { text: string, value: string }[] {
     const choices: sopsCredential[] = [];
     this.sopsProviders?.forEach((provider) => {
-      console.log(provider);
       choices.push({ text: provider.title, value: provider.id });
     });
     return choices;

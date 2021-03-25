@@ -145,6 +145,7 @@
                       <edit-package
                         v-for="clusterLevel in packageToBeEdited.clusterLevel"
                         v-bind:key="clusterLevel.id"
+                        :package="packageToBeEdited"
                         :cluster-level="clusterLevel"
                         :sopsProviders="project.sops"
                         @change="packageEdit = false"
