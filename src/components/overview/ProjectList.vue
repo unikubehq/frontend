@@ -13,7 +13,7 @@
           <v-icon size="24">$vuetify.icons.edit</v-icon>
         </router-link>
         <v-divider style="height: 24px" class="mx-4" vertical></v-divider>
-        <v-icon @click="deleteProject(project.id)" size="24">$vuetify.icons.delete</v-icon>
+        <v-icon @click="deleteProjectDialog(project)" size="24">$vuetify.icons.delete</v-icon>
       </v-col>
     </v-row>
     <v-row class="white px-7">
@@ -51,16 +51,25 @@
         </v-avatar>
       </v-col>
     </v-row>
+    <delete-project :show="showDeleteDialog" :project="deleteProject"
+        @hide="showDeleteDialog = false; deleteProject = undefined;"></delete-project>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { TProjectNode, DeleteProject } from '@/generated/graphql';
+import { TProjectNode } from '@/generated/graphql';
+import DeleteProject from '@/components/overview/DeleteProject.vue';
 
-@Component({})
+@Component({
+  components: { DeleteProject },
+})
 export default class ProjectList extends Vue {
   @Prop() readonly project: TProjectNode | undefined
+
+  deleteProject: TProjectNode | null = null
+
+  showDeleteDialog = false
 
   drawer = false;
 
@@ -76,19 +85,9 @@ export default class ProjectList extends Vue {
     // return initials;
   }
 
-  deleteProject(id: number): void {
-    this.$apollo.mutate({
-      mutation: DeleteProject,
-      variables: {
-        id,
-      },
-    })
-      .then((data) => {
-        if (data.data.deleteProject.ok) {
-          this.$emit('deletion');
-        }
-      })
-      .catch((err) => console.log(err));
+  deleteProjectDialog(project: TProjectNode): void {
+    this.deleteProject = project;
+    this.showDeleteDialog = true;
   }
 }
 </script>

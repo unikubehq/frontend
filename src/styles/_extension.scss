@@ -129,3 +129,11 @@
   padding-top: 30px;
   padding-bottom: 30px;
 }
+.v-application .v-alert.error--text {
+  background-color: #fff7f7 !important;
+  border: 0 !important;
+  border-radius: 8px;
+  .v-alert__icon {
+    align-self: center;
+  }
+}

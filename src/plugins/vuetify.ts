@@ -43,6 +43,7 @@ import ArrowRightGrey from '@/components/icons/ArrowRightGrey.vue';
 import AddRound from '@/components/icons/AddRound.vue';
 import Done from '@/components/icons/Done.vue';
 import Copy from '@/components/icons/Copy.vue';
+import Warning from '@/components/icons/Warning.vue';
 
 Vue.use(Vuetify);
 
@@ -52,6 +53,7 @@ export default new Vuetify({
       light: {
         primary: '#45D093',
         anchor: '#45D093',
+        error: '#ff7364',
       },
     },
   },
@@ -177,6 +179,9 @@ export default new Vuetify({
       },
       copy: {
         component: Copy,
+      },
+      warning: {
+        component: Warning,
       },
     },
   },
