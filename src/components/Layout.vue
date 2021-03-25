@@ -60,7 +60,7 @@
                   {{ currentOrganizationName }}
                 </v-list-item-title>
                 <v-list-item-subtitle>
-                  Organization ID: 8900998
+                  Organization ID: {{ idToVerboseId($store.state.context.organization.id) }}
                 </v-list-item-subtitle>
               </v-list-item-content>
               <v-icon small class="float-right organization-dropdown--arrow" v-if="!mini">
@@ -85,7 +85,7 @@
               </v-list-item-avatar>
               <v-list-item-content>
                 <v-list-item-title v-text="organization.title"></v-list-item-title>
-                <v-list-item-subtitle v-text="organization.id"/>
+                <v-list-item-subtitle v-text="'ID: ' + idToVerboseId(organization.id)"/>
               </v-list-item-content>
             </v-list-item>
             <v-divider />
@@ -229,6 +229,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { OrganizationsQuery } from '@/generated/graphql';
+import Strings from '@/utils/strings';
 
 Component.registerHooks([
   'beforeRouteEnter',
@@ -275,6 +276,8 @@ export default class Layout extends Vue {
       this.$router.push({ name: 'overview' });
     }
   }
+
+  idToVerboseId = Strings.idToVerboseId
 
   get currentOrganizationName(): string {
     return this.$store.state.context.organization.title;
