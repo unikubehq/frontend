@@ -101,9 +101,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { OrganizationsQuery } from '@/generated/graphql';
 import Navigation from '@/components/Navigation.vue';
-import Strings from '@/utils/strings';
 
 Component.registerHooks([
   'beforeRouteEnter',
