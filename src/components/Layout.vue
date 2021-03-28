@@ -27,29 +27,6 @@ Component.registerHooks([
   },
 })
 export default class Layout extends Vue {
-  menu = false;
-
-  notifications = 0;
-
-  notificationsMenu = false;
-
-  increment(): void {
-    this.notifications += 1;
-  }
-
-  mounted(): void {
-    if (this.$route.path === '/') {
-      this.$router.push({ name: 'overview' });
-    }
-  }
-
-  get username(): string {
-    return this.$store.state.auth.username;
-  }
-
-  get currentRoute(): string | null | undefined {
-    return this.$route.name;
-  }
 }
 </script>
 
