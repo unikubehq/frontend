@@ -20,7 +20,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import MemberDetail from '@/components/permissions/MemberDetail.vue';
+import MemberDetail from '@/components/Permissions/MemberDetail.vue';
 
 @Component({
   components: { MemberDetail },

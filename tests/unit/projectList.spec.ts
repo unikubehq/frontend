@@ -1,8 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { shallowMount, createLocalVue } from '@vue/test-utils';
-import ProjectList from '@/components/overview/ProjectList.vue';
+import ProjectList from '@/components/Projects/ProjectList.vue';
 import Vuetify from 'vuetify';
-import VueApollo from 'vue-apollo';
 import VueRouter from 'vue-router';
 
 const project = {

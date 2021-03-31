@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
-import CreateOrganization from '@/views/organization/CreateOrganization.vue';
+import CreateOrganization from '@/views/Organizations/CreateOrganization.vue';
 
 Vue.use(VueRouter);
 
@@ -21,7 +21,7 @@ const routes: Array<RouteConfig> = [
       {
         path: '/overview',
         name: 'overview',
-        component: () => import(/* webpackChunkName: "about" */ '../views/Overview.vue'),
+        component: () => import(/* webpackChunkName: "about" */ '../views/Projects.vue'),
       },
       {
         path: '/activities',
@@ -37,21 +37,43 @@ const routes: Array<RouteConfig> = [
         path: '/settings',
         name: 'settings',
         component: () => import(/* webpackChunkName: "about" */ '../views/Settings.vue'),
+        children: [
+          {
+            path: '/settings/account',
+            name: 'settings.account',
+            component: () => import(/* webpackChunkName: "about" */ '../views/Settings/AccountSettings.vue'),
+          },
+          {
+            path: '/settings/notifications',
+            name: 'settings.notifications',
+            component: () => import(/* webpackChunkName: "about" */ '../views/Settings/NotificationSettings.vue'),
+          },
+          {
+            path: '/settings/roles',
+            name: 'settings.roles',
+            component: () => import(/* webpackChunkName: "about" */ '../views/Settings/OrganizationRoles.vue'),
+          },
+          {
+            path: '/settings/organization',
+            name: 'settings.organization',
+            component: () => import(/* webpackChunkName: "about" */ '../views/Settings/OrganizationSettings.vue'),
+          },
+        ],
       },
       {
         path: '/create-project',
         name: 'create New Project',
-        component: () => import(/* webpackChunkName: "about" */ '../views/createProject/CreateProject.vue'),
+        component: () => import(/* webpackChunkName: "about" */ '../views/Projects/CreateProject.vue'),
       },
       {
         path: '/create-project/add-members',
         name: 'Create New Project',
-        component: () => import('../views/createProject/AddTeamMember.vue'),
+        component: () => import('../views/Projects/AddTeamMember.vue'),
       },
       {
         path: '/project/:slug',
         name: 'Project Detail',
-        component: () => import('../views/projectDetail/ProjectDetail.vue'),
+        component: () => import('../views/Projects/ProjectDetail.vue'),
       },
     ],
   },

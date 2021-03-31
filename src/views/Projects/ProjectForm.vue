@@ -141,7 +141,7 @@ import {
 } from 'vue-property-decorator';
 import { CreateProject, UpdateProject, TProjectNode } from '@/generated/graphql';
 import { required, url } from 'vuelidate/lib/validators';
-import SopsEdit from '@/views/projectDetail/SopsEdit.vue';
+import SopsEdit from '@/views/Projects/SopsEdit.vue';
 import VueI18n from 'vue-i18n';
 import TranslateResult = VueI18n.TranslateResult;
 

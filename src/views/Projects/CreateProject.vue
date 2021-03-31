@@ -12,7 +12,7 @@ import {
   Component, Prop, Vue,
 } from 'vue-property-decorator';
 import { TProjectNode } from '@/generated/graphql';
-import ProjectForm from '@/views/createProject/ProjectForm.vue';
+import ProjectForm from '@/views/Projects/ProjectForm.vue';
 
 @Component({
   components: {

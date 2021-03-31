@@ -1,11 +1,9 @@
 <template>
-  <v-container class="px-8 py-2">
+  <div class="py-5">
+      <h2>Notifications</h2>
+      <p>Control what things you would like to get notified for.</p>
+      <v-divider></v-divider>
     <v-row>
-      <v-col cols="12">
-        <h2>Organization Roles</h2>
-        <p>Control what things you would like to get notified for.</p>
-        <v-divider></v-divider>
-      </v-col>
       <v-col cols="10">
         <v-row>
           <v-col cols="5">
@@ -54,7 +52,7 @@
         </v-row>
       </v-col>
     </v-row>
-  </v-container>
+  </div>
 
 </template>
 

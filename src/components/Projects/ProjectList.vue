@@ -59,7 +59,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { TProjectNode } from '@/generated/graphql';
-import DeleteProject from '@/components/overview/DeleteProject.vue';
+import DeleteProject from '@/components/Projects/DeleteProject.vue';
 
 @Component({
   components: { DeleteProject },

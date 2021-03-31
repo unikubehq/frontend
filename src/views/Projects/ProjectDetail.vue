@@ -238,10 +238,10 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import ProjectBar from '@/components/overview/ProjectBar.vue';
-import ProjectForm from '@/views/createProject/ProjectForm.vue';
-import AddTeamMember from '@/views/createProject/AddTeamMember.vue';
-import EditPackage from '@/components/EditPackage.vue';
+import ProjectBar from '@/components/Projects/ProjectBar.vue';
+import ProjectForm from '@/views/Projects/ProjectForm.vue';
+import AddTeamMember from '@/views/Projects/AddTeamMember.vue';
+import EditPackage from '@/components/Projects/EditPackage.vue';
 import {
   ProjectDetailQuery,
   ProjectDetailOtherProjectsQuery,

@@ -60,8 +60,8 @@
 </template>
 
 <script lang="ts">
-import ProjectBar from '@/components/overview/ProjectBar.vue';
-import ProjectList from '@/components/overview/ProjectList.vue';
+import ProjectBar from '@/components/Projects/ProjectBar.vue';
+import ProjectList from '@/components/Projects/ProjectList.vue';
 import { Component } from 'vue-property-decorator';
 import { ProjectsQuery, TProjectNode } from '@/generated/graphql';
 import { paginationMixin } from '@/components/mixins';

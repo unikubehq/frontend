@@ -1,11 +1,9 @@
 <template>
-  <v-container class="px-8 py-2">
+  <div class="py-5">
+      <h2>Organization Roles</h2>
+      <p>You can set organization basic information and can also remove it.</p>
+      <v-divider></v-divider>
     <v-row>
-      <v-col cols="12">
-        <h2>Organization Roles</h2>
-        <p>You can set organization basic information and can also remove it.</p>
-        <v-divider></v-divider>
-      </v-col>
       <v-col cols="8" class="mt-8">
         <h2>Assign New Role</h2>
         <v-form>
@@ -73,8 +71,8 @@
           </template>
         </v-simple-table>
       </v-col>
-    </v-row>
-  </v-container>
+      </v-row>
+  </div>
 
 </template>
 

@@ -1,13 +1,12 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import {
-  mount, shallowMount, createLocalVue, RouterLinkStub,
+  shallowMount, createLocalVue,
+// eslint-disable-next-line import/no-extraneous-dependencies
 } from '@vue/test-utils';
 import Vuetify from 'vuetify';
 import VueRouter from 'vue-router';
-import VueApollo from 'vue-apollo';
-import Overview from '@/views/Overview.vue';
-import ProjectList from '@/components/overview/ProjectList.vue';
-import ProjectBar from '@/components/overview/ProjectBar.vue';
+import Projects from '@/views/Projects.vue';
+import ProjectList from '@/components/Projects/ProjectList.vue';
 
 const project = {
   title: 'Openlane-project',
@@ -31,7 +30,7 @@ const project = {
   ],
 };
 
-describe('Overview.vue', () => {
+describe('Projects.vue', () => {
   const localVue = createLocalVue();
 
   let vuetify: Vuetify;
@@ -41,7 +40,7 @@ describe('Overview.vue', () => {
   });
 
   it('renders correctly', async () => {
-    const wrapper = shallowMount(Overview, {
+    const wrapper = shallowMount(Projects, {
       localVue,
       vuetify,
       stubs: {
@@ -53,7 +52,7 @@ describe('Overview.vue', () => {
 
   it('refetches projects', async () => {
     const refetch = jest.fn().mockImplementation(() => Promise.resolve());
-    const wrapper = shallowMount(Overview, {
+    const wrapper = shallowMount(Projects, {
       localVue,
       vuetify,
       data() {

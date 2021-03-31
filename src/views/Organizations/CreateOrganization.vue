@@ -23,11 +23,11 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import OrgaTitle from '@/components/createOrganizationFlow/OrgaTitle.vue';
+import OrgaTitle from '@/components/Organizations/OrgaTitle.vue';
 import CreateOrganizationProject
-  from '@/components/createOrganizationFlow/CreateOrganizationProject.vue';
-import OrgaMembers from '@/components/createOrganizationFlow/OrgaMembers.vue';
-import OrgaDone from '@/components/createOrganizationFlow/OrgaDone.vue';
+  from '@/components/Organizations/CreateOrganizationProject.vue';
+import OrgaMembers from '@/components/Organizations/OrgaMembers.vue';
+import OrgaDone from '@/components/Organizations/OrgaDone.vue';
 
 @Component({
   components: {

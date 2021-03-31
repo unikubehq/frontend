@@ -6,7 +6,7 @@
 
 <script>
 import { Component, Vue } from 'vue-property-decorator';
-import MemberList from '@/components/permissions/MemberList.vue';
+import MemberList from '@/components/Permissions/MemberList.vue';
 
 @Component({
   components: {
