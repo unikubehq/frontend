@@ -23,7 +23,6 @@ export default class Auth extends VuexModule {
   get caslRules(): SubjectRawRule<any, any, any>[] {
     const { can, rules } = new AbilityBuilder<UnikubeAbility>(Ability);
     this.rpt.authorization.permissions.forEach((permission: IPermission) => {
-      console.log(permission);
       const type = permission.rsname.split(' ')[0];
       const nameMap: {[key: string]: string} = {
         project: 'ProjectNode',
