@@ -3,7 +3,9 @@
     <app-navigation></app-navigation>
     <app-bar></app-bar>
     <v-main>
-      <router-view></router-view>
+      <v-container fluid class="px-8">
+        <router-view></router-view>
+      </v-container>
     </v-main>
   </div>
 </template>

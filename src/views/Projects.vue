@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="px-8">
+  <div>
     <project-bar @sort-change="sorting = $event" @search-change="search = $event"></project-bar>
       <div v-if="projectResults.length">
         <div v-for="project in projectResults" :key="project.id">
@@ -56,7 +56,7 @@
         </v-btn>
       </template>
     </v-snackbar>
-  </v-container>
+  </div>
 </template>
 
 <script lang="ts">

@@ -36,27 +36,33 @@ const routes: Array<RouteConfig> = [
       {
         path: '/settings',
         name: 'settings',
-        component: () => import(/* webpackChunkName: "about" */ '../views/Settings.vue'),
+        component: () => import(/* webpackChunkName: "settings" */ '../views/Settings.vue'),
+        redirect: { name: 'settings.account' },
         children: [
           {
             path: '/settings/account',
             name: 'settings.account',
-            component: () => import(/* webpackChunkName: "about" */ '../views/Settings/AccountSettings.vue'),
+            component: () => import(/* webpackChunkName: "settings" */ '../views/Settings/AccountSettings.vue'),
           },
           {
             path: '/settings/notifications',
             name: 'settings.notifications',
-            component: () => import(/* webpackChunkName: "about" */ '../views/Settings/NotificationSettings.vue'),
+            component: () => import(/* webpackChunkName: "settings" */ '../views/Settings/NotificationSettings.vue'),
           },
           {
             path: '/settings/roles',
             name: 'settings.roles',
-            component: () => import(/* webpackChunkName: "about" */ '../views/Settings/OrganizationRoles.vue'),
+            component: () => import(/* webpackChunkName: "settings" */ '../views/Settings/OrganizationRoles.vue'),
           },
           {
             path: '/settings/organization',
             name: 'settings.organization',
-            component: () => import(/* webpackChunkName: "about" */ '../views/Settings/OrganizationSettings.vue'),
+            component: () => import(/* webpackChunkName: "settings" */ '../views/Settings/OrganizationSettings.vue'),
+          },
+          {
+            path: '/settings/payment',
+            name: 'settings.payment',
+            component: () => import(/* webpackChunkName: "settings" */ '../views/Settings/Payment.vue'),
           },
         ],
       },

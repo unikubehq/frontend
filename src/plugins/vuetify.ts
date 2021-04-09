@@ -3,6 +3,7 @@ import '@mdi/font/css/materialdesignicons.css';
 import Vue from 'vue';
 import Vuetify from 'vuetify/lib';
 
+import Account from '@/components/icons/Account.vue';
 import AccountBlue from '@/components/icons/AccountBlue.vue';
 import Description from '@/components/icons/Description.vue';
 import AccessUser from '@/components/icons/AccessUser.vue';
@@ -22,6 +23,7 @@ import Settings from '@/components/icons/Settings.vue';
 import ArrowDownWhite from '@/components/icons/ArrowDownWhite.vue';
 import Email from '@/components/icons/Email.vue';
 import Logout from '@/components/icons/Logout.vue';
+import Notification from '@/components/icons/Notification.vue';
 import NotificationBlue from '@/components/icons/NotificationBlue.vue';
 import ProjectInput from '@/components/icons/ProjectInput.vue';
 import Repository from '@/components/icons/Repository.vue';
@@ -44,6 +46,12 @@ import AddRound from '@/components/icons/AddRound.vue';
 import Done from '@/components/icons/Done.vue';
 import Copy from '@/components/icons/Copy.vue';
 import Warning from '@/components/icons/Warning.vue';
+import OrganizationSettings from '@/components/icons/OrganizationSettings.vue';
+import OrganizationSettingsBlue from '@/components/icons/OrganizationSettingsBlue.vue';
+import OrganizationRoles from '@/components/icons/OrganizationRoles.vue';
+import OrganizationRolesBlue from '@/components/icons/OrganizationRolesBlue.vue';
+import Payment from '@/components/icons/Payment.vue';
+import PaymentBlue from '@/components/icons/PaymentBlue.vue';
 
 Vue.use(Vuetify);
 
@@ -60,6 +68,9 @@ export default new Vuetify({
   icons: {
     iconfont: 'mdi',
     values: {
+      account: {
+        component: Account,
+      },
       accountBlue: {
         component: AccountBlue,
       },
@@ -101,6 +112,9 @@ export default new Vuetify({
       },
       logout: {
         component: Logout,
+      },
+      notification: {
+        component: Notification,
       },
       notificationBlue: {
         component: NotificationBlue,
@@ -182,6 +196,24 @@ export default new Vuetify({
       },
       warning: {
         component: Warning,
+      },
+      organizationSettings: {
+        component: OrganizationSettings,
+      },
+      organizationSettingsBlue: {
+        component: OrganizationSettingsBlue,
+      },
+      organizationRoles: {
+        component: OrganizationRoles,
+      },
+      organizationRolesBlue: {
+        component: OrganizationRolesBlue,
+      },
+      payment: {
+        component: Payment,
+      },
+      paymentBlue: {
+        component: PaymentBlue,
       },
     },
   },
