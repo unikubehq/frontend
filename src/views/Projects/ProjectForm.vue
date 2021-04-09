@@ -288,7 +288,7 @@ export default class ProjectForm extends Vue {
     })
       .then((data) => {
         this.saveLoading = false;
-        this.$store.dispatch('auth/refresh');
+        this.$store.dispatch('auth/refresh', 0);
         if (data.data.createUpdateProject.project) {
           if (this.editMode) {
             this.$router.go(-1);
