@@ -119,6 +119,7 @@ export type TProjectNode = {
   organization?: Maybe<TOrganizationNode>;
   packages: Array<TPackageNode>;
   sops?: Maybe<Array<Maybe<TSopsProviderNode>>>;
+  kind: 'ProjectNode'
 };
 
 

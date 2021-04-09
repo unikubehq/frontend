@@ -24,6 +24,9 @@
     "paths": {
       "@/*": [
         "src/*"
+      ],
+      "@casl/vue/patch": [
+        "src/shims-ability.d.ts"
       ]
     },
     "lib": [

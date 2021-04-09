@@ -11,6 +11,12 @@ import vuetify from '@/plugins/vuetify';
 import setupApolloProvider from '@/vue-apollo';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
+import { abilitiesPlugin, Can } from '@casl/vue';
+import { Ability, AbilityBuilder } from '@casl/ability';
+import { UnikubeAbility } from '@/typing';
+import { getModule } from 'vuex-module-decorators';
+import Auth from '@/store/modules/auth';
+
 import LocaleMessages = VueI18n.LocaleMessages;
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -42,11 +48,22 @@ keycloak.init({
     if (spinner) {
       spinner.remove();
     }
+
+    const { build } = new AbilityBuilder<UnikubeAbility>(Ability);
+    const ability = build({
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      // eslint-disable-next-line no-underscore-dangle
+      detectSubjectType: (object) => object.__typename,
+    }) as UnikubeAbility;
+
     Vue.config.productionTip = false;
     Vue.use(VueAxios, axios);
     Vue.use(VueApollo);
     Vue.use(VueI18n);
     Vue.use(Vuelidate);
+    Vue.use(abilitiesPlugin, ability);
+    Vue.component('Can', Can);
     Vue.axios.defaults.baseURL = process.env.VUE_APP_UPLOAD_URL;
 
     if (process.env.NODE_ENV === 'production') {
@@ -68,7 +85,8 @@ keycloak.init({
     });
 
     store.commit('auth/setKeycloakClient', keycloak);
-    store.dispatch('auth/scheduleRefresh');
+    const auth = getModule(Auth, store);
+    auth.scheduleRefresh();
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const authorization = new KeycloakAuthorization(keycloak);

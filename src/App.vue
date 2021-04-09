@@ -16,16 +16,24 @@
 import Vue from 'vue';
 import { getModule } from 'vuex-module-decorators';
 import UI from '@/store/modules/ui';
+import { Component, Watch } from 'vue-property-decorator';
 
-export default Vue.extend({
-  name: 'App',
-  computed: {
-    overlay() {
-      const ui = getModule(UI, this.$store);
-      return ui.overlay;
-    },
-  },
-});
+@Component({})
+export default class App extends Vue {
+  get overlay(): boolean {
+    const ui = getModule(UI, this.$store);
+    return ui.overlay;
+  }
+
+  get rawRpt():string {
+    return this.$store.state.auth.rawRpt;
+  }
+
+  @Watch('rawRpt', { immediate: true })
+  rawRptChanged(): void {
+    this.$ability.update(this.$store.getters['auth/caslRules']);
+  }
+}
 </script>
 
 <style lang="scss">

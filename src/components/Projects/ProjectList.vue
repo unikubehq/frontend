@@ -8,7 +8,7 @@
         <h3 class="mb-0">{{ project.title}}</h3>
         <p>{{ project.description }}</p>
       </v-col>
-      <v-col class="text-right pr-10">
+      <v-col class="text-right pr-10" v-if="$can('edit', project)">
         <router-link :to="'/project/' + project.id + '?edit=true'">
           <v-icon size="24">$vuetify.icons.edit</v-icon>
         </router-link>
