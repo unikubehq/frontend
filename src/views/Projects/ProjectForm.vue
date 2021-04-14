@@ -160,6 +160,10 @@ import TranslateResult = VueI18n.TranslateResult;
     specRepositoryBranch: {
       required,
     },
+    accessUsername: {
+    },
+    accessToken: {
+    },
   },
 })
 export default class ProjectForm extends Vue {
