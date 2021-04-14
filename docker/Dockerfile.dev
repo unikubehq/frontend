@@ -35,7 +35,7 @@ FROM quay.io/bitnami/nginx:latest
 
 
 ## Nginx config
-COPY nginx/blueshoe.conf /etc/nginx/conf.d/
+COPY nginx/blueshoe.conf /opt/bitnami/nginx/conf/server_blocks/blueshoe.conf
 EXPOSE 8080
 
 ## Copy build assets from previous stage
