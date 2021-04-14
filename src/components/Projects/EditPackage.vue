@@ -136,7 +136,7 @@ export default class EditPackage extends Vue {
         type: this.clusterLevelType,
         package: this.clusterLevel?.package?.id,
         sopsCredentials: this.sopsCredentials.value,
-        valuesPath: this.valuesPath,
+        valuesPath: this.valuesPath?.value,
         id: this.clusterLevel?.id,
       },
     })
