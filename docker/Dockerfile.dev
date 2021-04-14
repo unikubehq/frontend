@@ -25,6 +25,7 @@ ARG VUE_APP_KEYCLOAK_AUTHZ_JS=/js/keycloak-authz.js
 ARG VUE_APP_KEYCLOAK_URL=http://keycloak.127.0.0.1.nip.io:8085/auth
 ARG VUE_APP_KEYCLOAK_REALM=unikube
 ARG VUE_APP_KEYCLOAK_CLIENT_ID=frontend
+ARG VUE_APP_UPLOAD_URL=http://gateway.unikube.127.0.0.1.nip.io:8085/upload
 
 ### Build
 RUN ["npm", "run", "build"]
