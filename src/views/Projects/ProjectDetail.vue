@@ -22,8 +22,8 @@
             <small>No. of Applications</small>
           </v-col>
           <v-col cols="6" class="text-right">
-            <h4>{{ verboseDate(project.modified) }}</h4>
-            <small>No. of Applications</small>
+            <h4>{{ verboseDate(project.currentCommitDateTime) }}</h4>
+            <small>Last Update</small>
           </v-col>
         </v-row>
       </v-tab>
@@ -34,9 +34,12 @@
               <v-col cols="6">
                 <h2 class="mb-1">{{ project.title }}</h2>
                 <small class="d-block">{{ project.description }}</small>
+                <small class="mt-3">
+                  <b class="mr-3">Last Update:</b>{{ verboseDate(project.currentCommitDateTime) }}
+                </small>
               </v-col>
               <v-col cols="3">
-                <h4 class="mb-2">{{ verboseDate(project.created) }}</h4>
+                <h4 class="mb-1">{{ verboseDate(project.created) }}</h4>
                 <small class="d-block">Date added</small>
               </v-col>
               <v-col cols="3">
@@ -52,28 +55,27 @@
                   </v-icon>
                   Edit Project
                 </v-btn>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="6">
-                <small><b>Last Update:</b>{{ verboseDate(project.modified) }}</small>
-              </v-col>
-              <v-col cols="3" v-if="project.creator">
-                <h4>{{ project.creator.firstName }} {{ project.creator.lastName }}</h4>
-                <small class="d-block">Created by</small>
-              </v-col>
-              <v-col cols="3">
+
                 <v-btn
                   outlined
                   plain
                   color="#a1a9b2"
                   width="144"
+                  class="mt-5"
                 >
                   <v-icon size="24">
                     $vuetify.icons.delete
                   </v-icon>
                   Delete Project
                 </v-btn>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="6">
+              </v-col>
+              <v-col cols="3" v-if="project.creator">
+                <h4>{{ project.creator.firstName }} {{ project.creator.lastName }}</h4>
+                <small class="d-block">Created by</small>
               </v-col>
             </v-row>
             <v-divider></v-divider>
@@ -292,9 +294,11 @@ export default class ProjectDetail extends Vue {
 
   project!: TProjectNode
 
-  // eslint-disable-next-line class-methods-use-this
   verboseDate(date: Date): string {
-    return new Date(date).toDateString();
+    if (date) {
+      return this.$d(new Date(date), 'short');
+    }
+    return '';
   }
 
   setEdit(): void {

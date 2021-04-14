@@ -82,6 +82,15 @@ keycloak.init({
       locale: 'de',
       fallbackLocale: 'en',
       messages: loadLocaleMessages(),
+      dateTimeFormats: {
+        en: {
+          short: {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          },
+        },
+      },
     });
 
     store.commit('auth/setKeycloakClient', keycloak);

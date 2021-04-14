@@ -74,7 +74,7 @@ export default class ProjectList extends Vue {
   drawer = false;
 
   get modifiedDate(): string {
-    return new Date(this.project?.created).toDateString();
+    return this.$d(new Date(this.project?.currentCommitDateTime), 'short');
   }
 
   // eslint-disable-next-line class-methods-use-this

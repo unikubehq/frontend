@@ -123,7 +123,7 @@ export default class EditPackage extends Vue {
 
   clusterLevelType = ''
 
-  valuesPath = ''
+  valuesPath = { text: '', value: '' }
 
   showForm = false;
 

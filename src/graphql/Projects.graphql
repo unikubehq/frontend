@@ -5,6 +5,7 @@ query ProjectsQuery($limit: Int, $offset: Int) {
             title,
             description,
             currentCommit,
+            currentCommitDateTime,
             id,
             packages {
                 title,
@@ -33,6 +34,7 @@ query ProjectDetailQuery($id: UUID) {
         specRepositoryBranch,
         specType,
         currentCommit,
+        currentCommitDateTime,
         accessUsername,
         accessToken,
         packages {
@@ -95,6 +97,7 @@ query ProjectDetailOtherProjectsQuery {
         results {
             title,
             id,
+            currentCommitDateTime,
             packages {
                 title
             }
