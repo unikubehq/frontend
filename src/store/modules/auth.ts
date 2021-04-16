@@ -31,8 +31,6 @@ export default class Auth extends VuexModule {
       if (!Object.keys(nameMap).includes(type)) return;
       permission.scopes.forEach((scope) => {
         const verb: UAction = scope.substring(scope.indexOf(':') + 1) as UAction;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         can(verb, nameMap[type], { id: permission.rsid });
       });
     });

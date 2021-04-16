@@ -82,6 +82,7 @@ export type TOrganizationNodePage = {
 };
 
 export type TOrganizationNode = {
+  kind: 'OrganizationNode';
   __typename?: 'OrganizationNode';
   id: Scalars['UUID'];
   created: Scalars['DateTime'];
@@ -102,6 +103,7 @@ export type TProjectNodePage = {
 };
 
 export type TProjectNode = {
+  kind: 'ProjectNode';
   __typename?: 'ProjectNode';
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
@@ -119,7 +121,6 @@ export type TProjectNode = {
   organization?: Maybe<TOrganizationNode>;
   packages: Array<TPackageNode>;
   sops?: Maybe<Array<Maybe<TSopsProviderNode>>>;
-  kind: 'ProjectNode'
 };
 
 
@@ -141,6 +142,7 @@ export enum TProjectRepositoryStatus {
 }
 
 export type TPackageNode = {
+  kind: 'PackageNode';
   __typename?: 'PackageNode';
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
@@ -168,12 +170,14 @@ export type TPackageNodeClusterLevelArgs = {
 };
 
 export type TFileInformationNode = {
+  kind: 'FileInformationNode';
   __typename?: 'FileInformationNode';
   path?: Maybe<Scalars['String']>;
   encrypted?: Maybe<Scalars['Boolean']>;
 };
 
 export type TClusterLevelNode = {
+  kind: 'ClusterLevelNode';
   __typename?: 'ClusterLevelNode';
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
@@ -200,6 +204,7 @@ export enum TClusterLevelValuesType {
 export type TSopsProviderNode = TAwskmsNode | TPgpKeyNode;
 
 export type TAwskmsNode = {
+  kind: 'AwskmsNode';
   __typename?: 'AWSKMSNode';
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
@@ -207,6 +212,7 @@ export type TAwskmsNode = {
 };
 
 export type TPgpKeyNode = {
+  kind: 'PgpKeyNode';
   __typename?: 'PGPKeyNode';
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
@@ -214,6 +220,7 @@ export type TPgpKeyNode = {
 };
 
 export type TDeploymentNode = {
+  kind: 'DeploymentNode';
   __typename?: 'DeploymentNode';
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;

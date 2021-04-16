@@ -28,4 +28,5 @@ generates:
     hooks:
       afterOneFileWrite:
         - eslint --fix
+        - npm run kindify
 

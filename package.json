@@ -8,11 +8,12 @@
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint",
-    "codegen": "graphql-codegen --config codegen.yml"
+    "codegen": "graphql-codegen --config codegen.yml",
+    "kindify": "node kindify.js"
   },
   "dependencies": {
     "@apollo/client": "^3.2.0",
-    "@casl/ability": "^5.1.2",
+    "@casl/ability": "^5.2.2",
     "@casl/vue": "^1.2.2",
     "@mdi/font": "^5.8.55",
     "@sentry/browser": "^5.27.2",
