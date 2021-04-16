@@ -137,12 +137,13 @@
 
 <script lang="ts">
 import {
-  Component, Prop, Vue, Watch,
+  Component, Prop, Watch,
 } from 'vue-property-decorator';
 import { CreateProject, UpdateProject, TProjectNode } from '@/generated/graphql';
 import { required, url } from 'vuelidate/lib/validators';
 import SopsEdit from '@/views/Projects/SopsEdit.vue';
 import VueI18n from 'vue-i18n';
+import { validationMixin } from '@/components/mixins';
 import TranslateResult = VueI18n.TranslateResult;
 
 @Component({
@@ -166,7 +167,7 @@ import TranslateResult = VueI18n.TranslateResult;
     },
   },
 })
-export default class ProjectForm extends Vue {
+export default class ProjectForm extends validationMixin {
   @Prop() readonly editMode: boolean | undefined
 
   @Prop() readonly project: TProjectNode | undefined
@@ -194,46 +195,23 @@ export default class ProjectForm extends Vue {
   saveLoading = false
 
   get titleErrors(): TranslateResult[] {
-    const errors = [];
-    if (!this.$v.title.required) {
-      errors.push(this.$t('requiredError'));
-    }
-    return this.$v.title.$dirty ? errors : [];
+    return this.handleErrors('title');
   }
 
   get specRepositoryErrors(): TranslateResult[] {
-    const errors = [];
-    if (!this.$v.specRepository.required) {
-      errors.push(this.$t('requiredError'));
-    }
-    if (!this.$v.specRepository.url) {
-      errors.push('Please enter a valid url.');
-    }
-    return this.$v.specRepository.$dirty ? errors : [];
+    return this.handleErrors('specRepository');
   }
 
   get specRepositoryBranchErrors(): TranslateResult[] {
-    const errors = [];
-    if (!this.$v.specRepositoryBranch.required) {
-      errors.push(this.$t('requiredError'));
-    }
-    return this.$v.specRepositoryBranch.$dirty ? errors : [];
+    return this.handleErrors('specRepositoryBranch');
   }
 
   get accessUsernameErrors(): TranslateResult[] {
-    const errors = [];
-    if (!this.$v.accessUsername.required) {
-      errors.push(this.$t('requiredError'));
-    }
-    return this.$v.accessUsername.$dirty ? errors : [];
+    return this.handleErrors('accessUsername');
   }
 
   get accessTokenErrors(): TranslateResult[] {
-    const errors = [];
-    if (!this.$v.accessToken.required) {
-      errors.push(this.$t('requiredError'));
-    }
-    return this.$v.accessToken.$dirty ? errors : [];
+    return this.handleErrors('accessToken');
   }
 
   get disableButton(): boolean {
