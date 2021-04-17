@@ -29,7 +29,7 @@
       <v-col>
         <h4>
           <span v-if="loading"><v-skeleton-loader type="heading" tile/></span>
-          <span v-else>{{ project.currentCommit }}</span>
+          <span v-else v-text="project.currentCommit || '-'"></span>
         </h4>
         <small>Commit</small>
       </v-col>
