@@ -129,7 +129,7 @@ export default class Overview extends mixins(paginationMixin) {
 
       return result;
     }
-    return [{} as TProjectNode, {} as TProjectNode, {} as TProjectNode];
+    return [{} as TProjectNode];
   }
 
   get loading(): boolean {
