@@ -3,15 +3,11 @@
     <project-bar @sort-change="sorting = $event" @search-change="search = $event"></project-bar>
       <div v-if="projectResults.length">
         <div v-for="project in projectResults" :key="project.id">
-          <v-skeleton-loader
-            type="card-avatar, article"
-            v-if="loading"
-          ></v-skeleton-loader>
           <project-list
             :project="project"
             v-on:deletion="refetchProjects"
             class="mb-5"
-            v-else
+            :loading="loading"
           ></project-list>
         </div>
       </div>
@@ -133,11 +129,11 @@ export default class Overview extends mixins(paginationMixin) {
 
       return result;
     }
-    return [];
+    return [{} as TProjectNode, {} as TProjectNode, {} as TProjectNode];
   }
 
   get loading(): boolean {
-    return this.$data.$apolloData.queries.allProjects.loading;
+    return this.$apollo.queries.allProjects.loading;
   }
 
   refetchProjects():void {

@@ -5,7 +5,10 @@
         <v-icon size="48">$vuetify.icons.project</v-icon>
       </v-col>
       <v-col cols="9" class="mt-2">
-        <h3 class="mb-0">{{ project.title}}</h3>
+        <h3 class="mb-0">
+          <span v-if="loading"><v-skeleton-loader type="heading" tile/></span>
+          <span v-else>{{ project.title}}</span>
+        </h3>
         <p>{{ project.description }}</p>
       </v-col>
       <v-col class="text-right pr-10" v-if="$can('edit', project)">
@@ -24,31 +27,47 @@
     </v-row>
     <v-row justify="space-around" class="white pl-5 pt-3 pb-3 pr-10">
       <v-col>
-        <h4>{{ project.currentCommit }}</h4>
+        <h4>
+          <span v-if="loading"><v-skeleton-loader type="heading" tile/></span>
+          <span v-else>{{ project.currentCommit }}</span>
+        </h4>
         <small>Commit</small>
       </v-col>
       <v-divider vertical></v-divider>
       <v-col>
-        <h4>{{ project.packages.length }}</h4>
+        <h4>
+          <span v-if="loading"><v-skeleton-loader type="heading" tile width="70"/></span>
+          <span v-else>{{ project.packages.length }}</span>
+        </h4>
         <small>No. of Applications</small>
       </v-col>
       <v-divider vertical></v-divider>
       <v-col>
-        <h4>{{ modifiedDate }}</h4>
+        <h4>
+          <span v-if="loading"><v-skeleton-loader type="heading" tile width="70"/></span>
+          <span v-else>{{ modifiedDate }}</span>
+        </h4>
         <small>Last Update</small>
       </v-col>
       <v-divider vertical></v-divider>
       <v-col class="text-right pr-10">
-        <v-avatar
-          size="46"
-          class="initials-avatar avatar-list-item"
-          color="primary"
-          v-for="initials in avatarInitials"
-          :key="initials"
-        >
-<!--              <img v-if="user.avatar" :src="user.avatar">-->
-          <span class="avatar-initials">{{ initials }}</span>
-        </v-avatar>
+        <span v-if="loading">
+          <v-skeleton-loader type="avatar" class="d-inline-block ml-n2"/>
+          <v-skeleton-loader type="avatar" class="d-inline-block ml-n2"/>
+          <v-skeleton-loader type="avatar" class="d-inline-block ml-n2"/>
+        </span>
+        <span v-else>
+          <v-avatar
+            size="46"
+            class="initials-avatar avatar-list-item"
+            color="primary"
+            v-for="initials in avatarInitials"
+            :key="initials"
+          >
+  <!--              <img v-if="user.avatar" :src="user.avatar">-->
+            <span class="avatar-initials">{{ initials }}</span>
+          </v-avatar>
+        </span>
       </v-col>
     </v-row>
     <delete-project :show="showDeleteDialog" :project="deleteProject"
@@ -66,6 +85,8 @@ import DeleteProject from '@/components/Projects/DeleteProject.vue';
 })
 export default class ProjectList extends Vue {
   @Prop() readonly project: TProjectNode | undefined
+
+  @Prop({ default: false }) readonly loading!: boolean
 
   deleteProject: TProjectNode | null = null
 
