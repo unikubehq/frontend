@@ -20,6 +20,8 @@ export default class Auth extends VuexModule {
 
   username = '';
 
+  email = '';
+
   get caslRules(): SubjectRawRule<any, any, any>[] {
     const { can, rules } = new AbilityBuilder<UnikubeAbility>(Ability);
     this.rpt.authorization.permissions.forEach((permission: IPermission) => {
@@ -46,6 +48,7 @@ export default class Auth extends VuexModule {
       jwtDecode(rpt),
     );
     this.username = this.rpt.name;
+    this.email = this.rpt.email;
   }
 
   @Action

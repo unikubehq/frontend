@@ -47,10 +47,10 @@
             disabled
             type="text"
             placeholder="Enter Email Address"
-            v-model="username"
+            v-model="email"
             @keyup.enter="register"
             prepend-inner-icon="$vuetify.icons.email"
-            @blur="$v.username.$touch()"
+            @blur="$v.email.$touch()"
         />
         <v-btn color="primary" :disabled="!dataChanged" large elevation="0" :ripple="false">
           Save Changes
@@ -136,10 +136,6 @@ import { Component, Vue } from 'vue-property-decorator';
 
 @Component({})
 export default class AccountSettings extends Vue {
-  fullName = 'Robert Stein'
-
-  username = 'robert@blueshoe.de'
-
   dataChanged = false
 
   clearText = false
@@ -151,6 +147,14 @@ export default class AccountSettings extends Vue {
   reEnterNewPassword = ''
 
   dialog = false
+
+  get fullName(): string {
+    return this.$store.state.auth.username;
+  }
+
+  get email(): string {
+    return this.$store.state.auth.email;
+  }
 
   setDataChanged(): void {
     this.dataChanged = true;
