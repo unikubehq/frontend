@@ -14,7 +14,7 @@
             height="96"
             width="96"
         >
-          <img src="https://randomuser.me/api/portraits/women/81.jpg">
+          <img src="@/assets/img/avatar.png">
         </v-avatar>
       </v-badge>
     </v-col>

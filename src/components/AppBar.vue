@@ -31,7 +31,7 @@
           <template v-slot:activator="{ on, attrs }">
             <v-btn color="343d6f" v-bind="attrs" v-on="on" text>
               <v-avatar class="mr-3">
-                <img src="https://randomuser.me/api/portraits/women/81.jpg">
+                <img src="@/assets/img/avatar.png">
               </v-avatar>
               <div class="d-flex flex-column text-left">
                 <h3 class="mb-0">{{ username }}</h3>

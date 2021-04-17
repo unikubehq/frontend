@@ -29,7 +29,7 @@
       </v-col>
       <v-divider vertical></v-divider>
       <v-col>
-        <h4>{{ project.packages.resultCount }}</h4>
+        <h4>{{ project.packages.length }}</h4>
         <small>No. of Applications</small>
       </v-col>
       <v-divider vertical></v-divider>
