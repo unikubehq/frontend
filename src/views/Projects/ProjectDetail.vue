@@ -82,7 +82,7 @@
               </v-col>
             </v-row>
             <v-divider></v-divider>
-            <v-tabs v-model="innerTab" slider-size="3">
+            <v-tabs v-model="innerTab" slider-size="3" class="project-detail__tabs">
               <v-tab :ripple="false">
                 Applications <span class="tab-count-badge"> {{ project.packages.length }}</span>
               </v-tab>
@@ -91,7 +91,7 @@
               </v-tab>
               <v-tabs-items v-model="innerTab">
                 <v-tab-item>
-                  <v-container>
+                  <div class="py-2">
                     <v-row v-if="!packageEdit">
                       <v-col cols="6" v-for="pkg in project.packages" :key="pkg.id">
                         <v-card outlined>
@@ -101,17 +101,6 @@
                                 {{ pkg.title }}
                               </v-col>
                               <v-col cols="3" class="text-right">
-                                <v-avatar
-                                  color="primary"
-                                  v-for="user in project.members"
-                                  :key="user.user.firstName"
-                                  class="initials-avatar"
-                                  size="40"
-                                >
-                                  <span class="avatar-initials">
-                                    {{ user.user.firstName[0] }}{{ user.user.lastName[0] }}
-                                  </span>
-                                </v-avatar>
                                 <v-btn
                                   outlined
                                   plain
@@ -156,7 +145,7 @@
                         @change="packageEdit = false"
                       ></edit-package>
                     </v-row>
-                  </v-container>
+                  </div>
                 </v-tab-item>
                 <v-tab-item>
                   <v-container>
@@ -251,7 +240,7 @@ import {
   ProjectDetailQuery,
   ProjectDetailOtherProjectsQuery,
   TPackageNode,
-  TProjectNode,
+  TProjectNode, TProjectMember,
 } from '@/generated/graphql';
 
 @Component({

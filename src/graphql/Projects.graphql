@@ -7,6 +7,12 @@ query ProjectsQuery($limit: Int, $offset: Int) {
             currentCommit,
             currentCommitDateTime,
             id,
+            members {
+                user {
+                    id
+                },
+                role
+            }
             packages {
                 title,
             }
@@ -37,6 +43,12 @@ query ProjectDetailQuery($id: UUID) {
         currentCommitDateTime,
         accessUsername,
         accessToken,
+        members {
+            user {
+                id
+            },
+            role
+        }
         packages {
             title,
             description,
@@ -79,13 +91,16 @@ query ProjectDetailQuery($id: UUID) {
         },
         sops {
             ... on AWSKMSNode {
-                title,
-                description,
+                title
+                description
+                accessKey
+                secretAccessKey
                 id
             },
             ... on PGPKeyNode {
                 title
-                description,
+                description
+                privateKey
                 id
             },
         }
@@ -184,9 +199,10 @@ mutation createUpdateSops(
     $description: String
     $sopsType: SOPSTypeEnum!
     $project: UUID!
-    $secret1: String!
+    $secret1: String
     $secret2: String
     $secret3: String
+    $id: UUID
 ) {
     createUpdateSops(
         sopsData: {
@@ -197,7 +213,8 @@ mutation createUpdateSops(
             secret1: $secret1
             secret2: $secret2
             secret3: $secret3
-        }
+        },
+        id: $id
     ) {
         ok
     }

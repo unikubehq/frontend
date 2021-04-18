@@ -51,6 +51,7 @@ type ProjectNode {
   organization: OrganizationNode
   packages: [PackageNode!]!
   sops: [SOPSProviderNode]
+  members: [ProjectMember]
 }
 scalar JSONString
 enum ProjectSpecType {
@@ -78,13 +79,20 @@ type PackageNode {
   namespace: String!
   fileInformation: [FileInformationNode]
   hash: String!
-  environments: [ClusterLevelNode!]!
   deployments(level: String, switchable: Boolean): [DeploymentNode]
   clusterLevel(level: String): [ClusterLevelNode]
 }
 type FileInformationNode {
   path: String
   encrypted: Boolean
+}
+type DeploymentNode {
+  title: String!
+  description: String
+  id: UUID!
+  ports: String!
+  clusterLevel: ClusterLevelNode!
+  isSwitchable: Boolean!
 }
 type ClusterLevelNode {
   title: String!
@@ -111,19 +119,21 @@ type AWSKMSNode {
   title: String!
   description: String
   id: UUID!
+  accessKey: String!
+  secretAccessKey: String!
 }
 type PGPKeyNode {
   title: String!
   description: String
   id: UUID!
+  privateKey: String!
 }
-type DeploymentNode {
-  title: String!
-  description: String
-  id: UUID!
-  ports: String!
-  clusterLevel: ClusterLevelNode!
-  isSwitchable: Boolean!
+type ProjectMember {
+  user: UserNode
+  role: String
+}
+type UserNode {
+  id: String
 }
 type PackageNodePage {
   totalCount: Int
@@ -135,10 +145,12 @@ type PackageNodePage {
 type Mutation {
   createUpdateOrganization(input: CreateUpdateOrganizationInput!): CreateUpdateOrganizationPayload
   createUpdateProject(input: CreateUpdateProjectInput!): CreateUpdateProjectPayload
+  createProjectMember(id: UUID, role: ProjectMemberRoleEnum, user: UUID): CreateProjectMember
+  deleteProjectMember(id: UUID, user: UUID): DeleteProjectMember
   deleteProject(id: UUID): DeleteProject
   createUpdateClusterLevel(input: CreateUpdateClusterLevelInput!): CreateUpdateClusterLevelPayload
   deleteClusterLevel(id: UUID): DeleteClusterLevel
-  createUpdateSops(sopsData: SOPSInputType!): CreateUpdateSOPS
+  createUpdateSops(id: UUID, sopsData: SOPSInputType!): CreateUpdateSOPS
   deleteSops(id: UUID): DeleteSOPS
 }
 input CreateUpdateOrganizationInput {
@@ -177,6 +189,16 @@ type CreateUpdateProjectPayload {
   errors: [ErrorType]
   clientMutationId: String
 }
+enum ProjectMemberRoleEnum {
+  admin
+  member
+}
+type CreateProjectMember {
+  ok: Boolean
+}
+type DeleteProjectMember {
+  ok: Boolean
+}
 type DeleteProject {
   ok: Boolean
 }
@@ -200,12 +222,11 @@ type DeleteClusterLevel {
   ok: Boolean
 }
 input SOPSInputType {
-  id: UUID
   title: String!
   description: String
   sopsType: SOPSTypeEnum!
   project: UUID!
-  secret1: String!
+  secret1: String
   secret2: String
   secret3: String
 }

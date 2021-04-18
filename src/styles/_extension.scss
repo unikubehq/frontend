@@ -137,3 +137,17 @@
     align-self: center;
   }
 }
+
+.project-detail__tabs {
+  .v-tabs-bar:after {
+    display: block;
+    content: '';
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    width: 100%;
+    position: absolute;
+    bottom: 1px;
+  }
+}
+.v-slide-group__wrapper {
+  z-index: 1;
+}
