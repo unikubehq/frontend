@@ -132,7 +132,7 @@
                             </v-col>
                             <v-col cols="12">
                               <span
-                                v-for="deployment in pkg.environments[0].deployments"
+                                v-for="deployment in pkg.deployments"
                                 :key="deployment.id"
                                 class="deployment-badge mr-3 px-4 py-2"
                               >

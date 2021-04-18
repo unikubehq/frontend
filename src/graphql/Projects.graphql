@@ -47,12 +47,13 @@ query ProjectDetailQuery($id: UUID) {
                 path,
                 encrypted
             }
-            environments {
-                deployments {
-                    title,
-                    id,
-                }
-            },
+            deployments {
+                id
+                title
+                description
+                isSwitchable
+                ports
+            }
             clusterLevel {
                 title,
                 description,
