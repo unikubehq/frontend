@@ -29,7 +29,7 @@
       </v-tab>
       <v-tabs-items v-model="tab">
         <v-tab-item v-if="project">
-          <v-container v-if="!$route.query.edit">
+          <v-container v-if="!$route.query.edit" class="px-8 py-5">
             <v-row>
               <v-col cols="6">
                 <h2 class="mb-1">{{ project.title }}</h2>
@@ -44,26 +44,29 @@
               </v-col>
               <v-col cols="3">
                 <v-btn
+                  class="float-right"
                   outlined
                   plain
                   color="#a1a9b2"
                   width="144"
                   @click="setEdit"
+                  :ripple="false"
                 >
-                  <v-icon size="24">
+                  <v-icon size="24" class="mr-2">
                     $vuetify.icons.edit
                   </v-icon>
                   Edit Project
                 </v-btn>
 
                 <v-btn
+                  class="float-right mt-5 "
                   outlined
                   plain
                   color="#a1a9b2"
                   width="144"
-                  class="mt-5"
+                  :ripple="false"
                 >
-                  <v-icon size="24">
+                  <v-icon size="24" class="mr-2">
                     $vuetify.icons.delete
                   </v-icon>
                   Delete Project
@@ -79,11 +82,11 @@
               </v-col>
             </v-row>
             <v-divider></v-divider>
-            <v-tabs v-model="innerTab">
-              <v-tab>
+            <v-tabs v-model="innerTab" slider-size="3">
+              <v-tab :ripple="false">
                 Applications <span class="tab-count-badge"> {{ project.packages.length }}</span>
               </v-tab>
-              <v-tab v-if="project.members">
+              <v-tab v-if="project.members" :ripple="false">
                 Team Members <span class="tab-count-badge"> {{ project.members.length }}</span>
               </v-tab>
               <v-tabs-items v-model="innerTab">
