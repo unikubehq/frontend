@@ -96,7 +96,11 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import {
-  CreateUpdateClusterLevel, TClusterLevelNode, TFileInformationNode, TPackageNode,
+  CreateUpdateClusterLevel,
+  TClusterLevelNode,
+  TClusterLevelType,
+  TFileInformationNode,
+  TPackageNode,
   TSopsProviderNode,
 } from '@/generated/graphql';
 
@@ -117,13 +121,13 @@ export default class EditPackage extends Vue {
 
   description = this.clusterLevel?.description
 
-  sopsCredentials: sopsCredential = { text: '', value: '' }
+  sopsCredentials: sopsCredential = this.clusterLevel?.sopsCredentials ? { text: this.clusterLevel?.sopsCredentials?.title, value: this.clusterLevel?.sopsCredentials?.id } : { text: '', value: '' }
 
-  clusterLevelTypeChoices = [{ text: 'Local', value: 'local' }, { text: 'remote', value: 'remote' }]
+  clusterLevelTypeChoices = [{ text: 'Local', value: TClusterLevelType.Local }, { text: 'Remote', value: TClusterLevelType.Remote }]
 
-  clusterLevelType = ''
+  clusterLevelType: TClusterLevelType = this.clusterLevel?.type || TClusterLevelType.Local
 
-  valuesPath = { text: '', value: '' }
+  valuesPath = this.clusterLevel?.valuesPath ? { text: this.clusterLevel?.valuesPath, value: this.clusterLevel?.valuesPath } : { text: '', value: '' }
 
   showForm = false;
 
@@ -133,7 +137,7 @@ export default class EditPackage extends Vue {
       variables: {
         title: this.title,
         description: this.description,
-        type: this.clusterLevelType,
+        type: this.clusterLevelType.toLowerCase(),
         package: this.clusterLevel?.package?.id,
         sopsCredentials: this.sopsCredentials.value,
         valuesPath: this.valuesPath?.value,
