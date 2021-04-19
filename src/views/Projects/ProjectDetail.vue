@@ -122,7 +122,7 @@
                               <v-icon>$vuetify.icons.deployments</v-icon>
                               Deployments
                             </v-col>
-                            <v-col cols="12">
+                            <v-col cols="12" class="d-flex flex-wrap">
                               <span
                                 v-for="deployment in pkg.deployments"
                                 :key="deployment.id"
@@ -331,6 +331,9 @@ export default class ProjectDetail extends Vue {
   font-weight: 500;
   background-color: #f3f4f9;
   color: #9eaed7;
+  white-space: nowrap;
+  flex: 0 0 auto;
+  margin-bottom: 10px;
 }
 
 .tab-count-badge {
