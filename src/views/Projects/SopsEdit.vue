@@ -78,8 +78,25 @@
                 v-model="description"
                 prepend-inner-icon="$vuetify.icons.description"
               />
+            <v-textarea
+                v-if="sopsType === 'pgp'"
+                :label="secret1Label"
+                name="secret1"
+                filled
+                outlined
+                type="password"
+                no-resize
+                :placeholder="secret1Placeholder"
+                v-model="secret1"
+                class="textarea-password"
+                :class="{'textarea__hover-active': pgpHover}"
+                @dragover="dragover"
+                @dragleave="dragleave"
+                @drop="drop"
+                prepend-inner-icon="$vuetify.icons.accessToken"
+            ></v-textarea>
           <v-text-field
-              v-if="sopsType"
+              v-if="sopsType === 'aws'"
                 :label="secret1Label"
                 name="secret1"
                 filled
@@ -133,7 +150,6 @@ import {
   CreateUpdateSops,
   Maybe, TCreateUpdateSopsMutationVariables,
   TProjectNode,
-  TSopsInputType,
   TSopsProviderNode,
   TSopsTypeEnum,
 } from '@/generated/graphql';
@@ -172,6 +188,8 @@ export default class SopsEdit extends Vue {
   ]
 
   showForm = false;
+
+  pgpHover = false
 
   get headlinePrefix(): TranslateResult {
     return this.edit ? this.$t('Edit') : this.$t('Add');
@@ -250,6 +268,33 @@ export default class SopsEdit extends Vue {
       .catch((err) => console.log(err));
   }
 
+  dragover(event: { currentTarget: HTMLInputElement, preventDefault: () => void }): void {
+    event.preventDefault();
+    // Add some visual fluff to show the user can drop its files
+    this.pgpHover = true;
+  }
+
+  dragleave(): void {
+    // Clean up
+    this.pgpHover = false;
+  }
+
+  drop(event: {
+    currentTarget: HTMLInputElement,
+    preventDefault: () => void,
+    dataTransfer: DataTransfer
+  }): void {
+    event.preventDefault();
+    this.pgpHover = false;
+    const file = event.dataTransfer.files[0];
+    const reader = new FileReader();
+    // eslint-disable-next-line
+    reader.addEventListener('load', (readerEvent: any) => {
+      this.secret1 = readerEvent.target.result;
+    });
+    reader.readAsText(file);
+  }
+
   handleShowForm(show: boolean): void {
     this.showForm = show;
     if (!show) {
@@ -293,5 +338,8 @@ export default class SopsEdit extends Vue {
 <style scoped lang="scss">
 .sops-list-item {
   border-bottom: solid 1px rgb(161, 169, 178);
+}
+::v-deep .textarea__hover-active .v-input__slot {
+  background-color: $green-light-6 !important;
 }
 </style>
