@@ -4,6 +4,7 @@
   "minLengthError": "This field does not satisfy the minimal length requirement.",
   "emailError": "This is not a valid email address.",
   "loginFailedError": "No matching account found.",
+  "urlError": "This is not a valid URL.",
   "Enter Sops Type": "Enter Sops Type",
   "Title": "Title",
   "Enter Sops Title": "Enter Sops Title",

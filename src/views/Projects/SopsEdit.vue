@@ -65,6 +65,7 @@
                 type="text"
                 :placeholder="$t('Enter Sops Title')"
                 v-model="title"
+                :error-messages="titleErrors"
                 @blur="$v.title.$touch()"
                 prepend-inner-icon="$vuetify.icons.projectInput"
               />
@@ -88,6 +89,8 @@
                 no-resize
                 :placeholder="secret1Placeholder"
                 v-model="secret1"
+                :error-messages="secret1Errors"
+                @blur="$v.secret1.$touch()"
                 class="textarea-password"
                 :class="{'textarea__hover-active': pgpHover}"
                 @dragover="dragover"
@@ -103,6 +106,8 @@
                 outlined
                 type="password"
                 :placeholder="secret1Placeholder"
+                @blur="$v.secret1.$touch()"
+                :error-messages="secret1Errors"
                 v-model="secret1"
                 prepend-inner-icon="$vuetify.icons.accessToken"
               />
@@ -115,6 +120,8 @@
                 type="password"
                 :placeholder="secret2Placeholder"
                 v-model="secret2"
+                :error-messages="secret2Errors"
+                @blur="$v.secret2.$touch()"
                 prepend-inner-icon="$vuetify.icons.accessToken"
               />
             </v-col>
@@ -135,6 +142,7 @@
               large
               color="primary"
               @click="submit"
+              :disabled="$v.$invalid"
             >Save</v-btn>
             </v-col>
           </v-row>
@@ -154,12 +162,24 @@ import {
   TSopsTypeEnum,
 } from '@/generated/graphql';
 import VueI18n from 'vue-i18n';
+import { required } from 'vuelidate/lib/validators';
+import { validationMixin } from '@/components/mixins';
 import TranslateResult = VueI18n.TranslateResult;
 
 @Component({
-
+  validations: {
+    title: {
+      required,
+    },
+    secret1: {
+      required,
+    },
+    secret2: {
+      required,
+    },
+  },
 })
-export default class SopsEdit extends Vue {
+export default class SopsEdit extends validationMixin {
   @Prop() readonly project: TProjectNode | undefined
 
   @Prop() readonly sops: TSopsProviderNode | undefined
@@ -231,6 +251,18 @@ export default class SopsEdit extends Vue {
       'aws', this.$t('Enter Secret Access Key'),
     );
     return map.get(this.sopsType);
+  }
+
+  get titleErrors(): TranslateResult[] {
+    return this.handleErrors('title');
+  }
+
+  get secret1Errors(): TranslateResult[] {
+    return this.handleErrors('secret1');
+  }
+
+  get secret2Errors(): TranslateResult[] {
+    return this.handleErrors('secret2');
   }
 
   submit(): void {

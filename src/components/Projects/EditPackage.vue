@@ -13,6 +13,7 @@
                   :placeholder="$t('Enter Clusterlevel Title')"
                   v-model="title"
                   @blur="$v.title.$touch()"
+                  :error-messages="titleErrors"
                   prepend-inner-icon="$vuetify.icons.user"
                 />
                 <v-text-field
@@ -103,14 +104,24 @@ import {
   TPackageNode,
   TSopsProviderNode,
 } from '@/generated/graphql';
+import { required } from 'vuelidate/lib/validators';
+import VueI18n from 'vue-i18n';
+import { validationMixin } from '@/components/mixins';
+import TranslateResult = VueI18n.TranslateResult;
 
 type sopsCredential = {
     text: string,
     value: string
   }
 
-@Component({})
-export default class EditPackage extends Vue {
+@Component({
+  validations: {
+    title: {
+      required,
+    },
+  },
+})
+export default class EditPackage extends validationMixin {
   @Prop() readonly clusterLevel: TClusterLevelNode | undefined
 
   @Prop() readonly sopsProviders: TSopsProviderNode[] | undefined
@@ -171,6 +182,10 @@ export default class EditPackage extends Vue {
       choices.push({ text: provider.title, value: provider.id });
     });
     return choices;
+  }
+
+  get titleErrors(): TranslateResult[] {
+    return this.handleErrors('title');
   }
 }
 </script>

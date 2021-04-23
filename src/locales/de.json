@@ -3,6 +3,7 @@
   "requiredError": "Dieses Feld ist ein Pflichtfeld.",
   "minLengthError": "Diese Eingabe ist zu kurz.",
   "emailError": "Dies ist keine valide Email-Adresse.",
+  "urlError": "Dies ist keine valide URL.",
   "New to Unikube?": "Neu bei Unikube?",
   "Register": "Registrieren",
   "Email Address": "Email-Adresse",
