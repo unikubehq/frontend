@@ -153,7 +153,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop } from 'vue-property-decorator';
 import {
   CreateUpdateSops,
   Maybe, TCreateUpdateSopsMutationVariables,
@@ -162,23 +162,13 @@ import {
   TSopsTypeEnum,
 } from '@/generated/graphql';
 import VueI18n from 'vue-i18n';
-import { required } from 'vuelidate/lib/validators';
+import {
+  required, requiredIf, ValidationFunc, ValidationRule,
+} from 'vuelidate/lib/validators';
 import { validationMixin } from '@/components/mixins';
 import TranslateResult = VueI18n.TranslateResult;
 
-@Component({
-  validations: {
-    title: {
-      required,
-    },
-    secret1: {
-      required,
-    },
-    secret2: {
-      required,
-    },
-  },
-})
+@Component
 export default class SopsEdit extends validationMixin {
   @Prop() readonly project: TProjectNode | undefined
 
@@ -210,6 +200,20 @@ export default class SopsEdit extends validationMixin {
   showForm = false;
 
   pgpHover = false
+
+  validations(): {[key: string]: {[key: string]: ValidationRule | ValidationFunc}} {
+    return {
+      title: {
+        required,
+      },
+      secret1: {
+        required,
+      },
+      secret2: {
+        required: requiredIf((): boolean => this.sopsType === TSopsTypeEnum.Aws),
+      },
+    };
+  }
 
   get headlinePrefix(): TranslateResult {
     return this.edit ? this.$t('Edit') : this.$t('Add');

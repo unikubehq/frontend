@@ -23,6 +23,8 @@ export class paginationMixin extends Vue {
   }
 }
 
+Component.registerHooks(['validations']);
+
 @Component
 // eslint-disable-next-line import/prefer-default-export
 export class validationMixin extends Vue {
