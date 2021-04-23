@@ -9,7 +9,7 @@
      class="py-8 px-7 mb-2"
    >
         <v-card-title class="headline">
-          Oops...
+          Oops... Error {{ error.code }}
         </v-card-title>
         <v-card-text>
           <div>
@@ -17,7 +17,7 @@
               <v-icon x-large>
                 $vuetify.icons.bigSorry
               </v-icon>
-              {{ error.message }}
+              {{ $t(error.message) }}
             </p>
             {{ error.error }}
           </div>

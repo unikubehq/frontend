@@ -34,4 +34,5 @@ export type UnikubeError = {
   error: any,
   message: string,
   location: string,
+  code: number,
 }

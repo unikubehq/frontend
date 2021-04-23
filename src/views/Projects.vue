@@ -90,7 +90,7 @@ Component.registerHooks([
         this.$store.commit({
           type: 'errors/setError',
           error: err,
-          message: 'Something went wrong while fetching your projects.',
+          code: 100,
           location: 'Projects.vue',
         });
       },

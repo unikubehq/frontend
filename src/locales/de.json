@@ -184,5 +184,8 @@
     "joinOrganization": "Join Another Organization",
     "accountSettings": "Account Settings",
     "logout": "Logout"
+  },
+  "errors": {
+    "100": "Beim abrufen der Projekte ist etwas schief gelaufen."
   }
 }

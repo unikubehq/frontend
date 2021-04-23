@@ -189,5 +189,8 @@
     "role": "Role",
     "chooseMember": "Add a team member",
     "addMember": "Add Member | Add Members"
+  },
+  "errors": {
+    "100": "Something went wrong fetching your project"
   }
 }
