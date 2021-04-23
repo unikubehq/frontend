@@ -28,3 +28,10 @@ export interface TProjectMemberEdit extends TProjectMember {
 export type Action = 'edit' | 'view' | 'projects:add' | 'projects:view';
 export type Subject = InferSubjects<TProjectNode>;
 export type UnikubeAbility = Ability<[Action, Subject]>;
+
+export type UnikubeError = {
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  error: any,
+  message: string,
+  location: string,
+}

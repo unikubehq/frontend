@@ -5,6 +5,7 @@ import Vuetify from 'vuetify/lib';
 
 import Account from '@/components/icons/Account.vue';
 import AccountBlue from '@/components/icons/AccountBlue.vue';
+import BigSorry from '@/components/icons/BigSorry.vue';
 import Description from '@/components/icons/Description.vue';
 import AccessUser from '@/components/icons/AccessUser.vue';
 import AccessToken from '@/components/icons/AccessToken.vue';
@@ -84,6 +85,9 @@ export default new Vuetify({
       },
       accessToken: {
         component: AccessToken,
+      },
+      bigSorry: {
+        component: BigSorry,
       },
       branch: {
         component: Branch,

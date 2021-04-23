@@ -86,6 +86,14 @@ Component.registerHooks([
           offset: this.offset,
         };
       },
+      error(err) {
+        this.$store.commit({
+          type: 'errors/setError',
+          error: err,
+          message: 'Something went wrong while fetching your projects.',
+          location: 'Projects.vue',
+        });
+      },
     },
   },
 })

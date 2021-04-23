@@ -298,7 +298,14 @@ export default class SopsEdit extends validationMixin {
         console.log(this.$apollo.queries);
         this.$parent.$emit('sops-created');
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        this.$store.commit({
+          type: 'errors/setError',
+          error: err,
+          message: 'Something went wrong.',
+          location: 'SopsEdit',
+        });
+      });
   }
 
   dragover(event: { currentTarget: HTMLInputElement, preventDefault: () => void }): void {

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <error-handler></error-handler>
     <app-navigation></app-navigation>
     <app-bar></app-bar>
     <v-main>
@@ -15,6 +16,7 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import Navigation from '@/components/Navigation.vue';
 import AppBar from '@/components/AppBar.vue';
+import ErrorHandler from '@/components/ErrorHandler.vue';
 
 Component.registerHooks([
   'beforeRouteEnter',
@@ -26,6 +28,7 @@ Component.registerHooks([
   components: {
     AppNavigation: Navigation,
     AppBar,
+    ErrorHandler,
   },
 })
 export default class Layout extends Vue {
