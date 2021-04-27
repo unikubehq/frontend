@@ -33,7 +33,7 @@
         <v-list-item class="mt-5">
           <v-list-item-content>
             <v-list-item-title class="subtitle-2 text-uppercase" v-if="!mini">
-              Organizations
+              {{ $t('navigation.organization') }}
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
@@ -93,7 +93,7 @@
                   <v-icon>$vuetify.icons.createOrganization</v-icon>
                 </v-list-item-icon>
               <v-list-item-title class="text--secondary">
-                Create New Organization
+                {{ $t('navigation.createOrganization') }}
               </v-list-item-title>
             </v-list-item>
             <v-list-item link>
@@ -101,7 +101,7 @@
                   <v-icon>$vuetify.icons.joinOrganization</v-icon>
                 </v-list-item-icon>
               <v-list-item-title class="text--secondary">
-                Join Another Organization
+                {{ $t('navigation.joinOrganization') }}
               </v-list-item-title>
             </v-list-item>
           </v-list>

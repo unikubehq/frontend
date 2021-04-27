@@ -185,5 +185,10 @@
     "enterPgpKey": "Enter Key",
     "secretAccessKey": "Secret Access Key",
     "enterSecretAccessKey": "Enter Secret Access Key"
+  },
+  "navigation": {
+    "organization": "Organizations",
+    "createOrganization": "Create New Organization",
+    "joinOrganization": "Join Another Organization"
   }
 }
