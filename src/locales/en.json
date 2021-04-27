@@ -155,7 +155,24 @@
     "enterEmail": "'Enter Email Address'"
   },
   "package": {
-    "Package": "Package | Packages"
+    "Package": "Package | Packages",
+    "edit": {
+      "title": "Package {package} Settings",
+      "clusterLevels": {
+        "title": "Clusterlevels",
+        "edit": "Edit {clusterLevel}",
+        "formTitle": "Title",
+        "enterTitle": "Enter Clusterlevel Title",
+        "description": "Description",
+        "enterDescription": "Enter Clusterlevel Description",
+        "sops": "Sops",
+        "chooseSops": "Choose Sops",
+        "type": "Clusterlevel Type",
+        "enterType": "Enter Clusterlevel Type",
+        "valuesPath": "Values Path",
+        "enterValuesPath": "Enter Values Path"
+      }
+    }
   },
   "deployment": {
     "Deployment": "Deployment | Deployments"

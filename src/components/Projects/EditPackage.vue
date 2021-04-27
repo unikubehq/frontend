@@ -1,66 +1,77 @@
 <template>
   <v-container>
-      <h3>Edit {{ clusterLevel.title }}</h3>
-          <v-form class="pa-10 white create-form">
+    <h2>{{ $t('package.edit.title', { package: package.title }) }}</h2>
+    <h3>{{ $t('package.edit.clusterLevels.title') }}</h3>
+    <v-divider class="mb-5"></v-divider>
+      <h4>{{ $t('package.edit.clusterLevels.edit', { clusterLevel: clusterLevel.title}) }}</h4>
+          <v-form class="white create-form">
             <v-row>
-            <v-col>
+            <v-col cols="6" class="py-0">
                 <v-text-field
-                  :label="$t('Title')"
+                  :label="$t('package.edit.clusterLevels.formTitle')"
                   name="clusterLevelName"
                   filled
                   outlined
                   type="text"
-                  :placeholder="$t('Enter Clusterlevel Title')"
+                  :placeholder="$t('package.edit.clusterLevels.enterTitle')"
                   v-model="title"
                   @blur="$v.title.$touch()"
                   :error-messages="titleErrors"
                   prepend-inner-icon="$vuetify.icons.user"
                 />
-                <v-text-field
-                  :label="$t('Description')"
-                  name="description"
-                  filled
-                  outlined
-                  type="text"
-                  :placeholder="$t('Enter Clusterlevel Description')"
-                  v-model="description"
-                  prepend-inner-icon="$vuetify.icons.user"
-                />
+            </v-col>
+            <v-col cols="6" class="py-0">
+              <v-text-field
+                :label="$t('package.edit.clusterLevels.description')"
+                name="description"
+                filled
+                outlined
+                type="text"
+                :placeholder="$t('package.edit.clusterLevels.enterDescription')"
+                v-model="description"
+                prepend-inner-icon="$vuetify.icons.user"
+              />
+            </v-col>
+            <v-col cols="6" class="py-0">
+              <v-select
+                :label="$t('package.edit.clusterLevels.sops')"
+                name="sops"
+                filled
+                outlined
+                type="text"
+                :placeholder="$t('package.edit.clusterLevels.chooseSops')"
+                v-model="sopsCredentials"
+                :items="sopsProviderChoices"
+                return-object
+                prepend-inner-icon="$vuetify.icons.user"
+              />
+              </v-col>
+              <v-col cols="6" class="py-0">
                 <v-select
-                  :label="$t('Sops')"
-                  name="sops"
-                  filled
-                  outlined
-                  type="text"
-                  :placeholder="$t('choose Sops')"
-                  v-model="sopsCredentials"
-                  :items="sopsProviderChoices"
-                  return-object
-                  prepend-inner-icon="$vuetify.icons.user"
-                />
-                <v-select
-                    :label="$t('Clusterlevel Type')"
+                    :label="$t('package.edit.clusterLevels.type')"
                     name="type"
                     filled
                     outlined
                     type="text"
-                    :placeholder="$t('Enter Clusterlevel Type')"
+                    :placeholder="$t('package.edit.clusterLevels.enterType')"
                     v-model="clusterLevelType"
                     :items="clusterLevelTypeChoices"
                     prepend-inner-icon="$vuetify.icons.user"
                   />
-                <v-select
-                  :label="$t('Values Path')"
-                  name="valuesPath"
-                  filled
-                  outlined
-                  type="text"
-                  :placeholder="$t('Enter Values Path')"
-                  v-model="valuesPath"
-                  :items="valuesPathChoices"
-                  return-object
-                  prepend-inner-icon="$vuetify.icons.user"
-                >
+                </v-col>
+                <v-col cols="6" class="py-0">
+                  <v-select
+                    :label="$t('package.edit.clusterLevels.valuesPath')"
+                    name="valuesPath"
+                    filled
+                    outlined
+                    type="text"
+                    :placeholder="$t('package.edit.clusterLevels.enterValuesPath')"
+                    v-model="valuesPath"
+                    :items="valuesPathChoices"
+                    return-object
+                    prepend-inner-icon="$vuetify.icons.user"
+                  >
                   <template v-slot:item="data">
                     <v-icon class="mr-2" v-if="data.item.encrypted">
                       $vuetify.icons.accessToken
@@ -79,7 +90,7 @@
                   elevation="0"
                   @click="$emit('change');"
                 >
-                  Cancel
+                  {{ $t('general.cancel') }}
                 </v-btn>
               </v-col>
               <v-col cols="2">
@@ -87,7 +98,7 @@
                 large
                 color="primary"
                 @click="submit"
-              >Save</v-btn>
+              >{{ $t('general.save') }}</v-btn>
               </v-col>
             </v-row>
           </v-form>
