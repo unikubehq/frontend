@@ -3,7 +3,7 @@
     <project-bar></project-bar>
     <v-tabs vertical background-color="#f7f7f7" class="project-detail__wrapper"
         v-if="allProjects && allProjects.results.length">
-      <div class="project-detail__top-tab">Browse other Projects</div>
+      <div class="project-detail__top-tab">{{ $t('projects.browseProjects') }}</div>
       <v-tab
         class="text-left"
         height="130px"
@@ -19,11 +19,11 @@
           </v-col>
           <v-col cols="6">
             <h4>{{ project.packages.length }}</h4>
-            <small>No. of Applications</small>
+            <small>{{ $t('projects.numberPackages') }}</small>
           </v-col>
           <v-col cols="6" class="text-right">
             <h4>{{ verboseDate(project.currentCommitDateTime) }}</h4>
-            <small>Last Update</small>
+            <small>{{ $t('projects.lastUpdate') }}</small>
           </v-col>
         </v-row>
       </v-tab>
@@ -35,12 +35,13 @@
                 <h2 class="mb-1">{{ project.title }}</h2>
                 <small class="d-block">{{ project.description }}</small>
                 <small class="mt-3">
-                  <b class="mr-3">Last Update:</b>{{ verboseDate(project.currentCommitDateTime) }}
+                  <b class="mr-3">{{ $t('projects.lastUpdate') }}</b>
+                  {{ verboseDate(project.currentCommitDateTime) }}
                 </small>
               </v-col>
               <v-col cols="3">
                 <h4 class="mb-1">{{ verboseDate(project.created) }}</h4>
-                <small class="d-block">Date added</small>
+                <small class="d-block">{{ $t('projects.dateAdded') }}</small>
               </v-col>
               <v-col cols="3">
                 <v-btn
@@ -54,9 +55,7 @@
                 >
                   <v-icon size="24" class="mr-2">
                     $vuetify.icons.edit
-                  </v-icon>
-                  Edit Project
-                </v-btn>
+                  </v-icon>{{ $t('projects.editProject') }}</v-btn>
 
                 <v-btn
                   class="float-right mt-5 "
@@ -68,9 +67,7 @@
                 >
                   <v-icon size="24" class="mr-2">
                     $vuetify.icons.delete
-                  </v-icon>
-                  Delete Project
-                </v-btn>
+                  </v-icon>{{ $t('projects.deleteProject') }}</v-btn>
               </v-col>
             </v-row>
             <v-row>
@@ -78,16 +75,18 @@
               </v-col>
               <v-col cols="3" v-if="project.creator">
                 <h4>{{ project.creator.firstName }} {{ project.creator.lastName }}</h4>
-                <small class="d-block">Created by</small>
+                <small class="d-block">{{ $t('projects.createdBy') }}</small>
               </v-col>
             </v-row>
             <v-divider></v-divider>
             <v-tabs v-model="innerTab" slider-size="3" class="project-detail__tabs">
               <v-tab :ripple="false">
-                Applications <span class="tab-count-badge"> {{ project.packages.length }}</span>
+                {{ $tc('package.Package', 2) }}
+                <span class="tab-count-badge"> {{ project.packages.length }}</span>
               </v-tab>
               <v-tab v-if="project.members" :ripple="false">
-                Team Members <span class="tab-count-badge"> {{ project.members.length }}</span>
+                {{ $t('projects.members') }}
+                <span class="tab-count-badge"> {{ project.members.length }}</span>
               </v-tab>
               <v-tabs-items v-model="innerTab">
                 <v-tab-item>
@@ -120,7 +119,7 @@
                             <v-divider class="mb-2"></v-divider>
                             <v-col cols="12">
                               <v-icon>$vuetify.icons.deployments</v-icon>
-                              Deployments
+                              {{ $tc('deployment.Deployment', pkg.deployments.length) }}
                             </v-col>
                             <v-col cols="12" class="d-flex flex-wrap">
                               <span
@@ -153,11 +152,11 @@
                       <template v-slot:default>
                         <thead class="member-thead">
                         <tr>
-                          <th class="text-left">Name</th>
-                          <th class="text-left">Access to</th>
-                          <th class="text-left">Role</th>
-                          <th class="text-left">Last Online</th>
-                          <th class="text-left">Actions</th>
+                          <th class="text-left">{{ $t('user.name') }}</th>
+                          <th class="text-left">{{ $t('user.accessTo') }}</th>
+                          <th class="text-left">{{ $t('user.role') }}</th>
+                          <th class="text-left">{{ $t('user.lastOnline') }}</th>
+                          <th class="text-left">{{ $t('user.actions') }}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -173,7 +172,7 @@
                               <p class="mb-0">{{ member.user.email }}</p>
                             </div>
                           </td>
-                          <td class="pa-2">Admin</td>
+                          <td class="pa-2">{{ $t('user.admin') }}</td>
                           <td class="pa-2">{{ member.role }}</td>
                           <td class="pa-2">{{ member.user.lastLogin }}</td>
                           <td class="pa-2">
@@ -185,9 +184,7 @@
                                color="rgb(252,252,253)" class="mt-2">
                           <v-icon size="24" class="mr-2">
                             $vuetify.icons.addRound
-                          </v-icon>
-                          Add another
-                        </v-btn>
+                          </v-icon>{{ $t('user.addAnother') }}</v-btn>
                         </tbody>
                       </template>
                     </v-simple-table>
@@ -199,7 +196,7 @@
           <v-container v-else>
             <div class="px-3">
               <span class="text--disabled" v-if="project">{{ project.title }} ></span>
-              <h2 class="text--semi-bold">Edit Project</h2>
+              <h2 class="text--semi-bold">{{ $t('projects.editProject')}}</h2>
               <v-divider></v-divider>
             </div>
             <project-form
@@ -240,7 +237,7 @@ import {
   ProjectDetailQuery,
   ProjectDetailOtherProjectsQuery,
   TPackageNode,
-  TProjectNode, TProjectMember,
+  TProjectNode,
 } from '@/generated/graphql';
 
 @Component({

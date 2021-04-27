@@ -4,13 +4,13 @@
       <v-row>
         <v-col cols="6" class="py-0">
           <v-text-field
-            :label="$t('Project Name')"
+            :label="$t('projects.name')"
             name="projectName"
             filled
             outlined
             type="text"
             :error-messages="titleErrors"
-            :placeholder="$t('Enter Project Name')"
+            :placeholder="$t('projects.enterName')"
             v-model="title"
             @blur="$v.title.$touch()"
             prepend-inner-icon="$vuetify.icons.projectInput"
@@ -18,24 +18,24 @@
         </v-col>
         <v-col cols="6" class="py-0">
           <v-text-field
-            :label="$t('Description')"
+            :label="$t('projects.description')"
             name="description"
             filled
             outlined
             type="text"
-            :placeholder="$t('Enter Description')"
+            :placeholder="$t('projects.enterDescription')"
             v-model="description"
             prepend-inner-icon="$vuetify.icons.description"
           />
         </v-col>
         <v-col cols="6" class="py-0">
           <v-text-field
-            :label="$t('Specification Repository')"
+            :label="$t('projects.specificationRepository')"
             name="specRepo"
             filled
             outlined
             type="text"
-            :placeholder="$t('Enter Specification Repository')"
+            :placeholder="$t('projects.enterSpecificationRepository')"
             v-model="specRepository"
             :error-messages="specRepositoryErrors"
             prepend-inner-icon="$vuetify.icons.repository"
@@ -44,12 +44,12 @@
         </v-col>
         <v-col cols="6" class="py-0">
           <v-text-field
-            :label="$t('Specification Repository Branch')"
+            :label="$t('projects.specificationRepositoryBranch')"
             name="specRepoBranch"
             filled
             outlined
             type="text"
-            :placeholder="$t('Enter Repository Branch')"
+            :placeholder="$t('projects.enterSpecificationRepositoryBranch')"
             v-model="specRepositoryBranch"
             :error-messages="specRepositoryBranchErrors"
             prepend-inner-icon="$vuetify.icons.branch"
@@ -58,12 +58,12 @@
         </v-col>
         <v-col cols="6" class="py-0">
           <v-text-field
-            :label="$t('Access Username')"
+            :label="$t('projects.accessUsername')"
             name="accessUsername"
             filled
             outlined
             type="text"
-            :placeholder="$t('Enter Access Username')"
+            :placeholder="$t('projects.enterAccessUsername')"
             v-model="accessUsername"
             :error-messages="accessUsernameErrors"
             prepend-inner-icon="$vuetify.icons.accessUser"
@@ -72,12 +72,12 @@
         </v-col>
         <v-col cols="6" class="py-0">
           <v-text-field
-            :label="$t('Access Token')"
+            :label="$t('projects.accessToken')"
             name="accessToken"
             filled
             outlined
             type="password"
-            :placeholder="$t('Enter Access Token')"
+            :placeholder="$t('projects.enterAccessToken')"
             v-model="accessToken"
             :error-messages="accessTokenErrors"
             prepend-inner-icon="$vuetify.icons.accessToken"
@@ -86,12 +86,12 @@
         </v-col>
         <v-col cols="6" class="py-0">
           <v-select
-            :label="$t('Specification Type')"
+            :label="$t('projects.specificationType')"
             name="specType"
             filled
             outlined
             type="text"
-            :placeholder="$t('Enter Specification Type')"
+            :placeholder="$t('projects.enterSpecificationType')"
             v-model="specType"
             :items="specTypeChoices"
           />
@@ -110,9 +110,7 @@
                 small
             >
               $vuetify.icons.arrowRightGrey
-            </v-icon>
-            Go Back
-          </a>
+            </v-icon>{{ $t('general.goBack') }}</a>
         </v-col>
         <v-col cols="3">
           <v-btn
@@ -125,7 +123,7 @@
         >
             {{ submitButtonText }}
             <template v-slot:loader>
-              <span>Saving...</span>
+              <span>{{ $t('general.saving') }}...</span>
             </template>
           </v-btn>
         </v-col>
@@ -219,7 +217,7 @@ export default class ProjectForm extends validationMixin {
   }
 
   get submitButtonText(): TranslateResult {
-    return this.editMode ? this.$t('Save') : this.$t('Next');
+    return this.editMode ? this.$t('general.save').toString() : this.$t('general.next').toString();
   }
 
   handleEditMode(): void {

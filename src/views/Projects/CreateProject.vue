@@ -1,6 +1,6 @@
 <template>
   <v-container class="pa-10">
-    <h2 class="text--semi-bold">Enter Your Project Details Below</h2>
+    <h2 class="text--semi-bold">{{ $t('projects.enterDetailsBelow') }}</h2>
     <v-card class="pa-5">
       <project-form :project="project"></project-form>
     </v-card>

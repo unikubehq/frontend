@@ -15,9 +15,7 @@
                 '$vuetify.icons.accountBlue' :
                 '$vuetify.icons.account'
               }}
-            </v-icon>
-            Account Settings
-        </v-tab>
+            </v-icon>{{ $t('settings.account.title') }}</v-tab>
         <v-tab :ripple="false" class="vertical-tabs"
         :to="{name: 'settings.organization'}">
             <v-icon left>
@@ -26,9 +24,7 @@
                 '$vuetify.icons.organizationSettingsBlue' :
                 '$vuetify.icons.organizationSettings'
               }}
-            </v-icon>
-            Organization Settings
-        </v-tab>
+            </v-icon>{{ $t('settings.organization') }}</v-tab>
         <v-tab :ripple="false" class="vertical-tabs"
         :to="{name: 'settings.roles'}">
             <v-icon left>
@@ -37,9 +33,7 @@
                 '$vuetify.icons.organizationRolesBlue' :
                 '$vuetify.icons.organizationRoles'
               }}
-            </v-icon>
-            Organization Roles
-        </v-tab>
+            </v-icon>{{ $t('settings.organizationRoles') }}</v-tab>
         <v-tab :ripple="false" class="vertical-tabs"
         :to="{name: 'settings.notifications'}">
             <v-icon left>
@@ -48,9 +42,7 @@
                 '$vuetify.icons.notificationBlue' :
                 '$vuetify.icons.notification'
               }}
-            </v-icon>
-            Notifications
-        </v-tab>
+            </v-icon>{{ $t('settings.notifications.title') }}</v-tab>
         <v-tab :ripple="false" class="vertical-tabs"
         :to="{name: 'settings.payment'}">
             <v-icon left>

@@ -1,18 +1,18 @@
 <template>
   <div>
 <v-container class="pl-12 text--white" style="background-color: #252e65">
-  <h1 class="text-h1 mt-5" style="color: white;">Add Team Member</h1>
+  <h1 class="text-h1 mt-5" style="color: white;">{{ $t('projects.addMember') }}</h1>
 </v-container>
     <v-container class="px-12">
       <v-form class="white">
 
         <v-text-field
-          :label="$t('Email Address')"
+          :label="$t('general.email')"
           name="email"
           filled
           outlined
           type="text"
-          :placeholder="$t('Enter Email Address')"
+          :placeholder="$t('forms.enterEmail')"
           v-model="email"
           :error-messages="emailErrors"
           prepend-inner-icon="$vuetify.icons.email"
@@ -22,15 +22,15 @@
           :items="projectChoices"
           v-model="projectChoice"
           outlined
-          label="Project"
+          :label="$t('projects.Project')"
           prepend-inner-icon="$vuetify.icons.organization"
         ></v-select>
         <v-select
-          label="Access to"
+          :label="$t('projects.accessTo')"
           :items="applicationChoices"
           outlined
           prepend-inner-icon="$vuetify.icons.organization"
-          placeholder="Select Applications"
+          :placeholder="$t('projects.selectPackages')"
           multiple
         ></v-select>
         <v-select
@@ -38,7 +38,7 @@
           :items="['Admin', 'Member']"
           outlined
           prepend-inner-icon="$vuetify.icons.organization"
-          placeholder="Select Role"
+          :placeholder="$t('projects.selectRole')"
         ></v-select>
         <v-divider class="mb-3"></v-divider>
         <v-btn

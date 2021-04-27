@@ -1,7 +1,7 @@
 <template>
   <div class="py-5">
-    <h2>Payment Methods</h2>
-    <p>Edit your payment method.</p>
+    <h2>{{ $t('settings.payment.title') }}</h2>
+    <p>{{ $t('settings.payment.intro') }}</p>
     <v-divider></v-divider>
   </div>
 </template>

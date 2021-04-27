@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 style="font-weight: 500;">Manage SOPS</h3>
+    <h3 style="font-weight: 500;">{{ $t('sops.manageSops') }}</h3>
     <v-divider></v-divider>
     <div v-if="project.sops && project.sops.length">
     <div
@@ -24,9 +24,7 @@
                 >
                   <v-icon size="24" class="mr-2">
                     $vuetify.icons.edit
-                  </v-icon>
-                  Edit Sops
-                </v-btn>
+                  </v-icon>{{ $t('sops.editSops') }}</v-btn>
             </v-list-item-title>
             <v-list-item-subtitle> {{ sops.description }}</v-list-item-subtitle>
           </v-list-item-content>
@@ -39,7 +37,7 @@
       large
       color="primary"
       @click="handleShowForm(true)"
-    >Add Sops</v-btn>
+    >{{ $t('sops.addSops') }}</v-btn>
     <v-row>
       <v-col cols="6">
         <v-form class="py-4 white create-form" v-if="showForm">
@@ -48,34 +46,34 @@
             <h3>{{ headlinePrefix }} SOPS: {{ title }}</h3>
             <v-divider class="mb-6"></v-divider>
               <v-select
-                :label="$t('SOPS Type')"
+                :label="$t('sops.type')"
                 name="specType"
                 filled
                 outlined
                 type="text"
-                :placeholder="$t('Enter Sops Type')"
+                :placeholder="$t('sops.enterType')"
                 v-model="sopsType"
                 :items="sopsTypeChoices"
               />
           <v-text-field
-                :label="$t('Title')"
+                :label="$t('sops.title')"
                 name="sopsName"
                 filled
                 outlined
                 type="text"
-                :placeholder="$t('Enter Sops Title')"
+                :placeholder="$t('sops.enterTitle')"
                 v-model="title"
                 :error-messages="titleErrors"
                 @blur="$v.title.$touch()"
                 prepend-inner-icon="$vuetify.icons.projectInput"
               />
           <v-text-field
-                :label="$t('Description')"
+                :label="$t('sops.description')"
                 name="description"
                 filled
                 outlined
                 type="text"
-                :placeholder="$t('Enter sops Description')"
+                :placeholder="$t('sops.enterDescription')"
                 v-model="description"
                 prepend-inner-icon="$vuetify.icons.description"
               />
@@ -133,9 +131,7 @@
                 color="white"
                 elevation="0"
                 @click="handleShowForm(false)"
-              >
-                Cancel
-              </v-btn>
+              >{{ $t('general.cancel') }}</v-btn>
             </v-col>
             <v-col cols="2">
               <v-btn
@@ -143,7 +139,7 @@
               color="primary"
               @click="submit"
               :disabled="$v.$invalid"
-            >Save</v-btn>
+            >{{ $t('general.save') }}</v-btn>
             </v-col>
           </v-row>
         </v-form>
@@ -216,16 +212,16 @@ export default class SopsEdit extends validationMixin {
   }
 
   get headlinePrefix(): TranslateResult {
-    return this.edit ? this.$t('Edit') : this.$t('Add');
+    return this.edit ? this.$t('general.edit').toString() : this.$t('general.add').toString();
   }
 
   get secret1Label(): string {
     const map = new Map();
     map.set(
-      'aws', this.$t('Access Key'),
+      'aws', this.$t('sops.accessKey').toString(),
     );
     map.set(
-      'pgp', this.$t('Key'),
+      'pgp', this.$t('sops.pgpKey').toString(),
     );
     return map.get(this.sopsType);
   }
@@ -233,10 +229,10 @@ export default class SopsEdit extends validationMixin {
   get secret1Placeholder(): string {
     const map = new Map();
     map.set(
-      'aws', this.$t('Enter Access Key'),
+      'aws', this.$t('sops.enterAccessKey').toString(),
     );
     map.set(
-      'pgp', this.$t('Enter Key'),
+      'pgp', this.$t('sops.enterPgpKey').toString(),
     );
     return map.get(this.sopsType);
   }
@@ -244,7 +240,7 @@ export default class SopsEdit extends validationMixin {
   get secret2Label(): string {
     const map = new Map();
     map.set(
-      'aws', this.$t('Secret Access Key'),
+      'aws', this.$t('sops.secretAccessKey').toString(),
     );
     return map.get(this.sopsType);
   }
@@ -252,7 +248,7 @@ export default class SopsEdit extends validationMixin {
   get secret2Placeholder(): string {
     const map = new Map();
     map.set(
-      'aws', this.$t('Enter Secret Access Key'),
+      'aws', this.$t('sops.enterSecretAccessKey').toString(),
     );
     return map.get(this.sopsType);
   }

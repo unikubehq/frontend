@@ -1,24 +1,24 @@
 <template>
   <div class="py-5">
-      <h2>Notifications</h2>
-      <p>Control what things you would like to get notified for.</p>
+      <h2>{{ $t('settings.notifications.title') }}</h2>
+      <p>{{ $t('settings.notifications.intro') }}</p>
       <v-divider></v-divider>
     <v-row>
       <v-col cols="10">
         <v-row>
           <v-col cols="5">
-            <h3>Projects</h3>
+            <h3>{{ $t('settings.notifications.projects') }}</h3>
           </v-col>
           <v-col cols="1">
-            <span>In-App</span>
+            <span>{{ $t('settings.notifications.inApp') }}</span>
           </v-col>
           <v-col cols="1">
-            <span>Email</span>
+            <span>{{ $t('settings.notifications.email') }}</span>
           </v-col>
         </v-row>
         <v-row>
           <v-col cols="5" class="d-flex flex-column justify-center">
-            When a new project is added
+            {{ $t('settings.notifications.newProject') }}
           </v-col>
           <v-col cols="1">
             <v-switch
@@ -35,7 +35,7 @@
         </v-row>
         <v-row>
           <v-col cols="5" class="d-flex flex-column justify-center">
-            When a project is edited
+            {{ $t('settings.notifications.projectEdit') }}
           </v-col>
           <v-col cols="1">
             <v-switch

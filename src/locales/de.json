@@ -43,5 +43,8 @@
   "Enter Access Username": "Enter Access Username",
   "Access Token": "Access Token",
   "Enter Access Token": "Enter Access Token",
-  "SOPS Type": "SOPS Type"
+  "SOPS Type": "SOPS Type",
+  "projects": {
+    "notFound": "Keine Projekte gefunden"
+  }
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="py-5">
-    <h2>Account Settings</h2>
-    <p>You can set your personal information and can also change your Password.</p>
+    <h2>{{ $t('settings.account.title') }}</h2>
+    <p>{{ $t('settings.account.intro') }}</p>
     <v-divider></v-divider>
     <v-col cols="2">
       <v-badge
@@ -19,41 +19,41 @@
       </v-badge>
     </v-col>
     <v-col cols="9" class="d-flex flex-column justify-center">
-      <a href="#" class="text--secondary">Remove Picture</a>
+      <a href="#" class="text--secondary">{{ $t('settings.account.removeAvatar') }}</a>
     </v-col>
     <v-col cols="8" class="mt-8">
       <v-row>
         <v-icon large>$vuetify.icons.personalInfo</v-icon>
-        <h2 class="d-inline ml-2">Personal Info</h2>
+        <h2 class="d-inline ml-2">{{ $t('settings.account.personalnformation') }}</h2>
       </v-row>
       <v-form>
         <v-text-field
-            :label="$t('Full Name')"
+            :label="$t('settings.account.fullName')"
             name="fullname"
             filled
             outlined
             type="text"
-            :placeholder="$t('Enter Full Name')"
+            :placeholder="$t('settings.account.enterName')"
             v-model="fullName"
             prepend-inner-icon="$vuetify.icons.user"
             @blur="$v.fullName.$touch()"
             @change="setDataChanged"
         />
         <v-text-field
-            label="Email Address"
+            :label="$t('settings.account.email')"
             name="login"
             filled
             outlined
             disabled
             type="text"
-            placeholder="Enter Email Address"
+            :placeholder="$t('settings.account.enterEmail')"
             v-model="email"
             @keyup.enter="register"
             prepend-inner-icon="$vuetify.icons.email"
             @blur="$v.email.$touch()"
         />
         <v-btn color="primary" :disabled="!dataChanged" large elevation="0" :ripple="false">
-          Save Changes
+          {{ $t('general.saveChanges') }}
         </v-btn>
       </v-form>
     </v-col>
@@ -61,16 +61,16 @@
       <v-divider></v-divider>
     </v-col>
     <v-col cols="8" class="mt-8">
-      <h2>Change Password</h2>
+      <h2>{{ $t('settings.account.changePassword') }}</h2>
       <v-form>
         <v-text-field
             id="password"
-            :label="$t('Old Password')"
+            :label="$t('settings.account.oldPassword')"
             name="password"
             filled
             outlined
             :type="clearText ? 'text' : 'password'"
-            :placeholder="$t('Enter Old Password')"
+            :placeholder="$t('settings.account.enterOldPassword')"
             v-model="password"
             prepend-inner-icon="$vuetify.icons.password"
             :append-icon="clearText ? '$vuetify.icons.eyeOpen' : '$vuetify.icons.eye'"
@@ -79,17 +79,17 @@
         >
         </v-text-field>
         <router-link class="link--secondary" to="/forgot-password">
-          {{ $t('Forgot password?') }}
+          {{ $t('settings.account.forgotPassword') }}
         </router-link>
         <v-row>
           <v-col cols="6">
             <v-text-field
                 id="new-password"
-                :label="$t('New Password')"
+                :label="$t('settings.account.newPassword')"
                 name="new-password"
                 filled
                 outlined
-                :placeholder="$t('Enter New Password')"
+                :placeholder="$t('settings.account.enterNewPassword')"
                 v-model="newPassword"
                 prepend-inner-icon="$vuetify.icons.password"
                 :append-icon="clearText ? '$vuetify.icons.eyeOpen' : '$vuetify.icons.eye'"
@@ -101,11 +101,11 @@
           <v-col cols="6">
             <v-text-field
                 id="new-password"
-                :label="$t('Re-Enter New Password')"
+                :label="$t('settings.account.reenterPassword')"
                 name="new-password"
                 filled
                 outlined
-                :placeholder="$t('Enter New Password')"
+                :placeholder="$t('settings.account.enterNewPassword')"
                 v-model="reEnterNewPassword"
                 prepend-inner-icon="$vuetify.icons.password"
                 :append-icon="clearText ? '$vuetify.icons.eyeOpen' : '$vuetify.icons.eye'"
@@ -116,7 +116,7 @@
           </v-col>
         </v-row>
         <v-btn color="primary" disabled large elevation="0" :ripple="false">
-          Set new Password
+          {{ $t('settings.account.setNewPassword') }}
         </v-btn>
       </v-form>
     </v-col>
@@ -124,9 +124,8 @@
       <v-divider></v-divider>
     </v-col>
     <v-col cols="8" class="mt-8">
-      <h2>Deactivate Account</h2>
-      <p>By doing this all your organizations and project/teams under your account will be
-        permanently lost and you will not be able to retrieve..</p>
+      <h2>{{ $t('settings.account.disableAccount') }}</h2>
+      <p>{{ $t('settings.account.disableExplanation') }}</p>
     </v-col>
   </div>
 </template>

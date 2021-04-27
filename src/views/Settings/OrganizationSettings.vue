@@ -1,7 +1,7 @@
 <template>
   <div class="py-5">
-    <h2>Organization Settings</h2>
-    <p>You can set organization basic information and can also remove it.</p>
+    <h2>{{ $t('settings.organization.title') }}</h2>
+    <p>{{ $t('settings.organization.intro') }}</p>
     <v-divider></v-divider>
     <v-row>
       <v-col cols="12">
@@ -27,22 +27,22 @@
         </v-badge>
       </v-col>
       <v-col cols="8" class="mt-8">
-        <h2>Organization Info</h2>
+        <h2>{{ $t('settings.organization.info') }}</h2>
         <v-form>
           <v-text-field
-            :label="$t('Organization Name')"
+            :label="$t('settings.organization.name')"
             name="fullname"
             filled
             outlined
             type="text"
-            :placeholder="$t('Enter Full Name')"
+            :placeholder="$t('settings.organization.enterName')"
             v-model="organizationName"
             prepend-inner-icon="$vuetify.icons.user"
             @blur="$v.fullName.$touch()"
             @change="setDataChanged"
           />
           <v-btn color="primary" :disabled="!dataChanged" large elevation="0" :ripple="false">
-            Save Changes
+            {{ $t('general.saveChanges') }}
           </v-btn>
         </v-form>
       </v-col>
@@ -50,10 +50,9 @@
         <v-divider></v-divider>
       </v-col>
       <v-col cols="8" class="mt-8">
-        <h2>Deactivate Account</h2>
-        <p>By doing this all your organizations and project/teams under your account will be
-          permanently lost and you will not be able to retrieve..
-          <a href="#">Delete organization</a>
+        <h2>{{ $t('settings.organization.disable') }}</h2>
+        <p>{{ $t('settings.organization.disableWarning') }}
+          <a href="#">{{ $t('settings.organization.delete') }}</a>
         </p>
       </v-col>
       </v-row>

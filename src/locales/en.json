@@ -29,5 +29,154 @@
   "Enter Access Username": "Enter Access Username",
   "Access Token": "Access Token",
   "Enter Access Token": "Enter Access Token",
-  "SOPS Type": "SOPS Type"
+  "SOPS Type": "SOPS Type",
+  "projects": {
+    "notFound": "No Projects Found",
+    "createFirst": "to create your first project",
+    "deleteSuccess": "Successfully deleted.",
+    "addMember": "Add Team Member",
+    "Project": "Project | Projects",
+    "accessTo": "Access to",
+    "selectPackages": "Select Packages",
+    "selectRole": "Select Role",
+    "enterDetailsBelow": "Enter Your Project Details Below",
+    "browseProjects": "Browse other Projects",
+    "numberPackages": "No. of Packages",
+    "lastUpdate": "Last Update",
+    "dateAdded": "Date added",
+    "editProject": "Edit Project",
+    "deleteProject": "Delete Project",
+    "createdBy": "Created by",
+    "name": "Project Name",
+    "members": "Team Members",
+    "enterName": "Enter Project Name",
+    "description": "Description",
+    "enterDescription": "Enter Description",
+    "specificationRepository": "Specification Repository",
+    "enterSpecificationRepository": "Enter Specification Repository",
+    "specificationRepositoryBranch": "Specification Repository Branch",
+    "enterSpecificationRepositoryBranch": "Enter Repository Branch",
+    "accessUsername": "Access Username",
+    "enterAccessUsername": "Enter Access Username",
+    "accessToken": "Access Token",
+    "enterAccessToken": "Enter Access Token",
+    "specificationType": "Specification Type",
+    "enterSpecificationType": "Enter Specification Type"
+  },
+  "general": {
+    "clickHere": "Click Here",
+    "close": "Close",
+    "email": "'Email Address'",
+    "goBack": "Go Back",
+    "saving": "Saving",
+    "save": "Save",
+    "next": "Next",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "add": "Add",
+    "saveChanges": "Save Changes"
+  },
+  "settings": {
+    "account": {
+      "title": "Account Settings",
+      "intro": "You can set your personal information and can also change your Password.",
+      "removeAvatar": "Remove Picture",
+      "personalnformation": "Personal Info",
+      "fullName": "Full Name",
+      "email": "Email Address",
+      "enterName": "Enter Full Name",
+      "enterEmail": "Enter Email Address",
+      "changePassword": "Change Password",
+      "oldPassword": "Old Password",
+      "enterOldPassword": "Enter Old Password",
+      "forgotPassword": "Forgot password?",
+      "newPassword": "New Password",
+      "enterNewPassword": "Enter New Password",
+      "reenterPassword": "Re-Enter New Password",
+      "setNewPassword": "Set new Password",
+      "disableAccount": "Deactivate Account",
+      "disableExplanation": "By doing this all your organizations and project/teams under your account will be\n        permanently lost and you will not be able to retrieve."
+    },
+    "organizationRoles": {
+      "title":  "Organization Roles",
+      "intro": "You can set organization basic information and can also remove it.",
+      "assign":  "Assign New Role",
+      "enterEmail":  "Enter Email Address",
+      "existing":  "Existing Organization Roles",
+      "name": "Name",
+      "role":  "Role",
+      "actions": "Actions",
+      "admin":  "Admin",
+      "addAnother": "You can only edit/delete a role after another admin is added"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "newProject": "When a new project is added",
+      "projectEdit": "When a project is edited",
+      "email": "Email",
+      "inApp": "In-App",
+      "projects": "Projects",
+      "intro": "Control what things you would like to get notified for."
+    },
+    "roles": {
+      "title": "Organization Roles",
+      "intro": "You can set organization basic information and can also remove it.",
+      "assign": "Assign New Role",
+      "existing": "Existing Organization Roles",
+      "name": "Name",
+      "role": "Role",
+      "actions": "Actions",
+      "admin": "Admin",
+      "addAnother": "You can only edit/delete a role after another admin is added"
+    },
+    "payment": {
+      "title": "Payment Methods",
+      "intro": "Edit your payment method."
+    },
+    "organization": {
+      "title": "Organization Settings",
+      "intro": "You can set organization basic information and can also remove it.",
+      "info": "Organization Info",
+      "name": "Organization Name",
+      "enterName": "Enter Organization Name",
+      "disable": "Deactivate Account",
+      "disableWarning": "By doing this all your organizations and project/teams under your account will be\n          permanently lost and you will not be able to retrieve..",
+      "delete": "Delete organization"
+    }
+  },
+  "forms": {
+    "enterEmail": "'Enter Email Address'"
+  },
+  "package": {
+    "Package": "Package | Packages"
+  },
+  "deployment": {
+    "Deployment": "Deployment | Deployments"
+  },
+  "user": {
+    "name": "Name",
+    "accessTo": "Access to",
+    "role": "Role",
+    "lastOnline": "Last Online",
+    "actions": "Actions",
+    "admin": "Admin",
+    "addAnother": "Add another"
+  },
+  "sops": {
+    "manageSops": "Manage SOPS",
+    "editSops": "Edit Sops",
+    "addSops": "Add Sops",
+    "type": "SOPS Type",
+    "title": "Title",
+    "description": "Description",
+    "enterType": "Enter Sops Type",
+    "enterTitle": "Enter Sops Title",
+    "enterDescription": "Enter sops Description",
+    "accessKey": "Access Key",
+    "pgpKey": "Key",
+    "enterAccessKey": "Enter Access Key",
+    "enterPgpKey": "Enter Key",
+    "secretAccessKey": "Secret Access Key",
+    "enterSecretAccessKey": "Enter Secret Access Key"
+  }
 }

@@ -18,10 +18,10 @@
             <v-icon size="120">
               $vuetify.icons.noProjectsFound
             </v-icon>
-            <h3>No Projects Found</h3>
+            <h3>{{ $t('projects.notFound') }}</h3>
             <p>
-              <router-link to="/">Click Here</router-link>
-              to create your first project
+              <router-link to="/">{{ $t('general.clickHere') }}</router-link>
+              {{ $t('projects.createFirst') }}
             </p>
           </v-col>
           <v-col></v-col>
@@ -38,18 +38,13 @@
       color="primary"
       top
       right
-    >
-      Successfully deleted.
-
-      <template v-slot:action="{ attrs }">
+    >{{ $t('projects.deleteSuccess') }}<template v-slot:action="{ attrs }">
         <v-btn
           color="white"
           text
           v-bind="attrs"
           @click="snackbar = false"
-        >
-          Close
-        </v-btn>
+        >{{ $t('general.close') }}</v-btn>
       </template>
     </v-snackbar>
   </div>
