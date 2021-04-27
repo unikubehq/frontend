@@ -5,21 +5,15 @@
       width="550"
     >
       <v-card v-if="show" class="py-8 px-7">
-        <v-card-title class="headline">
-          Delete Project {{ project.title }}
-        </v-card-title>
+        <v-card-title class="headline">{{ $t('projects.deleteModal.title') }}</v-card-title>
         <v-card-text>
-          <div>
-            Are you sure you want to delete the project - {{ project.title }}? <br><br>
+          <div>{{ $t('projects.deleteModal.intro') }}<br><br>
           </div>
           <v-alert
             dense
             outlined
             icon="$vuetify.icons.warning"
-            type="error">
-            Warning: Deleting a project cannot be undone.
-            Please enter the project's name in the field below.
-          </v-alert>
+            type="error">{{ $t('projects.deleteModal.warning') }}</v-alert>
           <v-text-field
             name="projectName"
             filled
@@ -38,9 +32,7 @@
             :ripple="false"
             text
             @click="$emit('hide')"
-          >
-            Disagree
-          </v-btn>
+          >{{ $t('general.disagree') }}</v-btn>
             </v-col>
           <v-col class="py-0"><v-btn
             large
@@ -49,9 +41,7 @@
             color="error"
             @click="deleteAndHide"
             :disabled="deleteTitle !== project.title"
-          >
-            Yes, delete project
-          </v-btn>
+          >{{ $t('projects.deleteModal.agree') }}</v-btn>
             </v-col>
           </v-row>
           </v-container>

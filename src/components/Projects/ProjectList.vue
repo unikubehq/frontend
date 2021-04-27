@@ -39,7 +39,7 @@
           <span v-if="loading"><v-skeleton-loader type="heading" tile width="70"/></span>
           <span v-else>{{ project.packages.length }}</span>
         </h4>
-        <small>No. of Applications</small>
+        <small>{{ $t('projects.numberPackages') }}</small>
       </v-col>
       <v-divider vertical></v-divider>
       <v-col>
@@ -47,7 +47,7 @@
           <span v-if="loading"><v-skeleton-loader type="heading" tile width="70"/></span>
           <span v-else>{{ modifiedDate }}</span>
         </h4>
-        <small>Last Update</small>
+        <small>{{ $t('projects.lastUpdate') }}</small>
       </v-col>
       <v-divider vertical></v-divider>
       <v-col class="text-right pr-10">
