@@ -24,7 +24,7 @@
                 '$vuetify.icons.organizationSettingsBlue' :
                 '$vuetify.icons.organizationSettings'
               }}
-            </v-icon>{{ $t('settings.organization') }}</v-tab>
+            </v-icon>{{ $t('settings.organization.title') }}</v-tab>
         <v-tab :ripple="false" class="vertical-tabs"
         :to="{name: 'settings.roles'}">
             <v-icon left>
@@ -33,7 +33,7 @@
                 '$vuetify.icons.organizationRolesBlue' :
                 '$vuetify.icons.organizationRoles'
               }}
-            </v-icon>{{ $t('settings.organizationRoles') }}</v-tab>
+            </v-icon>{{ $t('settings.organizationRoles.title') }}</v-tab>
         <v-tab :ripple="false" class="vertical-tabs"
         :to="{name: 'settings.notifications'}">
             <v-icon left>
