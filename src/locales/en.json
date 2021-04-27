@@ -67,7 +67,9 @@
       "intro": "Are you sure you want to delete the project - {{ project.title }}?",
       "warning": "Warning: Deleting a project cannot be undone.\n            Please enter the project's name in the field below.",
       "agree": "Yes, delete project"
-    }
+    },
+    "addNewProject": "Add new Project",
+    "projectList": "Projects List"
   },
   "general": {
     "clickHere": "Click Here",
