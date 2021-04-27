@@ -262,7 +262,7 @@ export default class ProjectForm extends validationMixin {
     })
       .then((data) => {
         this.saveLoading = false;
-        this.$store.dispatch('auth/refresh', 0);
+        this.$store.dispatch('auth/refresh', -1);
         if (data.data.createUpdateProject.project) {
           if (this.editMode) {
             this.$router.go(-1);
