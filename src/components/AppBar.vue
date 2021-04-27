@@ -29,7 +29,7 @@
       <div>
         <v-menu v-model="menu" offset-y nudge-bottom="5">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn color="343d6f" v-bind="attrs" v-on="on" text>
+            <v-btn color="343d6f" v-bind="attrs" v-on="on" text :ripple="false" class="py-9">
               <v-avatar class="mr-3">
                 <img src="@/assets/img/avatar.png">
               </v-avatar>
@@ -41,19 +41,25 @@
             </v-btn>
           </template>
             <v-card>
-              <v-list>
-                <v-list-item>
-                  <v-list-item-icon>
-                    <v-icon>$vuetify.icons.accountBlue</v-icon>
-                  </v-list-item-icon>
-                  Account Settings
-                </v-list-item>
-                <v-list-item>
-                  <v-list-item-icon>
-                    <v-icon>$vuetify.icons.logout</v-icon>
-                  </v-list-item-icon>
-                  Logout
-                </v-list-item>
+              <v-list nav>
+                <v-list-item-group>
+                  <v-list-item :ripple="false" @click="$router.push({name: 'settings.account'})">
+                    <v-list-item-icon>
+                      <v-icon>$vuetify.icons.accountBlue</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                      <v-list-item-title v-text="$t('navigation.accountSettings')" />
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-list-item :ripple="false" @click="$store.dispatch('auth/logout')">
+                    <v-list-item-icon>
+                      <v-icon>$vuetify.icons.logout</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                      <v-list-item-title v-text="$t('navigation.logout')" />
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list-item-group>
               </v-list>
             </v-card>
         </v-menu>

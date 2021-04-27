@@ -208,6 +208,8 @@
   "navigation": {
     "organization": "Organizations",
     "createOrganization": "Create New Organization",
-    "joinOrganization": "Join Another Organization"
+    "joinOrganization": "Join Another Organization",
+    "accountSettings": "Account Settings",
+    "logout": "Logout"
   }
 }
