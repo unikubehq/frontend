@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <v-form>
       <v-row>
         <v-col cols="6" class="py-0">
@@ -129,7 +129,7 @@
         </v-col>
       </v-row>
     </v-form>
-    <sops-edit :project="project"></sops-edit>
+    <sops-edit :project="project" v-if="editMode"></sops-edit>
   </v-container>
 </template>
 

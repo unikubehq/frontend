@@ -1,10 +1,10 @@
 <template>
-  <v-container class="pa-10">
+  <div class="py-9">
     <h2 class="text--semi-bold">{{ $t('projects.enterDetailsBelow') }}</h2>
     <v-card class="pa-5">
-      <project-form :project="project"></project-form>
+      <project-form :project="project" :edit-mode="false"></project-form>
     </v-card>
-  </v-container>
+  </div>
 </template>
 
 <script lang="ts">

@@ -36,6 +36,7 @@
       v-if="!showForm"
       large
       color="primary"
+      class="mt-5"
       @click="handleShowForm(true)"
     >{{ $t('sops.addSops') }}</v-btn>
     <v-row>
