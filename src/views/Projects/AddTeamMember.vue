@@ -1,98 +1,126 @@
 <template>
-  <div>
-<v-container class="pl-12 text--white" style="background-color: #252e65">
-  <h1 class="text-h1 mt-5" style="color: white;">{{ $t('projects.addMember') }}</h1>
-</v-container>
-    <v-container class="px-12">
-      <v-form class="white">
-
-        <v-text-field
-          :label="$t('general.email')"
-          name="email"
-          filled
-          outlined
-          type="text"
-          :placeholder="$t('forms.enterEmail')"
-          v-model="email"
-          :error-messages="emailErrors"
-          prepend-inner-icon="$vuetify.icons.email"
-          @blur="$v.email.$touch()"
-        />
-        <v-select
-          :items="projectChoices"
-          v-model="projectChoice"
-          outlined
-          :label="$t('projects.Project')"
-          prepend-inner-icon="$vuetify.icons.organization"
-        ></v-select>
-        <v-select
-          :label="$t('projects.accessTo')"
-          :items="applicationChoices"
-          outlined
-          prepend-inner-icon="$vuetify.icons.organization"
-          :placeholder="$t('projects.selectPackages')"
-          multiple
-        ></v-select>
-        <v-select
-          label="Role"
-          :items="['Admin', 'Member']"
-          outlined
-          prepend-inner-icon="$vuetify.icons.organization"
-          :placeholder="$t('projects.selectRole')"
-        ></v-select>
-        <v-divider class="mb-3"></v-divider>
-        <v-btn
-          color="primary"
-          right
-          absolute
-          class="mr-8"
-          large
-          width="204px"
-          height="48px"
-          @click="$emit('done')"
-        >Add Member</v-btn>
-      </v-form>
-    </v-container>
-  </div>
+  <v-container fluid >
+    <h1 class="text-h1 mt-5" :class="overlay ? 'ml-3' : ''" v-if="project">
+      {{ $t('projects.addMembers') }} - {{ project.title }}
+    </h1>
+    <v-card>
+    <v-row>
+      <v-card-text class="px-10">
+        <v-col cols="7">
+          <div class="text--secondary">
+            Add team members from your organization to the project.
+            You can change their member role from later.
+          </div>
+        </v-col>
+        <v-col cols="12">
+        <v-form class="my-n5" v-for="(member, idx) in members" :key="idx">
+          <v-row>
+            <v-col :cols="overlay ? 6 : 5">
+              <v-select
+                label="Member"
+                :items="['Guy1', 'Guy2']"
+                v-model="member.user"
+                outlined
+                prepend-inner-icon="$vuetify.icons.organization"
+                :placeholder="$t('project.chooseMember')"
+              ></v-select>
+            </v-col>
+            <v-col :cols="overlay ? 6 : 5">
+              <v-select
+                :label="$t('project.role')"
+                v-model="member.role"
+                :items="['Admin', 'Member']"
+                outlined
+                prepend-inner-icon="$vuetify.icons.organization"
+                :placeholder="$t('projects.selectRole')"
+              ></v-select>
+            </v-col>
+            <v-col cols="2" class="mt-7" v-if="idx !== 0">
+              <v-btn color="error" large @click="removeMemberForm(idx)">Remove</v-btn>
+            </v-col>
+          </v-row>
+        </v-form>
+        <v-row>
+          <v-col cols="12">
+            <v-btn :ripple="false" plain elevation="0" @click="addMemberForm" text
+                class="mt-2 mt-n5">
+              <v-icon size="24" class="mr-2">
+              $vuetify.icons.addRound
+              </v-icon>{{ $t('user.addAnother') }}
+            </v-btn>
+          </v-col>
+          <v-col :cols="overlay ? 5 : 2">
+            <v-btn
+              color="primary"
+              block
+              large
+              @click="$emit('done')"
+              :disabled="!allMembersValid"
+            >{{ $tc('project.addMember', members.length) }}</v-btn>
+          </v-col>
+        </v-row>
+      </v-col>
+      </v-card-text>
+      </v-row>
+    </v-card>
+  </v-container>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { TPackageNode, TProjectNode, TProjectNodePage } from '@/generated/graphql';
+import { ProjectDetailQuery, TProjectDetailQueryResult, TProjectNode } from '@/generated/graphql';
 import { email } from 'vuelidate/lib/validators';
 
 @Component({
   validations: {
     email,
   },
+  apollo: {
+    graphqlProject: {
+      query: ProjectDetailQuery,
+      variables() {
+        return {
+          id: this.$route.params.slug,
+        };
+      },
+      update(data: TProjectDetailQueryResult) {
+        this.project = data.project;
+      },
+    },
+  },
 })
 export default class AddTeamMember extends Vue {
-  @Prop() readonly project: TProjectNode | undefined
+  @Prop() readonly projectProp: TProjectNode | undefined
 
-  @Prop() readonly otherProjects: TProjectNodePage | undefined
+  @Prop() readonly overlay: boolean = false
 
   email = '';
 
-  projectChoice = this.project?.title;
+  project: TProjectNode | null = null;
 
-  get projectChoices(): Array<string> {
-    const otherProjects: Array<string> = [];
-    this.otherProjects?.results?.forEach((x: TProjectNode | null) => {
-      if (x) {
-        otherProjects.push(x.title);
-      }
-    });
-    return otherProjects;
+  members = [
+    { user: null, role: null },
+  ]
+
+  addMemberForm(): void {
+    this.members.push({ user: null, role: null });
   }
 
-  get applicationChoices(): Array<string> {
-    const applications: Array<string> = [];
-    this.project?.packages.map((x: TPackageNode) => applications.push(x.title));
-    return applications;
+  removeMemberForm(idx: number): void {
+    Vue.delete(
+      this.members,
+      idx,
+    );
   }
 
-  set initialProjectChoice(title: string) {
-    this.projectChoice = title;
+  get allMembersValid(): boolean {
+    return this.members.every((member) => member.user && member.role);
+  }
+
+  created(): void {
+    if (this.projectProp) {
+      this.project = this.projectProp;
+    }
   }
 }
 </script>

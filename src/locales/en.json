@@ -3,7 +3,7 @@
     "notFound": "No Projects Found",
     "createFirst": "to create your first project",
     "deleteSuccess": "Successfully deleted.",
-    "addMember": "Add Team Member",
+    "addMembers": "Add Team Members",
     "Project": "Project | Projects",
     "accessTo": "Access to",
     "selectPackages": "Select Packages",
@@ -180,5 +180,10 @@
     "joinOrganization": "Join Another Organization",
     "accountSettings": "Account Settings",
     "logout": "Logout"
+  },
+  "project": {
+    "role": "Role",
+    "chooseMember": "Add a team member",
+    "addMember": "Add Member | Add Members"
   }
 }

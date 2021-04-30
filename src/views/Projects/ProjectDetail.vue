@@ -217,12 +217,12 @@
       class="no-bg-drawer"
       v-model="memberDrawer"
     >
-<!--      <add-team-member-->
-<!--        v-if="allProjects"-->
-<!--        :project="project"-->
-<!--        :other-projects="allProjects.results"-->
-<!--        v-on:done="memberDrawer = false"-->
-<!--      ></add-team-member>-->
+      <add-team-member
+        v-if="project"
+        :overlay="true"
+        :project="project"
+        v-on:done="memberDrawer = false"
+      ></add-team-member>
     </v-navigation-drawer>
   </v-container>
 </template>

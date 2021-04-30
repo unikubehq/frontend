@@ -72,8 +72,8 @@ const routes: Array<RouteConfig> = [
         component: () => import(/* webpackChunkName: "about" */ '../views/Projects/CreateProject.vue'),
       },
       {
-        path: '/create-project/add-members',
-        name: 'Create New Project',
+        path: '/project/:slug/add-members',
+        name: 'project.addMembers',
         component: () => import('../views/Projects/AddTeamMember.vue'),
       },
       {

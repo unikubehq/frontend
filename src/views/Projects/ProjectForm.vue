@@ -266,7 +266,9 @@ export default class ProjectForm extends validationMixin {
         if (data.data.createUpdateProject.project) {
           if (this.editMode) {
             this.$router.go(-1);
-          } else this.$router.push('create-project/add-members');
+          } else {
+            this.$router.push({ name: 'project.addMembers', params: { slug: data.data.createUpdateProject.project.id } });
+          }
         }
       })
       .catch((err) => {

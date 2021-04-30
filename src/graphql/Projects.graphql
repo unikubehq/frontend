@@ -144,7 +144,8 @@ mutation CreateProject(
     }
   ) {
     project {
-      title
+      title,
+      id
     }
     errors {
       messages
@@ -178,7 +179,8 @@ mutation UpdateProject(
     }
   ) {
     project {
-      title
+      title,
+      id
     }
     errors {
       messages
