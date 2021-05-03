@@ -6,7 +6,15 @@
     <v-card>
     <v-row>
       <v-card-text class="px-10">
-        <v-col cols="7">
+        <v-col :cols="overlay ? 12 : 7">
+          <v-alert
+            dense
+            outlined
+            icon="$vuetify.icons.warning"
+            type="error"
+            v-if="memberChoices.length === 0">
+            Looks like all your organization members are already part of this project!
+          </v-alert>
           <div class="text--secondary">
             Add team members from your organization to the project.
             You can change their member role from later.
@@ -14,11 +22,11 @@
         </v-col>
         <v-col cols="12">
         <v-form class="my-n5" v-for="(member, idx) in members" :key="idx">
-          <v-row>
+          <v-row v-if="member.user || memberChoices.length">
             <v-col :cols="overlay ? 6 : 5">
               <v-select
                 label="Member"
-                :items="['Guy1', 'Guy2']"
+                :items="memberChoices"
                 v-model="member.user"
                 outlined
                 prepend-inner-icon="$vuetify.icons.organization"
@@ -29,13 +37,14 @@
               <v-select
                 :label="$t('project.role')"
                 v-model="member.role"
-                :items="['Admin', 'Member']"
+                :items="projectMemberRoles"
                 outlined
                 prepend-inner-icon="$vuetify.icons.organization"
                 :placeholder="$t('projects.selectRole')"
               ></v-select>
             </v-col>
-            <v-col cols="2" class="mt-7" v-if="idx !== 0">
+            <v-col :cols="overlay ? 3 : 2"
+                :class="overlay ? 'mt-n10 mb-6' : 'mt-7'" v-if="idx !== 0">
               <v-btn color="error" large @click="removeMemberForm(idx)">Remove</v-btn>
             </v-col>
           </v-row>
@@ -43,7 +52,7 @@
         <v-row>
           <v-col cols="12">
             <v-btn :ripple="false" plain elevation="0" @click="addMemberForm" text
-                class="mt-2 mt-n5">
+                :class="overlay ? 'mt-5' : 'mt-n5'" v-if="memberChoices.length">
               <v-icon size="24" class="mr-2">
               $vuetify.icons.addRound
               </v-icon>{{ $t('user.addAnother') }}
@@ -54,7 +63,7 @@
               color="primary"
               block
               large
-              @click="$emit('done')"
+              @click="submit"
               :disabled="!allMembersValid"
             >{{ $tc('project.addMember', members.length) }}</v-btn>
           </v-col>
@@ -68,14 +77,31 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { ProjectDetailQuery, TProjectDetailQueryResult, TProjectNode } from '@/generated/graphql';
+import {
+  CreateProjectMemberMutation,
+  Maybe,
+  OrganizationMembersQuery,
+  ProjectDetailQuery, TOrganizationMember,
+  TProjectDetailQueryResult, TProjectMember,
+  TProjectNode,
+} from '@/generated/graphql';
 import { email } from 'vuelidate/lib/validators';
+import VueI18n from 'vue-i18n';
+import TranslateResult = VueI18n.TranslateResult;
 
 @Component({
   validations: {
     email,
   },
   apollo: {
+    organization: {
+      query: OrganizationMembersQuery,
+      variables() {
+        return {
+          id: this.$store.state.context.organization.id,
+        };
+      },
+    },
     graphqlProject: {
       query: ProjectDetailQuery,
       variables() {
@@ -92,18 +118,45 @@ import { email } from 'vuelidate/lib/validators';
 export default class AddTeamMember extends Vue {
   @Prop() readonly projectProp: TProjectNode | undefined
 
-  @Prop() readonly overlay: boolean = false
+  @Prop({ default: false }) readonly overlay!: boolean
 
   email = '';
 
   project: TProjectNode | null = null;
 
   members = [
-    { user: null, role: null },
+    { user: null, role: 'member' },
   ]
 
+  get memberChoices(): Array<{value: string, text: string}> {
+    const result : Array<{value: string, text: string}> = [];
+    this.$data?.organization?.members?.forEach((member: TOrganizationMember) => {
+      if (!this.project?.members?.every(
+        (projectMember: Maybe<TProjectMember>) => projectMember?.user?.id !== member?.user?.id,
+      )) {
+        return;
+      }
+      if (member && member?.user) {
+        const name = member.user?.familyName || member.user?.givenName
+          ? `member.user?.givenName ${member.user?.familyName}` : member.user.id;
+        result.push({
+          value: member.user.id,
+          text: name,
+        });
+      }
+    });
+    return result;
+  }
+
+  get projectMemberRoles(): Array<{value: string, text: TranslateResult}> {
+    return [
+      { value: 'admin', text: this.$t('general.admin') },
+      { value: 'member', text: this.$t('general.member') },
+    ];
+  }
+
   addMemberForm(): void {
-    this.members.push({ user: null, role: null });
+    this.members.push({ user: null, role: 'member' });
   }
 
   removeMemberForm(idx: number): void {
@@ -111,6 +164,26 @@ export default class AddTeamMember extends Vue {
       this.members,
       idx,
     );
+  }
+
+  submit(): void {
+    this.members.forEach((member) => {
+      if (member.user && this.project) {
+        this.$apollo.mutate({
+          mutation: CreateProjectMemberMutation,
+          variables: {
+            user: member.user,
+            role: member.role,
+            id: this.project.id,
+          },
+        });
+      }
+    });
+    if (this.overlay) {
+      this.$emit('done');
+    } else {
+      this.$router.push({ name: 'overview' });
+    }
   }
 
   get allMembersValid(): boolean {

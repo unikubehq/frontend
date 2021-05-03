@@ -3,13 +3,22 @@ schema {
   mutation: Mutation
 }
 type Query {
+  user(id: UUID): UserNode
   allOrganizations(offset: Int, limit: Int): OrganizationNodePage
-  organization(id: UUID): OrganizationNode
+  organization(id: UUID!): OrganizationNode
   allProjects(offset: Int, limit: Int): ProjectNodePage
   project(id: UUID, slug: String): ProjectNode
   allPackages(organizationId: UUID, projectId: UUID, offset: Int, limit: Int): PackageNodePage
   package(id: UUID, slug: String): PackageNode
   clusterlevel(id: UUID): ClusterLevelNode
+}
+scalar UUID
+type UserNode {
+  id: UUID!
+  email: String
+  name: String
+  familyName: String
+  givenName: String
 }
 type OrganizationNodePage {
   totalCount: Int
@@ -24,9 +33,13 @@ type OrganizationNode {
   title: String!
   description: String
   avatarImage: String
+  members: [OrganizationMember]
 }
-scalar UUID
 scalar DateTime
+type OrganizationMember {
+  user: UserNode
+  role: String
+}
 type ProjectNodePage {
   totalCount: Int
   resultCount: Int
@@ -131,9 +144,6 @@ type PGPKeyNode {
 type ProjectMember {
   user: UserNode
   role: String
-}
-type UserNode {
-  id: String
 }
 type PackageNodePage {
   totalCount: Int

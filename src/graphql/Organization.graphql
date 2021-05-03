@@ -20,6 +20,22 @@ query OrganizationQuery($id: UUID!) {
     }
 }
 
+
+query OrganizationMembersQuery($id: UUID!) {
+    organization (
+        id: $id
+    ) {
+        id
+        members {
+            user {
+                id
+                familyName
+                givenName
+            }
+        }
+    }
+}
+
 mutation CreateOrganizationMutation($title: String!) {
     createUpdateOrganization (
         input: {

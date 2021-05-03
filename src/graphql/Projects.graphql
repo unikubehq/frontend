@@ -252,3 +252,30 @@ mutation createUpdateClusterLevel(
         }
     }
 }
+
+mutation CreateProjectMemberMutation(
+    $id: UUID,
+    $user: UUID,
+    $role: ProjectMemberRoleEnum,
+) {
+    createProjectMember(
+        user: $user,
+        id: $id,
+        role: $role
+    ) {
+        ok
+    }
+}
+
+
+mutation DeleteProjectMemberMutation(
+    $id: UUID,
+    $user: UUID,
+) {
+    deleteProjectMember(
+        user: $user,
+        id: $id,
+    ) {
+        ok
+    }
+}
