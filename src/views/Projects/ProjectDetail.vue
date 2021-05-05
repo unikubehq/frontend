@@ -166,7 +166,7 @@
                             </v-avatar>
                             <div class="d-flex flex-column">
                               <h3 class="mb-0">
-                                {{ member.user.firstName }} {{ member.user.lastName }}
+                                {{ member.user.givenName }} {{ member.user.familyName }}
                               </h3>
                               <p class="mb-0">{{ member.user.email }}</p>
                             </div>
