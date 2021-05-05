@@ -81,8 +81,11 @@ import {
   CreateProjectMemberMutation,
   Maybe,
   OrganizationMembersQuery,
-  ProjectDetailQuery, TOrganizationMember,
-  TProjectDetailQueryResult, TProjectMember,
+  ProjectDetailQuery,
+  TOrganizationMember,
+  TProjectDetailQueryResult,
+  TProjectMember,
+  TProjectMemberRoleEnum,
   TProjectNode,
 } from '@/generated/graphql';
 import { email } from 'vuelidate/lib/validators';
@@ -125,7 +128,7 @@ export default class AddTeamMember extends Vue {
   project: TProjectNode | null = null;
 
   members = [
-    { user: null, role: 'member' },
+    { user: null, role: TProjectMemberRoleEnum.Member },
   ]
 
   get memberChoices(): Array<{value: string, text: string}> {
@@ -150,13 +153,13 @@ export default class AddTeamMember extends Vue {
 
   get projectMemberRoles(): Array<{value: string, text: TranslateResult}> {
     return [
-      { value: 'admin', text: this.$t('general.admin') },
-      { value: 'member', text: this.$t('general.member') },
+      { value: TProjectMemberRoleEnum.Admin, text: this.$t('general.admin') },
+      { value: TProjectMemberRoleEnum.Member, text: this.$t('general.member') },
     ];
   }
 
   addMemberForm(): void {
-    this.members.push({ user: null, role: 'member' });
+    this.members.push({ user: null, role: TProjectMemberRoleEnum.Member });
   }
 
   removeMemberForm(idx: number): void {
