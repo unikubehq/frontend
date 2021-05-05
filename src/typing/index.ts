@@ -7,6 +7,10 @@ export interface IPermission {
   scopes: string[]
 }
 
+export type Dropzone = {
+  getAcceptedFiles(): File[]
+}
+
 export type Action = 'edit' | 'view' | 'projects:add' | 'projects:view';
 export type Subject = InferSubjects<TProjectNode>;
 export type UnikubeAbility = Ability<[Action, Subject]>;

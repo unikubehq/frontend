@@ -9,7 +9,9 @@ query ProjectsQuery($limit: Int, $offset: Int) {
             id,
             members {
                 user {
-                    id
+                    id,
+                    givenName,
+                    familyName
                 },
                 role
             }
@@ -45,7 +47,9 @@ query ProjectDetailQuery($id: UUID) {
         accessToken,
         members {
             user {
-                id
+                id,
+                givenName,
+                familyName
             },
             role
         }

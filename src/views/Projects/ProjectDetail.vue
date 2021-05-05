@@ -153,7 +153,6 @@
                         <thead class="member-thead">
                         <tr>
                           <th class="text-left">{{ $t('user.name') }}</th>
-                          <th class="text-left">{{ $t('user.accessTo') }}</th>
                           <th class="text-left">{{ $t('user.role') }}</th>
                           <th class="text-left">{{ $t('user.lastOnline') }}</th>
                           <th class="text-left">{{ $t('user.actions') }}</th>
@@ -172,7 +171,6 @@
                               <p class="mb-0">{{ member.user.email }}</p>
                             </div>
                           </td>
-                          <td class="pa-2">{{ $t('user.admin') }}</td>
                           <td class="pa-2">{{ member.role }}</td>
                           <td class="pa-2">{{ member.user.lastLogin }}</td>
                           <td class="pa-2">

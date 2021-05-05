@@ -141,7 +141,7 @@ export default class AddTeamMember extends Vue {
       }
       if (member && member?.user) {
         const name = member.user?.familyName || member.user?.givenName
-          ? `member.user?.givenName ${member.user?.familyName}` : member.user.id;
+          ? `${member.user?.givenName} ${member.user?.familyName}` : member.user.id;
         result.push({
           value: member.user.id,
           text: name,

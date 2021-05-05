@@ -146,7 +146,11 @@ Component.registerHooks([
     allOrganizations: {
       query: OrganizationsQuery,
       result(result) {
-        this.$store.commit('context/setOrganization', result.data.allOrganizations.results[0]);
+        if (result.data.allOrganizations.results.length) {
+          this.$store.commit('context/setOrganization', result.data.allOrganizations.results[0]);
+        } else {
+          this.$router.push({ name: 'create-organization' });
+        }
       },
     },
   },

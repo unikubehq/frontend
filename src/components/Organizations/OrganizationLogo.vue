@@ -3,30 +3,33 @@
         <v-col cols="12" sm="8" md="3">
           <h1 class="text-h1">Create New Organization</h1>
           <p class="text--secondary">
-            Fill up your organization details below
+            Do you have a logo?
           </p>
           <v-form class="text-center">
             <v-dialog
               v-model="dialog"
               width="500"
+              class="pb-10"
             >
               <template v-slot:activator="{ on, attrs }">
-                <v-badge
-                  bottom
-                  offset-x="20"
-                  offset-y="20"
-                  content="+"
-                >
-                  <v-avatar
-                    height="96"
-                    width="96"
-                    class="mt-6"
-                    v-bind="attrs"
-                    v-on="on"
+                <div class="mb-10">
+                  <v-badge
+                    bottom
+                    offset-x="20"
+                    offset-y="20"
+                    content="+"
                   >
-                    <img :src="imgSrc">
-                  </v-avatar>
-              </v-badge>
+                    <v-avatar
+                      height="96"
+                      width="96"
+                      class="mt-6"
+                      v-bind="attrs"
+                      v-on="on"
+                    >
+                      <img :src="imgSrc">
+                    </v-avatar>
+                </v-badge>
+                  </div>
               </template>
               <v-card>
                 <v-card-title>
@@ -37,7 +40,6 @@
                     ref="dropzoneElement"
                     id="dropzone"
                     :options="dropzoneOptions"
-                    @vdropzone-success="handleUpload"
                     :useCustomSlot="true"
                     class="mx-auto"
                   >
@@ -53,49 +55,32 @@
                     large
                     elevation="0"
                     :ripple="false"
-                    @click="dialog = false"
+                    @click="handleUpload"
                   >
                     Save
                   </v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
-            <v-text-field
-                class="mt-6"
-                id="organizationName"
-                label="Organization Name"
-                name="organizationName"
-                filled
-                outlined
-                placeholder="Enter Organization Name"
-                v-model="title"
-                :error-messages="titleErrors"
-                prepend-inner-icon="$vuetify.icons.organization"
-                @blur="$v.title.$touch()"
-            >
-            </v-text-field>
             <v-btn
               block
               color="primary"
               large
               elevation="0"
               :ripple="false"
-              @click="handleCreateOrganization"
-              :disabled="enableButton"
+              @click="next"
             >
-              Next
+              {{ buttonText }}
             </v-btn>
-            <div class="error" v-if="errors && errors.detail">
-              {{ errors.detail }}
-            </div>
           </v-form>
         </v-col>
 
 </template>
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { CreateOrganizationMutation } from '@/generated/graphql';
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import { OrganizationQuery } from '@/generated/graphql';
 import { required } from 'vuelidate/lib/validators';
+import { Dropzone } from '@/typing/';
 import 'vue2-dropzone/dist/vue2Dropzone.min.css';
 import VueI18n from 'vue-i18n';
 import TranslateResult = VueI18n.TranslateResult;
@@ -112,53 +97,52 @@ const vue2Dropzone = require('vue2-dropzone');
     },
   },
 })
-export default class OrgaTitle extends Vue {
-  title = '';
+export default class OrganizationLogo extends Vue {
+  @Prop() readonly organizationId!: string;
 
   dialog = false;
 
   imgSrc = 'https://cdn.zeplin.io/5f84546964e43c2749571f59/assets/2192D830-FF56-4E41-8DBA-F504CEFA64FC.svg';
 
+  fileSet = false;
+
   dropzoneOptions = {
-    url: 'https://httpbin.org/post',
+    url: 'http://unikube.app',
     thumbnailWidth: 150,
     maxFilesize: 0.5,
-    headers: { 'My-Awesome-Header': 'header value' },
+    autoQueue: false,
   };
 
-  handleUpload(file: {[key: string]: string}):void {
-    this.imgSrc = file.dataURL;
-  }
-
-  get enableButton(): boolean {
-    return this.$v.title.$invalid;
-  }
-
-  get titleErrors(): TranslateResult[] {
-    const errors = [];
-    if (!this.$v.title.required) {
-      errors.push(this.$t('requiredError'));
-    }
-    return this.$v.title.$dirty ? errors : [];
-  }
-
-  handleCreateOrganization(): void {
-    this.$apollo.mutate({
-      mutation: CreateOrganizationMutation,
-      variables: {
-        title: this.title,
+  handleUpload(): void {
+    // TODO this is not really good code.
+    const file = (this.$refs.dropzoneElement as unknown as Dropzone).getAcceptedFiles()[0];
+    this.fileSet = true;
+    const formData = new FormData();
+    formData.append('avatar_image', file);
+    this.axios.post(`/orgas-http/upload-avatar/${this.organizationId}/`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${this.$store.state.auth.rawRpt}`,
       },
-    })
-      .then(
-        (data) => {
-          console.log(data);
-          this.$emit(
-            'success',
-            data.data.upsertOrganization.id,
-            data.data.upsertOrganization.title,
-          );
+    }).then(() => {
+      this.$apollo.query({
+        query: OrganizationQuery,
+        variables: {
+          id: this.organizationId,
         },
-      );
+      }).then((result) => {
+        this.imgSrc = result.data.organization.avatarImage;
+      });
+      this.dialog = false;
+    });
+  }
+
+  next(): void {
+    this.$emit('success');
+  }
+
+  get buttonText(): TranslateResult {
+    return this.fileSet ? this.$t('general.next') : this.$t('general.skip');
   }
 }
 </script>
@@ -174,6 +158,9 @@ export default class OrgaTitle extends Vue {
   border: dashed 1px #e5e5e5;
   width: 400px;
   height: 225px;
+}
+::v-deep .dz-progress {
+  display: none;
 }
 
 </style>

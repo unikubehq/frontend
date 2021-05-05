@@ -43,6 +43,7 @@ mutation CreateOrganizationMutation($title: String!) {
         }
     ) {
         organization {
+            id,
             title,
             description
         }

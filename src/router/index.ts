@@ -7,7 +7,7 @@ Vue.use(VueRouter);
 const routes: Array<RouteConfig> = [
   {
     path: '/create-organization',
-    name: 'Create Organization',
+    name: 'create-organization',
     component: CreateOrganization,
   },
   {

@@ -19,6 +19,7 @@ type UserNode {
   name: String
   familyName: String
   givenName: String
+  avatarImage: String
 }
 type OrganizationNodePage {
   totalCount: Int

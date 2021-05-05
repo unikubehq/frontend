@@ -169,7 +169,7 @@ export default class CreateOrganizationProject extends Vue {
   get titleErrors(): TranslateResult[] {
     const errors = [];
     if (!this.$v.title.required) {
-      errors.push(this.$t('requiredError'));
+      errors.push(this.$t('general.requiredError'));
     }
     return this.$v.title.$dirty ? errors : [];
   }
@@ -177,7 +177,7 @@ export default class CreateOrganizationProject extends Vue {
   get specRepositoryErrors(): TranslateResult[] {
     const errors = [];
     if (!this.$v.specRepository.required) {
-      errors.push(this.$t('requiredError'));
+      errors.push(this.$t('general.requiredError'));
     }
     if (!this.$v.specRepository.url) {
       errors.push('Please enter a valid url.');
@@ -188,7 +188,7 @@ export default class CreateOrganizationProject extends Vue {
   get specRepositoryBranchErrors(): TranslateResult[] {
     const errors = [];
     if (!this.$v.specRepositoryBranch.required) {
-      errors.push(this.$t('requiredError'));
+      errors.push(this.$t('general.requiredError'));
     }
     return this.$v.specRepositoryBranch.$dirty ? errors : [];
   }
@@ -196,7 +196,7 @@ export default class CreateOrganizationProject extends Vue {
   get accessUsernameErrors(): TranslateResult[] {
     const errors = [];
     if (!this.$v.accessUsername.required) {
-      errors.push(this.$t('requiredError'));
+      errors.push(this.$t('general.requiredError'));
     }
     return this.$v.accessUsername.$dirty ? errors : [];
   }
@@ -204,7 +204,7 @@ export default class CreateOrganizationProject extends Vue {
   get accessTokenErrors(): TranslateResult[] {
     const errors = [];
     if (!this.$v.accessToken.required) {
-      errors.push(this.$t('requiredError'));
+      errors.push(this.$t('general.requiredError'));
     }
     return this.$v.accessToken.$dirty ? errors : [];
   }

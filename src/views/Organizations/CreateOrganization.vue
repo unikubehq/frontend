@@ -8,13 +8,15 @@
           <v-img class="d-inline-block" src="@/assets/img/Unikube-Logo-H.svg"
                  max-width="150"/>
         </v-col>
-        <orga-title v-if="step === 0" v-on:success="orgaCreation"></orga-title>
+        <organization-title v-if="step === 0" v-on:success="orgaCreation"></organization-title>
+        <organization-logo v-if="step === 1" v-on:success="logoCreation"
+            :organization-id="organizationId" />
         <create-organization-project
-          v-if="step === 1"
+          v-if="step === 2"
           v-on:success="nextStep"
         ></create-organization-project>
-        <orga-members v-if="step === 2" v-on:success="nextStep()"></orga-members>
-        <orga-done v-if="step === 3" :orgaId="organizationId" :orgaTitle="organizationTitle">
+        <orga-members v-if="step === 3" v-on:success="nextStep()"></orga-members>
+        <orga-done v-if="step === 4" :orgaId="organizationId" :orgaTitle="organizationTitle">
         </orga-done>
       </v-row>
     </v-container>
@@ -23,7 +25,8 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import OrgaTitle from '@/components/Organizations/OrgaTitle.vue';
+import OrganizationTitle from '@/components/Organizations/OrganizationTitle.vue';
+import OrganizationLogo from '@/components/Organizations/OrganizationLogo.vue';
 import CreateOrganizationProject
   from '@/components/Organizations/CreateOrganizationProject.vue';
 import OrgaMembers from '@/components/Organizations/OrgaMembers.vue';
@@ -31,7 +34,8 @@ import OrgaDone from '@/components/Organizations/OrgaDone.vue';
 
 @Component({
   components: {
-    OrgaTitle,
+    OrganizationTitle,
+    OrganizationLogo,
     CreateOrganizationProject,
     OrgaMembers,
     OrgaDone,
@@ -51,7 +55,11 @@ export default class CreateOrganization extends Vue {
   orgaCreation(id: string, title: string): void {
     this.organizationId = id;
     this.organizationTitle = title;
-    this.step += 1;
+    this.step = 1;
+  }
+
+  logoCreation(): void {
+    this.step = 4;
   }
 }
 </script>

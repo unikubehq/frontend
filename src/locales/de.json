@@ -41,6 +41,7 @@
     "projectList": "Projects List"
   },
   "general": {
+    "admin": "Admin",
     "clickHere": "Click Here",
     "close": "Close",
     "email": "'Email Address'",
@@ -48,11 +49,14 @@
     "saving": "Saving",
     "save": "Save",
     "next": "Next",
+    "skip": "Skip",
+    "member": "Member",
     "cancel": "Cancel",
     "edit": "Edit",
     "add": "Add",
     "saveChanges": "Save Changes",
-    "disagree": "Disagree"
+    "disagree": "Disagree",
+    "requiredError": "This field is required."
   },
   "settings": {
     "account": {
