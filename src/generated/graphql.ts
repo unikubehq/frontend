@@ -480,7 +480,7 @@ export type TProjectsQueryVariables = Exact<{
 }>;
 
 
-export type TProjectsQueryResult = { __typename?: 'Query', allProjects?: Maybe<{ __typename?: 'ProjectNodePage', totalCount?: Maybe<number>, results?: Maybe<Array<Maybe<{ __typename?: 'ProjectNode', title: string, description?: Maybe<string>, currentCommit: string, currentCommitDateTime?: Maybe<any>, id: any, members?: Maybe<Array<Maybe<{ __typename?: 'ProjectMember', role?: Maybe<string>, user?: Maybe<{ __typename?: 'UserNode', id: any, givenName?: Maybe<string>, familyName?: Maybe<string> }> }>>>, packages: Array<{ __typename?: 'PackageNode', title: string }>, sops?: Maybe<Array<Maybe<{ __typename?: 'AWSKMSNode', title: string, id: any } | { __typename?: 'PGPKeyNode', title: string, id: any }>>> }>>> }> };
+export type TProjectsQueryResult = { __typename?: 'Query', allProjects?: Maybe<{ __typename?: 'ProjectNodePage', totalCount?: Maybe<number>, results?: Maybe<Array<Maybe<{ __typename?: 'ProjectNode', title: string, description?: Maybe<string>, currentCommit: string, currentCommitDateTime?: Maybe<any>, id: any, members?: Maybe<Array<Maybe<{ __typename?: 'ProjectMember', role?: Maybe<string>, user?: Maybe<{ __typename?: 'UserNode', id: any, givenName?: Maybe<string>, familyName?: Maybe<string>, avatarImage?: Maybe<string>, email?: Maybe<string> }> }>>>, packages: Array<{ __typename?: 'PackageNode', title: string }>, sops?: Maybe<Array<Maybe<{ __typename?: 'AWSKMSNode', title: string, id: any } | { __typename?: 'PGPKeyNode', title: string, id: any }>>> }>>> }> };
 
 export type TProjectDetailQueryVariables = Exact<{
   id?: Maybe<Scalars['UUID']>;
@@ -574,6 +574,13 @@ export type TDeleteProjectMemberMutationVariables = Exact<{
 
 export type TDeleteProjectMemberMutationResult = { __typename?: 'Mutation', deleteProjectMember?: Maybe<{ __typename?: 'DeleteProjectMember', ok?: Maybe<boolean> }> };
 
+export type TUserDetailQueryVariables = Exact<{
+  id?: Maybe<Scalars['UUID']>;
+}>;
+
+
+export type TUserDetailQueryResult = { __typename?: 'Query', user?: Maybe<{ __typename?: 'UserNode', avatarImage?: Maybe<string>, email?: Maybe<string>, familyName?: Maybe<string>, givenName?: Maybe<string> }> };
+
 
 export const OrganizationsQuery = gql`
     query OrganizationsQuery {
@@ -641,6 +648,8 @@ export const ProjectsQuery = gql`
           id
           givenName
           familyName
+          avatarImage
+          email
         }
         role
       }
@@ -821,6 +830,16 @@ export const DeleteProjectMemberMutation = gql`
     mutation DeleteProjectMemberMutation($id: UUID, $user: UUID) {
   deleteProjectMember(user: $user, id: $id) {
     ok
+  }
+}
+    `;
+export const UserDetailQuery = gql`
+    query UserDetailQuery($id: UUID) {
+  user(id: $id) {
+    avatarImage
+    email
+    familyName
+    givenName
   }
 }
     `;

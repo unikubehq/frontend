@@ -11,7 +11,9 @@ query ProjectsQuery($limit: Int, $offset: Int) {
                 user {
                     id,
                     givenName,
-                    familyName
+                    familyName,
+                    avatarImage,
+                    email
                 },
                 role
             }

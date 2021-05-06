@@ -4,20 +4,27 @@
     <p>{{ $t('settings.account.intro') }}</p>
     <v-divider></v-divider>
     <v-col cols="2">
-      <v-badge
+        <v-badge
           bottom
           offset-x="20"
           offset-y="20"
-          content="Edit"
-      >
-        <v-avatar
+          content="Add"
+        >
+          <v-avatar
             height="96"
             width="96"
-        >
-          <img src="@/assets/img/avatar.png">
-        </v-avatar>
-      </v-badge>
-    </v-col>
+              class="pointer"
+          >
+            <label for="user-avatar-file">
+              <input type="file"
+                  style="display: none;"
+                  id="user-avatar-file"
+                  @change="handleUpload">
+              <v-img width="96" contain :src="this.previewUrl || this.$store.state.auth.avatarImage || 'https://cdn.zeplin.io/5f84546964e43c2749571f59/assets/2192D830-FF56-4E41-8DBA-F504CEFA64FC.svg'" ref="preview"></v-img>
+            </label>
+          </v-avatar>
+        </v-badge>
+      </v-col>
     <v-col cols="9" class="d-flex flex-column justify-center">
       <a href="#" class="text--secondary">{{ $t('settings.account.removeAvatar') }}</a>
     </v-col>
@@ -131,10 +138,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
+import { UploadComponent } from '@/components/mixins';
+import { AxiosResponse } from 'axios';
 
 @Component({})
-export default class AccountSettings extends Vue {
+export default class AccountSettings extends UploadComponent {
   dataChanged = false
 
   clearText = false
@@ -146,6 +155,16 @@ export default class AccountSettings extends Vue {
   reEnterNewPassword = ''
 
   dialog = false
+
+  uploadUrl = '/users-http/upload-avatar/';
+
+  getUploadUrl(): string {
+    return `${this.uploadUrl + this.$store.state.auth.uuid}/`;
+  }
+
+  uploadCallback(res: AxiosResponse): void {
+    this.$store.commit('auth/setAvatar', res.data.url);
+  }
 
   get fullName(): string {
     return this.$store.state.auth.username;

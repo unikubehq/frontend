@@ -18,7 +18,11 @@ export default class Auth extends VuexModule {
 
   rawRpt = '';
 
+  uuid = '';
+
   username = '';
+
+  avatarImage = 'https://cdn.zeplin.io/5f84546964e43c2749571f59/assets/2192D830-FF56-4E41-8DBA-F504CEFA64FC.svg';
 
   email = '';
 
@@ -49,6 +53,12 @@ export default class Auth extends VuexModule {
     );
     this.username = this.rpt.name;
     this.email = this.rpt.email;
+    this.uuid = this.rpt.sub;
+  }
+
+  @Mutation
+  setAvatar(avatarUrl: string): void {
+    this.avatarImage = avatarUrl;
   }
 
   @Action

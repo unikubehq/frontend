@@ -17,6 +17,7 @@ import Vue from 'vue';
 import { getModule } from 'vuex-module-decorators';
 import UI from '@/store/modules/ui';
 import { Component, Watch } from 'vue-property-decorator';
+import { UserDetailQuery } from '@/generated/graphql';
 
 @Component({})
 export default class App extends Vue {
@@ -32,6 +33,17 @@ export default class App extends Vue {
   @Watch('rawRpt', { immediate: true })
   rawRptChanged(): void {
     this.$ability.update(this.$store.getters['auth/caslRules']);
+  }
+
+  created(): void {
+    this.$apollo.query({
+      query: UserDetailQuery,
+      variables: {
+        id: this.$store.state.auth.uuid,
+      },
+    }).then((res) => {
+      this.$store.commit('auth/setAvatar', res.data.user.avatarImage);
+    });
   }
 }
 </script>

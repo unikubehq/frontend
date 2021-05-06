@@ -61,11 +61,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
 import { OrganizationQuery } from '@/generated/graphql';
+import { UploadComponent } from '@/components/mixins';
 
 @Component({})
-export default class OrganizationSettings extends Vue {
+export default class OrganizationSettings extends UploadComponent {
   $refs!: {
     preview: HTMLImageElement
   }
@@ -76,37 +77,25 @@ export default class OrganizationSettings extends Vue {
 
   dialog = false
 
+  uploadUrl = '/orgas-http/upload-avatar/';
+
   get organizationName(): string {
     return this.$store.state.context.organization.title;
   }
 
-  handleUpload(e: {target: HTMLInputElement}): void {
-    if (e && e.target && e.target.files) {
-      const file = e.target.files[0];
-      this.previewUrl = URL.createObjectURL(file);
-      const formData = new FormData();
-      formData.append('avatar_image', file);
-      this.axios.post(`/orgas-http/upload-avatar/${this.$store.state.context.organization.id}/`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${this.$store.state.auth.rawRpt}`,
-        },
-      }).then((res) => {
-        // Update organization from graphql
-        this.$apollo.query({
-          query: OrganizationQuery,
-          variables: {
-            id: this.$store.state.context.organization.id,
-          },
-        }).then((result) => {
-          console.log(result);
-          this.$store.commit('context/setOrganization', result.data.organization);
-        });
-        // res.data.url
-      }).catch((err) => {
-        // Handle error
-      });
-    }
+  getUploadUrl(): string {
+    return `${this.uploadUrl + this.$store.state.context.organization.id}/`;
+  }
+
+  uploadCallback(): void {
+    this.$apollo.query({
+      query: OrganizationQuery,
+      variables: {
+        id: this.$store.state.context.organization.id,
+      },
+    }).then((result) => {
+      this.$store.commit('context/setOrganization', result.data.organization);
+    });
   }
 
   setDataChanged(): void {

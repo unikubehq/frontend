@@ -1,0 +1,10 @@
+
+query UserDetailQuery($id: UUID) {
+    user(id: $id) {
+        avatarImage,
+        email,
+        familyName,
+        givenName
+    }
+}
+
