@@ -161,9 +161,7 @@
                         <tbody>
                         <tr v-for="member in project.members" :key="member.id" class=" mb-3">
                           <td class="d-flex pa-2 pb-12">
-                            <v-avatar class="mr-3" size="40">
-                              <img src="https://randomuser.me/api/portraits/women/81.jpg">
-                            </v-avatar>
+                            <unikube-avatar :avatar="memberToAvatar(member)" />
                             <div class="d-flex flex-column">
                               <h3 class="mb-0">
                                 {{ member.user.givenName }} {{ member.user.familyName }}
@@ -231,12 +229,15 @@ import ProjectBar from '@/components/Projects/ProjectBar.vue';
 import ProjectForm from '@/views/Projects/ProjectForm.vue';
 import AddTeamMember from '@/views/Projects/AddTeamMember.vue';
 import EditPackage from '@/components/Projects/EditPackage.vue';
+import UnikubeAvatar from '@/components/general/Avatar.vue';
 import {
   ProjectDetailQuery,
   ProjectDetailOtherProjectsQuery,
   TPackageNode,
-  TProjectNode,
+  TProjectNode, TProjectMember,
 } from '@/generated/graphql';
+import Converter from '@/utils/converter';
+import { Avatar } from '@/typing';
 
 @Component({
   components: {
@@ -244,6 +245,7 @@ import {
     ProjectForm,
     AddTeamMember,
     EditPackage,
+    UnikubeAvatar,
   },
   apollo: {
     project: {
@@ -280,6 +282,8 @@ export default class ProjectDetail extends Vue {
   memberDrawer = false;
 
   project!: TProjectNode
+
+  memberToAvatar = Converter.memberToAvatar;
 
   verboseDate(date: Date): string {
     if (date) {

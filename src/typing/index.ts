@@ -12,6 +12,7 @@ export type Dropzone = {
 }
 
 export type Avatar = {
+  key: string // for loops
   image: string
   role: string,
   initials: string

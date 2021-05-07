@@ -58,7 +58,7 @@ export default class UnikubeAvatar extends Vue {
     return { color: this.avatarColor('50%'), backgroundColor: `${this.avatarColor('95%')} !important` };
   }
 
-  avatarColor(lum: number): string {
+  avatarColor(lum: string): string {
     const randomHSL = (name: string): string => {
       const number = name.length;
       const firstLetter = name[0].charCodeAt(0);

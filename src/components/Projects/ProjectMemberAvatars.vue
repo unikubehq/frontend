@@ -19,6 +19,7 @@ import Component from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';
 import UnikubeAvatar from '@/components/general/Avatar.vue';
 import { Maybe, TProjectMember } from '@/generated/graphql';
+import Converter from '@/utils/converter';
 
 @Component({
   components: {
@@ -33,15 +34,9 @@ export default class ProjectMemberAvatars extends Vue {
   get avatars(): Array<{ image: string | null, key: string, initials: string | null }> {
     const result: Array<{ image: string | null, key: string, initials: string | null }> = [];
     this.members?.forEach((member: Maybe<TProjectMember>) => {
-      const res = {
-        key: member?.user?.id || '',
-        image: member?.user?.avatarImage || null,
-        initials: `${member?.user?.givenName?.[0]}${member?.user?.familyName?.[0]}`,
-        name: `${member?.user?.givenName} ${member?.user?.familyName}` || null,
-        email: `${member?.user?.email}` || null,
-        role: `${member?.role}` || null,
-      };
-      result.push(res);
+      if (member) {
+        result.push(Converter.memberToAvatar(member));
+      }
     });
     return result;
   }
