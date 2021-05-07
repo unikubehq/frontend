@@ -27,24 +27,13 @@
           <v-col></v-col>
         </v-row>
       </div>
-    <v-pagination
-      :length="listLength"
-      v-model="currentPage"
-      v-on:input="changeOffset($event)"
-    >
-    </v-pagination>
-    <v-snackbar
-      v-model="snackbar"
-      color="primary"
-      top
-      right
-    >{{ $t('projects.deleteSuccess') }}<template v-slot:action="{ attrs }">
-        <v-btn
-          color="white"
-          text
-          v-bind="attrs"
-          @click="snackbar = false"
-        >{{ $t('general.close') }}</v-btn>
+    <v-pagination :length="listLength" v-model="currentPage" v-on:input="changeOffset($event)" />
+    <v-snackbar v-model="snackbar" color="primary" top right>
+      {{ $t('projects.deleteSuccess') }}
+      <template v-slot:action="{ attrs }">
+        <v-btn color="white" text v-bind="attrs" @click="snackbar = false">
+          {{ $t('general.close') }}
+        </v-btn>
       </template>
     </v-snackbar>
   </div>
@@ -138,7 +127,6 @@ export default class Overview extends mixins(paginationMixin) {
 
   // eslint-disable-next-line
   beforeRouteEnter(to: Route, from: Route, next: (a: any) => void): void {
-    console.log(this);
     next((vm: this) => {
       vm.$apollo.queries.allProjects.refetch();
     });

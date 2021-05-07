@@ -104,8 +104,14 @@
     border: 3px solid #fff !important;
   }
 }
+.v-avatar img {
+  object-fit: cover;
+}
 .avatar-list-item {
   margin-left: -12px;
+}
+.v-list-item__avatar {
+  width: auto !important;
 }
 .v-avatar .initials-avatar{
   border: 3px solid white !important;

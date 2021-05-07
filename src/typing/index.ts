@@ -11,6 +11,14 @@ export type Dropzone = {
   getAcceptedFiles(): File[]
 }
 
+export type Avatar = {
+  image: string
+  role: string,
+  initials: string
+  email: string
+  name: string
+}
+
 export type Action = 'edit' | 'view' | 'projects:add' | 'projects:view';
 export type Subject = InferSubjects<TProjectNode>;
 export type UnikubeAbility = Ability<[Action, Subject]>;
