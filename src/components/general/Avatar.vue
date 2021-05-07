@@ -1,5 +1,5 @@
 <template>
-  <v-menu open-on-hover top offset-y>
+  <v-menu open-on-hover top offset-y :close-on-content-click="false">
     <template v-slot:activator="{ on }">
       <v-avatar v-on="on" size="46"
           class="initials-avatar avatar-list-item avatar__unikube" color="primary">
