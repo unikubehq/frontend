@@ -93,16 +93,12 @@
   margin-right: 2px;
   margin-top: -5px;
 }
-.avatar__unikube {
+.v-application .v-avatar.avatar__unikube {
   color: $green-dark-0;
   font-size: 16px;
   font-weight: 700;
-}
-.v-application {
-  .v-avatar.primary {
-    background-color: $green-light-6 !important;
-    border: 3px solid #fff !important;
-  }
+  background-color: $green-light-6;
+  border: 3px solid #fff !important;
 }
 .v-avatar img {
   object-fit: cover;
@@ -110,8 +106,9 @@
 .avatar-list-item {
   margin-left: -12px;
 }
-.v-list-item__avatar {
+.v-sheet .v-list-item__avatar {
   width: auto !important;
+  height: auto !important;
 }
 .v-avatar .initials-avatar{
   border: 3px solid white !important;

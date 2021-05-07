@@ -2,7 +2,8 @@
   <v-menu open-on-hover top offset-y :close-on-content-click="false">
     <template v-slot:activator="{ on }">
       <v-avatar v-on="on" size="46"
-          class="initials-avatar avatar-list-item avatar__unikube" color="primary">
+          class="initials-avatar avatar-list-item avatar__unikube" color="primary"
+          :style="avatarStyles">
             <img v-if="avatar.image" :src="avatar.image">
             <span v-else class="avatar-initials">{{ avatar.initials }}</span>
       </v-avatar>
@@ -14,8 +15,7 @@
           <v-avatar
             size="46"
             class="avatar__unikube"
-            color="primary"
-          >
+            :style="avatarStyles">
             <img v-if="avatar.image" :src="avatar.image">
             <span v-else>{{ avatar.initials }}</span>
           </v-avatar>
@@ -53,6 +53,23 @@ import { Avatar } from '@/typing';
 @Component
 export default class UnikubeAvatar extends Vue {
   @Prop() readonly avatar!: Avatar;
+
+  get avatarStyles(): {color: string, backgroundColor: string} {
+    return { color: this.avatarColor('50%'), backgroundColor: `${this.avatarColor('95%')} !important` };
+  }
+
+  avatarColor(lum: number): string {
+    const randomHSL = (name: string): string => {
+      const number = name.length;
+      const firstLetter = name[0].charCodeAt(0);
+      const lastLetter = name[name.length - 1].charCodeAt(0);
+
+      const avatarNumber = (number + firstLetter + lastLetter) / 10;
+
+      return `hsla(${Math.floor(360 * avatarNumber)},70%,${lum},1)`;
+    };
+    return randomHSL(this.avatar.name);
+  }
 }
 </script>
 
