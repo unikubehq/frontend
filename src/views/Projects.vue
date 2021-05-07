@@ -12,9 +12,9 @@
         </div>
       </div>
       <div v-else>
-        <v-row :justify="'center'" :align="'center'" class="pt-16">
+        <v-row justify="center" align="center" class="pt-16">
           <v-col></v-col>
-          <v-col :justify="'center'" :align-self="'center'" class="text-center">
+          <v-col justify="center" align-self="center" class="text-center">
             <v-icon size="120">
               $vuetify.icons.noProjectsFound
             </v-icon>
