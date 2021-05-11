@@ -141,6 +141,17 @@
   }
 }
 
+.v-select.v-select__small.v-text-field--outlined:not(.v-text-field--single-line) .v-select__selections {
+  padding: 0;
+}
+.v-select__small.v-text-field--outlined > .v-input__control > .v-input__slot {
+  min-height: 40px;
+}
+.v-select__small.v-text-field--enclosed .v-input__append-inner {
+  margin-top: 9px;
+}
+
+
 .project-detail__tabs {
   .v-tabs-bar:after {
     display: block;

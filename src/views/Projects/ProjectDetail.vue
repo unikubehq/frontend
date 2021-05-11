@@ -94,7 +94,7 @@
               </v-tab>
             </v-tabs>
             <div class="py-8">
-              <router-view :project="project"></router-view>
+              <router-view :project="project" @update="updateProject"></router-view>
             </div>
           </v-container>
           <v-container v-else>
@@ -207,6 +207,10 @@ export default class ProjectDetail extends Vue {
   }
 
   handleSopsCreated(): void {
+    this.updateProject();
+  }
+
+  updateProject(): void {
     this.$apollo.queries.project.refetch();
   }
 }
