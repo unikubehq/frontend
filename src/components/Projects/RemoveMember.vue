@@ -51,7 +51,7 @@ export default class RemoveMember extends Vue {
 
   @Prop() readonly member!: TProjectMember
 
-  @Prop({ default: false }) readonly show: boolean
+  @Prop({ default: false }) readonly show!: boolean
 
   removeProjectMember(): void {
     if (this.member?.user) {
