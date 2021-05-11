@@ -79,115 +79,23 @@
               </v-col>
             </v-row>
             <v-divider></v-divider>
-            <v-tabs v-model="innerTab" slider-size="3" class="project-detail__tabs">
-              <v-tab :ripple="false">
+            <v-tabs v-model="innerTab" height="67px" class="project-detail__tabs" slider-size="3">
+              <v-tab :ripple="false" :to="{name: 'project.detail.packages'}">
                 {{ $tc('package.Package', 2) }}
-                <span class="tab-count-badge"> {{ project.packages.length }}</span>
+                <span class="tab-count-badge">
+                  {{ project.packages.length.toString().padStart(2, '0') }}
+                </span>
               </v-tab>
-              <v-tab v-if="project.members" :ripple="false">
+              <v-tab v-if="project.members" :ripple="false" :to="{name: 'project.detail.members'}">
                 {{ $t('projects.members') }}
-                <span class="tab-count-badge"> {{ project.members.length }}</span>
+                <span class="tab-count-badge">
+                  {{ project.members.length.toString().padStart(2, '0') }}
+                </span>
               </v-tab>
-              <v-tabs-items v-model="innerTab">
-                <v-tab-item>
-                  <div class="py-2">
-                    <v-row v-if="!packageEdit">
-                      <v-col cols="6" v-for="pkg in project.packages" :key="pkg.id">
-                        <v-card outlined>
-                          <v-card-title>
-                            <v-row>
-                              <v-col cols="9">
-                                {{ pkg.title }}
-                              </v-col>
-                              <v-col cols="3" class="text-right">
-                                <v-btn
-                                  outlined
-                                  plain
-                                  color="#a1a9b2"
-                                  width="50"
-                                  @click="setPackageEdit(pkg)"
-                                >
-                                  <v-icon size="24">
-                                    $vuetify.icons.edit
-                                  </v-icon>
-                                </v-btn>
-                              </v-col>
-                              <v-divider></v-divider>
-                            </v-row>
-                          </v-card-title>
-                          <v-card-text>
-                            <v-divider class="mb-2"></v-divider>
-                            <v-col cols="12">
-                              <v-icon>$vuetify.icons.deployments</v-icon>
-                              {{ $tc('deployment.Deployment', pkg.deployments.length) }}
-                            </v-col>
-                            <v-col cols="12" class="d-flex flex-wrap">
-                              <span
-                                v-for="deployment in pkg.deployments"
-                                :key="deployment.id"
-                                class="deployment-badge mr-3 px-4 py-2"
-                              >
-                                {{ deployment.title }}
-                              </span>
-                            </v-col>
-                          </v-card-text>
-                        </v-card>
-                      </v-col>
-                    </v-row>
-                    <v-row v-else>
-                      <edit-package
-                        v-for="clusterLevel in packageToBeEdited.clusterLevel"
-                        v-bind:key="clusterLevel.id"
-                        :package="packageToBeEdited"
-                        :cluster-level="clusterLevel"
-                        :sopsProviders="project.sops"
-                        @change="packageEdit = false"
-                      ></edit-package>
-                    </v-row>
-                  </div>
-                </v-tab-item>
-                <v-tab-item>
-                  <v-container>
-                    <v-simple-table>
-                      <template v-slot:default>
-                        <thead class="member-thead">
-                        <tr>
-                          <th class="text-left">{{ $t('user.name') }}</th>
-                          <th class="text-left">{{ $t('user.role') }}</th>
-                          <th class="text-left">{{ $t('user.lastOnline') }}</th>
-                          <th class="text-left">{{ $t('user.actions') }}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr v-for="member in project.members" :key="member.id" class=" mb-3">
-                          <td class="d-flex pa-2 pb-12">
-                            <unikube-avatar :avatar="memberToAvatar(member)" />
-                            <div class="d-flex flex-column">
-                              <h3 class="mb-0">
-                                {{ member.user.givenName }} {{ member.user.familyName }}
-                              </h3>
-                              <p class="mb-0">{{ member.user.email }}</p>
-                            </div>
-                          </td>
-                          <td class="pa-2">{{ member.role }}</td>
-                          <td class="pa-2">{{ member.user.lastLogin }}</td>
-                          <td class="pa-2">
-                            <v-icon size="24">$vuetify.icons.edit</v-icon>
-                            <v-icon size="24">$vuetify.icons.delete</v-icon>
-                          </td>
-                        </tr>
-                        <v-btn :ripple="false" plain elevation="0" @click="memberDrawer = true"
-                               color="rgb(252,252,253)" class="mt-2">
-                          <v-icon size="24" class="mr-2">
-                            $vuetify.icons.addRound
-                          </v-icon>{{ $t('user.addAnother') }}</v-btn>
-                        </tbody>
-                      </template>
-                    </v-simple-table>
-                  </v-container>
-                </v-tab-item>
-              </v-tabs-items>
             </v-tabs>
+            <div class="py-8">
+              <router-view :project="project"></router-view>
+            </div>
           </v-container>
           <v-container v-else>
             <div class="px-3">
@@ -234,10 +142,9 @@ import {
   ProjectDetailQuery,
   ProjectDetailOtherProjectsQuery,
   TPackageNode,
-  TProjectNode, TProjectMember,
+  TProjectNode,
 } from '@/generated/graphql';
 import Converter from '@/utils/converter';
-import { Avatar } from '@/typing';
 
 @Component({
   components: {
@@ -283,8 +190,6 @@ export default class ProjectDetail extends Vue {
 
   project!: TProjectNode
 
-  memberToAvatar = Converter.memberToAvatar;
-
   verboseDate(date: Date): string {
     if (date) {
       return this.$d(new Date(date), 'short');
@@ -326,6 +231,12 @@ export default class ProjectDetail extends Vue {
   }
 }
 
+.project-detail__tabs {
+  .v-tab {
+    padding: 0 36px;
+  }
+}
+
 .deployment-badge {
   font-weight: 500;
   background-color: #f3f4f9;
@@ -342,18 +253,6 @@ export default class ProjectDetail extends Vue {
   font-size: 12px;
   margin-left: 8px;
   border-radius: 4px;
-}
-
-.member-thead {
-  background-color: #9eaed7;
-}
-
-th:first-child {
-  border-top-left-radius: 6px;
-}
-
-th:last-child {
-  border-top-right-radius: 6px;
 }
 
 .theme--light.v-data-table > .v-data-table__wrapper > table > thead > tr > th {

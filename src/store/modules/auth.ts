@@ -26,6 +26,7 @@ export default class Auth extends VuexModule {
 
   email = '';
 
+  // eslint-disable-next-line
   get caslRules(): SubjectRawRule<any, any, any>[] {
     const { can, rules } = new AbilityBuilder<UnikubeAbility>(Ability);
     this.rpt.authorization.permissions.forEach((permission: IPermission) => {
