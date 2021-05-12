@@ -31,9 +31,9 @@ $material-light: (
   'text-fields': (
         'filled': #fff,
         'filled-hover': #fff,
-        'outlined': #C4CCD4,
+        'outlined': $grey-2,
         'outlined-hover': #A1A9B2,
-        'outlined-disabled': #C4CCD4,
+        'outlined-disabled': $grey-2,
   ),
   'text': (
     'primary': $unikube-blue,

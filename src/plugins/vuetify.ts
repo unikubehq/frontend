@@ -9,6 +9,7 @@ import Description from '@/components/icons/Description.vue';
 import AccessUser from '@/components/icons/AccessUser.vue';
 import AccessToken from '@/components/icons/AccessToken.vue';
 import Branch from '@/components/icons/Branch.vue';
+import Cross from '@/components/icons/Cross.vue';
 import DropdownSmallGrey from '@/components/icons/DropdownSmallGrey.vue';
 import HidePassword from '@/components/icons/HidePassword.vue';
 import ShowPassword from '@/components/icons/ShowPassword.vue';
@@ -62,6 +63,7 @@ export default new Vuetify({
         primary: '#45D093',
         anchor: '#45D093',
         error: '#ff7364',
+        neutral: '#C4CCD4',
       },
     },
   },
@@ -100,6 +102,9 @@ export default new Vuetify({
       },
       burger: {
         component: Burger,
+      },
+      cross: {
+        component: Cross,
       },
       dropdown: {
         component: DropdownSmallGrey,

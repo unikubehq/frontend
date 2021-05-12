@@ -55,9 +55,9 @@
           <td>
             <v-btn plain color="transparent" class="pa-0" elevation="0"
                 @click="removePendingMember(idx)" :ripple="false">
-              <v-icon>x</v-icon>
+              <v-icon size="24">$vuetify.icons.cross</v-icon>
             </v-btn>
-            <v-btn color="grey" @click="addMember(idx)" :ripple="false"
+            <v-btn color="neutral" dark @click="addMember(idx)" :ripple="false" elevation="0"
                 :loading="pendingMember.loading">
               Save
             </v-btn>
