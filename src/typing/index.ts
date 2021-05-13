@@ -1,4 +1,4 @@
-import { TProjectNode } from '@/generated/graphql';
+import { TProjectMember, TProjectNode } from '@/generated/graphql';
 import { Ability, InferSubjects } from '@casl/ability';
 
 export interface IPermission {
@@ -14,10 +14,15 @@ export type Dropzone = {
 export type Avatar = {
   key: string // for loops
   image: string
-  role: string,
+  role: string
   initials: string
   email: string
   name: string
+}
+
+export interface TProjectMemberEdit extends TProjectMember {
+  editing?: boolean
+  loading?: boolean
 }
 
 export type Action = 'edit' | 'view' | 'projects:add' | 'projects:view';

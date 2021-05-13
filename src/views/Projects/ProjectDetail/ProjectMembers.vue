@@ -11,7 +11,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="member in project.members" :key="member.id" class="mb-3">
+        <tr v-for="member in membersEdit" :key="member.id" class="mb-3">
           <td>
             <div class="d-flex">
               <unikube-avatar :avatar="memberToAvatar(member)"/>
@@ -23,12 +23,31 @@
               </div>
             </div>
           </td>
-          <td class="text-capitalize">{{ member.role }}</td>
-          <td>{{ member.user.lastLogin }}</td>
-          <td>
-            <v-icon size="24">$vuetify.icons.edit</v-icon>
+          <td class="text-capitalize" v-if="!member.editing">{{ member.role }}</td>
+          <td colspan="2" v-else>
+            <v-select
+              v-model="member.role"
+              :items="projectMemberRoles"
+              outlined
+              :placeholder="$t('projects.selectRole')"
+                style="width: 200px;"
+              class="v-select__small"
+            ></v-select>
+          </td>
+          <td v-if="!member.editing">{{ member.user.lastLogin }}</td>
+          <td v-if="!member.editing">
+            <v-icon size="24" @click="member.editing = true;">$vuetify.icons.edit</v-icon>
             <v-divider style="height: 24px; min-height: auto;" class="mx-4 mb-n1" vertical />
             <v-icon size="24" @click="removeMember(member)">$vuetify.icons.delete</v-icon>
+          </td>
+          <td v-else>
+            <v-icon size="24" @click="member.editing = false;" class="mr-5">
+              $vuetify.icons.cross
+            </v-icon>
+            <v-btn color="neutral" dark @click="updateMember(member)" :ripple="false" elevation="0"
+                :loading="member.loading">
+              Save
+            </v-btn>
           </td>
         </tr>
         <tr v-for="(pendingMember, idx) in pendingMembers" :key="idx">
@@ -85,13 +104,19 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import {
+  Component,
+  Prop,
+  Vue,
+  Watch,
+} from 'vue-property-decorator';
 import {
   CreateProjectMemberMutation,
   Maybe, OrganizationMembersQuery,
   TOrganizationMember, TProjectMember, TProjectMemberRoleEnum,
   TProjectNode,
 } from '@/generated/graphql';
+import { TProjectMemberEdit } from '@/typing';
 import UnikubeAvatar from '@/components/general/Avatar.vue';
 import RemoveMember from '@/components/Projects/RemoveMember.vue';
 import Converter from '@/utils/converter';
@@ -122,9 +147,26 @@ export default class ProjectPackages extends Vue {
 
   memberToDelete : TProjectMember | null = null
 
+  membersEdit: Maybe<TProjectMemberEdit[]> = []
+
   showDeleteDialog = false
 
   pendingMembers: Array<{user: string, role: string, loading: boolean}> = []
+
+  translateMembers(): void {
+    if (this.project?.members?.length) {
+      this.membersEdit = this.project?.members?.map(
+        (member: TProjectMember | null): TProjectMemberEdit => {
+          const editMember: TProjectMemberEdit = { ...member } as TProjectMemberEdit;
+          editMember.editing = false;
+          editMember.loading = false;
+          return editMember;
+        },
+      );
+    } else {
+      this.membersEdit = [];
+    }
+  }
 
   get memberChoices(): Array<{value: string, text: string}> {
     const result : Array<{value: string, text: string}> = [];
@@ -152,6 +194,29 @@ export default class ProjectPackages extends Vue {
       { value: TProjectMemberRoleEnum.Admin, text: this.$t('general.admin') },
       { value: TProjectMemberRoleEnum.Member, text: this.$t('general.member') },
     ];
+  }
+
+  updateMember(editMember: TProjectMemberEdit): void {
+    if (this.project?.members?.length) {
+      const member = this.project?.members?.find((projectMember: TProjectMember | null) => {
+        if (projectMember) {
+          return projectMember.user?.id === editMember.user?.id;
+        }
+        return false;
+      });
+      if (member) {
+        this.$apollo.mutate({
+          mutation: CreateProjectMemberMutation,
+          variables: {
+            user: member.user?.id,
+            role: editMember.role,
+            id: this.project.id,
+          },
+        }).then(() => {
+          this.$emit('update');
+        });
+      }
+    }
   }
 
   addMember(idx: number): void {
@@ -182,6 +247,15 @@ export default class ProjectPackages extends Vue {
       this.pendingMembers,
       idx,
     );
+  }
+
+  created(): void {
+    this.translateMembers();
+  }
+
+  @Watch('project')
+  projectChanged(): void {
+    this.translateMembers();
   }
 }
 </script>

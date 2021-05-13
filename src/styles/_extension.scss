@@ -140,7 +140,15 @@
     align-self: center;
   }
 }
-
+.v-select__small .v-input__slot {
+  margin-bottom: 0;
+}
+.v-input.v-text-field.v-text-field--enclosed.v-select__small {
+  padding-top: 0;
+}
+.v-text-field.v-text-field--enclosed.v-select__small .v-text-field__details {
+  display: none;
+}
 .v-select.v-select__small.v-text-field--outlined:not(.v-text-field--single-line) .v-select__selections {
   padding: 0;
 }
@@ -164,4 +172,7 @@
 }
 .v-slide-group__wrapper {
   z-index: 1;
+}
+.v-icon.v-icon::after {
+  display: none !important;
 }
