@@ -5,9 +5,11 @@
       width="550"
     >
       <v-card v-if="show" class="py-8 px-7">
-        <v-card-title class="headline">{{ $t('projects.deleteModal.title') }}</v-card-title>
+        <v-card-title class="headline">
+          {{ $t('projects.deleteModal.title', { title: project.title }) }}
+        </v-card-title>
         <v-card-text>
-          <div>{{ $t('projects.deleteModal.intro') }}<br><br>
+          <div>{{ $t('projects.deleteModal.intro', { title: project.title }) }}<br><br>
           </div>
           <v-alert
             dense

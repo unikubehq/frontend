@@ -32,8 +32,8 @@
     "specificationType": "Specification Type",
     "enterSpecificationType": "Enter Specification Type",
     "deleteModal": {
-      "title": "Delete Project {{ project.title }}",
-      "intro": "Are you sure you want to delete the project - {{ project.title }}?",
+      "title": "Delete Project {title}",
+      "intro": "Are you sure you want to delete the project - {title}?",
       "warning": "Warning: Deleting a project cannot be undone.\n            Please enter the project's name in the field below.",
       "agree": "Yes, delete project"
     },
