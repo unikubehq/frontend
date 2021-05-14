@@ -17,9 +17,14 @@ export class paginationMixin extends Vue {
     this.offset = page > 1 ? (page - 1) * this.limit : 0;
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  get totalObjectCount(): number {
+    return 1000;
+  }
+
   get listLength(): number {
-    return this.$data.allProjects?.totalCount
-      ? Math.ceil(this.$data.allProjects?.totalCount / this.limit)
+    return this.totalObjectCount
+      ? Math.ceil(this.totalObjectCount / this.limit)
       : 1;
   }
 }

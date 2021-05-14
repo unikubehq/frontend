@@ -7,6 +7,9 @@ query ProjectsQuery($limit: Int, $offset: Int) {
             currentCommit,
             currentCommitDateTime,
             id,
+            organization {
+                id
+            },
             members {
                 user {
                     id,

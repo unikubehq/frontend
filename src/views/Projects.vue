@@ -27,7 +27,8 @@
           <v-col></v-col>
         </v-row>
       </div>
-    <v-pagination :length="listLength" v-model="currentPage" v-on:input="changeOffset($event)" />
+    <v-pagination v-if="listLength > 1"
+        :length="listLength" v-model="currentPage" v-on:input="changeOffset($event)" />
     <v-snackbar v-model="snackbar" color="primary" top right>
       {{ $t('projects.deleteSuccess') }}
       <template v-slot:action="{ attrs }">
@@ -81,8 +82,8 @@ Component.registerHooks([
       query: ProjectsQuery,
       variables() {
         return {
-          // limit: this.limit,
-          // offset: this.offset,
+          limit: this.limit,
+          offset: this.offset,
         };
       },
     },
@@ -94,6 +95,16 @@ export default class Overview extends mixins(paginationMixin) {
   sorting = 'az';
 
   search = '';
+
+  limit = 10;
+
+  get organizationId(): string {
+    return this.$store.state.context.organization.id;
+  }
+
+  get totalObjectCount(): number {
+    return this.$data.allProjects ? this.$data.allProjects.totalCount : 1000;
+  }
 
   get projectResults(): Array<TProjectNode> {
     let result = this.$data.allProjects?.results;
@@ -111,7 +122,9 @@ export default class Overview extends mixins(paginationMixin) {
         );
       }
 
-      return result;
+      return result.filter(
+        (project: TProjectNode) => project?.organization?.id === this.organizationId,
+      );
     }
     return [{} as TProjectNode];
   }

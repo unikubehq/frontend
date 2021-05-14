@@ -78,6 +78,7 @@
                 link
                 :ripple="false"
                 two-line
+                @click="setOrganizationContext(organization)"
             >
               <v-list-item-avatar class="organization-dropdown--icon">
                 <v-img :src="organization.avatarImage" max-width="35" contain/>
@@ -132,7 +133,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { OrganizationsQuery } from '@/generated/graphql';
+import { OrganizationsQuery, TOrganizationNode } from '@/generated/graphql';
 import Strings from '@/utils/strings';
 
 Component.registerHooks([
@@ -165,11 +166,18 @@ export default class Layout extends Vue {
 
   mini = false;
 
+  idToVerboseId = Strings.idToVerboseId
+
   toggleMini(): void {
     this.mini = !this.mini;
   }
 
-  idToVerboseId = Strings.idToVerboseId
+  setOrganizationContext(organization: TOrganizationNode): void {
+    this.$store.commit('context/setOrganization', organization);
+    if (this.$route.name !== 'overview') {
+      this.$router.push({ name: 'overview' });
+    }
+  }
 
   get currentOrganizationName(): string {
     return this.$store.state.context.organization.title;
