@@ -20,7 +20,7 @@
             </v-icon>
             <h3>{{ $t('projects.notFound') }}</h3>
             <p>
-              <router-link to="/">{{ $t('general.clickHere') }}</router-link>
+              <router-link to="/create-project">{{ $t('general.clickHere') }}</router-link>
               {{ $t('projects.createFirst') }}
             </p>
           </v-col>
