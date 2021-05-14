@@ -3,5 +3,11 @@
   "ignoreTestFiles": [
   "**/__snapshots__/*",
   "**/__image_snapshots__/*"
-  ]
+  ],
+  "chromeWebSecurity": false,
+  "env": {
+    "auth_base_url": "http://keycloak.127.0.0.1.nip.io:8085/auth",
+    "auth_realm": "unikube",
+    "auth_client_id": "frontend"
+  }
 }
