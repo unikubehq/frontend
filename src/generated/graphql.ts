@@ -9,238 +9,26 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  UUID: any;
   DateTime: any;
   JSONString: any;
-  _FieldSet: any;
+  UUID: any;
 };
 
 
 
 
 
-export type TQuery = {
-  __typename?: 'Query';
-  user?: Maybe<TUserNode>;
-  allOrganizations?: Maybe<TOrganizationNodePage>;
-  organization?: Maybe<TOrganizationNode>;
-  userInvitations?: Maybe<TOrganizationInvitationNodePage>;
-  allOrganizationInvitations?: Maybe<TOrganizationInvitationNodePage>;
-  allProjects?: Maybe<TProjectNodePage>;
-  project?: Maybe<TProjectNode>;
-  allPackages?: Maybe<TPackageNodePage>;
-  package?: Maybe<TPackageNode>;
-  clusterlevel?: Maybe<TClusterLevelNode>;
-};
 
 
-export type TQueryUserArgs = {
-  id?: Maybe<Scalars['UUID']>;
-};
 
-
-export type TQueryAllOrganizationsArgs = {
-  offset?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-};
-
-
-export type TQueryOrganizationArgs = {
-  id: Scalars['UUID'];
-};
-
-
-export type TQueryUserInvitationsArgs = {
-  offset?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-};
-
-
-export type TQueryAllOrganizationInvitationsArgs = {
-  id: Scalars['UUID'];
-  offset?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-};
-
-
-export type TQueryAllProjectsArgs = {
-  offset?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-};
-
-
-export type TQueryProjectArgs = {
-  id?: Maybe<Scalars['UUID']>;
-  slug?: Maybe<Scalars['String']>;
-};
-
-
-export type TQueryAllPackagesArgs = {
-  organizationId?: Maybe<Scalars['UUID']>;
-  projectId?: Maybe<Scalars['UUID']>;
-  offset?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-};
-
-
-export type TQueryPackageArgs = {
-  id?: Maybe<Scalars['UUID']>;
-  slug?: Maybe<Scalars['String']>;
-};
-
-
-export type TQueryClusterlevelArgs = {
-  id?: Maybe<Scalars['UUID']>;
-};
-
-
-export type TUserNode = {
-  kind: 'UserNode';
-  __typename?: 'UserNode';
-  id: Scalars['UUID'];
-  email?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  familyName?: Maybe<Scalars['String']>;
-  givenName?: Maybe<Scalars['String']>;
-  avatarImage?: Maybe<Scalars['String']>;
-};
-
-export type TOrganizationNodePage = {
-  __typename?: 'OrganizationNodePage';
-  totalCount?: Maybe<Scalars['Int']>;
-  resultCount?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-  results?: Maybe<Array<Maybe<TOrganizationNode>>>;
-};
-
-export type TOrganizationNode = {
-  kind: 'OrganizationNode';
-  __typename?: 'OrganizationNode';
-  created: Scalars['DateTime'];
+export type TAwskmsNode = {
+  kind: 'AwskmsNode';
+  __typename?: 'AWSKMSNode';
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   id: Scalars['UUID'];
-  avatarImage?: Maybe<Scalars['String']>;
-  members?: Maybe<Array<Maybe<TOrganizationMember>>>;
-};
-
-
-export type TOrganizationMember = {
-  __typename?: 'OrganizationMember';
-  user?: Maybe<TUserNode>;
-  role?: Maybe<Scalars['String']>;
-};
-
-export type TOrganizationInvitationNodePage = {
-  __typename?: 'OrganizationInvitationNodePage';
-  totalCount?: Maybe<Scalars['Int']>;
-  resultCount?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-  results?: Maybe<Array<Maybe<TOrganizationInvitationNode>>>;
-};
-
-export type TOrganizationInvitationNode = {
-  kind: 'OrganizationInvitationNode';
-  __typename?: 'OrganizationInvitationNode';
-  id: Scalars['UUID'];
-  organization: TOrganizationNode;
-  email: Scalars['String'];
-};
-
-export type TProjectNodePage = {
-  __typename?: 'ProjectNodePage';
-  totalCount?: Maybe<Scalars['Int']>;
-  resultCount?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-  results?: Maybe<Array<Maybe<TProjectNode>>>;
-};
-
-export type TProjectNode = {
-  kind: 'ProjectNode';
-  __typename?: 'ProjectNode';
-  title: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  keycloakData: Scalars['JSONString'];
-  id: Scalars['UUID'];
-  specRepository: Scalars['String'];
-  specRepositoryBranch?: Maybe<Scalars['String']>;
-  created: Scalars['DateTime'];
-  specType: TProjectSpecType;
-  currentCommit: Scalars['String'];
-  currentCommitDateTime?: Maybe<Scalars['DateTime']>;
-  repositoryStatus: TProjectRepositoryStatus;
-  accessUsername: Scalars['String'];
-  accessToken?: Maybe<Scalars['String']>;
-  organization?: Maybe<TOrganizationNode>;
-  packages: Array<TPackageNode>;
-  sops?: Maybe<Array<Maybe<TSopsProviderNode>>>;
-  members?: Maybe<Array<Maybe<TProjectMember>>>;
-};
-
-
-export enum TProjectSpecType {
-  Plain = 'PLAIN',
-  Helm = 'HELM'
-}
-
-export enum TProjectRepositoryStatus {
-  Unknown = 'UNKNOWN',
-  CloningPending = 'CLONING_PENDING',
-  Cloning = 'CLONING',
-  CloningFailed = 'CLONING_FAILED',
-  CloningSuccessful = 'CLONING_SUCCESSFUL',
-  BranchUnavailable = 'BRANCH_UNAVAILABLE',
-  AuthFailed = 'AUTH_FAILED',
-  ParsingFailed = 'PARSING_FAILED',
-  Ok = 'OK'
-}
-
-export type TPackageNode = {
-  kind: 'PackageNode';
-  __typename?: 'PackageNode';
-  title: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  id: Scalars['UUID'];
-  project: TProjectNode;
-  dirPath: Scalars['String'];
-  type: Scalars['String'];
-  namespace: Scalars['String'];
-  fileInformation?: Maybe<Array<Maybe<TFileInformationNode>>>;
-  hash: Scalars['String'];
-  deployments?: Maybe<Array<Maybe<TDeploymentNode>>>;
-  clusterLevel?: Maybe<Array<Maybe<TClusterLevelNode>>>;
-};
-
-
-export type TPackageNodeDeploymentsArgs = {
-  level?: Maybe<Scalars['String']>;
-  switchable?: Maybe<Scalars['Boolean']>;
-};
-
-
-export type TPackageNodeClusterLevelArgs = {
-  level?: Maybe<Scalars['String']>;
-};
-
-export type TFileInformationNode = {
-  kind: 'FileInformationNode';
-  __typename?: 'FileInformationNode';
-  path?: Maybe<Scalars['String']>;
-  encrypted?: Maybe<Scalars['Boolean']>;
-};
-
-export type TDeploymentNode = {
-  kind: 'DeploymentNode';
-  __typename?: 'DeploymentNode';
-  title: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  id: Scalars['UUID'];
-  ports: Scalars['String'];
-  clusterLevel: TClusterLevelNode;
-  isSwitchable: Scalars['Boolean'];
+  accessKey: Scalars['String'];
+  secretAccessKey: Scalars['String'];
 };
 
 export type TClusterLevelNode = {
@@ -268,41 +56,128 @@ export enum TClusterLevelValuesType {
   Dir = 'DIR'
 }
 
-export type TSopsProviderNode = TAwskmsNode | TPgpKeyNode;
+export type TCreateOrganizationMemberInvitation = {
+  __typename?: 'CreateOrganizationMemberInvitation';
+  ok?: Maybe<Scalars['Boolean']>;
+};
 
-export type TAwskmsNode = {
-  kind: 'AwskmsNode';
-  __typename?: 'AWSKMSNode';
+export type TCreateProjectMember = {
+  __typename?: 'CreateProjectMember';
+  ok?: Maybe<Scalars['Boolean']>;
+};
+
+export type TCreateUpdateClusterLevelInput = {
+  title: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  type: Scalars['String'];
+  package: Scalars['ID'];
+  sopsCredentials?: Maybe<Scalars['ID']>;
+  valuesPath?: Maybe<Scalars['String']>;
+  valuesType?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['ID']>;
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+export type TCreateUpdateClusterLevelPayload = {
+  __typename?: 'CreateUpdateClusterLevelPayload';
+  clusterLevel?: Maybe<TClusterLevelNode>;
+  errors?: Maybe<Array<Maybe<TErrorType>>>;
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+export type TCreateUpdateOrganizationInput = {
+  title: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  onTrial?: Maybe<Scalars['Boolean']>;
+  avatarImage?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['ID']>;
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+export type TCreateUpdateOrganizationPayload = {
+  __typename?: 'CreateUpdateOrganizationPayload';
+  organization?: Maybe<TOrganizationNode>;
+  errors?: Maybe<Array<Maybe<TErrorType>>>;
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+export type TCreateUpdateProjectInput = {
+  title: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  specRepository: Scalars['String'];
+  specRepositoryBranch?: Maybe<Scalars['String']>;
+  specType: Scalars['String'];
+  currentCommit?: Maybe<Scalars['String']>;
+  currentCommitDateTime?: Maybe<Scalars['DateTime']>;
+  accessUsername?: Maybe<Scalars['String']>;
+  accessToken?: Maybe<Scalars['String']>;
+  organization: Scalars['UUID'];
+  id?: Maybe<Scalars['ID']>;
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+export type TCreateUpdateProjectPayload = {
+  __typename?: 'CreateUpdateProjectPayload';
+  project?: Maybe<TProjectNode>;
+  errors?: Maybe<Array<Maybe<TErrorType>>>;
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+export type TCreateUpdateSops = {
+  __typename?: 'CreateUpdateSOPS';
+  ok?: Maybe<Scalars['Boolean']>;
+};
+
+
+export type TDeleteClusterLevel = {
+  __typename?: 'DeleteClusterLevel';
+  ok?: Maybe<Scalars['Boolean']>;
+};
+
+export type TDeleteOrganizationMember = {
+  __typename?: 'DeleteOrganizationMember';
+  ok?: Maybe<Scalars['Boolean']>;
+};
+
+export type TDeleteProject = {
+  __typename?: 'DeleteProject';
+  ok?: Maybe<Scalars['Boolean']>;
+};
+
+export type TDeleteProjectMember = {
+  __typename?: 'DeleteProjectMember';
+  ok?: Maybe<Scalars['Boolean']>;
+};
+
+export type TDeleteSops = {
+  __typename?: 'DeleteSOPS';
+  ok?: Maybe<Scalars['Boolean']>;
+};
+
+export type TDeploymentNode = {
+  kind: 'DeploymentNode';
+  __typename?: 'DeploymentNode';
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   id: Scalars['UUID'];
-  accessKey: Scalars['String'];
-  secretAccessKey: Scalars['String'];
+  ports: Scalars['String'];
+  clusterLevel: TClusterLevelNode;
+  isSwitchable: Scalars['Boolean'];
 };
 
-export type TPgpKeyNode = {
-  kind: 'PgpKeyNode';
-  __typename?: 'PGPKeyNode';
-  title: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  id: Scalars['UUID'];
-  privateKey: Scalars['String'];
+export type TErrorType = {
+  __typename?: 'ErrorType';
+  field: Scalars['String'];
+  messages: Array<Scalars['String']>;
 };
 
-export type TProjectMember = {
-  __typename?: 'ProjectMember';
-  user?: Maybe<TUserNode>;
-  role?: Maybe<Scalars['String']>;
+export type TFileInformationNode = {
+  kind: 'FileInformationNode';
+  __typename?: 'FileInformationNode';
+  path?: Maybe<Scalars['String']>;
+  encrypted?: Maybe<Scalars['Boolean']>;
 };
 
-export type TPackageNodePage = {
-  __typename?: 'PackageNodePage';
-  totalCount?: Maybe<Scalars['Int']>;
-  resultCount?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-  results?: Maybe<Array<Maybe<TPackageNode>>>;
-};
 
 export type TMutation = {
   __typename?: 'Mutation';
@@ -401,41 +276,27 @@ export type TMutationDeleteSopsArgs = {
   id?: Maybe<Scalars['UUID']>;
 };
 
-export type TCreateUpdateOrganizationInput = {
-  title: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  onTrial?: Maybe<Scalars['Boolean']>;
-  avatarImage?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['ID']>;
-  clientMutationId?: Maybe<Scalars['String']>;
+export type TOrganizationInvitationNode = {
+  kind: 'OrganizationInvitationNode';
+  __typename?: 'OrganizationInvitationNode';
+  id: Scalars['UUID'];
+  organization: TOrganizationNode;
+  email: Scalars['String'];
 };
 
-export type TCreateUpdateOrganizationPayload = {
-  __typename?: 'CreateUpdateOrganizationPayload';
-  organization?: Maybe<TOrganizationNode>;
-  errors?: Maybe<Array<Maybe<TErrorType>>>;
-  clientMutationId?: Maybe<Scalars['String']>;
+export type TOrganizationInvitationNodePage = {
+  __typename?: 'OrganizationInvitationNodePage';
+  totalCount?: Maybe<Scalars['Int']>;
+  resultCount?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+  results?: Maybe<Array<Maybe<TOrganizationInvitationNode>>>;
 };
 
-export type TErrorType = {
-  __typename?: 'ErrorType';
-  field: Scalars['String'];
-  messages: Array<Scalars['String']>;
-};
-
-export type TCreateOrganizationMemberInvitation = {
-  __typename?: 'CreateOrganizationMemberInvitation';
-  ok?: Maybe<Scalars['Boolean']>;
-};
-
-export type TRevokeOrganizationMemberInvitation = {
-  __typename?: 'RevokeOrganizationMemberInvitation';
-  ok?: Maybe<Scalars['Boolean']>;
-};
-
-export type TUpdateOrganizationMemberInvitation = {
-  __typename?: 'UpdateOrganizationMemberInvitation';
-  ok?: Maybe<Scalars['Boolean']>;
+export type TOrganizationMember = {
+  __typename?: 'OrganizationMember';
+  user?: Maybe<TUserNode>;
+  role?: Maybe<Scalars['String']>;
 };
 
 export enum TOrganizationMemberRoleEnum {
@@ -443,36 +304,75 @@ export enum TOrganizationMemberRoleEnum {
   Member = 'member'
 }
 
-export type TUpdateOrganizationMember = {
-  __typename?: 'UpdateOrganizationMember';
-  ok?: Maybe<Scalars['Boolean']>;
-};
-
-export type TDeleteOrganizationMember = {
-  __typename?: 'DeleteOrganizationMember';
-  ok?: Maybe<Scalars['Boolean']>;
-};
-
-export type TCreateUpdateProjectInput = {
+export type TOrganizationNode = {
+  kind: 'OrganizationNode';
+  __typename?: 'OrganizationNode';
+  created: Scalars['DateTime'];
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
-  specRepository: Scalars['String'];
-  specRepositoryBranch?: Maybe<Scalars['String']>;
-  specType: Scalars['String'];
-  currentCommit?: Maybe<Scalars['String']>;
-  currentCommitDateTime?: Maybe<Scalars['DateTime']>;
-  accessUsername?: Maybe<Scalars['String']>;
-  accessToken?: Maybe<Scalars['String']>;
-  organization: Scalars['UUID'];
-  id?: Maybe<Scalars['ID']>;
-  clientMutationId?: Maybe<Scalars['String']>;
+  id: Scalars['UUID'];
+  avatarImage?: Maybe<Scalars['String']>;
+  members?: Maybe<Array<Maybe<TOrganizationMember>>>;
 };
 
-export type TCreateUpdateProjectPayload = {
-  __typename?: 'CreateUpdateProjectPayload';
-  project?: Maybe<TProjectNode>;
-  errors?: Maybe<Array<Maybe<TErrorType>>>;
-  clientMutationId?: Maybe<Scalars['String']>;
+export type TOrganizationNodePage = {
+  __typename?: 'OrganizationNodePage';
+  totalCount?: Maybe<Scalars['Int']>;
+  resultCount?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+  results?: Maybe<Array<Maybe<TOrganizationNode>>>;
+};
+
+export type TPgpKeyNode = {
+  kind: 'PgpKeyNode';
+  __typename?: 'PGPKeyNode';
+  title: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['UUID'];
+  privateKey: Scalars['String'];
+};
+
+export type TPackageNode = {
+  kind: 'PackageNode';
+  __typename?: 'PackageNode';
+  title: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['UUID'];
+  project: TProjectNode;
+  dirPath: Scalars['String'];
+  type: Scalars['String'];
+  namespace: Scalars['String'];
+  fileInformation?: Maybe<Array<Maybe<TFileInformationNode>>>;
+  hash: Scalars['String'];
+  deployments?: Maybe<Array<Maybe<TDeploymentNode>>>;
+  clusterLevel?: Maybe<Array<Maybe<TClusterLevelNode>>>;
+};
+
+
+export type TPackageNodeDeploymentsArgs = {
+  level?: Maybe<Scalars['String']>;
+  switchable?: Maybe<Scalars['Boolean']>;
+};
+
+
+export type TPackageNodeClusterLevelArgs = {
+  level?: Maybe<Scalars['String']>;
+};
+
+export type TPackageNodePage = {
+  __typename?: 'PackageNodePage';
+  totalCount?: Maybe<Scalars['Int']>;
+  resultCount?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+  results?: Maybe<Array<Maybe<TPackageNode>>>;
+};
+
+export type TProjectMember = {
+  __typename?: 'ProjectMember';
+  user?: Maybe<TUserNode>;
+  role?: Maybe<Scalars['String']>;
 };
 
 export enum TProjectMemberRoleEnum {
@@ -480,42 +380,130 @@ export enum TProjectMemberRoleEnum {
   Member = 'member'
 }
 
-export type TCreateProjectMember = {
-  __typename?: 'CreateProjectMember';
-  ok?: Maybe<Scalars['Boolean']>;
-};
-
-export type TDeleteProjectMember = {
-  __typename?: 'DeleteProjectMember';
-  ok?: Maybe<Scalars['Boolean']>;
-};
-
-export type TDeleteProject = {
-  __typename?: 'DeleteProject';
-  ok?: Maybe<Scalars['Boolean']>;
-};
-
-export type TCreateUpdateClusterLevelInput = {
+export type TProjectNode = {
+  kind: 'ProjectNode';
+  __typename?: 'ProjectNode';
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
-  type: Scalars['String'];
-  package: Scalars['ID'];
-  sopsCredentials?: Maybe<Scalars['ID']>;
-  valuesPath?: Maybe<Scalars['String']>;
-  valuesType?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['ID']>;
-  clientMutationId?: Maybe<Scalars['String']>;
+  keycloakData: Scalars['JSONString'];
+  id: Scalars['UUID'];
+  specRepository: Scalars['String'];
+  specRepositoryBranch?: Maybe<Scalars['String']>;
+  created: Scalars['DateTime'];
+  specType: TProjectSpecType;
+  currentCommit: Scalars['String'];
+  currentCommitDateTime?: Maybe<Scalars['DateTime']>;
+  repositoryStatus: TProjectRepositoryStatus;
+  accessUsername: Scalars['String'];
+  accessToken?: Maybe<Scalars['String']>;
+  organization?: Maybe<TOrganizationNode>;
+  packages: Array<TPackageNode>;
+  sops?: Maybe<Array<Maybe<TSopsProviderNode>>>;
+  members?: Maybe<Array<Maybe<TProjectMember>>>;
 };
 
-export type TCreateUpdateClusterLevelPayload = {
-  __typename?: 'CreateUpdateClusterLevelPayload';
-  clusterLevel?: Maybe<TClusterLevelNode>;
-  errors?: Maybe<Array<Maybe<TErrorType>>>;
-  clientMutationId?: Maybe<Scalars['String']>;
+export type TProjectNodePage = {
+  __typename?: 'ProjectNodePage';
+  totalCount?: Maybe<Scalars['Int']>;
+  resultCount?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+  results?: Maybe<Array<Maybe<TProjectNode>>>;
 };
 
-export type TDeleteClusterLevel = {
-  __typename?: 'DeleteClusterLevel';
+export enum TProjectRepositoryStatus {
+  Unknown = 'UNKNOWN',
+  CloningPending = 'CLONING_PENDING',
+  Cloning = 'CLONING',
+  CloningFailed = 'CLONING_FAILED',
+  CloningSuccessful = 'CLONING_SUCCESSFUL',
+  BranchUnavailable = 'BRANCH_UNAVAILABLE',
+  AuthFailed = 'AUTH_FAILED',
+  ParsingFailed = 'PARSING_FAILED',
+  Ok = 'OK'
+}
+
+export enum TProjectSpecType {
+  Plain = 'PLAIN',
+  Helm = 'HELM'
+}
+
+export type TQuery = {
+  __typename?: 'Query';
+  user?: Maybe<TUserNode>;
+  allOrganizations?: Maybe<TOrganizationNodePage>;
+  organization?: Maybe<TOrganizationNode>;
+  userInvitations?: Maybe<TOrganizationInvitationNodePage>;
+  allOrganizationInvitations?: Maybe<TOrganizationInvitationNodePage>;
+  allProjects?: Maybe<TProjectNodePage>;
+  project?: Maybe<TProjectNode>;
+  allPackages?: Maybe<TPackageNodePage>;
+  package?: Maybe<TPackageNode>;
+  clusterlevel?: Maybe<TClusterLevelNode>;
+};
+
+
+export type TQueryUserArgs = {
+  id?: Maybe<Scalars['UUID']>;
+};
+
+
+export type TQueryAllOrganizationsArgs = {
+  offset?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+};
+
+
+export type TQueryOrganizationArgs = {
+  id: Scalars['UUID'];
+};
+
+
+export type TQueryUserInvitationsArgs = {
+  offset?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+};
+
+
+export type TQueryAllOrganizationInvitationsArgs = {
+  id: Scalars['UUID'];
+  offset?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+};
+
+
+export type TQueryAllProjectsArgs = {
+  offset?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+};
+
+
+export type TQueryProjectArgs = {
+  id?: Maybe<Scalars['UUID']>;
+  slug?: Maybe<Scalars['String']>;
+};
+
+
+export type TQueryAllPackagesArgs = {
+  organizationId?: Maybe<Scalars['UUID']>;
+  projectId?: Maybe<Scalars['UUID']>;
+  offset?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+};
+
+
+export type TQueryPackageArgs = {
+  id?: Maybe<Scalars['UUID']>;
+  slug?: Maybe<Scalars['String']>;
+};
+
+
+export type TQueryClusterlevelArgs = {
+  id?: Maybe<Scalars['UUID']>;
+};
+
+export type TRevokeOrganizationMemberInvitation = {
+  __typename?: 'RevokeOrganizationMemberInvitation';
   ok?: Maybe<Scalars['Boolean']>;
 };
 
@@ -529,21 +517,34 @@ export type TSopsInputType = {
   secret3?: Maybe<Scalars['String']>;
 };
 
+export type TSopsProviderNode = TAwskmsNode | TPgpKeyNode;
+
 export enum TSopsTypeEnum {
   Aws = 'aws',
   Pgp = 'pgp'
 }
 
-export type TCreateUpdateSops = {
-  __typename?: 'CreateUpdateSOPS';
+
+export type TUpdateOrganizationMember = {
+  __typename?: 'UpdateOrganizationMember';
   ok?: Maybe<Scalars['Boolean']>;
 };
 
-export type TDeleteSops = {
-  __typename?: 'DeleteSOPS';
+export type TUpdateOrganizationMemberInvitation = {
+  __typename?: 'UpdateOrganizationMemberInvitation';
   ok?: Maybe<Scalars['Boolean']>;
 };
 
+export type TUserNode = {
+  kind: 'UserNode';
+  __typename?: 'UserNode';
+  id: Scalars['UUID'];
+  email?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  familyName?: Maybe<Scalars['String']>;
+  givenName?: Maybe<Scalars['String']>;
+  avatarImage?: Maybe<Scalars['String']>;
+};
 
 export type TOrganizationsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -717,6 +718,11 @@ export type TUserDetailQueryVariables = Exact<{
 
 
 export type TUserDetailQueryResult = { __typename?: 'Query', user?: Maybe<{ __typename?: 'UserNode', avatarImage?: Maybe<string>, email?: Maybe<string>, familyName?: Maybe<string>, givenName?: Maybe<string> }> };
+
+export type TUserInvitationsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type TUserInvitationsQueryResult = { __typename?: 'Query', userInvitations?: Maybe<{ __typename?: 'OrganizationInvitationNodePage', results?: Maybe<Array<Maybe<{ __typename?: 'OrganizationInvitationNode', id: any, organization: { __typename?: 'OrganizationNode', title: string } }>>> }> };
 
 
 export const OrganizationsQuery = gql`
@@ -942,7 +948,9 @@ export const ProjectDetailOtherProjectsQuery = gql`
     `;
 export const CreateProject = gql`
     mutation CreateProject($title: String!, $description: String!, $specRepository: String!, $specType: String!, $accessUsername: String!, $accessToken: String!, $specRepositoryBranch: String!, $organization: UUID!) {
-  createUpdateProject(input: {title: $title, description: $description, specRepository: $specRepository, specType: $specType, specRepositoryBranch: $specRepositoryBranch, accessUsername: $accessUsername, accessToken: $accessToken, organization: $organization}) {
+  createUpdateProject(
+    input: {title: $title, description: $description, specRepository: $specRepository, specType: $specType, specRepositoryBranch: $specRepositoryBranch, accessUsername: $accessUsername, accessToken: $accessToken, organization: $organization}
+  ) {
     project {
       title
       id
@@ -956,7 +964,9 @@ export const CreateProject = gql`
     `;
 export const UpdateProject = gql`
     mutation UpdateProject($title: String!, $description: String!, $specRepository: String!, $specType: String!, $accessUsername: String!, $accessToken: String!, $specRepositoryBranch: String!, $id: ID, $organization: UUID!) {
-  createUpdateProject(input: {title: $title, description: $description, specRepository: $specRepository, specType: $specType, specRepositoryBranch: $specRepositoryBranch, accessUsername: $accessUsername, accessToken: $accessToken, organization: $organization, id: $id}) {
+  createUpdateProject(
+    input: {title: $title, description: $description, specRepository: $specRepository, specType: $specType, specRepositoryBranch: $specRepositoryBranch, accessUsername: $accessUsername, accessToken: $accessToken, organization: $organization, id: $id}
+  ) {
     project {
       title
       id
@@ -977,14 +987,19 @@ export const DeleteProject = gql`
     `;
 export const CreateUpdateSops = gql`
     mutation createUpdateSops($title: String!, $description: String, $sopsType: SOPSTypeEnum!, $project: UUID!, $secret1: String, $secret2: String, $secret3: String, $id: UUID) {
-  createUpdateSops(sopsData: {title: $title, description: $description, sopsType: $sopsType, project: $project, secret1: $secret1, secret2: $secret2, secret3: $secret3}, id: $id) {
+  createUpdateSops(
+    sopsData: {title: $title, description: $description, sopsType: $sopsType, project: $project, secret1: $secret1, secret2: $secret2, secret3: $secret3}
+    id: $id
+  ) {
     ok
   }
 }
     `;
 export const CreateUpdateClusterLevel = gql`
     mutation createUpdateClusterLevel($title: String!, $description: String, $type: String!, $package: ID!, $sopsCredentials: ID, $valuesPath: String, $id: ID) {
-  createUpdateClusterLevel(input: {title: $title, description: $description, type: $type, package: $package, sopsCredentials: $sopsCredentials, valuesPath: $valuesPath, id: $id}) {
+  createUpdateClusterLevel(
+    input: {title: $title, description: $description, type: $type, package: $package, sopsCredentials: $sopsCredentials, valuesPath: $valuesPath, id: $id}
+  ) {
     clusterLevel {
       title
       id
@@ -1017,6 +1032,18 @@ export const UserDetailQuery = gql`
     email
     familyName
     givenName
+  }
+}
+    `;
+export const UserInvitationsQuery = gql`
+    query UserInvitationsQuery {
+  userInvitations {
+    results {
+      id
+      organization {
+        title
+      }
+    }
   }
 }
     `;

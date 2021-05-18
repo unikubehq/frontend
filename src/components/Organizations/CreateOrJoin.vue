@@ -23,7 +23,11 @@
          <v-card-title>
            <h1 class="text-h1">Join Organization</h1>
          </v-card-title>
-         <v-list>
+         <v-list
+             v-if="userInvitations && userInvitations.results && userInvitations.results.length">
+           <v-list-item v-for="invite in userInvitations.results" :key="invite.id">
+             {{ invite.organization.title }}
+           </v-list-item>
          </v-list>
        </v-card>
      </v-col>
@@ -32,7 +36,7 @@
 </template>
 <script lang="ts">
 import { Component } from 'vue-property-decorator';
-import { CreateOrganizationMutation } from '@/generated/graphql';
+import { CreateOrganizationMutation, UserInvitationsQuery } from '@/generated/graphql';
 import { validationMixin } from '@/components/mixins';
 import { required } from 'vuelidate/lib/validators';
 import VueI18n from 'vue-i18n';
@@ -42,6 +46,11 @@ import TranslateResult = VueI18n.TranslateResult;
   validations: {
     title: {
       required,
+    },
+  },
+  apollo: {
+    userInvitations: {
+      query: UserInvitationsQuery,
     },
   },
 })
