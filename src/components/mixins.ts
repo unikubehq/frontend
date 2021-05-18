@@ -19,7 +19,7 @@ export class paginationMixin extends Vue {
 
   // eslint-disable-next-line class-methods-use-this
   get totalObjectCount(): number {
-    return 1000;
+    return 1;
   }
 
   get listLength(): number {
@@ -43,7 +43,7 @@ export class validationMixin extends Vue {
 
      this.validatorMapping.forEach((value) => {
        if (!this.$v[fieldName][value] && value in this.$v[fieldName]) {
-         errors.push(this.$t(`${value}Error`));
+         errors.push(this.$t(`errors.${value}Error`));
        }
      });
      return this.$v[fieldName].$dirty ? errors : [];

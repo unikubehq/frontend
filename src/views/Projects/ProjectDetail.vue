@@ -144,7 +144,6 @@ import {
   TPackageNode,
   TProjectNode,
 } from '@/generated/graphql';
-import Converter from '@/utils/converter';
 
 @Component({
   components: {

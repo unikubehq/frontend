@@ -32,6 +32,7 @@
               :placeholder="$t('projects.selectRole')"
                 style="width: 200px;"
               class="v-select__small"
+                persistent-placeholder
             ></v-select>
           </td>
           <td v-if="!member.editing">{{ member.user.lastLogin }}</td>
@@ -59,6 +60,7 @@
                 :placeholder="$t('project.chooseMember')"
                 class="v-select__small"
                 style="width: 300px;"
+                persistent-placeholder
               ></v-select>
           </td>
           <td colspan="2">
@@ -69,6 +71,7 @@
               :placeholder="$t('projects.selectRole')"
                 style="width: 200px;"
               class="v-select__small"
+                persistent-placeholder
             ></v-select>
           </td>
           <td>

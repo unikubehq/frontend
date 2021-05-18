@@ -40,6 +40,7 @@
             prepend-inner-icon="$vuetify.icons.user"
             @blur="$v.fullName.$touch()"
             @change="setDataChanged"
+              persistent-placeholder
           />
           <v-btn color="primary" :disabled="!dataChanged" large elevation="0" :ripple="false">
             {{ $t('general.saveChanges') }}

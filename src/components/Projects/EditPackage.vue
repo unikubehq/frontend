@@ -18,6 +18,7 @@
                   @blur="$v.title.$touch()"
                   :error-messages="titleErrors"
                   prepend-inner-icon="$vuetify.icons.user"
+                    persistent-placeholder
                 />
             </v-col>
             <v-col cols="6" class="py-0">
@@ -30,6 +31,7 @@
                 :placeholder="$t('package.edit.clusterLevels.enterDescription')"
                 v-model="description"
                 prepend-inner-icon="$vuetify.icons.user"
+                  persistent-placeholder
               />
             </v-col>
             <v-col cols="6" class="py-0">
@@ -44,6 +46,7 @@
                 :items="sopsProviderChoices"
                 return-object
                 prepend-inner-icon="$vuetify.icons.user"
+                persistent-placeholder
               />
               </v-col>
               <v-col cols="6" class="py-0">
@@ -57,6 +60,7 @@
                     v-model="clusterLevelType"
                     :items="clusterLevelTypeChoices"
                     prepend-inner-icon="$vuetify.icons.user"
+                    persistent-placeholder
                   />
                 </v-col>
                 <v-col cols="6" class="py-0">
@@ -71,6 +75,7 @@
                     :items="valuesPathChoices"
                     return-object
                     prepend-inner-icon="$vuetify.icons.user"
+                      persistent-placeholder
                   >
                   <template v-slot:item="data">
                     <v-icon class="mr-2" v-if="data.item.encrypted">

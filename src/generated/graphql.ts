@@ -24,6 +24,8 @@ export type TQuery = {
   user?: Maybe<TUserNode>;
   allOrganizations?: Maybe<TOrganizationNodePage>;
   organization?: Maybe<TOrganizationNode>;
+  userInvitations?: Maybe<TOrganizationInvitationNodePage>;
+  allOrganizationInvitations?: Maybe<TOrganizationInvitationNodePage>;
   allProjects?: Maybe<TProjectNodePage>;
   project?: Maybe<TProjectNode>;
   allPackages?: Maybe<TPackageNodePage>;
@@ -45,6 +47,19 @@ export type TQueryAllOrganizationsArgs = {
 
 export type TQueryOrganizationArgs = {
   id: Scalars['UUID'];
+};
+
+
+export type TQueryUserInvitationsArgs = {
+  offset?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+};
+
+
+export type TQueryAllOrganizationInvitationsArgs = {
+  id: Scalars['UUID'];
+  offset?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
 };
 
 
@@ -102,10 +117,10 @@ export type TOrganizationNodePage = {
 export type TOrganizationNode = {
   kind: 'OrganizationNode';
   __typename?: 'OrganizationNode';
-  id: Scalars['UUID'];
   created: Scalars['DateTime'];
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
+  id: Scalars['UUID'];
   avatarImage?: Maybe<Scalars['String']>;
   members?: Maybe<Array<Maybe<TOrganizationMember>>>;
 };
@@ -115,6 +130,23 @@ export type TOrganizationMember = {
   __typename?: 'OrganizationMember';
   user?: Maybe<TUserNode>;
   role?: Maybe<Scalars['String']>;
+};
+
+export type TOrganizationInvitationNodePage = {
+  __typename?: 'OrganizationInvitationNodePage';
+  totalCount?: Maybe<Scalars['Int']>;
+  resultCount?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+  results?: Maybe<Array<Maybe<TOrganizationInvitationNode>>>;
+};
+
+export type TOrganizationInvitationNode = {
+  kind: 'OrganizationInvitationNode';
+  __typename?: 'OrganizationInvitationNode';
+  id: Scalars['UUID'];
+  organization: TOrganizationNode;
+  email: Scalars['String'];
 };
 
 export type TProjectNodePage = {
@@ -275,6 +307,11 @@ export type TPackageNodePage = {
 export type TMutation = {
   __typename?: 'Mutation';
   createUpdateOrganization?: Maybe<TCreateUpdateOrganizationPayload>;
+  createInvitation?: Maybe<TCreateOrganizationMemberInvitation>;
+  revokeInvitation?: Maybe<TRevokeOrganizationMemberInvitation>;
+  answerInvitation?: Maybe<TUpdateOrganizationMemberInvitation>;
+  updateOrganizationMember?: Maybe<TUpdateOrganizationMember>;
+  removeOrganizationMember?: Maybe<TDeleteOrganizationMember>;
   createUpdateProject?: Maybe<TCreateUpdateProjectPayload>;
   createProjectMember?: Maybe<TCreateProjectMember>;
   deleteProjectMember?: Maybe<TDeleteProjectMember>;
@@ -288,6 +325,36 @@ export type TMutation = {
 
 export type TMutationCreateUpdateOrganizationArgs = {
   input: TCreateUpdateOrganizationInput;
+};
+
+
+export type TMutationCreateInvitationArgs = {
+  email?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['UUID']>;
+};
+
+
+export type TMutationRevokeInvitationArgs = {
+  id?: Maybe<Scalars['UUID']>;
+};
+
+
+export type TMutationAnswerInvitationArgs = {
+  accepted?: Maybe<Scalars['Boolean']>;
+  id?: Maybe<Scalars['UUID']>;
+};
+
+
+export type TMutationUpdateOrganizationMemberArgs = {
+  id?: Maybe<Scalars['UUID']>;
+  role?: Maybe<TOrganizationMemberRoleEnum>;
+  user?: Maybe<Scalars['UUID']>;
+};
+
+
+export type TMutationRemoveOrganizationMemberArgs = {
+  id?: Maybe<Scalars['UUID']>;
+  user?: Maybe<Scalars['UUID']>;
 };
 
 
@@ -354,6 +421,36 @@ export type TErrorType = {
   __typename?: 'ErrorType';
   field: Scalars['String'];
   messages: Array<Scalars['String']>;
+};
+
+export type TCreateOrganizationMemberInvitation = {
+  __typename?: 'CreateOrganizationMemberInvitation';
+  ok?: Maybe<Scalars['Boolean']>;
+};
+
+export type TRevokeOrganizationMemberInvitation = {
+  __typename?: 'RevokeOrganizationMemberInvitation';
+  ok?: Maybe<Scalars['Boolean']>;
+};
+
+export type TUpdateOrganizationMemberInvitation = {
+  __typename?: 'UpdateOrganizationMemberInvitation';
+  ok?: Maybe<Scalars['Boolean']>;
+};
+
+export enum TOrganizationMemberRoleEnum {
+  Admin = 'admin',
+  Member = 'member'
+}
+
+export type TUpdateOrganizationMember = {
+  __typename?: 'UpdateOrganizationMember';
+  ok?: Maybe<Scalars['Boolean']>;
+};
+
+export type TDeleteOrganizationMember = {
+  __typename?: 'DeleteOrganizationMember';
+  ok?: Maybe<Scalars['Boolean']>;
 };
 
 export type TCreateUpdateProjectInput = {
@@ -473,6 +570,46 @@ export type TCreateOrganizationMutationVariables = Exact<{
 
 
 export type TCreateOrganizationMutationResult = { __typename?: 'Mutation', createUpdateOrganization?: Maybe<{ __typename?: 'CreateUpdateOrganizationPayload', organization?: Maybe<{ __typename?: 'OrganizationNode', id: any, title: string, description?: Maybe<string> }>, errors?: Maybe<Array<Maybe<{ __typename?: 'ErrorType', field: string, messages: Array<string> }>>> }> };
+
+export type TInviteToOrganizationMutationVariables = Exact<{
+  email: Scalars['String'];
+  organization: Scalars['UUID'];
+}>;
+
+
+export type TInviteToOrganizationMutationResult = { __typename?: 'Mutation', createInvitation?: Maybe<{ __typename?: 'CreateOrganizationMemberInvitation', ok?: Maybe<boolean> }> };
+
+export type TRevokeOrganizationInviteMutationVariables = Exact<{
+  inviteId: Scalars['UUID'];
+}>;
+
+
+export type TRevokeOrganizationInviteMutationResult = { __typename?: 'Mutation', revokeInvitation?: Maybe<{ __typename?: 'RevokeOrganizationMemberInvitation', ok?: Maybe<boolean> }> };
+
+export type TAnswerInvitationMutationVariables = Exact<{
+  accepted?: Maybe<Scalars['Boolean']>;
+  invitationId?: Maybe<Scalars['UUID']>;
+}>;
+
+
+export type TAnswerInvitationMutationResult = { __typename?: 'Mutation', answerInvitation?: Maybe<{ __typename?: 'UpdateOrganizationMemberInvitation', ok?: Maybe<boolean> }> };
+
+export type TUpdateOrganizationMemberMutationVariables = Exact<{
+  organizationId?: Maybe<Scalars['UUID']>;
+  role?: Maybe<TOrganizationMemberRoleEnum>;
+  userId?: Maybe<Scalars['UUID']>;
+}>;
+
+
+export type TUpdateOrganizationMemberMutationResult = { __typename?: 'Mutation', updateOrganizationMember?: Maybe<{ __typename?: 'UpdateOrganizationMember', ok?: Maybe<boolean> }> };
+
+export type TDeleteOrganizationMemberMutationVariables = Exact<{
+  organizationId?: Maybe<Scalars['UUID']>;
+  userId?: Maybe<Scalars['UUID']>;
+}>;
+
+
+export type TDeleteOrganizationMemberMutationResult = { __typename?: 'Mutation', removeOrganizationMember?: Maybe<{ __typename?: 'DeleteOrganizationMember', ok?: Maybe<boolean> }> };
 
 export type TProjectsQueryVariables = Exact<{
   limit?: Maybe<Scalars['Int']>;
@@ -630,6 +767,41 @@ export const CreateOrganizationMutation = gql`
       field
       messages
     }
+  }
+}
+    `;
+export const InviteToOrganization = gql`
+    mutation InviteToOrganization($email: String!, $organization: UUID!) {
+  createInvitation(email: $email, id: $organization) {
+    ok
+  }
+}
+    `;
+export const RevokeOrganizationInvite = gql`
+    mutation RevokeOrganizationInvite($inviteId: UUID!) {
+  revokeInvitation(id: $inviteId) {
+    ok
+  }
+}
+    `;
+export const AnswerInvitation = gql`
+    mutation AnswerInvitation($accepted: Boolean, $invitationId: UUID) {
+  answerInvitation(accepted: $accepted, id: $invitationId) {
+    ok
+  }
+}
+    `;
+export const UpdateOrganizationMember = gql`
+    mutation UpdateOrganizationMember($organizationId: UUID, $role: OrganizationMemberRoleEnum, $userId: UUID) {
+  updateOrganizationMember(id: $organizationId, role: $role, user: $userId) {
+    ok
+  }
+}
+    `;
+export const DeleteOrganizationMember = gql`
+    mutation DeleteOrganizationMember($organizationId: UUID, $userId: UUID) {
+  removeOrganizationMember(id: $organizationId, user: $userId) {
+    ok
   }
 }
     `;

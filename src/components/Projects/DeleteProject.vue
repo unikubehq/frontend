@@ -23,6 +23,7 @@
             type="text"
             v-model="deleteTitle"
             prepend-inner-icon="$vuetify.icons.projectInput"
+              persistent-placeholder
           />
         </v-card-text>
         <v-card-actions class="py-0">

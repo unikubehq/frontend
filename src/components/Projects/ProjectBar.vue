@@ -14,6 +14,7 @@
         :items="orderChoices"
         v-model="orderChoice"
         @change="$emit('sort-change', orderChoice)"
+          persistent-placeholder
       >
       </v-select>
       <v-btn

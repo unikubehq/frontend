@@ -17,6 +17,7 @@
           :error-messages="titleErrors"
           prepend-inner-icon="$vuetify.icons.organization"
           @blur="$v.title.$touch()"
+          persistent-placeholder
       >
       </v-text-field>
       <v-btn
@@ -38,8 +39,9 @@
 
 </template>
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { CreateOrganizationMutation, TCreateOrganizationMutationResult } from '@/generated/graphql';
+import { Component } from 'vue-property-decorator';
+import { CreateOrganizationMutation } from '@/generated/graphql';
+import { validationMixin } from '@/components/mixins';
 import { required } from 'vuelidate/lib/validators';
 import VueI18n from 'vue-i18n';
 import TranslateResult = VueI18n.TranslateResult;
@@ -51,7 +53,7 @@ import TranslateResult = VueI18n.TranslateResult;
     },
   },
 })
-export default class OrgaTitle extends Vue {
+export default class OrganizationTitle extends validationMixin {
   title = '';
 
   errors: TranslateResult[] = [];
@@ -61,10 +63,7 @@ export default class OrgaTitle extends Vue {
   }
 
   get titleErrors(): TranslateResult[] {
-    if (!this.$v.title.required) {
-      this.errors.push(this.$t('general.requiredError'));
-    }
-    return this.$v.title.$dirty ? this.errors : [];
+    return this.handleErrors('title');
   }
 
   handleCreateOrganization(): void {
@@ -77,8 +76,7 @@ export default class OrgaTitle extends Vue {
       this.$store.dispatch('auth/refresh', -1);
       this.$emit(
         'success',
-        data.createUpdateOrganization?.organization?.id,
-        data.createUpdateOrganization?.organization?.title,
+        data.createUpdateOrganization?.organization,
       );
     });
   }

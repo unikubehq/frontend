@@ -44,7 +44,7 @@
     "admin": "Admin",
     "clickHere": "Click Here",
     "close": "Close",
-    "email": "'Email Address'",
+    "email": "Email Address",
     "goBack": "Go Back",
     "saving": "Saving",
     "save": "Save",
@@ -55,8 +55,11 @@
     "edit": "Edit",
     "add": "Add",
     "saveChanges": "Save Changes",
-    "disagree": "Disagree",
-    "requiredError": "This field is required."
+    "disagree": "Disagree"
+  },
+  "errors": {
+    "requiredError": "This field is required.",
+    "emailError": "Please provide a valid email address."
   },
   "settings": {
     "account": {
@@ -184,5 +187,10 @@
     "joinOrganization": "Join Another Organization",
     "accountSettings": "Account Settings",
     "logout": "Logout"
+  },
+  "project": {
+    "role": "Role",
+    "chooseMember": "Add a team member",
+    "addMember": "Add Member | Add Members"
   }
 }

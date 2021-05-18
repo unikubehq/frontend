@@ -55,6 +55,7 @@
                 :placeholder="$t('sops.enterType')"
                 v-model="sopsType"
                 :items="sopsTypeChoices"
+                persistent-placeholder
               />
           <v-text-field
                 :label="$t('sops.title')"
@@ -67,6 +68,7 @@
                 :error-messages="titleErrors"
                 @blur="$v.title.$touch()"
                 prepend-inner-icon="$vuetify.icons.projectInput"
+              persistent-placeholder
               />
           <v-text-field
                 :label="$t('sops.description')"
@@ -77,6 +79,7 @@
                 :placeholder="$t('sops.enterDescription')"
                 v-model="description"
                 prepend-inner-icon="$vuetify.icons.description"
+              persistent-placeholder
               />
             <v-textarea
                 v-if="sopsType === 'pgp'"
@@ -96,6 +99,7 @@
                 @dragleave="dragleave"
                 @drop="drop"
                 prepend-inner-icon="$vuetify.icons.accessToken"
+                persistent-placeholder
             ></v-textarea>
           <v-text-field
               v-if="sopsType === 'aws'"
@@ -109,6 +113,7 @@
                 :error-messages="secret1Errors"
                 v-model="secret1"
                 prepend-inner-icon="$vuetify.icons.accessToken"
+              persistent-placeholder
               />
             <v-text-field
                 v-if="sopsType === 'aws'"
@@ -122,6 +127,7 @@
                 :error-messages="secret2Errors"
                 @blur="$v.secret2.$touch()"
                 prepend-inner-icon="$vuetify.icons.accessToken"
+                persistent-placeholder
               />
             </v-col>
         </v-row>

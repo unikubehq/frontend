@@ -103,7 +103,7 @@ export default class Overview extends mixins(paginationMixin) {
   }
 
   get totalObjectCount(): number {
-    return this.$data.allProjects ? this.$data.allProjects.totalCount : 1000;
+    return this.$data.allProjects ? this.$data.allProjects.totalCount : 0;
   }
 
   get projectResults(): Array<TProjectNode> {

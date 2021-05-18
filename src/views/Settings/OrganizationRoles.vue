@@ -20,6 +20,7 @@
                 prepend-inner-icon="$vuetify.icons.user"
                 @blur="$v.fullName.$touch()"
                 @change="setDataChanged"
+                  persistent-placeholder
               />
             </v-col>
             <v-col cols="4">
@@ -30,6 +31,7 @@
                 label="Roles"
                 outlined
                 hide-details="auto"
+                  persistent-placeholder
               ></v-select>
             </v-col>
           </v-row>
