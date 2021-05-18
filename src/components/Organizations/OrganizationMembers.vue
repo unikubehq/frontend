@@ -22,7 +22,7 @@
             persistent-placeholder
         ></v-text-field>
         </div>
-      <v-btn :ripple="false" plain elevation="0" @click="addMember" color="rgb(252,252,253)">
+      <v-btn :ripple="false" plain elevation="0" @click="addMember">
         <v-icon size="24" class="mr-2">
           $vuetify.icons.addRound
         </v-icon>
@@ -74,21 +74,23 @@ export default class OrganizationMembers extends Vue {
 
   inviteEmails(): void {
     this.members.forEach((member, idx) => {
-      this.$apollo.mutate({
-        mutation: InviteToOrganization,
-        variables: {
-          email: member.email,
-          organization: this.$store.state.context.organization.id,
-        },
-      }).then(() => {
-        const invitedMember = member;
-        invitedMember.invited = true;
-        Vue.set(
-          this.members,
-          idx,
-          invitedMember,
-        );
-      });
+      if (member.email) {
+        this.$apollo.mutate({
+          mutation: InviteToOrganization,
+          variables: {
+            email: member.email,
+            organization: this.$store.state.context.organization.id,
+          },
+        }).then(() => {
+          const invitedMember = member;
+          invitedMember.invited = true;
+          Vue.set(
+            this.members,
+            idx,
+            invitedMember,
+          );
+        });
+      }
     });
     this.$emit('success');
   }

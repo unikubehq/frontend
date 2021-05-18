@@ -38,22 +38,14 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component({})
 export default class OrgaDone extends Vue {
-@Prop() readonly orgaId: string | undefined
+  @Prop() readonly orgaId: string | undefined
 
-@Prop() readonly orgaTitle: string | undefined
+  @Prop() readonly orgaTitle: string | undefined
 
   snackbar = false;
 
-  copyId(): void {
-    const dummy = document.createElement('textarea');
-    document.body.appendChild(dummy);
-    if (this.orgaId) {
-      dummy.value = this.orgaId;
-      dummy.select();
-      document.execCommand('copy');
-      document.body.removeChild(dummy);
-      this.snackbar = true;
-    }
+  created(): void {
+    this.$store.dispatch('auth/refresh', -1);
   }
 }
 </script>

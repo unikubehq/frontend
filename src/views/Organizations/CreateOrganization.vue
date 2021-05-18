@@ -8,16 +8,12 @@
           <v-img class="d-inline-block" src="@/assets/img/Unikube-Logo-H.svg"
                  max-width="150"/>
         </v-col>
-        <organization-title v-if="step === 0" @success="orgaCreation"></organization-title>
-        <organization-logo v-if="step === 1" @success="logoCreation"
+        <create-or-join v-if="step === 0" @success="nextStep" />
+        <organization-title v-if="step === 1" @success="orgaCreation"></organization-title>
+        <organization-logo v-if="step === 2" @success="logoCreation"
             :organization-id="organizationId" />
-        <create-organization-project
-          v-if="step === 2"
-          @success="nextStep"
-        ></create-organization-project>
-        <organization-members v-if="step === 3" @success="nextStep"/>
-        <orga-done v-if="step === 4" :orgaId="organizationId" :orgaTitle="organizationTitle">
-        </orga-done>
+        <organization-members v-if="step === 4" @success="nextStep"/>
+        <orga-done v-if="step === 5" :orgaId="organizationId" :orgaTitle="organizationTitle" />
       </v-row>
     </v-container>
   </v-main>
@@ -25,6 +21,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import CreateOrJoin from '@/components/Organizations/CreateOrJoin.vue';
 import OrganizationTitle from '@/components/Organizations/OrganizationTitle.vue';
 import OrganizationLogo from '@/components/Organizations/OrganizationLogo.vue';
 import OrganizationMembers from '@/components/Organizations/OrganizationMembers.vue';
@@ -33,6 +30,7 @@ import { TOrganizationNode } from '@/generated/graphql';
 
 @Component({
   components: {
+    CreateOrJoin,
     OrganizationTitle,
     OrganizationLogo,
     OrganizationMembers,
@@ -54,11 +52,11 @@ export default class CreateOrganization extends Vue {
     this.organizationId = organization.id;
     this.organizationTitle = organization.title;
     this.$store.commit('context/setOrganization', organization);
-    this.step = 1;
+    this.step = 2;
   }
 
   logoCreation(): void {
-    this.step = 3;
+    this.step = 4;
   }
 }
 </script>

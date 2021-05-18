@@ -89,7 +89,7 @@
               </v-list-item-content>
             </v-list-item>
             <v-divider />
-            <v-list-item link  to="/create-organization">
+            <v-list-item link :to="{name: 'create-organization'}">
                 <v-list-item-icon class="organization-dropdown--icon">
                   <v-icon>$vuetify.icons.createOrganization</v-icon>
                 </v-list-item-icon>
@@ -149,7 +149,7 @@ Component.registerHooks([
       result(result) {
         if (result.data.allOrganizations.results.length) {
           this.$store.commit('context/setOrganization', result.data.allOrganizations.results[0]);
-        } else {
+        } else if (this.$route.name !== 'create-organization') {
           this.$router.push({ name: 'create-organization' });
         }
       },
@@ -181,6 +181,15 @@ export default class Layout extends Vue {
 
   get currentOrganizationName(): string {
     return this.$store.state.context.organization.title;
+  }
+
+  mounted(): void {
+    this.$apollo.queries.allOrganizations.refetch();
+    this.$store.subscribeAction((action: any) => {
+      if (action.type === 'auth/refresh') {
+        this.$apollo.queries.allOrganizations.refetch();
+      }
+    });
   }
 }
 </script>
