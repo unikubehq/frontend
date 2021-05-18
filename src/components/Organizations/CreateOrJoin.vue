@@ -24,7 +24,6 @@
            <h1 class="text-h1">Join Organization</h1>
          </v-card-title>
          <v-list>
-<!--           <v-list-item v-for="invite in invites"></v-list-item>-->
          </v-list>
        </v-card>
      </v-col>
