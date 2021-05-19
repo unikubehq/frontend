@@ -4,81 +4,94 @@
      <v-col cols="6">
        <v-card elevation="0" outlined class="pa-6">
          <v-card-title>
-           <h1 class="text-h1">Create Organization</h1>
+           <create-organization-big />
+           <v-spacer />
          </v-card-title>
          <v-card-text>
-           <p>
-             Create a new organization, add members and start managing your projects/apps.
-           </p>
+           <h1 class="text-h1 text--primary">{{ $t('organization.createOrganization') }}</h1>
+           <p class="text-lg-body-1">{{ $t('organization.createIntro') }}</p>
            <v-btn
-            class="mt-3"
+            class="mt-7 text-lg-body-1"
             color="primary"
             block
-            large>Create New Organization</v-btn>
+            large
+           :ripple="false"
+            @click="$emit('success')"
+           >{{ $t('organization.createButton') }}</v-btn>
          </v-card-text>
        </v-card>
      </v-col>
      <v-col cols="6">
-       <v-card elevation="0" outlined class="pa-6">
+       <v-card elevation="0" outlined class="pa-6 fill-height">
          <v-card-title>
-           <h1 class="text-h1">Join Organization</h1>
+           <join-organization-big />
+           <v-spacer />
          </v-card-title>
-         <v-list
-             v-if="userInvitations && userInvitations.results && userInvitations.results.length">
-           <v-list-item v-for="invite in userInvitations.results" :key="invite.id">
-             {{ invite.organization.title }}
-           </v-list-item>
-         </v-list>
+         <v-card-text>
+           <h1 class="text-h1 text--primary">{{ $t('organization.joinOrganization') }}</h1>
+           <p v-if="userInvitations && userInvitations.results"
+               class="text-lg-body-1">
+             {{ $tc('organization.joinIntro', userInvitations.results.length) }}
+           </p>
+           <v-list
+               v-if="userInvitations && userInvitations.results && userInvitations.results.length">
+             <v-list-item v-for="invite in userInvitations.results" :key="invite.id"
+              class="pl-0" two-line>
+               <v-list-item-content >
+               {{ invite.organization.title }}
+                 </v-list-item-content>
+               <v-list-item-content >
+                 <v-btn
+                  color="primary"
+                 :ripple="false"
+                  @click="acceptInvite(invite.id)"
+                 :loading="loading[invite.id]"
+                 >{{ $t('organization.joinButton') }}</v-btn>
+                 </v-list-item-content>
+             </v-list-item>
+           </v-list>
+         </v-card-text>
        </v-card>
      </v-col>
    </v-row>
   </v-col>
 </template>
 <script lang="ts">
-import { Component } from 'vue-property-decorator';
-import { CreateOrganizationMutation, UserInvitationsQuery } from '@/generated/graphql';
-import { validationMixin } from '@/components/mixins';
-import { required } from 'vuelidate/lib/validators';
-import VueI18n from 'vue-i18n';
-import TranslateResult = VueI18n.TranslateResult;
+import { Component, Vue } from 'vue-property-decorator';
+import { AnswerInvitation, UserInvitationsQuery } from '@/generated/graphql';
+import CreateOrganizationBig from '@/components/icons/CreateOrganizationBig.vue';
+import JoinOrganizationBig from '@/components/icons/JoinOrganizationBig.vue';
 
 @Component({
-  validations: {
-    title: {
-      required,
-    },
-  },
+  components: { CreateOrganizationBig, JoinOrganizationBig },
   apollo: {
     userInvitations: {
       query: UserInvitationsQuery,
     },
   },
 })
-export default class OrganizationTitle extends validationMixin {
-  title = '';
+export default class CreateOrJoin extends Vue {
+  loading: {[key: string]: boolean} = {}
 
-  errors: TranslateResult[] = [];
-
-  get enableButton(): boolean {
-    return this.$v.title.$invalid;
-  }
-
-  get titleErrors(): TranslateResult[] {
-    return this.handleErrors('title');
-  }
-
-  handleCreateOrganization(): void {
+  acceptInvite(inviteId: string): void {
+    Vue.set(
+      this.loading,
+      inviteId,
+      true,
+    );
     this.$apollo.mutate({
-      mutation: CreateOrganizationMutation,
+      mutation: AnswerInvitation,
       variables: {
-        title: this.title,
+        accepted: true,
+        invitationId: inviteId,
       },
-    }).then(({ data }) => {
-      this.$store.dispatch('auth/refresh', -1);
-      this.$emit(
-        'success',
-        data.createUpdateOrganization?.organization,
+    }).then(() => {
+      Vue.set(
+        this.loading,
+        inviteId,
+        false,
       );
+      this.$apollo.queries.userInvitations.refetch();
     });
   }
 }
