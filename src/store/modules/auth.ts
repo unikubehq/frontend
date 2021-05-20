@@ -22,7 +22,7 @@ export default class Auth extends VuexModule {
 
   username = '';
 
-  avatarImage = 'https://cdn.zeplin.io/5f84546964e43c2749571f59/assets/2192D830-FF56-4E41-8DBA-F504CEFA64FC.svg';
+  avatarImage = '';
 
   email = '';
 

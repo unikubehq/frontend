@@ -31,7 +31,8 @@
           <template v-slot:activator="{ on, attrs }">
             <v-btn color="343d6f" v-bind="attrs" v-on="on" text :ripple="false" class="py-9">
               <v-avatar class="mr-3">
-                <img :src="$store.state.auth.avatarImage">
+                <v-img v-if="$store.state.auth.avatarImage" :src="$store.state.auth.avatarImage" />
+                <v-img v-else src="@/assets/img/avatar.svg" />
               </v-avatar>
               <div class="d-flex flex-column text-left">
                 <h3 class="mb-0">{{ username }}</h3>
