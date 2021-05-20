@@ -56,6 +56,7 @@
                     elevation="0"
                     :ripple="false"
                     @click="handleUpload"
+                    :loading="loading"
                   >
                     Save
                   </v-btn>
@@ -102,6 +103,8 @@ export default class OrganizationLogo extends Vue {
 
   dialog = false;
 
+  loading = false;
+
   imgSrc = 'https://cdn.zeplin.io/5f84546964e43c2749571f59/assets/2192D830-FF56-4E41-8DBA-F504CEFA64FC.svg';
 
   fileSet = false;
@@ -115,6 +118,7 @@ export default class OrganizationLogo extends Vue {
 
   handleUpload(): void {
     // TODO this is not really good code.
+    this.loading = true;
     const file = (this.$refs.dropzoneElement as unknown as Dropzone).getAcceptedFiles()[0];
     this.fileSet = true;
     const formData = new FormData();
@@ -125,6 +129,7 @@ export default class OrganizationLogo extends Vue {
         Authorization: `Bearer ${this.$store.state.auth.rawRpt}`,
       },
     }).then(() => {
+      this.loading = false;
       this.$apollo.query({
         query: OrganizationQuery,
         variables: {

@@ -27,6 +27,7 @@
           elevation="0"
           :ripple="false"
           @click="handleCreateOrganization"
+          :loading="loading"
           :disabled="enableButton"
       >
         Next
@@ -54,6 +55,8 @@ import TranslateResult = VueI18n.TranslateResult;
   },
 })
 export default class OrganizationTitle extends validationMixin {
+  loading = false
+
   title = '';
 
   errors: TranslateResult[] = [];
@@ -67,12 +70,14 @@ export default class OrganizationTitle extends validationMixin {
   }
 
   handleCreateOrganization(): void {
+    this.loading = true;
     this.$apollo.mutate({
       mutation: CreateOrganizationMutation,
       variables: {
         title: this.title,
       },
     }).then(({ data }) => {
+      this.loading = false;
       this.$store.dispatch('auth/refresh', -1);
       this.$emit(
         'success',

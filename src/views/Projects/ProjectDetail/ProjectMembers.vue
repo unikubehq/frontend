@@ -47,7 +47,7 @@
             </v-icon>
             <v-btn color="neutral" dark @click="updateMember(member)" :ripple="false" elevation="0"
                 :loading="member.loading">
-              Save
+              {{ $t('general.save') }}
             </v-btn>
           </td>
         </tr>

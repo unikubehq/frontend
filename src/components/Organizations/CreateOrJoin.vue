@@ -40,18 +40,45 @@
                <v-list-item-content >
                {{ invite.organization.title }}
                  </v-list-item-content>
-               <v-list-item-content >
+               <v-list-item-action class="flex-row">
                  <v-btn
                   color="primary"
                  :ripple="false"
                   @click="acceptInvite(invite.id)"
                  :loading="loading[invite.id]"
+                   class="mr-3"
+                   elevation="0"
                  >{{ $t('organization.joinButton') }}</v-btn>
-                 </v-list-item-content>
+                 <v-btn
+                  color="error"
+                 :ripple="false"
+                  @click="declineInvite(invite.id)"
+                 :loading="loading[invite.id]"
+                   elevation="0"
+                 >{{ $t('organization.declineButton') }}</v-btn>
+                 </v-list-item-action>
              </v-list-item>
            </v-list>
          </v-card-text>
        </v-card>
+     </v-col>
+   </v-row>
+   <v-row>
+     <v-col>
+       <router-link
+          class="link--secondary"
+          tag="a"
+          :to="{name: 'overview'}"
+        >
+          <v-icon
+              style="transform: rotate(180deg)"
+              class="mr-1"
+              small
+          >
+            $vuetify.icons.arrowRightGrey
+          </v-icon>
+         {{ $t('organization.backToOverview') }}
+       </router-link>
      </v-col>
    </v-row>
   </v-col>
@@ -73,26 +100,34 @@ import JoinOrganizationBig from '@/components/icons/JoinOrganizationBig.vue';
 export default class CreateOrJoin extends Vue {
   loading: {[key: string]: boolean} = {}
 
-  acceptInvite(inviteId: string): void {
+  answerInvite(id: string, accepted: boolean): void {
     Vue.set(
       this.loading,
-      inviteId,
+      id,
       true,
     );
     this.$apollo.mutate({
       mutation: AnswerInvitation,
       variables: {
-        accepted: true,
-        invitationId: inviteId,
+        invitationId: id,
+        accepted,
       },
     }).then(() => {
       Vue.set(
         this.loading,
-        inviteId,
-        false,
+        id,
+        accepted,
       );
       this.$apollo.queries.userInvitations.refetch();
     });
+  }
+
+  acceptInvite(inviteId: string): void {
+    this.answerInvite(inviteId, true);
+  }
+
+  declineInvite(inviteId: string): void {
+    this.answerInvite(inviteId, false);
   }
 }
 </script>

@@ -199,6 +199,8 @@
     "createButton": "Create New Organization",
     "joinOrganization": "Join Organization",
     "joinIntro": "You have no pending organization invites. | Good news! You have a pending invite to the following organization: | Good news! You have some pending invites to the following organizations:",
-    "joinButton": "Join"
+    "joinButton": "Join",
+    "declineButton": "Decline",
+    "backToOverview": "Back to overview"
   }
 }
