@@ -1,8 +1,8 @@
-import { TProjectMember } from '@/generated/graphql';
+import { TOrganizationMember, TProjectMember } from '@/generated/graphql';
 import { Avatar } from '@/typing';
 
 export default class Converter {
-  static memberToAvatar(member: TProjectMember): Avatar {
+  static memberToAvatar(member: TProjectMember | TOrganizationMember): Avatar {
     return {
       key: member?.user?.id || '',
       image: member?.user?.avatarImage || '',

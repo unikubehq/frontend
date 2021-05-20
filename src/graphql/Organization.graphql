@@ -27,6 +27,7 @@ query OrganizationMembersQuery($id: UUID!) {
     ) {
         id
         members {
+            role,
             user {
                 id
                 familyName

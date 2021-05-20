@@ -8,7 +8,7 @@
           class="d-inline-block ml-n2"/>
     </span>
     <span v-else>
-      <unikube-avatar :avatar="avatar" v-for="avatar in avatars" :key="avatar.name"/>
+      <unikube-avatar :avatar-prop="avatar" v-for="avatar in avatars" :key="avatar.name"/>
     </span>
   </div>
 </template>

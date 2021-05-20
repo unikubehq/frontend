@@ -133,7 +133,12 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { OrganizationsQuery, TOrganizationNode } from '@/generated/graphql';
+import {
+  OrganizationMembersQuery,
+  OrganizationsQuery,
+  TOrganizationMember,
+  TOrganizationNode,
+} from '@/generated/graphql';
 import Strings from '@/utils/strings';
 
 Component.registerHooks([
@@ -149,6 +154,7 @@ Component.registerHooks([
       result(result) {
         if (result.data.allOrganizations.results.length) {
           this.$store.commit('context/setOrganization', result.data.allOrganizations.results[0]);
+          this.setOrganizationMember(result.data.allOrganizations.results[0]);
         } else if (this.$route.name !== 'create-organization') {
           this.$router.push({ name: 'create-organization' });
         }
@@ -174,9 +180,27 @@ export default class Layout extends Vue {
 
   setOrganizationContext(organization: TOrganizationNode): void {
     this.$store.commit('context/setOrganization', organization);
+    this.setOrganizationMember(organization);
     if (this.$route.name !== 'overview') {
       this.$router.push({ name: 'overview' });
     }
+  }
+
+  setOrganizationMember(organization: TOrganizationNode): void {
+    this.$apollo.query({
+      query: OrganizationMembersQuery,
+      variables: {
+        id: organization.id,
+      },
+    }).then((res) => {
+      const currentMember = res.data.organization.members.filter(
+        (member: TOrganizationMember) => member?.user?.id === this.$store.state.auth.uuid,
+      )[0];
+      this.$store.commit(
+        'context/setOrganizationMember',
+        currentMember,
+      );
+    });
   }
 
   get currentOrganizationName(): string {

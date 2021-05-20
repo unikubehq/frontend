@@ -45,31 +45,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
 import Component from 'vue-class-component';
-import { Prop } from 'vue-property-decorator';
-import { Avatar } from '@/typing';
+import { AvatarMixin } from '@/components/mixins';
 
 @Component
-export default class UnikubeAvatar extends Vue {
-  @Prop() readonly avatar!: Avatar;
-
-  get avatarStyles(): {color: string, backgroundColor: string} {
-    return { color: this.avatarColor('50%'), backgroundColor: `${this.avatarColor('95%')} !important` };
-  }
-
-  avatarColor(lum: string): string {
-    const randomHSL = (name: string): string => {
-      const number = name.length;
-      const firstLetter = name[0].charCodeAt(0);
-      const lastLetter = name[name.length - 1].charCodeAt(0);
-
-      const avatarNumber = (number + firstLetter + lastLetter) / 10;
-
-      return `hsla(${Math.floor(360 * avatarNumber)},70%,${lum},1)`;
-    };
-    return randomHSL(this.avatar.name);
-  }
+export default class UnikubeAvatar extends AvatarMixin {
 }
 </script>
 

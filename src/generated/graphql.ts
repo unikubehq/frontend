@@ -563,7 +563,7 @@ export type TOrganizationMembersQueryVariables = Exact<{
 }>;
 
 
-export type TOrganizationMembersQueryResult = { __typename?: 'Query', organization?: Maybe<{ __typename?: 'OrganizationNode', id: any, members?: Maybe<Array<Maybe<{ __typename?: 'OrganizationMember', user?: Maybe<{ __typename?: 'UserNode', id: any, familyName?: Maybe<string>, givenName?: Maybe<string> }> }>>> }> };
+export type TOrganizationMembersQueryResult = { __typename?: 'Query', organization?: Maybe<{ __typename?: 'OrganizationNode', id: any, members?: Maybe<Array<Maybe<{ __typename?: 'OrganizationMember', role?: Maybe<string>, user?: Maybe<{ __typename?: 'UserNode', id: any, familyName?: Maybe<string>, givenName?: Maybe<string> }> }>>> }> };
 
 export type TCreateOrganizationMutationVariables = Exact<{
   title: Scalars['String'];
@@ -752,6 +752,7 @@ export const OrganizationMembersQuery = gql`
   organization(id: $id) {
     id
     members {
+      role
       user {
         id
         familyName

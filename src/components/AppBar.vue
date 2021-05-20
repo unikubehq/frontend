@@ -30,9 +30,15 @@
         <v-menu v-model="menu" offset-y nudge-bottom="5">
           <template v-slot:activator="{ on, attrs }">
             <v-btn color="343d6f" v-bind="attrs" v-on="on" text :ripple="false" class="py-9">
-              <v-avatar class="mr-3">
-                <v-img v-if="$store.state.auth.avatarImage" :src="$store.state.auth.avatarImage" />
-                <v-img v-else src="@/assets/img/avatar.svg" />
+              <v-avatar
+                size="46"
+                class="avatar__unikube mr-3"
+                :style="avatarStyles">
+                <img v-if="$store.state.auth.avatarImage" :src="$store.state.auth.avatarImage">
+                <span v-else-if="$store.state.context.organizationMember">
+                  {{ avatar.initials }}
+                </span>
+                <img v-else src="@/assets/img/avatar.svg">
               </v-avatar>
               <div class="d-flex flex-column text-left">
                 <h3 class="mb-0">{{ username }}</h3>
@@ -70,9 +76,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
 import Component from 'vue-class-component';
 import Navigation from '@/components/Navigation.vue';
+import { AvatarMixin } from '@/components/mixins';
+import { Avatar } from '@/typing';
+import Converter from '@/utils/converter';
 
 Component.registerHooks([
   'beforeRouteEnter',
@@ -85,12 +93,16 @@ Component.registerHooks([
     AppNavigation: Navigation,
   },
 })
-export default class Layout extends Vue {
+export default class Layout extends AvatarMixin {
   menu = false;
 
   notifications = 0;
 
   notificationsMenu = false;
+
+  get avatar(): Avatar {
+    return Converter.memberToAvatar(this.$store.state.context.organizationMember);
+  }
 
   increment(): void {
     this.notifications += 1;
