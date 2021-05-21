@@ -130,8 +130,13 @@
 
 .v-tab.vertical-tabs {
   justify-content: start;
+  max-width: none;
   padding-top: 30px;
   padding-bottom: 30px;
+}
+
+.v-tab.vertical-tabs.v-tab--active {
+  box-shadow: 0 2px 40px 0 rgba(183, 183, 183, 0.15);;
 }
 .v-application .v-alert.error--text {
   background-color: #fff7f7 !important;

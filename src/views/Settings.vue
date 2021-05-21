@@ -1,10 +1,11 @@
 <template>
-  <div class="white">
+  <div class="white my-8">
   <v-row>
     <v-col cols="3">
       <v-tabs
         vertical
-        height="1213"
+        class="fill-height"
+        style="min-height: 500px;"
         background-color="#F7F7F7"
       >
         <v-tab :ripple="false" class="vertical-tabs"
