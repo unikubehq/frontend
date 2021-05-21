@@ -89,10 +89,9 @@
           </v-row>
           <v-row>
               <v-col cols="9">
-               <router-link
+               <a
                   class="link--secondary"
-                  tag="a"
-                  :to="{name: 'project.detail.packages'}"
+                  @click="$emit('change')"
                 >
                   <v-icon
                       style="transform: rotate(180deg)"
@@ -101,7 +100,7 @@
                   >
                     $vuetify.icons.arrowRightGrey
                   </v-icon>{{ $t('general.cancel') }}
-               </router-link>
+               </a>
               </v-col>
               <v-col cols="3">
                 <v-btn
