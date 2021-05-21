@@ -22,7 +22,7 @@
             persistent-placeholder
         ></v-text-field>
         </div>
-      <v-btn :ripple="false" plain elevation="0" @click="addMember">
+      <v-btn :ripple="false" elevation="0" @click="addMember">
         <v-icon size="24" class="mr-2">
           $vuetify.icons.addRound
         </v-icon>

@@ -47,8 +47,6 @@
                 <v-btn
                   class="float-right"
                   outlined
-                  plain
-                  color="#a1a9b2"
                   width="144"
                   @click="setEdit"
                   :ripple="false"
@@ -60,8 +58,6 @@
                 <v-btn
                   class="float-right mt-5 "
                   outlined
-                  plain
-                  color="#a1a9b2"
                   width="144"
                   :ripple="false"
                 >

@@ -26,6 +26,24 @@
 .v-btn.primary:hover {
   background-color: $green-dark-1 !important;
 }
+.theme--light.v-btn.v-btn--outlined {
+  color: $grey-1;
+  border-color: $grey-2;
+  &:before {
+    display: none;
+  }
+  &:hover {
+    border-color: $unikube-green;
+    background-color: transparent;
+  }
+  &:focus {
+    background-color: $green-light-7;
+    border-color: $unikube-green;
+  }
+  &[disabled] {
+    opacity: 0.7;
+  }
+}
 .v-application--is-ltr .v-text-field .v-label:not(.v-label--is-disabled) {
   color: $unikube-blue !important;
 }

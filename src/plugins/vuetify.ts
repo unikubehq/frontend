@@ -64,6 +64,7 @@ export default new Vuetify({
     themes: {
       light: {
         primary: '#45D093',
+        secondary: '#F8FFFC',
         anchor: '#45D093',
         error: '#ff7364',
         neutral: '#C4CCD4',

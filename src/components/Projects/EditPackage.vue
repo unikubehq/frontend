@@ -4,7 +4,7 @@
     <h3>{{ $t('package.edit.clusterLevels.title') }}</h3>
     <v-divider class="mb-5"></v-divider>
       <h4>{{ $t('package.edit.clusterLevels.edit', { clusterLevel: clusterLevel.title}) }}</h4>
-          <v-form class="white create-form">
+          <v-form class="white create-form mt-5">
             <v-row>
             <v-col cols="6" class="py-0">
                 <v-text-field
@@ -88,21 +88,28 @@
               </v-col>
           </v-row>
           <v-row>
-              <v-col cols="10">
-                <v-btn
-                  plain
-                  color="white"
-                  elevation="0"
-                  @click="$emit('change');"
+              <v-col cols="9">
+               <router-link
+                  class="link--secondary"
+                  tag="a"
+                  :to="{name: 'project.detail.packages'}"
                 >
-                  {{ $t('general.cancel') }}
-                </v-btn>
+                  <v-icon
+                      style="transform: rotate(180deg)"
+                      class="mr-2"
+                      small
+                  >
+                    $vuetify.icons.arrowRightGrey
+                  </v-icon>{{ $t('general.cancel') }}
+               </router-link>
               </v-col>
-              <v-col cols="2">
+              <v-col cols="3">
                 <v-btn
                 large
+                block
                 color="primary"
                 @click="submit"
+                :disabled="$v.$invalid"
               >{{ $t('general.save') }}</v-btn>
               </v-col>
             </v-row>

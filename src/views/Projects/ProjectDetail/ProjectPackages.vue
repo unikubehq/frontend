@@ -11,9 +11,8 @@
               <v-col cols="3" class="text-right">
                 <v-btn
                   outlined
-                  plain
-                  color="#a1a9b2"
                   width="50"
+                  :ripple="false"
                   @click="setPackageEdit(pkg)"
                 >
                   <v-icon size="24">

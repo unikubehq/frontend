@@ -75,7 +75,7 @@
             ></v-select>
           </td>
           <td>
-            <v-btn plain color="transparent" class="pa-0" elevation="0"
+            <v-btn color="transparent" class="pa-0" elevation="0"
                 @click="removePendingMember(idx)" :ripple="false">
               <v-icon size="24">$vuetify.icons.cross</v-icon>
             </v-btn>
@@ -87,7 +87,7 @@
         </tr>
         <tr>
           <td colspan="4">
-            <v-btn :ripple="false" plain elevation="0"
+            <v-btn :ripple="false" color="transparent" elevation="0"
                 @click="pendingMembers.push({user: null, role: null, loading: false})"
                 class="mt-2 pa-0">
               <v-icon size="24" class="mr-2">

@@ -15,7 +15,6 @@
               {{ sops.title }}
               <v-btn
                   outlined
-                  plain
                   color="#a1a9b2"
                   width="144"
                   right
@@ -132,17 +131,21 @@
             </v-col>
         </v-row>
         <v-row>
-            <v-col cols="10">
+            <v-col cols="8">
               <v-btn
-                plain
+                class="float-right mt-1 link--secondary"
                 color="white"
+                tag="a"
+                :ripple="false"
                 elevation="0"
                 @click="handleShowForm(false)"
               >{{ $t('general.cancel') }}</v-btn>
             </v-col>
-            <v-col cols="2">
+            <v-col cols="4">
               <v-btn
               large
+              block
+              :ripple="false"
               color="primary"
               @click="submit"
               :disabled="$v.$invalid"

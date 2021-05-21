@@ -53,7 +53,7 @@
         </v-form>
         <v-row>
           <v-col cols="12">
-            <v-btn :ripple="false" plain elevation="0" @click="addMemberForm" text
+            <v-btn :ripple="false" color="transparent" elevation="0" @click="addMemberForm" text
                 :class="overlay ? 'mt-5' : 'mt-n5'" v-if="memberChoices.length">
               <v-icon size="24" class="mr-2">
               $vuetify.icons.addRound
