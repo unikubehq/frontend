@@ -11,7 +11,8 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="member in membersEdit" :key="member.id" class="mb-3">
+        <tr v-for="member in membersEdit" :key="member.id" class="mb-3"
+            :disabled="disabledRow(member)">
           <td>
             <div class="d-flex">
               <unikube-avatar :avatar-prop="memberToAvatar(member)"/>
@@ -171,6 +172,19 @@ export default class ProjectPackages extends Vue {
     }
   }
 
+  disabledRow(member: TProjectMemberEdit): boolean {
+    if (this.membersEdit?.length) {
+      const editIDs = this.membersEdit.map(
+        (editMember: TProjectMemberEdit) => (editMember.editing ? editMember.user?.id : null),
+      );
+      if (editIDs.some((flag: boolean) => flag !== null)) {
+        return !editIDs.includes(member.user?.id);
+      }
+      return false;
+    }
+    return false;
+  }
+
   get memberChoices(): Array<{value: string, text: string}> {
     const result : Array<{value: string, text: string}> = [];
     const members = [...this.$data?.organization?.members];
@@ -283,6 +297,10 @@ export default class ProjectPackages extends Vue {
     }
     tr:after {
       width: 20px;
+    }
+    tr[disabled] {
+      opacity: 0.5;
+      pointer-events: none;
     }
   }
   .member-thead {
