@@ -42,7 +42,8 @@
               </v-avatar>
               <div class="d-flex flex-column text-left">
                 <h3 class="mb-0">{{ username }}</h3>
-                <p class="mb-0">Administrator</p>
+                <p class="mb-0 text-capitalize" v-if="$store.state.context.organizationMember"
+                    v-text="$store.state.context.organizationMember.role" />
               </div>
               <v-icon class="ml-4" small>$vuetify.icons.dropdown</v-icon>
             </v-btn>

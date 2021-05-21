@@ -153,8 +153,24 @@ Component.registerHooks([
       query: OrganizationsQuery,
       result(result) {
         if (result.data.allOrganizations.results.length) {
-          this.$store.commit('context/setOrganization', result.data.allOrganizations.results[0]);
-          this.setOrganizationMember(result.data.allOrganizations.results[0]);
+          // If currently no organization is set - set the first from the result set.
+          if (!this.$store.state.context.organization) {
+            this.$store.commit('context/setOrganization', result.data.allOrganizations.results[0]);
+            this.setOrganizationMember(result.data.allOrganizations.results[0]);
+          } else {
+          // If currently an organization is set, check if it is still contained in the result set.
+            let contained = false;
+            result.data.allOrganizations.results.forEach((organization: TOrganizationNode) => {
+              if (this.$store.state.context.organization.id === organization.id) {
+                contained = true;
+              }
+            });
+            // If it is not contained within the result set - set the first.
+            if (!contained) {
+              this.$store.commit('context/setOrganization', result.data.allOrganizations.results[0]);
+              this.setOrganizationMember(result.data.allOrganizations.results[0]);
+            }
+          }
         } else if (this.$route.name !== 'create-organization') {
           this.$router.push({ name: 'create-organization' });
         }
@@ -209,8 +225,8 @@ export default class Layout extends Vue {
 
   mounted(): void {
     this.$apollo.queries.allOrganizations.refetch();
-    this.$store.subscribeAction((action: any) => {
-      if (action.type === 'auth/refresh') {
+    this.$store.subscribe((mutation: any) => {
+      if (mutation.type === 'auth/setRpt') {
         this.$apollo.queries.allOrganizations.refetch();
       }
     });
