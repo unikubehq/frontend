@@ -14,7 +14,7 @@
         <tr v-for="member in membersEdit" :key="member.id" class="mb-3">
           <td>
             <div class="d-flex">
-              <unikube-avatar :avatar="memberToAvatar(member)"/>
+              <unikube-avatar :avatar-prop="memberToAvatar(member)"/>
               <div class="d-flex flex-column ml-4">
                 <h3 class="mb-0">
                   {{ member.user.givenName }} {{ member.user.familyName }}
