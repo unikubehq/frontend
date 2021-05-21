@@ -32,6 +32,7 @@
               :placeholder="$t('projects.selectRole')"
                 style="width: 200px;"
               class="v-select__small"
+                persistent-placeholder
             ></v-select>
           </td>
           <td v-if="!member.editing">{{ member.user.lastLogin }}</td>
@@ -46,7 +47,7 @@
             </v-icon>
             <v-btn color="neutral" dark @click="updateMember(member)" :ripple="false" elevation="0"
                 :loading="member.loading">
-              Save
+              {{ $t('general.save') }}
             </v-btn>
           </td>
         </tr>
@@ -59,6 +60,7 @@
                 :placeholder="$t('project.chooseMember')"
                 class="v-select__small"
                 style="width: 300px;"
+                persistent-placeholder
               ></v-select>
           </td>
           <td colspan="2">
@@ -69,6 +71,7 @@
               :placeholder="$t('projects.selectRole')"
                 style="width: 200px;"
               class="v-select__small"
+                persistent-placeholder
             ></v-select>
           </td>
           <td>
@@ -78,7 +81,7 @@
             </v-btn>
             <v-btn color="neutral" dark @click="addMember(idx)" :ripple="false" elevation="0"
                 :loading="pendingMember.loading">
-              Save
+              {{ $t('general.save') }}
             </v-btn>
           </td>
         </tr>
@@ -86,7 +89,7 @@
           <td colspan="4">
             <v-btn :ripple="false" plain elevation="0"
                 @click="pendingMembers.push({user: null, role: null, loading: false})"
-                color="transparent" class="mt-2 pa-0">
+                class="mt-2 pa-0">
               <v-icon size="24" class="mr-2">
                 $vuetify.icons.addRound
               </v-icon>{{ $t('user.addAnother') }}

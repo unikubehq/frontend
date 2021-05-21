@@ -25,7 +25,7 @@ export interface TProjectMemberEdit extends TProjectMember {
   loading?: boolean
 }
 
-export type Action = 'edit' | 'view' | 'projects:add' | 'projects:view';
+export type Action = 'edit' | 'view' | 'projects:add' | 'projects:view' | 'members:delete' | 'members:add';
 export type Subject = InferSubjects<TProjectNode>;
 export type UnikubeAbility = Ability<[Action, Subject]>;
 

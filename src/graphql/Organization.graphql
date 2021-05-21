@@ -27,6 +27,7 @@ query OrganizationMembersQuery($id: UUID!) {
     ) {
         id
         members {
+            role,
             user {
                 id
                 familyName
@@ -53,3 +54,41 @@ mutation CreateOrganizationMutation($title: String!) {
         },
     }
 }
+
+mutation InviteToOrganization($email: String!, $organization: UUID!) {
+    createInvitation(email: $email, id: $organization) {
+        ok
+    }
+}
+
+mutation RevokeOrganizationInvite($inviteId: UUID!) {
+    revokeInvitation(id: $inviteId) {
+        ok
+    }
+}
+
+mutation RevokeOrganizationInvite($inviteId: UUID!) {
+    revokeInvitation(id: $inviteId) {
+        ok
+    }
+}
+
+mutation AnswerInvitation($accepted: Boolean, $invitationId: UUID) {
+    answerInvitation(accepted: $accepted, id: $invitationId) {
+        ok
+    }
+}
+
+mutation UpdateOrganizationMember($organizationId: UUID, $role: OrganizationMemberRoleEnum, $userId: UUID) {
+    updateOrganizationMember(id: $organizationId, role: $role, user: $userId) {
+        ok
+    }
+}
+
+
+mutation DeleteOrganizationMember($organizationId: UUID, $userId: UUID) {
+    removeOrganizationMember(id: $organizationId, user: $userId) {
+        ok
+    }
+}
+

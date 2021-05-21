@@ -45,6 +45,7 @@
             prepend-inner-icon="$vuetify.icons.user"
             @blur="$v.fullName.$touch()"
             @change="setDataChanged"
+            persistent-placeholder
         />
         <v-text-field
             :label="$t('settings.account.email')"
@@ -58,6 +59,7 @@
             @keyup.enter="register"
             prepend-inner-icon="$vuetify.icons.email"
             @blur="$v.email.$touch()"
+            persistent-placeholder
         />
         <v-btn color="primary" :disabled="!dataChanged" large elevation="0" :ripple="false">
           {{ $t('general.saveChanges') }}
@@ -83,6 +85,7 @@
             :append-icon="clearText ? '$vuetify.icons.eyeOpen' : '$vuetify.icons.eye'"
             @click:append="clearText = !clearText"
             @blur="$v.password.$touch()"
+            persistent-placeholder
         >
         </v-text-field>
         <router-link class="link--secondary" to="/forgot-password">
@@ -102,6 +105,7 @@
                 :append-icon="clearText ? '$vuetify.icons.eyeOpen' : '$vuetify.icons.eye'"
                 @click:append="clearText = !clearText"
                 :type="clearText ? 'text' : 'password'"
+                persistent-placeholder
 
             ></v-text-field>
           </v-col>
@@ -118,6 +122,7 @@
                 :append-icon="clearText ? '$vuetify.icons.eyeOpen' : '$vuetify.icons.eye'"
                 @click:append="clearText = !clearText"
                 :type="clearText ? 'text' : 'password'"
+                persistent-placeholder
 
             ></v-text-field>
           </v-col>

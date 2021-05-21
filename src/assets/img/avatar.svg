@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="96px" height="96px" viewBox="0 0 96 96" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Icons/Big/Avatar (empty)</title>
+    <defs>
+        <path d="M81.72,13.4203 C73.241,26.9803 58.17,36.0003 41,36.0003 C23.83,36.0003 8.76,26.9803 0.28,13.4203 C1.85,6.0793 8.38,0.5693 16.19,0.5693 L65.81,0.5693 C73.63,0.5693 80.15,6.0793 81.72,13.4203" id="path-1"></path>
+        <filter x="-57.7%" y="-132.7%" width="220.3%" height="376.6%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="2" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="16" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.631372549   0 0 0 0 0.662745098   0 0 0 0 0.698039216  0 0 0 0.1 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <path d="M67.2981,37.5092 C67.2981,48.1662 58.6591,56.8052 48.0021,56.8052 C37.3461,56.8052 28.7061,48.1662 28.7061,37.5092 C28.7061,26.8522 37.3461,18.2132 48.0021,18.2132 C58.6591,18.2132 67.2981,26.8522 67.2981,37.5092" id="path-3"></path>
+        <filter x="-121.8%" y="-121.8%" width="353.9%" height="353.9%" filterUnits="objectBoundingBox" id="filter-4">
+            <feOffset dx="2" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="16" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.631372549   0 0 0 0 0.662745098   0 0 0 0 0.698039216  0 0 0 0.1 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Icons/Big/Avatar-(empty)" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-9">
+            <g id="Group-3" fill="#EAF2F9">
+                <path d="M96.0002,48.0004 C96.0002,57.3294 93.3402,66.0504 88.7202,73.4204 C80.2402,86.9794 65.1702,96.0004 48.0002,96.0004 C30.8302,96.0004 15.7602,86.9794 7.2792,73.4204 C2.6602,66.0504 0.0002,57.3294 0.0002,48.0004 C0.0002,21.4894 21.4902,0.0004 48.0002,0.0004 C74.5102,0.0004 96.0002,21.4894 96.0002,48.0004" id="Fill-1"></path>
+            </g>
+            <g id="Fill-4" transform="translate(7.000000, 60.000000)">
+                <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+            </g>
+            <g id="Fill-7">
+                <use fill="black" fill-opacity="1" filter="url(#filter-4)" xlink:href="#path-3"></use>
+                <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-3"></use>
+            </g>
+        </g>
+    </g>
+</svg>

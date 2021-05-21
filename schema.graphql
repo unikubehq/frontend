@@ -2,25 +2,211 @@ schema {
   query: Query
   mutation: Mutation
 }
-type Query {
-  user(id: UUID): UserNode
-  allOrganizations(offset: Int, limit: Int): OrganizationNodePage
-  organization(id: UUID!): OrganizationNode
-  allProjects(offset: Int, limit: Int): ProjectNodePage
-  project(id: UUID, slug: String): ProjectNode
-  allPackages(organizationId: UUID, projectId: UUID, offset: Int, limit: Int): PackageNodePage
-  package(id: UUID, slug: String): PackageNode
-  clusterlevel(id: UUID): ClusterLevelNode
-}
-scalar UUID
-type UserNode {
+
+directive @composedGraph(version: Int!) on SCHEMA
+
+directive @graph(name: String!, url: String!) on SCHEMA
+
+directive @key(fields: String!, graph: String!) on OBJECT
+
+directive @owner(graph: String!) on OBJECT
+
+directive @provides(fields: String!) on FIELD_DEFINITION
+
+directive @requires(fields: String!) on FIELD_DEFINITION
+
+directive @resolve(graph: String!) on FIELD_DEFINITION
+
+type AWSKMSNode {
+  title: String!
+  description: String
   id: UUID!
-  email: String
-  name: String
-  familyName: String
-  givenName: String
-  avatarImage: String
+  accessKey: String!
+  secretAccessKey: String!
 }
+
+type ClusterLevelNode {
+  title: String!
+  description: String
+  id: UUID!
+  package: PackageNode!
+  type: ClusterLevelType!
+  valuesPath: String!
+  valuesType: ClusterLevelValuesType
+  sopsCredentials: SOPSProviderNode
+  deployments: [DeploymentNode!]!
+  specsUrl: String
+}
+
+enum ClusterLevelType {
+  LOCAL
+  REMOTE
+}
+
+enum ClusterLevelValuesType {
+  FILE
+  DIR
+}
+
+type CreateOrganizationMemberInvitation {
+  ok: Boolean
+}
+
+type CreateProjectMember {
+  ok: Boolean
+}
+
+input CreateUpdateClusterLevelInput {
+  title: String!
+  description: String
+  type: String!
+  package: ID!
+  sopsCredentials: ID
+  valuesPath: String
+  valuesType: String
+  id: ID
+  clientMutationId: String
+}
+
+type CreateUpdateClusterLevelPayload {
+  clusterLevel: ClusterLevelNode
+  errors: [ErrorType]
+  clientMutationId: String
+}
+
+input CreateUpdateOrganizationInput {
+  title: String!
+  description: String
+  onTrial: Boolean
+  avatarImage: String
+  id: ID
+  clientMutationId: String
+}
+
+type CreateUpdateOrganizationPayload {
+  organization: OrganizationNode
+  errors: [ErrorType]
+  clientMutationId: String
+}
+
+input CreateUpdateProjectInput {
+  title: String!
+  description: String
+  specRepository: String!
+  specRepositoryBranch: String
+  specType: String!
+  currentCommit: String
+  currentCommitDateTime: DateTime
+  accessUsername: String
+  accessToken: String
+  organization: UUID!
+  id: ID
+  clientMutationId: String
+}
+
+type CreateUpdateProjectPayload {
+  project: ProjectNode
+  errors: [ErrorType]
+  clientMutationId: String
+}
+
+type CreateUpdateSOPS {
+  ok: Boolean
+}
+
+scalar DateTime
+
+type DeleteClusterLevel {
+  ok: Boolean
+}
+
+type DeleteOrganizationMember {
+  ok: Boolean
+}
+
+type DeleteProject {
+  ok: Boolean
+}
+
+type DeleteProjectMember {
+  ok: Boolean
+}
+
+type DeleteSOPS {
+  ok: Boolean
+}
+
+type DeploymentNode {
+  title: String!
+  description: String
+  id: UUID!
+  ports: String!
+  clusterLevel: ClusterLevelNode!
+  isSwitchable: Boolean!
+}
+
+type ErrorType {
+  field: String!
+  messages: [String!]!
+}
+
+type FileInformationNode {
+  path: String
+  encrypted: Boolean
+}
+
+scalar JSONString
+
+type Mutation {
+  createUpdateOrganization(input: CreateUpdateOrganizationInput!): CreateUpdateOrganizationPayload
+  createInvitation(email: String, id: UUID): CreateOrganizationMemberInvitation
+  revokeInvitation(id: UUID): RevokeOrganizationMemberInvitation
+  answerInvitation(accepted: Boolean, id: UUID): UpdateOrganizationMemberInvitation
+  updateOrganizationMember(id: UUID, role: OrganizationMemberRoleEnum, user: UUID): UpdateOrganizationMember
+  removeOrganizationMember(id: UUID, user: UUID): DeleteOrganizationMember
+  createUpdateProject(input: CreateUpdateProjectInput!): CreateUpdateProjectPayload
+  createProjectMember(id: UUID, role: ProjectMemberRoleEnum, user: UUID): CreateProjectMember
+  deleteProjectMember(id: UUID, user: UUID): DeleteProjectMember
+  deleteProject(id: UUID): DeleteProject
+  createUpdateClusterLevel(input: CreateUpdateClusterLevelInput!): CreateUpdateClusterLevelPayload
+  deleteClusterLevel(id: UUID): DeleteClusterLevel
+  createUpdateSops(id: UUID, sopsData: SOPSInputType!): CreateUpdateSOPS
+  deleteSops(id: UUID): DeleteSOPS
+}
+
+type OrganizationInvitationNode {
+  id: UUID!
+  organization: OrganizationNode!
+  email: String!
+}
+
+type OrganizationInvitationNodePage {
+  totalCount: Int
+  resultCount: Int
+  offset: Int
+  limit: Int
+  results: [OrganizationInvitationNode]
+}
+
+type OrganizationMember {
+  user: UserNode
+  role: String
+}
+
+enum OrganizationMemberRoleEnum {
+  admin
+  member
+}
+
+type OrganizationNode {
+  created: DateTime!
+  title: String!
+  description: String
+  id: UUID!
+  avatarImage: String
+  members: [OrganizationMember]
+}
+
 type OrganizationNodePage {
   totalCount: Int
   resultCount: Int
@@ -28,26 +214,46 @@ type OrganizationNodePage {
   limit: Int
   results: [OrganizationNode]
 }
-type OrganizationNode {
-  id: UUID!
-  created: DateTime!
+
+type PGPKeyNode {
   title: String!
   description: String
-  avatarImage: String
-  members: [OrganizationMember]
+  id: UUID!
+  privateKey: String!
 }
-scalar DateTime
-type OrganizationMember {
-  user: UserNode
-  role: String
+
+type PackageNode {
+  title: String!
+  description: String
+  id: UUID!
+  project: ProjectNode!
+  dirPath: String!
+  type: String!
+  namespace: String!
+  fileInformation: [FileInformationNode]
+  hash: String!
+  deployments(level: String, switchable: Boolean): [DeploymentNode]
+  clusterLevel(level: String): [ClusterLevelNode]
 }
-type ProjectNodePage {
+
+type PackageNodePage {
   totalCount: Int
   resultCount: Int
   offset: Int
   limit: Int
-  results: [ProjectNode]
+  results: [PackageNode]
 }
+
+type ProjectMember {
+  user: UserNode
+  role: String
+}
+
+enum ProjectMemberRoleEnum {
+  admin
+  member
+}
+
 type ProjectNode {
   title: String!
   description: String
@@ -67,11 +273,15 @@ type ProjectNode {
   sops: [SOPSProviderNode]
   members: [ProjectMember]
 }
-scalar JSONString
-enum ProjectSpecType {
-  PLAIN
-  HELM
+
+type ProjectNodePage {
+  totalCount: Int
+  resultCount: Int
+  offset: Int
+  limit: Int
+  results: [ProjectNode]
 }
+
 enum ProjectRepositoryStatus {
   UNKNOWN
   CLONING_PENDING
@@ -83,155 +293,29 @@ enum ProjectRepositoryStatus {
   PARSING_FAILED
   OK
 }
-type PackageNode {
-  title: String!
-  description: String
-  id: UUID!
-  project: ProjectNode!
-  dirPath: String!
-  type: String!
-  namespace: String!
-  fileInformation: [FileInformationNode]
-  hash: String!
-  deployments(level: String, switchable: Boolean): [DeploymentNode]
-  clusterLevel(level: String): [ClusterLevelNode]
+
+enum ProjectSpecType {
+  PLAIN
+  HELM
 }
-type FileInformationNode {
-  path: String
-  encrypted: Boolean
+
+type Query {
+  user(id: UUID): UserNode
+  allOrganizations(offset: Int, limit: Int): OrganizationNodePage
+  organization(id: UUID!): OrganizationNode
+  userInvitations(offset: Int, limit: Int): OrganizationInvitationNodePage
+  allOrganizationInvitations(id: UUID!, offset: Int, limit: Int): OrganizationInvitationNodePage
+  allProjects(offset: Int, limit: Int): ProjectNodePage
+  project(id: UUID, slug: String): ProjectNode
+  allPackages(organizationId: UUID, projectId: UUID, offset: Int, limit: Int): PackageNodePage
+  package(id: UUID, slug: String): PackageNode
+  clusterlevel(id: UUID): ClusterLevelNode
 }
-type DeploymentNode {
-  title: String!
-  description: String
-  id: UUID!
-  ports: String!
-  clusterLevel: ClusterLevelNode!
-  isSwitchable: Boolean!
-}
-type ClusterLevelNode {
-  title: String!
-  description: String
-  id: UUID!
-  package: PackageNode!
-  type: ClusterLevelType!
-  valuesPath: String!
-  valuesType: ClusterLevelValuesType
-  sopsCredentials: SOPSProviderNode
-  deployments: [DeploymentNode!]!
-  specsUrl: String
-}
-enum ClusterLevelType {
-  LOCAL
-  REMOTE
-}
-enum ClusterLevelValuesType {
-  FILE
-  DIR
-}
-union SOPSProviderNode = AWSKMSNode | PGPKeyNode
-type AWSKMSNode {
-  title: String!
-  description: String
-  id: UUID!
-  accessKey: String!
-  secretAccessKey: String!
-}
-type PGPKeyNode {
-  title: String!
-  description: String
-  id: UUID!
-  privateKey: String!
-}
-type ProjectMember {
-  user: UserNode
-  role: String
-}
-type PackageNodePage {
-  totalCount: Int
-  resultCount: Int
-  offset: Int
-  limit: Int
-  results: [PackageNode]
-}
-type Mutation {
-  createUpdateOrganization(input: CreateUpdateOrganizationInput!): CreateUpdateOrganizationPayload
-  createUpdateProject(input: CreateUpdateProjectInput!): CreateUpdateProjectPayload
-  createProjectMember(id: UUID, role: ProjectMemberRoleEnum, user: UUID): CreateProjectMember
-  deleteProjectMember(id: UUID, user: UUID): DeleteProjectMember
-  deleteProject(id: UUID): DeleteProject
-  createUpdateClusterLevel(input: CreateUpdateClusterLevelInput!): CreateUpdateClusterLevelPayload
-  deleteClusterLevel(id: UUID): DeleteClusterLevel
-  createUpdateSops(id: UUID, sopsData: SOPSInputType!): CreateUpdateSOPS
-  deleteSops(id: UUID): DeleteSOPS
-}
-input CreateUpdateOrganizationInput {
-  title: String!
-  description: String
-  onTrial: Boolean
-  avatarImage: String
-  id: ID
-  clientMutationId: String
-}
-type CreateUpdateOrganizationPayload {
-  organization: OrganizationNode
-  errors: [ErrorType]
-  clientMutationId: String
-}
-type ErrorType {
-  field: String!
-  messages: [String!]!
-}
-input CreateUpdateProjectInput {
-  title: String!
-  description: String
-  specRepository: String!
-  specRepositoryBranch: String
-  specType: String!
-  currentCommit: String
-  currentCommitDateTime: DateTime
-  accessUsername: String
-  accessToken: String
-  organization: UUID!
-  id: ID
-  clientMutationId: String
-}
-type CreateUpdateProjectPayload {
-  project: ProjectNode
-  errors: [ErrorType]
-  clientMutationId: String
-}
-enum ProjectMemberRoleEnum {
-  admin
-  member
-}
-type CreateProjectMember {
+
+type RevokeOrganizationMemberInvitation {
   ok: Boolean
 }
-type DeleteProjectMember {
-  ok: Boolean
-}
-type DeleteProject {
-  ok: Boolean
-}
-input CreateUpdateClusterLevelInput {
-  title: String!
-  description: String
-  type: String!
-  package: ID!
-  sopsCredentials: ID
-  valuesPath: String
-  valuesType: String
-  id: ID
-  clientMutationId: String
-}
-type CreateUpdateClusterLevelPayload {
-  clusterLevel: ClusterLevelNode
-  errors: [ErrorType]
-  clientMutationId: String
-}
-type DeleteClusterLevel {
-  ok: Boolean
-}
+
 input SOPSInputType {
   title: String!
   description: String
@@ -241,13 +325,29 @@ input SOPSInputType {
   secret2: String
   secret3: String
 }
+
+union SOPSProviderNode = AWSKMSNode | PGPKeyNode
+
 enum SOPSTypeEnum {
   aws
   pgp
 }
-type CreateUpdateSOPS {
+
+scalar UUID
+
+type UpdateOrganizationMember {
   ok: Boolean
 }
-type DeleteSOPS {
+
+type UpdateOrganizationMemberInvitation {
   ok: Boolean
+}
+
+type UserNode {
+  id: UUID!
+  email: String
+  name: String
+  familyName: String
+  givenName: String
+  avatarImage: String
 }

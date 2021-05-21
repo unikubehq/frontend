@@ -11,6 +11,8 @@ import AccessUser from '@/components/icons/AccessUser.vue';
 import AccessToken from '@/components/icons/AccessToken.vue';
 import Branch from '@/components/icons/Branch.vue';
 import Cross from '@/components/icons/Cross.vue';
+import JoinOrganizationBig from '@/components/icons/JoinOrganizationBig.vue';
+import CreateOrganizationBig from '@/components/icons/CreateOrganizationBig.vue';
 import DropdownSmallGrey from '@/components/icons/DropdownSmallGrey.vue';
 import HidePassword from '@/components/icons/HidePassword.vue';
 import ShowPassword from '@/components/icons/ShowPassword.vue';
@@ -91,6 +93,12 @@ export default new Vuetify({
       },
       branch: {
         component: Branch,
+      },
+      createOrganizationBig: {
+        component: CreateOrganizationBig,
+      },
+      joinOrganizationBig: {
+        component: JoinOrganizationBig,
       },
       repository: {
         component: Repository,

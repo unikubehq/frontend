@@ -8,16 +8,12 @@
           <v-img class="d-inline-block" src="@/assets/img/Unikube-Logo-H.svg"
                  max-width="150"/>
         </v-col>
-        <organization-title v-if="step === 0" v-on:success="orgaCreation"></organization-title>
-        <organization-logo v-if="step === 1" v-on:success="logoCreation"
+        <create-or-join v-if="step === 0" @success="nextStep" />
+        <organization-title v-if="step === 1" @success="orgaCreation"></organization-title>
+        <organization-logo v-if="step === 2" @success="logoCreation"
             :organization-id="organizationId" />
-        <create-organization-project
-          v-if="step === 2"
-          v-on:success="nextStep"
-        ></create-organization-project>
-        <orga-members v-if="step === 3" v-on:success="nextStep()"></orga-members>
-        <orga-done v-if="step === 4" :orgaId="organizationId" :orgaTitle="organizationTitle">
-        </orga-done>
+        <organization-members v-if="step === 4" @success="nextStep"/>
+        <orga-done v-if="step === 5" :orgaId="organizationId" :orgaTitle="organizationTitle" />
       </v-row>
     </v-container>
   </v-main>
@@ -25,19 +21,19 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import CreateOrJoin from '@/components/Organizations/CreateOrJoin.vue';
 import OrganizationTitle from '@/components/Organizations/OrganizationTitle.vue';
 import OrganizationLogo from '@/components/Organizations/OrganizationLogo.vue';
-import CreateOrganizationProject
-  from '@/components/Organizations/CreateOrganizationProject.vue';
-import OrgaMembers from '@/components/Organizations/OrgaMembers.vue';
+import OrganizationMembers from '@/components/Organizations/OrganizationMembers.vue';
 import OrgaDone from '@/components/Organizations/OrgaDone.vue';
+import { TOrganizationNode } from '@/generated/graphql';
 
 @Component({
   components: {
+    CreateOrJoin,
     OrganizationTitle,
     OrganizationLogo,
-    CreateOrganizationProject,
-    OrgaMembers,
+    OrganizationMembers,
     OrgaDone,
   },
 })
@@ -52,10 +48,11 @@ export default class CreateOrganization extends Vue {
     this.step += 1;
   }
 
-  orgaCreation(id: string, title: string): void {
-    this.organizationId = id;
-    this.organizationTitle = title;
-    this.step = 1;
+  orgaCreation(organization: TOrganizationNode): void {
+    this.organizationId = organization.id;
+    this.organizationTitle = organization.title;
+    this.$store.commit('context/setOrganization', organization);
+    this.step = 2;
   }
 
   logoCreation(): void {

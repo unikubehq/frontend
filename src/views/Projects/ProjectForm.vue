@@ -14,6 +14,7 @@
             v-model="title"
             @blur="$v.title.$touch()"
             prepend-inner-icon="$vuetify.icons.projectInput"
+            persistent-placeholder
           />
         </v-col>
         <v-col cols="6" class="py-0">
@@ -26,6 +27,7 @@
             :placeholder="$t('projects.enterDescription')"
             v-model="description"
             prepend-inner-icon="$vuetify.icons.description"
+            persistent-placeholder
           />
         </v-col>
         <v-col cols="6" class="py-0">
@@ -40,6 +42,7 @@
             :error-messages="specRepositoryErrors"
             prepend-inner-icon="$vuetify.icons.repository"
             @blur="$v.specRepository.$touch()"
+            persistent-placeholder
           />
         </v-col>
         <v-col cols="6" class="py-0">
@@ -54,6 +57,7 @@
             :error-messages="specRepositoryBranchErrors"
             prepend-inner-icon="$vuetify.icons.branch"
             @blur="$v.specRepositoryBranch.$touch()"
+            persistent-placeholder
           />
         </v-col>
         <v-col cols="6" class="py-0">
@@ -68,6 +72,7 @@
             :error-messages="accessUsernameErrors"
             prepend-inner-icon="$vuetify.icons.accessUser"
             @blur="$v.accessUsername.$touch()"
+            persistent-placeholder
           />
         </v-col>
         <v-col cols="6" class="py-0">
@@ -82,6 +87,7 @@
             :error-messages="accessTokenErrors"
             prepend-inner-icon="$vuetify.icons.accessToken"
             @blur="$v.accessToken.$touch()"
+            persistent-placeholder
           />
         </v-col>
         <v-col cols="6" class="py-0">
@@ -94,6 +100,7 @@
             :placeholder="$t('projects.enterSpecificationType')"
             v-model="specType"
             :items="specTypeChoices"
+            persistent-placeholder
           />
         </v-col>
       </v-row>

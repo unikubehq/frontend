@@ -31,6 +31,7 @@
                 outlined
                 prepend-inner-icon="$vuetify.icons.organization"
                 :placeholder="$t('project.chooseMember')"
+                  persistent-placeholder
               ></v-select>
             </v-col>
             <v-col :cols="overlay ? 6 : 5">
@@ -41,6 +42,7 @@
                 outlined
                 prepend-inner-icon="$vuetify.icons.organization"
                 :placeholder="$t('projects.selectRole')"
+                  persistent-placeholder
               ></v-select>
             </v-col>
             <v-col :cols="overlay ? 3 : 2"

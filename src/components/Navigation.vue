@@ -89,7 +89,7 @@
               </v-list-item-content>
             </v-list-item>
             <v-divider />
-            <v-list-item link  to="/create-organization">
+            <v-list-item link :to="{name: 'create-organization'}">
                 <v-list-item-icon class="organization-dropdown--icon">
                   <v-icon>$vuetify.icons.createOrganization</v-icon>
                 </v-list-item-icon>
@@ -133,7 +133,12 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { OrganizationsQuery, TOrganizationNode } from '@/generated/graphql';
+import {
+  OrganizationMembersQuery,
+  OrganizationsQuery,
+  TOrganizationMember,
+  TOrganizationNode,
+} from '@/generated/graphql';
 import Strings from '@/utils/strings';
 
 Component.registerHooks([
@@ -148,8 +153,25 @@ Component.registerHooks([
       query: OrganizationsQuery,
       result(result) {
         if (result.data.allOrganizations.results.length) {
-          this.$store.commit('context/setOrganization', result.data.allOrganizations.results[0]);
-        } else {
+          // If currently no organization is set - set the first from the result set.
+          if (!this.$store.state.context.organization) {
+            this.$store.commit('context/setOrganization', result.data.allOrganizations.results[0]);
+            this.setOrganizationMember(result.data.allOrganizations.results[0]);
+          } else {
+          // If currently an organization is set, check if it is still contained in the result set.
+            let contained = false;
+            result.data.allOrganizations.results.forEach((organization: TOrganizationNode) => {
+              if (this.$store.state.context.organization.id === organization.id) {
+                contained = true;
+              }
+            });
+            // If it is not contained within the result set - set the first.
+            if (!contained) {
+              this.$store.commit('context/setOrganization', result.data.allOrganizations.results[0]);
+              this.setOrganizationMember(result.data.allOrganizations.results[0]);
+            }
+          }
+        } else if (this.$route.name !== 'create-organization') {
           this.$router.push({ name: 'create-organization' });
         }
       },
@@ -174,13 +196,40 @@ export default class Layout extends Vue {
 
   setOrganizationContext(organization: TOrganizationNode): void {
     this.$store.commit('context/setOrganization', organization);
+    this.setOrganizationMember(organization);
     if (this.$route.name !== 'overview') {
       this.$router.push({ name: 'overview' });
     }
   }
 
+  setOrganizationMember(organization: TOrganizationNode): void {
+    this.$apollo.query({
+      query: OrganizationMembersQuery,
+      variables: {
+        id: organization.id,
+      },
+    }).then((res) => {
+      const currentMember = res.data.organization.members.filter(
+        (member: TOrganizationMember) => member?.user?.id === this.$store.state.auth.uuid,
+      )[0];
+      this.$store.commit(
+        'context/setOrganizationMember',
+        currentMember,
+      );
+    });
+  }
+
   get currentOrganizationName(): string {
     return this.$store.state.context.organization.title;
+  }
+
+  mounted(): void {
+    this.$apollo.queries.allOrganizations.refetch();
+    this.$store.subscribe((mutation: any) => {
+      if (mutation.type === 'auth/setRpt') {
+        this.$apollo.queries.allOrganizations.refetch();
+      }
+    });
   }
 }
 </script>

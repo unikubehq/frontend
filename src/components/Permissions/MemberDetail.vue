@@ -34,6 +34,7 @@
         multiple
         placeholder="None"
         dense
+          persistent-placeholder
       >
       </v-select>
     </td>
@@ -48,6 +49,7 @@
         multiple
         placeholder="None"
         dense
+          persistent-placeholder
       >
       </v-select>
     </td>
@@ -62,6 +64,7 @@
         multiple
         placeholder="None"
         dense
+          persistent-placeholder
       >
       </v-select>
     </td>
