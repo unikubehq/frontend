@@ -1,27 +1,24 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add("login", (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add("drag", { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add("dismiss", { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This is will overwrite an existing command --
-// Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 // eslint-disable-next-line import/no-extraneous-dependencies
-import 'cypress-keycloak-commands';
+import store from '@/store';
+
+Cypress.Commands.add('login', () => {
+  // Setup store
+  cy.fixture('tokens/rpt.json').then((token) => {
+    Cypress.log({ name: 'Login', message: 'Loaded rpt fixture.' });
+    store.commit(
+      'auth/setRpt',
+      token.rpt,
+    );
+  });
+  cy.fixture('organizations/organization.json').then((organization) => {
+    Cypress.log({ name: 'Login', message: 'Loaded organization fixture.' });
+    store.commit(
+      'context/setOrganization',
+      organization,
+    );
+  });
+  // Attach store to window before load.
+  cy.on('window:before:load', (window) => {
+    window.__store__ = store;
+  });
+});

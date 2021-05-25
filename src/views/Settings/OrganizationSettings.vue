@@ -62,15 +62,13 @@
 </template>
 
 <script lang="ts">
-import { Component } from 'vue-property-decorator';
+import { Component, Ref } from 'vue-property-decorator';
 import { OrganizationQuery } from '@/generated/graphql';
 import { UploadComponent } from '@/components/mixins';
 
 @Component({})
 export default class OrganizationSettings extends UploadComponent {
-  $refs!: {
-    preview: HTMLImageElement
-  }
+  @Ref() readonly preview!: HTMLImageElement
 
   previewUrl: string | null = null
 

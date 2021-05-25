@@ -1,5 +1,7 @@
 # Unikube Frontend
 
+[![Coverage Status](https://coveralls.io/repos/github/unikubehq/frontend/badge.svg?branch=master)](https://coveralls.io/github/unikubehq/frontend?branch=master)
+
 ## Project Setup
 
 Before you start - you need a local instance of the unikube cluster.
