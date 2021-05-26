@@ -84,15 +84,11 @@ function initializeUnikubeApp(mode: string) {
     // @ts-ignore
     // eslint-disable-next-line no-underscore-dangle
     window.__store__.commit('auth/setKeycloakClient', keycloak);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    // eslint-disable-next-line no-underscore-dangle
-    auth = getModule(Auth, window.__store__);
   } else {
     store.commit('auth/setKeycloakClient', keycloak);
     auth = getModule(Auth, store);
+    auth.scheduleRefresh();
   }
-  auth.scheduleRefresh();
   function vueInit() {
     const apolloProvider = setupApolloProvider();
     new Vue({
