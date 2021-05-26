@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  test:
+  e2e_tests:
     runs-on: ubuntu-20.04
     env:
       VUE_APP_KEYCLOAK_URL: http://keycloak.127.0.0.1.nip.io:8085/auth
