@@ -20,7 +20,7 @@ query ProjectsQuery($limit: Int, $offset: Int) {
                 },
                 role
             }
-            packages {
+            decks {
                 title,
             }
             sops {
@@ -60,7 +60,7 @@ query ProjectDetailQuery($id: UUID) {
             },
             role
         }
-        packages {
+        decks {
             title,
             description,
             type,
@@ -77,11 +77,11 @@ query ProjectDetailQuery($id: UUID) {
                 isSwitchable
                 ports
             }
-            clusterLevel {
+            environment {
                 title,
                 description,
                 id,
-                package{
+                deck{
                     id
                 },
                 type,
@@ -125,7 +125,7 @@ query ProjectDetailOtherProjectsQuery {
             title,
             id,
             currentCommitDateTime,
-            packages {
+            decks {
                 title
             }
         }
@@ -242,12 +242,12 @@ mutation createUpdateClusterLevel(
     $valuesPath: String
     $id: ID
 ) {
-    createUpdateClusterLevel(
+    createUpdateEnvironment(
         input: {
                 title: $title
                 description: $description
                 type: $type
-                package: $package
+                deck: $package
                 sopsCredentials: $sopsCredentials
                 valuesPath: $valuesPath
                 id: $id

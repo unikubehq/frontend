@@ -23,10 +23,6 @@ import Auth from '@/store/modules/auth';
 
 import LocaleMessages = VueI18n.LocaleMessages;
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-let store = store;
-
 const keycloak = Keycloak({
   url: process.env.VUE_APP_KEYCLOAK_URL,
   realm: process.env.VUE_APP_KEYCLOAK_REALM,
@@ -82,22 +78,23 @@ function initializeUnikubeApp(mode: string) {
       },
     },
   });
+  let auth = getModule(Auth, store);
   if (mode === 'e2e') {
-    console.log(store);
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     // eslint-disable-next-line no-underscore-dangle
-    store = window.__store__;
-  } else {
-    store.commit('auth/setKeycloakClient', keycloak);
-    const auth = getModule(Auth, store);
-    auth.scheduleRefresh();
+    auth = getModule(Auth, window.__store__);
   }
+  auth.setKeycloakClient(keycloak);
+  auth.scheduleRefresh();
   function vueInit() {
     const apolloProvider = setupApolloProvider();
     new Vue({
       router,
-      store,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      // eslint-disable-next-line no-underscore-dangle
+      store: mode !== 'e2e' ? store : window.__store__,
       vuetify,
       i18n,
       apolloProvider,

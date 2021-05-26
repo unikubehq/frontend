@@ -144,7 +144,7 @@ import TranslateResult = VueI18n.TranslateResult;
     },
   },
 })
-export default class ProjectPackages extends Vue {
+export default class ProjectMembers extends Vue {
   @Prop() readonly project!: TProjectNode;
 
   memberToAvatar = Converter.memberToAvatar;

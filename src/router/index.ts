@@ -80,12 +80,12 @@ const routes: Array<RouteConfig> = [
         path: '/project/:slug',
         name: 'project.detail',
         component: () => import('../views/Projects/ProjectDetail.vue'),
-        redirect: { name: 'project.detail.packages' },
+        redirect: { name: 'project.detail.decks' },
         children: [
           {
-            path: '/project/:slug/packages',
-            name: 'project.detail.packages',
-            component: () => import('../views/Projects/ProjectDetail/ProjectPackages.vue'),
+            path: '/project/:slug/decks',
+            name: 'project.detail.decks',
+            component: () => import('../views/Projects/ProjectDetail/ProjectDecks.vue'),
           },
           {
             path: '/project/:slug/members',

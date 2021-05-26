@@ -18,8 +18,8 @@
             <v-divider></v-divider>
           </v-col>
           <v-col cols="6">
-            <h4>{{ project.packages.length }}</h4>
-            <small>{{ $t('projects.numberPackages') }}</small>
+            <h4>{{ project.decks.length }}</h4>
+            <small>{{ $t('projects.numberDecks') }}</small>
           </v-col>
           <v-col cols="6" class="text-right">
             <h4>{{ verboseDate(project.currentCommitDateTime) }}</h4>
@@ -76,10 +76,10 @@
             </v-row>
             <v-divider></v-divider>
             <v-tabs v-model="innerTab" height="67px" class="project-detail__tabs" slider-size="3">
-              <v-tab :ripple="false" :to="{name: 'project.detail.packages'}">
-                {{ $tc('package.Package', 2) }}
+              <v-tab :ripple="false" :to="{name: 'project.detail.decks'}">
+                {{ $tc('deck.Deck', 2) }}
                 <span class="tab-count-badge">
-                  {{ project.packages.length.toString().padStart(2, '0') }}
+                  {{ project.decks.length.toString().padStart(2, '0') }}
                 </span>
               </v-tab>
               <v-tab v-if="project.members" :ripple="false" :to="{name: 'project.detail.members'}">
@@ -132,12 +132,12 @@ import { Component, Vue } from 'vue-property-decorator';
 import ProjectBar from '@/components/Projects/ProjectBar.vue';
 import ProjectForm from '@/views/Projects/ProjectForm.vue';
 import AddTeamMember from '@/views/Projects/AddTeamMember.vue';
-import EditPackage from '@/components/Projects/EditPackage.vue';
+import EditDeck from '@/components/Projects/EditDeck.vue';
 import UnikubeAvatar from '@/components/general/Avatar.vue';
 import {
   ProjectDetailQuery,
   ProjectDetailOtherProjectsQuery,
-  TPackageNode,
+  TDeckNode,
   TProjectNode,
 } from '@/generated/graphql';
 
@@ -146,7 +146,7 @@ import {
     ProjectBar,
     ProjectForm,
     AddTeamMember,
-    EditPackage,
+    EditDeck,
     UnikubeAvatar,
   },
   apollo: {
@@ -177,9 +177,9 @@ export default class ProjectDetail extends Vue {
 
   innerTab = 0;
 
-  packageEdit = false;
+  deckEdit = false;
 
-  packageToBeEdited: TPackageNode | undefined;
+  deckToBeEdited: TDeckNode | undefined;
 
   memberDrawer = false;
 
@@ -196,9 +196,9 @@ export default class ProjectDetail extends Vue {
     this.$router.push({ query: { edit: 'true' } });
   }
 
-  setPackageEdit(pkg: TPackageNode): void {
-    this.packageToBeEdited = pkg;
-    this.packageEdit = true;
+  setDeckEdit(pkg: TDeckNode): void {
+    this.deckToBeEdited = pkg;
+    this.deckEdit = true;
   }
 
   handleSopsCreated(): void {

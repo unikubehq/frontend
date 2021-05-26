@@ -37,9 +37,9 @@
       <v-col>
         <h4>
           <span v-if="loading"><v-skeleton-loader type="heading" tile width="70"/></span>
-          <span v-else>{{ project.packages.length }}</span>
+          <span v-else>{{ project.decks.length }}</span>
         </h4>
-        <small>{{ $t('projects.numberPackages') }}</small>
+        <small>{{ $t('projects.numberDecks') }}</small>
       </v-col>
       <v-divider vertical></v-divider>
       <v-col>

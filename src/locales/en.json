@@ -6,11 +6,10 @@
     "addMembers": "Add Team Members",
     "Project": "Project | Projects",
     "accessTo": "Access to",
-    "selectPackages": "Select Packages",
     "selectRole": "Select Role",
     "enterDetailsBelow": "Enter Your Project Details Below",
     "browseProjects": "Browse other Projects",
-    "numberPackages": "No. of Packages",
+    "numberDecks": "No. of Decks",
     "lastUpdate": "Last Update",
     "dateAdded": "Date added",
     "editProject": "Edit Project",
@@ -133,21 +132,21 @@
   "forms": {
     "enterEmail": "'Enter Email Address'"
   },
-  "package": {
-    "Package": "Package | Packages",
+  "deck": {
+    "Deck": "Deck | Decks",
     "edit": {
-      "title": "Package {package} Settings",
-      "clusterLevels": {
-        "title": "Clusterlevels",
-        "edit": "Edit {clusterLevel}",
+      "title": "Deck {deck} Settings",
+      "environments": {
+        "title": "Environments",
+        "edit": "Edit {environment}",
         "formTitle": "Title",
-        "enterTitle": "Enter Clusterlevel Title",
+        "enterTitle": "Enter Environment Title",
         "description": "Description",
-        "enterDescription": "Enter Clusterlevel Description",
+        "enterDescription": "Enter Environment Description",
         "sops": "Sops",
         "chooseSops": "Choose Sops",
-        "type": "Clusterlevel Type",
-        "enterType": "Enter Clusterlevel Type",
+        "type": "Environment Type",
+        "enterType": "Enter Environment Type",
         "valuesPath": "Values Path",
         "enterValuesPath": "Enter Values Path"
       }
