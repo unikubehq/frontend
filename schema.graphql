@@ -25,29 +25,6 @@ type AWSKMSNode {
   secretAccessKey: String!
 }
 
-type ClusterLevelNode {
-  title: String!
-  description: String
-  id: UUID!
-  deck: PackageNode!
-  type: ClusterLevelType!
-  valuesPath: String!
-  valuesType: ClusterLevelValuesType
-  sopsCredentials: SOPSProviderNode
-  deployments: [DeploymentNode!]!
-  specsUrl: String
-}
-
-enum ClusterLevelType {
-  LOCAL
-  REMOTE
-}
-
-enum ClusterLevelValuesType {
-  FILE
-  DIR
-}
-
 type CreateOrganizationMemberInvitation {
   ok: Boolean
 }
@@ -56,7 +33,7 @@ type CreateProjectMember {
   ok: Boolean
 }
 
-input CreateUpdateClusterLevelInput {
+input CreateUpdateEnvironmentInput {
   title: String!
   description: String
   type: String!
@@ -68,8 +45,8 @@ input CreateUpdateClusterLevelInput {
   clientMutationId: String
 }
 
-type CreateUpdateClusterLevelPayload {
-  clusterLevel: ClusterLevelNode
+type CreateUpdateEnvironmentPayload {
+  environment: EnvironmentNode
   errors: [ErrorType]
   clientMutationId: String
 }
@@ -116,7 +93,29 @@ type CreateUpdateSOPS {
 
 scalar DateTime
 
-type DeleteClusterLevel {
+type DeckNode {
+  title: String!
+  description: String
+  id: UUID!
+  project: ProjectNode!
+  dirPath: String!
+  type: String!
+  namespace: String!
+  fileInformation: [FileInformationNode]
+  hash: String!
+  deployments(level: String, switchable: Boolean): [DeploymentNode]
+  environment(level: String): [EnvironmentNode]
+}
+
+type DeckNodePage {
+  totalCount: Int
+  resultCount: Int
+  offset: Int
+  limit: Int
+  results: [DeckNode]
+}
+
+type DeleteEnvironment {
   ok: Boolean
 }
 
@@ -141,8 +140,31 @@ type DeploymentNode {
   description: String
   id: UUID!
   ports: String!
-  clusterLevel: ClusterLevelNode!
+  environment: EnvironmentNode!
   isSwitchable: Boolean!
+}
+
+type EnvironmentNode {
+  title: String!
+  description: String
+  id: UUID!
+  deck: DeckNode!
+  type: EnvironmentType!
+  valuesPath: String!
+  valuesType: EnvironmentValuesType
+  sopsCredentials: SOPSProviderNode
+  deployments: [DeploymentNode!]!
+  specsUrl: String
+}
+
+enum EnvironmentType {
+  LOCAL
+  REMOTE
+}
+
+enum EnvironmentValuesType {
+  FILE
+  DIR
 }
 
 type ErrorType {
@@ -168,8 +190,8 @@ type Mutation {
   createProjectMember(id: UUID, role: ProjectMemberRoleEnum, user: UUID): CreateProjectMember
   deleteProjectMember(id: UUID, user: UUID): DeleteProjectMember
   deleteProject(id: UUID): DeleteProject
-  createUpdateEnvironment(input: CreateUpdateClusterLevelInput!): CreateUpdateClusterLevelPayload
-  deleteClusterLevel(id: UUID): DeleteClusterLevel
+  createUpdateEnvironment(input: CreateUpdateEnvironmentInput!): CreateUpdateEnvironmentPayload
+  deleteEnvironment(id: UUID): DeleteEnvironment
   createUpdateSops(id: UUID, sopsData: SOPSInputType!): CreateUpdateSOPS
   deleteSops(id: UUID): DeleteSOPS
 }
@@ -222,28 +244,6 @@ type PGPKeyNode {
   privateKey: String!
 }
 
-type PackageNode {
-  title: String!
-  description: String
-  id: UUID!
-  project: ProjectNode!
-  dirPath: String!
-  type: String!
-  namespace: String!
-  fileInformation: [FileInformationNode]
-  hash: String!
-  deployments(level: String, switchable: Boolean): [DeploymentNode]
-  environment(level: String): [ClusterLevelNode]
-}
-
-type PackageNodePage {
-  totalCount: Int
-  resultCount: Int
-  offset: Int
-  limit: Int
-  results: [PackageNode]
-}
-
 type ProjectMember {
   user: UserNode
   role: String
@@ -269,7 +269,7 @@ type ProjectNode {
   accessUsername: String!
   accessToken: String
   organization: OrganizationNode
-  decks: [PackageNode!]!
+  decks: [DeckNode!]!
   sops: [SOPSProviderNode]
   members: [ProjectMember]
 }
@@ -307,9 +307,9 @@ type Query {
   allOrganizationInvitations(id: UUID!, offset: Int, limit: Int): OrganizationInvitationNodePage
   allProjects(offset: Int, limit: Int): ProjectNodePage
   project(id: UUID, slug: String): ProjectNode
-  allPackages(organizationId: UUID, projectId: UUID, offset: Int, limit: Int): PackageNodePage
-  package(id: UUID, slug: String): PackageNode
-  clusterlevel(id: UUID): ClusterLevelNode
+  allDecks(organizationId: UUID, projectId: UUID, offset: Int, limit: Int): DeckNodePage
+  deck(id: UUID, slug: String): DeckNode
+  environment(id: UUID): EnvironmentNode
 }
 
 type RevokeOrganizationMemberInvitation {

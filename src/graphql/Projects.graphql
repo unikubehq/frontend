@@ -233,7 +233,7 @@ mutation createUpdateSops(
     }
 }
 
-mutation createUpdateClusterLevel(
+mutation createUpdateEnvironment(
     $title: String!
     $description: String
     $type: String!
@@ -253,7 +253,7 @@ mutation createUpdateClusterLevel(
                 id: $id
         }
     ) {
-        clusterLevel {
+        environment {
             title,
             id
         },
