@@ -15,7 +15,7 @@ const project = {
   currentCommit: '3b24b97cc930107e2c7b742cbcd38d1e43dce780',
   id: '4bfcc9e3-a709-47a5-96eb-f144106bbe70',
   slug: 'openlane-project',
-  packages: {
+  decks: {
     resultCount: 1,
   },
   members: [

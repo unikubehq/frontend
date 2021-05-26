@@ -1,7 +1,7 @@
 <template>
   <div>
-    <v-row v-if="!packageEdit">
-      <v-col cols="6" v-for="pkg in project.packages" :key="pkg.id">
+    <v-row v-if="!deckEdit">
+      <v-col cols="6" v-for="pkg in project.decks" :key="pkg.id">
         <v-card outlined>
           <v-card-title>
             <v-row>
@@ -13,7 +13,7 @@
                   outlined
                   width="50"
                   :ripple="false"
-                  @click="setPackageEdit(pkg)"
+                  @click="setDeckEdit(pkg)"
                 >
                   <v-icon size="24">
                     $vuetify.icons.edit
@@ -43,14 +43,14 @@
       </v-col>
     </v-row>
     <v-row v-else>
-      <edit-package
-        v-for="clusterLevel in packageToBeEdited.clusterLevel"
-        v-bind:key="clusterLevel.id"
-        :package="packageToBeEdited"
-        :cluster-level="clusterLevel"
+      <edit-deck
+        v-for="environment in deckToBeEdited.environment"
+        v-bind:key="environment.id"
+        :deck="deckToBeEdited"
+        :environment="environment"
         :sopsProviders="project.sops"
-        @change="packageEdit = false"
-      ></edit-package>
+        @change="deckEdit = false"
+      ></edit-deck>
     </v-row>
   </div>
 </template>
@@ -58,22 +58,22 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import {
-  TPackageNode,
+  TDeckNode,
   TProjectNode,
 } from '@/generated/graphql';
-import EditPackage from '@/components/Projects/EditPackage.vue';
+import EditDeck from '@/components/Projects/EditDeck.vue';
 
 @Component({
   components: {
-    EditPackage,
+    EditDeck,
   },
 })
-export default class ProjectPackages extends Vue {
+export default class ProjectDecks extends Vue {
   @Prop() readonly project!: TProjectNode;
 
-  packageEdit = false;
+  deckEdit = false;
 
-  packageToBeEdited: TPackageNode | undefined;
+  deckToBeEdited: TDeckNode | undefined;
 
   memberDrawer = false;
 
@@ -81,9 +81,9 @@ export default class ProjectPackages extends Vue {
     this.$router.push({ query: { edit: 'true' } });
   }
 
-  setPackageEdit(pkg: TPackageNode): void {
-    this.packageToBeEdited = pkg;
-    this.packageEdit = true;
+  setDeckEdit(pkg: TDeckNode): void {
+    this.deckToBeEdited = pkg;
+    this.deckEdit = true;
   }
 }
 </script>
