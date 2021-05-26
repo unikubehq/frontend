@@ -1,0 +1,32 @@
+name: Cypress E2E
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  e2e_tests:
+    runs-on: ubuntu-20.04
+    env:
+      VUE_APP_KEYCLOAK_URL: http://keycloak.127.0.0.1.nip.io:8085/auth
+      VUE_APP_KEYCLOAK_AUTHZ_JS: /js/keycloak-authz.js
+      VUE_APP_KEYCLOAK_JS: /js/keycloak.js
+      CYPRESS_coverage: true
+      NODE_ENV: e2e
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v2
+      - name: E2E tests 🧪
+        uses: cypress-io/github-action@v2
+        with:
+          command: npm run test:e2e:ci
+          browser: chrome
+      - name: Coverage Report 📝
+        run: npm run test:report
+      - name: Coveralls 📒
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          flag-name: E2E

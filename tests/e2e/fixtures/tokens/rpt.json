@@ -1,0 +1,82 @@
+{
+  "rpt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MjE3ODI4MjcsImlhdCI6MTYyMTc4MjUyNywiYXV0aF90aW1lIjoxNjIxNzgyNTI2LCJqdGkiOiJkOWYwZmU5Mi0zNWZkLTQ4MzYtYTJmOS0xMTAzNmZhNmNiNWYiLCJpc3MiOiJodHRwOi8vbG9naW4udW5pa3ViZS5pbyIsImF1ZCI6ImdhdGV3YXkiLCJzdWIiOiIwYmU5ZmM4My0zY2VhLTQ3ZWMtYTg1MC0xNzZlYTA3NGY3NDkiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJmcm9udGVuZCIsInNlc3Npb25fc3RhdGUiOiI2ZTQ0ODNkMi1iYzBkLTRkMTUtYmExMy01MzdjY2YxNmEwMjYiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHBzOi8vYXBpLnVuaWt1YmUuaW8iXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJhdXRob3JpemF0aW9uIjp7InBlcm1pc3Npb25zIjpbeyJzY29wZXMiOlsib3JnYW5pemF0aW9uOnByb2plY3RzOmFkZCIsIm9yZ2FuaXphdGlvbjpwcm9qZWN0czp2aWV3Il0sInJzaWQiOiIzNzYwYTViYi04Yzc3LTRlZTQtYWU3ZC1kNDRjZDUwOGI4NzkiLCJyc25hbWUiOiJvcmdhbml6YXRpb24gYmx1ZXNob2UifSx7InNjb3BlcyI6WyJwcm9qZWN0OmVkaXQiLCJwcm9qZWN0OnZpZXciXSwicnNpZCI6IjYyZmQxYjc2LTBkYTQtNDdmZi1hYTUyLTVmOTZiMjU4ZjkyNiIsInJzbmFtZSI6InByb2plY3QgYnV6endvcmQtY291bnRlciJ9LHsic2NvcGVzIjpbInByb2plY3Q6ZWRpdCIsInByb2plY3Q6dmlldyJdLCJyc2lkIjoiNWU5ZTNmNjEtODNhMy00ODc3LTg2OTMtZDM0MjJjYmM2YmQyIiwicnNuYW1lIjoicHJvamVjdCBhdXRvbWF0aW9uLWh1YiJ9LHsic2NvcGVzIjpbInByb2plY3Q6ZWRpdCIsInByb2plY3Q6dmlldyJdLCJyc2lkIjoiNDRlZTBmNmEtYzRmOC00YjIwLTg5NzgtNTU1OTRkMmE5ZDA1IiwicnNuYW1lIjoicHJvamVjdCBidXp6d29yZHMifSx7InJzaWQiOiJkODNlZmNkNC0wMjI3LTQ0YmItOGI0Zi1jMDY3ZTQ2YWI1OGMiLCJyc25hbWUiOiJEZWZhdWx0IFJlc291cmNlIn1dfSwic2NvcGUiOiJwcm9maWxlIGVtYWlsIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJNYXggTXVzdGVybWFubiIsInByZWZlcnJlZF91c2VybmFtZSI6Im1heEBleGFtcGxlLmNvbSIsImdpdmVuX25hbWUiOiJNYXgiLCJmYW1pbHlfbmFtZSI6Ik11c3Rlcm1hbm4iLCJlbWFpbCI6Im1heEBleGFtcGxlLmNvbSJ9.X1QFziF-6-Iugm_kddBOQuE4OqsSmpwhAbaGnnibgmY",
+  "_comment": {
+    "exp": 1621782827,
+    "iat": 1621782527,
+    "auth_time": 1621782526,
+    "jti": "d9f0fe92-35fd-4836-a2f9-11036fa6cb5f",
+    "iss": "http://login.unikube.io",
+    "aud": "gateway",
+    "sub": "0be9fc83-3cea-47ec-a850-176ea074f749",
+    "typ": "Bearer",
+    "azp": "frontend",
+    "session_state": "6e4483d2-bc0d-4d15-ba13-537ccf16a026",
+    "acr": "1",
+    "allowed-origins": [
+      "https://api.unikube.io"
+    ],
+    "realm_access": {
+      "roles": [
+        "offline_access",
+        "uma_authorization"
+      ]
+    },
+    "resource_access": {
+      "account": {
+        "roles": [
+          "manage-account",
+          "manage-account-links",
+          "view-profile"
+        ]
+      }
+    },
+    "authorization": {
+      "permissions": [
+        {
+          "scopes": [
+            "organization:projects:add",
+            "organization:projects:view"
+          ],
+          "rsid": "3760a5bb-8c77-4ee4-ae7d-d44cd508b879",
+          "rsname": "organization blueshoe"
+        },
+        {
+          "scopes": [
+            "project:edit",
+            "project:view"
+          ],
+          "rsid": "62fd1b76-0da4-47ff-aa52-5f96b258f926",
+          "rsname": "project buzzword-counter"
+        },
+        {
+          "scopes": [
+            "project:edit",
+            "project:view"
+          ],
+          "rsid": "5e9e3f61-83a3-4877-8693-d3422cbc6bd2",
+          "rsname": "project automation-hub"
+        },
+        {
+          "scopes": [
+            "project:edit",
+            "project:view"
+          ],
+          "rsid": "44ee0f6a-c4f8-4b20-8978-55594d2a9d05",
+          "rsname": "project buzzwords"
+        },
+        {
+          "rsid": "d83efcd4-0227-44bb-8b4f-c067e46ab58c",
+          "rsname": "Default Resource"
+        }
+      ]
+    },
+    "scope": "profile email",
+    "email_verified": true,
+    "name": "Max Mustermann",
+    "preferred_username": "max@example.com",
+    "given_name": "Max",
+    "family_name": "Mustermann",
+    "email": "max@example.com"
+  }
+}
+

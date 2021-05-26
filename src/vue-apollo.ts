@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client/core';
 import { setContext } from '@apollo/client/link/context';
 import { ErrorResponse, onError } from '@apollo/client/link/error';
