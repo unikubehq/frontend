@@ -31,7 +31,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: unikube/frontend:${{ steps.meta.outputs.tags }}
+          tags: ${{ steps.meta.outputs.tags }}
           file: docker/Dockerfile
           context: /
           build-args: |
