@@ -22,7 +22,7 @@ jobs:
         uses: docker/metadata-action@v3
         id: meta
         with:
-          images: unikube/frontend
+          images: quay.io/unikube/frontend
           tags: |
             type=semver,pattern={{version}}
       - name: Build and push
@@ -30,7 +30,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: quay.io/${{ steps.meta.outputs.tags }}
+          tags: ${{ steps.meta.outputs.tags }}
           file: docker/Dockerfile
           context: .
           build-args: |
