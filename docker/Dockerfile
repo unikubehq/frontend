@@ -8,7 +8,7 @@ WORKDIR /code
 ## Frontend building
 ### Copy code & install dependencies
 COPY package*.json /code/
-RUN npm i
+RUN npm ci
 COPY src /code/src
 COPY babel.config.js vue.config.js tsconfig.json codegen.yml .browserslistrc .eslintrc.js .eslintignore /code/
 COPY public /code/public
@@ -16,16 +16,15 @@ COPY public /code/public
 ### Build ENV variables
 ARG VUE_APP_BASE_URL
 ARG VUE_APP_PUBLIC_PATH
-ARG VUE_APP_I18N_LOCALE=en
-ARG VUE_APP_I18N_FALLBACK_LOCALE=en
-
-ARG VUE_APP_GRAPHQL_URL=http://gateway.unikube.127.0.0.1.nip.io:8085/graphql
-ARG VUE_APP_KEYCLOAK_JS=/js/keycloak.js
-ARG VUE_APP_KEYCLOAK_AUTHZ_JS=/js/keycloak-authz.js
-ARG VUE_APP_KEYCLOAK_URL=http://keycloak.127.0.0.1.nip.io:8085/auth
-ARG VUE_APP_KEYCLOAK_REALM=unikube
-ARG VUE_APP_KEYCLOAK_CLIENT_ID=frontend
-ARG VUE_APP_UPLOAD_URL=http://gateway.unikube.127.0.0.1.nip.io:8085/upload
+ARG VUE_APP_I18N_LOCALE
+ARG VUE_APP_I18N_FALLBACK_LOCALE
+ARG VUE_APP_GRAPHQL_URL
+ARG VUE_APP_KEYCLOAK_JS
+ARG VUE_APP_KEYCLOAK_AUTHZ_JS
+ARG VUE_APP_KEYCLOAK_URL
+ARG VUE_APP_KEYCLOAK_REALM
+ARG VUE_APP_KEYCLOAK_CLIENT_ID
+ARG VUE_APP_UPLOAD_URL
 
 ### Build
 RUN ["npm", "run", "build"]

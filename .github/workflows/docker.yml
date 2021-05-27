@@ -1,0 +1,49 @@
+name: Create Docker Image
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build_local_dev_docker_image:
+    name: Build docker image for local cluster.
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Login to quay.io
+        uses: docker/login-action@v1
+        with:
+          registry: quay.io
+          username: ${{ secrets.QUAY_USERNAME }}
+          password: ${{ secrets.QUAY_ROBOT_TOKEN }}
+      - name: Docker meta
+        uses: docker/metadata-action@v3
+        id: meta
+        with:
+          images: quay.io/unikube/frontend
+          tags: |
+            type=semver,pattern={{version}}
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          file: docker/Dockerfile
+          context: .
+          build-args: |
+            VUE_APP_BASE_URL
+            VUE_APP_PUBLIC_PATH
+            VUE_APP_I18N_LOCALE=en
+            VUE_APP_I18N_FALLBACK_LOCALE=en
+            VUE_APP_KEYCLOAK_JS=/js/keycloak.js
+            VUE_APP_KEYCLOAK_AUTHZ_JS=/js/keycloak-authz.js
+            VUE_APP_KEYCLOAK_REALM=unikube
+            VUE_APP_KEYCLOAK_CLIENT_ID=frontend
+            VUE_APP_GRAPHQL_URL=http://gateway.unikube.127.0.0.1.nip.io:8085/graphql
+            VUE_APP_KEYCLOAK_URL=http://keycloak.127.0.0.1.nip.io:8085/auth
+            VUE_APP_UPLOAD_URL=http://gateway.unikube.127.0.0.1.nip.io:8085/upload
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
