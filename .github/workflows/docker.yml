@@ -9,6 +9,8 @@ jobs:
   build_local_dev_docker_image:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
@@ -33,7 +35,7 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           file: docker/Dockerfile
-          context: /
+          context: .
           build-args: |
             VUE_APP_BASE_URL
             VUE_APP_PUBLIC_PATH
