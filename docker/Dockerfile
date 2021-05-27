@@ -8,7 +8,7 @@ WORKDIR /code
 ## Frontend building
 ### Copy code & install dependencies
 COPY package*.json /code/
-RUN npm i
+RUN npm ci
 COPY src /code/src
 COPY babel.config.js vue.config.js tsconfig.json codegen.yml .browserslistrc .eslintrc.js .eslintignore /code/
 COPY public /code/public
