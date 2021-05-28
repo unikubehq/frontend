@@ -19,8 +19,10 @@
             <v-list-item-title class="title">
               <div class="d-flex"
                   :class="{'justify-space-between': !mini, 'justify-center': mini}">
-                <v-img src="@/assets/img/Unikube-Logo-H-NoShadow_light.svg"
-                    max-height="45" max-width="164" contain v-if="!mini"/>
+                <router-link :to="{name: 'overview'}">
+                  <v-img src="@/assets/img/Unikube-Logo-H-NoShadow_light.svg"
+                      max-height="45" max-width="164" contain v-if="!mini"/>
+                </router-link>
                 <v-btn  icon @click="toggleMini" :ripple="false">
                   <v-icon medium class="d-block mt-2">
                     $vuetify.icons.burger
