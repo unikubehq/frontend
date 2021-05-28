@@ -4,11 +4,23 @@ on:
   push:
     tags:
       - '*'
-
 jobs:
   build_local_dev_docker_image:
-    name: Build docker image for local cluster.
+    name: Build docker images (dev and prod).
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          # production image
+          - graphql_url: https://api.unikube.io/graphql
+            keycloak_url: https://login.unikube.io/auth
+            upload_url: https://api.unikube.io/upload
+            tag_suffix: ''
+          # dev image
+          - graphql_url: http://gateway.unikube.127.0.0.1.nip.io:8085/graphql
+            keycloak_url: http://keycloak.127.0.0.1.nip.io:8085/auth
+            upload_url: http://gateway.unikube.127.0.0.1.nip.io:8085/upload
+            tag_suffix: '-dev'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -23,6 +35,9 @@ jobs:
         id: meta
         with:
           images: quay.io/unikube/frontend
+          flavor: |
+            latest=true
+            suffix=${{ matrix.tag_suffix }}
           tags: |
             type=semver,pattern={{version}}
       - name: Build and push
@@ -42,8 +57,8 @@ jobs:
             VUE_APP_KEYCLOAK_AUTHZ_JS=/js/keycloak-authz.js
             VUE_APP_KEYCLOAK_REALM=unikube
             VUE_APP_KEYCLOAK_CLIENT_ID=frontend
-            VUE_APP_GRAPHQL_URL=http://gateway.unikube.127.0.0.1.nip.io:8085/graphql
-            VUE_APP_KEYCLOAK_URL=http://keycloak.127.0.0.1.nip.io:8085/auth
-            VUE_APP_UPLOAD_URL=http://gateway.unikube.127.0.0.1.nip.io:8085/upload
+            VUE_APP_GRAPHQL_URL=${{ matrix.graphql_url }}
+            VUE_APP_KEYCLOAK_URL=${{ matrix.keycloak_url }}
+            VUE_APP_UPLOAD_URL=${{ matrix.upload_url }}
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
