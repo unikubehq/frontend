@@ -686,7 +686,7 @@ export type TCreateUpdateEnvironmentMutationVariables = Exact<{
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   type: Scalars['String'];
-  package: Scalars['ID'];
+  deck: Scalars['ID'];
   sopsCredentials?: Maybe<Scalars['ID']>;
   valuesPath?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['ID']>;
@@ -997,9 +997,9 @@ export const CreateUpdateSops = gql`
 }
     `;
 export const CreateUpdateEnvironment = gql`
-    mutation createUpdateEnvironment($title: String!, $description: String, $type: String!, $package: ID!, $sopsCredentials: ID, $valuesPath: String, $id: ID) {
+    mutation createUpdateEnvironment($title: String!, $description: String, $type: String!, $deck: ID!, $sopsCredentials: ID, $valuesPath: String, $id: ID) {
   createUpdateEnvironment(
-    input: {title: $title, description: $description, type: $type, deck: $package, sopsCredentials: $sopsCredentials, valuesPath: $valuesPath, id: $id}
+    input: {title: $title, description: $description, type: $type, deck: $deck, sopsCredentials: $sopsCredentials, valuesPath: $valuesPath, id: $id}
   ) {
     environment {
       title

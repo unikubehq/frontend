@@ -237,7 +237,7 @@ mutation createUpdateEnvironment(
     $title: String!
     $description: String
     $type: String!
-    $package: ID!
+    $deck: ID!
     $sopsCredentials: ID
     $valuesPath: String
     $id: ID
@@ -247,7 +247,7 @@ mutation createUpdateEnvironment(
                 title: $title
                 description: $description
                 type: $type
-                deck: $package
+                deck: $deck
                 sopsCredentials: $sopsCredentials
                 valuesPath: $valuesPath
                 id: $id
