@@ -124,7 +124,7 @@ import {
   TEnvironmentType,
   TFileInformationNode,
   TDeckNode,
-  TSopsProviderNode,
+  TSopsProviderNode, TCreateUpdateEnvironmentMutationVariables,
 } from '@/generated/graphql';
 import { required } from 'vuelidate/lib/validators';
 import VueI18n from 'vue-i18n';
@@ -165,17 +165,18 @@ export default class EditDeck extends validationMixin {
   showForm = false;
 
   submit(): void {
+    const mutationVars: TCreateUpdateEnvironmentMutationVariables = {
+      title: this.title || '',
+      description: this.description,
+      type: this.environmentType.toLowerCase(),
+      deck: this.environment?.deck?.id,
+      sopsCredentials: this.sopsCredentials.value,
+      valuesPath: this.valuesPath?.value,
+      id: this.environment?.id,
+    };
     this.$apollo.mutate({
       mutation: CreateUpdateEnvironment,
-      variables: {
-        title: this.title,
-        description: this.description,
-        type: this.environmentType.toLowerCase(),
-        deck: this.environment?.deck?.id,
-        sopsCredentials: this.sopsCredentials.value,
-        valuesPath: this.valuesPath?.value,
-        id: this.environment?.id,
-      },
+      variables: mutationVars,
     })
       .then((data) => {
         if (data.data.createUpdateEnvironment.errors.length === 0) {
