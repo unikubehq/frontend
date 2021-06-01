@@ -1,7 +1,22 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const SentryCliPlugin = require('@sentry/webpack-plugin');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-process.env.VUE_APP_VERSION = require('./package.json').version;
+const fs = require('fs');
+
+const plugins = [];
+
+if (process.env.NODE_ENV === 'production') {
+  const sentryAuthToken = fs.readFileSync('/run/secrets/SENTRY_AUTH_TOKEN', 'utf8');
+  plugins.push(
+    new SentryCliPlugin({
+      // webpack specific configuration
+      authToken: sentryAuthToken,
+      include: '.',
+      ignore: ['node_modules', 'babel.config.js', 'apollo.config.js', '.eslintrc.js'],
+      release: `${process.env.VUE_APP_VERSION}`,
+    }),
+  );
+}
 
 module.exports = {
   transpileDependencies: [
@@ -12,17 +27,7 @@ module.exports = {
     devServer: {
       disableHostCheck: true,
     },
-    plugins: [
-      new SentryCliPlugin({
-        // sentry-cli configuration
-        authToken: process.env.SENTRY_AUTH_TOKEN,
-        dryRun: true,
-        // webpack specific configuration
-        include: '.',
-        ignore: ['node_modules', 'babel.config.js', 'apollo.config.js', '.eslintrc.js'],
-        release: process.env.VUE_APP_VERSION,
-      }),
-    ],
+    plugins,
   },
   chainWebpack: (config) => {
     config.module

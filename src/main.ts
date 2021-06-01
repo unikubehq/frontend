@@ -23,6 +23,8 @@ import Auth from '@/store/modules/auth';
 
 import LocaleMessages = VueI18n.LocaleMessages;
 
+console.log(`Running unikube frontend version ${process.env.VUE_APP_VERSION}`);
+
 const keycloak = Keycloak({
   url: process.env.VUE_APP_KEYCLOAK_URL,
   realm: process.env.VUE_APP_KEYCLOAK_REALM,
@@ -129,7 +131,7 @@ if (process.env.NODE_ENV === 'e2e') {
     if (authenticated) {
       if (process.env.NODE_ENV === 'production') {
         Sentry.init({
-          dsn: 'https://c373b22b8d5c41678f9f577f1800933c@sentry.blueshoe.de/43',
+          dsn: process.env.VUE_APP_SENTRY_DSN,
           integrations: [
             new Integrations.Vue({
               Vue,

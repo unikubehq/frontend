@@ -13,6 +13,8 @@ COPY src /code/src
 COPY babel.config.js vue.config.js tsconfig.json codegen.yml .browserslistrc .eslintrc.js .eslintignore /code/
 COPY public /code/public
 
+RUN apt-get update; apt-get install -y curl
+
 ### Build ENV variables
 ARG VUE_APP_BASE_URL
 ARG VUE_APP_PUBLIC_PATH
@@ -25,9 +27,16 @@ ARG VUE_APP_KEYCLOAK_URL
 ARG VUE_APP_KEYCLOAK_REALM
 ARG VUE_APP_KEYCLOAK_CLIENT_ID
 ARG VUE_APP_UPLOAD_URL
+ARG VUE_APP_VERSION
+ARG VUE_APP_SENTRY_DSN
+ARG SENTRY_DSN
+ARG SENTRY_ORG
+ARG SENTRY_PROJECT
+ARG SENTRY_URL
 
 ### Build
-RUN ["npm", "run", "build"]
+RUN --mount=type=secret,id=SENTRY_AUTH_TOKEN npm run build
+
 
 # Nginx
 FROM quay.io/bitnami/nginx:latest
