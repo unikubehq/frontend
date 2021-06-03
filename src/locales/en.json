@@ -17,6 +17,8 @@
     "createdBy": "Created by",
     "name": "Project Name",
     "members": "Team Members",
+    "sops": "SOPS",
+    "clusterSettings": "Cluster Settings",
     "enterName": "Enter Project Name",
     "description": "Description",
     "enterDescription": "Enter Description",
@@ -58,6 +60,8 @@
   },
   "errors": {
     "requiredError": "This field is required.",
+    "minValueError": "The given number is too low.",
+    "maxValueError": "The given number is too high.",
     "emailError": "Please provide a valid email address.",
     "100": "Something went wrong fetching your project"
   },
@@ -143,12 +147,14 @@
         "enterTitle": "Enter Environment Title",
         "description": "Description",
         "enterDescription": "Enter Environment Description",
+        "enterNamespace": "Enter Namespace",
         "sops": "Sops",
         "chooseSops": "Choose Sops",
         "type": "Environment Type",
         "enterType": "Enter Environment Type",
         "valuesPath": "Values Path",
-        "enterValuesPath": "Enter Values Path"
+        "enterValuesPath": "Enter Values Path",
+        "namespace": "Namespace"
       }
     }
   },

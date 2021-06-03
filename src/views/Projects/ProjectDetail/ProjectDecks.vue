@@ -49,7 +49,7 @@
         :deck="deckToBeEdited"
         :environment="environment"
         :sopsProviders="project.sops"
-        @change="deckEdit = false"
+        @change="deckEdit = false; $emit('update')"
       ></edit-deck>
     </v-row>
   </div>

@@ -83,11 +83,22 @@
                   {{ project.decks.length.toString().padStart(2, '0') }}
                 </span>
               </v-tab>
+              <v-tab v-if="project.sops" :ripple="false"
+                  :to="{name: 'project.detail.sops'}">
+                {{ $t('projects.sops') }}
+                <span class="tab-count-badge">
+                  {{ project.sops.length.toString().padStart(2, '0') }}
+                </span>
+              </v-tab>
               <v-tab v-if="project.members" :ripple="false" :to="{name: 'project.detail.members'}">
                 {{ $t('projects.members') }}
                 <span class="tab-count-badge">
                   {{ project.members.length.toString().padStart(2, '0') }}
                 </span>
+              </v-tab>
+              <v-tab v-if="project.clusterSettings" :ripple="false"
+                  :to="{name: 'project.detail.clusterSettings'}">
+                {{ $t('projects.clusterSettings') }}
               </v-tab>
             </v-tabs>
             <div class="py-8">

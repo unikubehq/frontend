@@ -31,6 +31,13 @@ export type TAwskmsNode = {
   secretAccessKey: Scalars['String'];
 };
 
+export type TClusterSettingsNode = {
+  kind: 'ClusterSettingsNode';
+  __typename?: 'ClusterSettingsNode';
+  id: Scalars['ID'];
+  port: Scalars['Int'];
+};
+
 export type TCreateOrganizationMemberInvitation = {
   __typename?: 'CreateOrganizationMemberInvitation';
   ok?: Maybe<Scalars['Boolean']>;
@@ -49,6 +56,7 @@ export type TCreateUpdateEnvironmentInput = {
   sopsCredentials?: Maybe<Scalars['ID']>;
   valuesPath?: Maybe<Scalars['String']>;
   valuesType?: Maybe<Scalars['String']>;
+  namespace: Scalars['String'];
   id?: Maybe<Scalars['ID']>;
   clientMutationId?: Maybe<Scalars['String']>;
 };
@@ -186,6 +194,7 @@ export type TEnvironmentNode = {
   type: TEnvironmentType;
   valuesPath: Scalars['String'];
   valuesType?: Maybe<TEnvironmentValuesType>;
+  namespace: Scalars['String'];
   sopsCredentials?: Maybe<TSopsProviderNode>;
   deployments: Array<TDeploymentNode>;
   specsUrl?: Maybe<Scalars['String']>;
@@ -231,6 +240,7 @@ export type TMutation = {
   deleteEnvironment?: Maybe<TDeleteEnvironment>;
   createUpdateSops?: Maybe<TCreateUpdateSops>;
   deleteSops?: Maybe<TDeleteSops>;
+  updateClusterSettings?: Maybe<TUpdateClusterSettingsPayload>;
 };
 
 
@@ -310,6 +320,11 @@ export type TMutationCreateUpdateSopsArgs = {
 
 export type TMutationDeleteSopsArgs = {
   id?: Maybe<Scalars['UUID']>;
+};
+
+
+export type TMutationUpdateClusterSettingsArgs = {
+  input: TUpdateClusterSettingsInput;
 };
 
 export type TOrganizationInvitationNode = {
@@ -398,6 +413,7 @@ export type TProjectNode = {
   accessToken?: Maybe<Scalars['String']>;
   organization?: Maybe<TOrganizationNode>;
   decks: Array<TDeckNode>;
+  clusterSettings?: Maybe<TClusterSettingsNode>;
   sops?: Maybe<Array<Maybe<TSopsProviderNode>>>;
   members?: Maybe<Array<Maybe<TProjectMember>>>;
 };
@@ -525,6 +541,20 @@ export enum TSopsTypeEnum {
 }
 
 
+export type TUpdateClusterSettingsInput = {
+  port: Scalars['Int'];
+  project: Scalars['ID'];
+  id?: Maybe<Scalars['ID']>;
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+export type TUpdateClusterSettingsPayload = {
+  __typename?: 'UpdateClusterSettingsPayload';
+  clusterSettings?: Maybe<TClusterSettingsNode>;
+  errors?: Maybe<Array<Maybe<TErrorType>>>;
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
 export type TUpdateOrganizationMember = {
   __typename?: 'UpdateOrganizationMember';
   ok?: Maybe<Scalars['Boolean']>;
@@ -625,7 +655,7 @@ export type TProjectDetailQueryVariables = Exact<{
 }>;
 
 
-export type TProjectDetailQueryResult = { __typename?: 'Query', project?: Maybe<{ __typename?: 'ProjectNode', created: any, title: string, description?: Maybe<string>, id: any, specRepository: string, specRepositoryBranch?: Maybe<string>, specType: TProjectSpecType, currentCommit: string, currentCommitDateTime?: Maybe<any>, accessUsername: string, accessToken?: Maybe<string>, members?: Maybe<Array<Maybe<{ __typename?: 'ProjectMember', role?: Maybe<string>, user?: Maybe<{ __typename?: 'UserNode', id: any, givenName?: Maybe<string>, familyName?: Maybe<string>, avatarImage?: Maybe<string>, email?: Maybe<string> }> }>>>, decks: Array<{ __typename?: 'DeckNode', title: string, description?: Maybe<string>, type: string, namespace: string, id: any, fileInformation?: Maybe<Array<Maybe<{ __typename?: 'FileInformationNode', path?: Maybe<string>, encrypted?: Maybe<boolean> }>>>, deployments?: Maybe<Array<Maybe<{ __typename?: 'DeploymentNode', id: any, title: string, description?: Maybe<string>, isSwitchable: boolean, ports: string }>>>, environment?: Maybe<Array<Maybe<{ __typename?: 'EnvironmentNode', title: string, description?: Maybe<string>, id: any, type: TEnvironmentType, valuesPath: string, valuesType?: Maybe<TEnvironmentValuesType>, deck: { __typename?: 'DeckNode', id: any }, sopsCredentials?: Maybe<{ __typename?: 'AWSKMSNode', title: string, id: any } | { __typename?: 'PGPKeyNode', title: string, id: any }> }>>> }>, sops?: Maybe<Array<Maybe<{ __typename?: 'AWSKMSNode', title: string, description?: Maybe<string>, accessKey: string, secretAccessKey: string, id: any } | { __typename?: 'PGPKeyNode', title: string, description?: Maybe<string>, privateKey: string, id: any }>>> }> };
+export type TProjectDetailQueryResult = { __typename?: 'Query', project?: Maybe<{ __typename?: 'ProjectNode', created: any, title: string, description?: Maybe<string>, id: any, specRepository: string, specRepositoryBranch?: Maybe<string>, specType: TProjectSpecType, currentCommit: string, currentCommitDateTime?: Maybe<any>, accessUsername: string, accessToken?: Maybe<string>, clusterSettings?: Maybe<{ __typename?: 'ClusterSettingsNode', port: number, id: string }>, members?: Maybe<Array<Maybe<{ __typename?: 'ProjectMember', role?: Maybe<string>, user?: Maybe<{ __typename?: 'UserNode', id: any, givenName?: Maybe<string>, familyName?: Maybe<string>, avatarImage?: Maybe<string>, email?: Maybe<string> }> }>>>, decks: Array<{ __typename?: 'DeckNode', title: string, description?: Maybe<string>, type: string, namespace: string, id: any, fileInformation?: Maybe<Array<Maybe<{ __typename?: 'FileInformationNode', path?: Maybe<string>, encrypted?: Maybe<boolean> }>>>, deployments?: Maybe<Array<Maybe<{ __typename?: 'DeploymentNode', id: any, title: string, description?: Maybe<string>, isSwitchable: boolean, ports: string }>>>, environment?: Maybe<Array<Maybe<{ __typename?: 'EnvironmentNode', title: string, description?: Maybe<string>, id: any, type: TEnvironmentType, valuesPath: string, namespace: string, valuesType?: Maybe<TEnvironmentValuesType>, deck: { __typename?: 'DeckNode', id: any }, sopsCredentials?: Maybe<{ __typename?: 'AWSKMSNode', title: string, id: any } | { __typename?: 'PGPKeyNode', title: string, id: any }> }>>> }>, sops?: Maybe<Array<Maybe<{ __typename?: 'AWSKMSNode', title: string, description?: Maybe<string>, accessKey: string, secretAccessKey: string, id: any } | { __typename?: 'PGPKeyNode', title: string, description?: Maybe<string>, privateKey: string, id: any }>>> }> };
 
 export type TProjectDetailOtherProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -690,6 +720,7 @@ export type TCreateUpdateEnvironmentMutationVariables = Exact<{
   sopsCredentials?: Maybe<Scalars['ID']>;
   valuesPath?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['ID']>;
+  namespace: Scalars['String'];
 }>;
 
 
@@ -711,6 +742,13 @@ export type TDeleteProjectMemberMutationVariables = Exact<{
 
 
 export type TDeleteProjectMemberMutationResult = { __typename?: 'Mutation', deleteProjectMember?: Maybe<{ __typename?: 'DeleteProjectMember', ok?: Maybe<boolean> }> };
+
+export type TUpdateClusterSettingsMutationVariables = Exact<{
+  input: TUpdateClusterSettingsInput;
+}>;
+
+
+export type TUpdateClusterSettingsMutationResult = { __typename?: 'Mutation', updateClusterSettings?: Maybe<{ __typename?: 'UpdateClusterSettingsPayload', clusterSettings?: Maybe<{ __typename?: 'ClusterSettingsNode', port: number }> }> };
 
 export type TUserDetailQueryVariables = Exact<{
   id?: Maybe<Scalars['UUID']>;
@@ -866,6 +904,10 @@ export const ProjectDetailQuery = gql`
     currentCommitDateTime
     accessUsername
     accessToken
+    clusterSettings {
+      port
+      id
+    }
     members {
       user {
         id
@@ -902,6 +944,7 @@ export const ProjectDetailQuery = gql`
         }
         type
         valuesPath
+        namespace
         valuesType
         sopsCredentials {
           ... on AWSKMSNode {
@@ -997,9 +1040,9 @@ export const CreateUpdateSops = gql`
 }
     `;
 export const CreateUpdateEnvironment = gql`
-    mutation createUpdateEnvironment($title: String!, $description: String, $type: String!, $deck: ID!, $sopsCredentials: ID, $valuesPath: String, $id: ID) {
+    mutation createUpdateEnvironment($title: String!, $description: String, $type: String!, $deck: ID!, $sopsCredentials: ID, $valuesPath: String, $id: ID, $namespace: String!) {
   createUpdateEnvironment(
-    input: {title: $title, description: $description, type: $type, deck: $deck, sopsCredentials: $sopsCredentials, valuesPath: $valuesPath, id: $id}
+    input: {title: $title, description: $description, type: $type, deck: $deck, sopsCredentials: $sopsCredentials, valuesPath: $valuesPath, namespace: $namespace, id: $id}
   ) {
     environment {
       title
@@ -1023,6 +1066,15 @@ export const DeleteProjectMemberMutation = gql`
     mutation DeleteProjectMemberMutation($id: UUID, $user: UUID) {
   deleteProjectMember(user: $user, id: $id) {
     ok
+  }
+}
+    `;
+export const UpdateClusterSettings = gql`
+    mutation UpdateClusterSettings($input: UpdateClusterSettingsInput!) {
+  updateClusterSettings(input: $input) {
+    clusterSettings {
+      port
+    }
   }
 }
     `;
