@@ -105,6 +105,18 @@
         </v-col>
       </v-row>
       <v-row>
+        <v-col cols="12">
+          <v-alert
+            dense
+            outlined
+            icon="$vuetify.icons.warning"
+            type="error"
+            v-if="submissionError">
+            {{ submissionError }}
+          </v-alert>
+        </v-col>
+      </v-row>
+      <v-row>
         <v-col cols="9">
           <a
             class="link--secondary"
@@ -182,6 +194,8 @@ export default class ProjectForm extends validationMixin {
   description: string | null | undefined = '';
 
   specRepository = '';
+
+  submissionError = '';
 
   specRepositoryBranch: string | null | undefined = 'master';
 
@@ -280,7 +294,7 @@ export default class ProjectForm extends validationMixin {
       })
       .catch((err) => {
         this.saveLoading = false;
-        console.log(err);
+        this.submissionError = err.message;
       });
   }
 }
