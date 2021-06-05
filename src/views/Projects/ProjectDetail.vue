@@ -60,6 +60,7 @@
                   outlined
                   width="144"
                   :ripple="false"
+                  @click="showDeleteDialog = true;"
                 >
                   <v-icon size="24" class="mr-2">
                     $vuetify.icons.delete
@@ -124,6 +125,9 @@
         v-on:done="memberDrawer = false"
       ></add-team-member>
     </v-navigation-drawer>
+    <delete-project :show="showDeleteDialog" :project="project"
+        @hide="showDeleteDialog = false;"
+        @deleted="$router.push({name: 'overview'});"></delete-project>
   </v-container>
 </template>
 
@@ -131,6 +135,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import ProjectBar from '@/components/Projects/ProjectBar.vue';
 import ProjectForm from '@/views/Projects/ProjectForm.vue';
+import DeleteProject from '@/components/Projects/DeleteProject.vue';
 import AddTeamMember from '@/views/Projects/AddTeamMember.vue';
 import EditDeck from '@/components/Projects/EditDeck.vue';
 import UnikubeAvatar from '@/components/general/Avatar.vue';
@@ -148,6 +153,7 @@ import {
     AddTeamMember,
     EditDeck,
     UnikubeAvatar,
+    DeleteProject,
   },
   apollo: {
     project: {
@@ -174,6 +180,8 @@ export default class ProjectDetail extends Vue {
   }
 
   tab = 0;
+
+  showDeleteDialog = false;
 
   innerTab = 0;
 
