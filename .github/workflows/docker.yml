@@ -47,6 +47,8 @@ jobs:
         with:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
+          secrets: |
+            "SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}"
           file: docker/Dockerfile
           context: .
           build-args: |
@@ -61,5 +63,12 @@ jobs:
             VUE_APP_GRAPHQL_URL=${{ matrix.graphql_url }}
             VUE_APP_KEYCLOAK_URL=${{ matrix.keycloak_url }}
             VUE_APP_UPLOAD_URL=${{ matrix.upload_url }}
+            VUE_APP_VERSION=${{ steps.meta.outputs.version }}
+            SENTRY_RELEASE=${{ steps.meta.outputs.version }}
+            VUE_APP_SENTRY_DSN=${{ secrets.SENTRY_DSN }}
+            SENTRY_DSN=${{ secrets.SENTRY_DSN }}
+            SENTRY_ORG=${{ secrets.SENTRY_ORG }}
+            SENTRY_PROJECT=${{ secrets.SENTRY_PROJECT }}
+            SENTRY_URL=${{ secrets.SENTRY_URL }}
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
