@@ -6,10 +6,13 @@
   "github": {
     "release": true,
     "releaseName": "v${version}",
-    "preRelease": true
+    "preRelease": false
   },
   "hooks": {
     "after:bump": "npx auto-changelog -p",
     "after:release": "echo Successfully released ${name} v${latestVersion} to ${repo.repository}."
+  },
+  "npm": {
+    "publish": false
   }
 }
