@@ -1,6 +1,6 @@
 {
   "name": "unikube-frontend2",
-  "version": "0.1.0",
+  "version": "1.0.2",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -11,7 +11,8 @@
     "test:report": "nyc report --reporter=text",
     "lint": "vue-cli-service lint",
     "codegen": "graphql-codegen --config codegen.yml",
-    "kindify": "node kindify.js"
+    "kindify": "node kindify.js",
+    "release": "dotenv release-it"
   },
   "dependencies": {
     "@apollo/client": "^3.3.18",
@@ -68,11 +69,13 @@
     "@vue/eslint-config-airbnb": "^5.3.0",
     "@vue/eslint-config-typescript": "^7.0.0",
     "@vue/test-utils": "^1.2.0",
+    "auto-changelog": "^2.3.0",
     "babel-plugin-istanbul": "^6.0.0",
     "cache-loader": "^4.1.0",
     "chai": "^4.3.4",
     "cypress": "^7.3.0",
     "cypress-keycloak-commands": "^1.2.0",
+    "dotenv-cli": "^4.0.0",
     "eslint": "^7.26.0",
     "eslint-plugin-import": "^2.23.2",
     "eslint-plugin-vue": "^7.9.0",
@@ -80,6 +83,7 @@
     "lint-staged": "^9.5.0",
     "mock-apollo-client": "^1.1.0",
     "nyc": "^15.1.0",
+    "release-it": "^14.8.0",
     "sass": "^1.32.13",
     "sass-loader": "^8.0.2",
     "typescript": "^3.9.9",
@@ -95,5 +99,8 @@
       "vue-cli-service lint",
       "git add"
     ]
+  },
+  "auto-changlog": {
+    "template": "keepachangelog"
   }
 }
