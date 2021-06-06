@@ -100,7 +100,7 @@
       "git add"
     ]
   },
-  "auto-changlog": {
+  "auto-changelog": {
     "template": "keepachangelog"
   }
 }
