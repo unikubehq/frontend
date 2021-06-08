@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import CreateOrganization from '@/views/Organizations/CreateOrganization.vue';
+import i18n from '@/i18n';
 
 Vue.use(VueRouter);
 
@@ -22,47 +23,74 @@ const routes: Array<RouteConfig> = [
         path: '/overview',
         name: 'overview',
         component: () => import(/* webpackChunkName: "about" */ '../views/Projects.vue'),
+        meta: {
+          label: i18n.t('views.projects'),
+        },
       },
       {
         path: '/activities',
         name: 'activities',
         component: () => import(/* webpackChunkName: "about" */ '../views/Activities.vue'),
+        meta: {
+          label: i18n.t('views.activities'),
+        },
       },
       {
         path: '/permissions',
         name: 'permissions',
         component: () => import(/* webpackChunkName: "about" */ '../views/Permissions.vue'),
+        meta: {
+          label: i18n.t('views.permission'),
+        },
       },
       {
         path: '/settings',
         name: 'settings',
         component: () => import(/* webpackChunkName: "settings" */ '../views/Settings.vue'),
+        meta: {
+          label: i18n.t('views.settingsLabel'),
+        },
         redirect: { name: 'settings.account' },
         children: [
           {
             path: '/settings/account',
             name: 'settings.account',
             component: () => import(/* webpackChunkName: "settings" */ '../views/Settings/AccountSettings.vue'),
+            meta: {
+              label: i18n.t('views.settings.account'),
+            },
           },
           {
             path: '/settings/notifications',
             name: 'settings.notifications',
             component: () => import(/* webpackChunkName: "settings" */ '../views/Settings/NotificationSettings.vue'),
+            meta: {
+              label: i18n.t('views.settings.notifications'),
+            },
           },
           {
             path: '/settings/roles',
             name: 'settings.roles',
             component: () => import(/* webpackChunkName: "settings" */ '../views/Settings/OrganizationRoles.vue'),
+            meta: {
+              label: i18n.t('views.settings.roles'),
+            },
           },
           {
             path: '/settings/organization',
             name: 'settings.organization',
             component: () => import(/* webpackChunkName: "settings" */ '../views/Settings/OrganizationSettings.vue'),
+            meta: {
+              label: i18n.t('views.settings.organization'),
+            },
           },
           {
             path: '/settings/payment',
             name: 'settings.payment',
             component: () => import(/* webpackChunkName: "settings" */ '../views/Settings/Payment.vue'),
+            meta: {
+              label: i18n.t('views.settings.payment'),
+            },
           },
         ],
       },
@@ -70,37 +98,58 @@ const routes: Array<RouteConfig> = [
         path: '/create-project',
         name: 'create New Project',
         component: () => import(/* webpackChunkName: "about" */ '../views/Projects/CreateProject.vue'),
+        meta: {
+          label: i18n.t('views.createProject'),
+        },
       },
       {
         path: '/project/:slug/add-members',
         name: 'project.addMembers',
         component: () => import('../views/Projects/AddTeamMember.vue'),
+        meta: {
+          label: i18n.t('views.addMembers'),
+        },
       },
       {
         path: '/project/:slug',
         name: 'project.detail',
         component: () => import('../views/Projects/ProjectDetail.vue'),
+        meta: {
+          label: i18n.t('views.project.detail'),
+        },
         redirect: { name: 'project.detail.decks' },
         children: [
           {
             path: '/project/:slug/decks',
             name: 'project.detail.decks',
             component: () => import('../views/Projects/ProjectDetail/ProjectDecks.vue'),
+            meta: {
+              label: i18n.t('views.project.decks'),
+            },
           },
           {
             path: '/project/:slug/members',
             name: 'project.detail.members',
             component: () => import('../views/Projects/ProjectDetail/ProjectMembers.vue'),
+            meta: {
+              label: i18n.t('views.project.members'),
+            },
           },
           {
             path: '/project/:slug/sops',
             name: 'project.detail.sops',
             component: () => import('../views/Projects/ProjectDetail/Sops.vue'),
+            meta: {
+              label: i18n.t('views.project.sops'),
+            },
           },
           {
             path: '/project/:slug/cluster-settings',
             name: 'project.detail.clusterSettings',
             component: () => import('../views/Projects/ProjectDetail/ClusterSettings.vue'),
+            meta: {
+              label: i18n.t('views.project.clusterSettings'),
+            },
           },
         ],
       },

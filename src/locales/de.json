@@ -147,6 +147,7 @@
         "enterTitle": "Enter Environment Title",
         "description": "Description",
         "enterDescription": "Enter Environment Description",
+        "enterNamespace": "Enter Namespace",
         "sops": "Sops",
         "chooseSops": "Choose Sops",
         "type": "Environment Type",
@@ -207,5 +208,28 @@
     "joinButton": "Join",
     "declineButton": "Decline",
     "backToOverview": "Back to overview"
+  },
+  "views": {
+    "overview": "Overview",
+    "projects": "Projects",
+    "activities": "Activities",
+    "permission": "Permissions",
+    "settingsLabel": "Settings",
+    "settings": {
+      "roles": "Organization Roles",
+      "notifications": "Notification Settings",
+      "account": "Account Settings",
+      "organization": "Organization Settings",
+      "payment": "Payment Settings"
+    },
+    "createProject": "Create Project",
+    "addMembers": "Add Project Members",
+    "project": {
+      "detail": "Project Information",
+      "decks": "Project - Decks",
+      "members": "Project - Members",
+      "sops": "Project - SOPS",
+      "clusterSettings": "Project - Cluster Settings"
+    }
   }
 }
