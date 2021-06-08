@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import VueApollo from 'vue-apollo';
-import VueI18n from 'vue-i18n';
 import Vuelidate from 'vuelidate';
 import * as Sentry from '@sentry/browser';
 import * as Integrations from '@sentry/integrations';
@@ -20,8 +19,7 @@ import { Ability, AbilityBuilder } from '@casl/ability';
 import { UnikubeAbility } from '@/typing';
 import { getModule } from 'vuex-module-decorators';
 import Auth from '@/store/modules/auth';
-
-import LocaleMessages = VueI18n.LocaleMessages;
+import i18n from '@/i18n';
 
 console.log(`Running unikube frontend version ${process.env.VUE_APP_VERSION}`);
 
@@ -30,19 +28,6 @@ const keycloak = Keycloak({
   realm: process.env.VUE_APP_KEYCLOAK_REALM,
   clientId: process.env.VUE_APP_KEYCLOAK_CLIENT_ID,
 });
-
-function loadLocaleMessages() {
-  const locales = require.context('./locales', true, /[A-Za-z0-9-_,\s]+\.json$/i);
-  const messages: LocaleMessages = {};
-  locales.keys().forEach((key) => {
-    const matched = key.match(/([A-Za-z0-9-_]+)\./i);
-    if (matched && matched.length > 1) {
-      const locale = matched[1];
-      messages[locale] = locales(key);
-    }
-  });
-  return messages;
-}
 
 function initializeUnikubeApp(mode: string) {
   const spinner = document.getElementById('loading-spinner');
@@ -60,26 +45,10 @@ function initializeUnikubeApp(mode: string) {
   Vue.config.productionTip = false;
   Vue.use(VueAxios, axios);
   Vue.use(VueApollo);
-  Vue.use(VueI18n);
   Vue.use(Vuelidate);
   Vue.use(abilitiesPlugin, ability);
   Vue.component('Can', Can);
   Vue.axios.defaults.baseURL = process.env.VUE_APP_UPLOAD_URL;
-
-  const i18n = new VueI18n({
-    locale: 'de',
-    fallbackLocale: 'en',
-    messages: loadLocaleMessages(),
-    dateTimeFormats: {
-      en: {
-        short: {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-        },
-      },
-    },
-  });
   let auth;
   if (mode === 'e2e') {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
