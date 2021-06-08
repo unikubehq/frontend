@@ -50,6 +50,10 @@ query ProjectDetailQuery($id: UUID) {
         currentCommitDateTime,
         accessUsername,
         accessToken,
+        clusterSettings {
+            port,
+            id
+        }
         members {
             user {
                 id,
@@ -86,6 +90,7 @@ query ProjectDetailQuery($id: UUID) {
                 },
                 type,
                 valuesPath,
+                namespace,
                 valuesType,
                 sopsCredentials {
                     ... on AWSKMSNode {
@@ -241,6 +246,7 @@ mutation createUpdateEnvironment(
     $sopsCredentials: ID
     $valuesPath: String
     $id: ID
+    $namespace: String!
 ) {
     createUpdateEnvironment(
         input: {
@@ -250,6 +256,7 @@ mutation createUpdateEnvironment(
                 deck: $deck
                 sopsCredentials: $sopsCredentials
                 valuesPath: $valuesPath
+                namespace: $namespace
                 id: $id
         }
     ) {
@@ -287,5 +294,15 @@ mutation DeleteProjectMemberMutation(
         id: $id,
     ) {
         ok
+    }
+}
+
+mutation UpdateClusterSettings(
+    $input: UpdateClusterSettingsInput!
+) {
+    updateClusterSettings(input: $input) {
+        clusterSettings {
+            port
+        }
     }
 }

@@ -175,7 +175,7 @@ import { validationMixin } from '@/components/mixins';
 import TranslateResult = VueI18n.TranslateResult;
 
 @Component
-export default class SopsEdit extends validationMixin {
+export default class Sops extends validationMixin {
   @Prop() readonly project: TProjectNode | undefined
 
   @Prop() readonly sops: TSopsProviderNode | undefined
@@ -299,12 +299,10 @@ export default class SopsEdit extends validationMixin {
       variables,
     })
       .then((data) => {
-        console.log(data);
         if (data.data.createUpdateSops.ok) {
           this.resetValues();
           this.handleShowForm(false);
         }
-        console.log(this.$apollo.queries);
         this.$parent.$emit('sops-created');
       })
       .catch((err) => {

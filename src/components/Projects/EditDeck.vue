@@ -86,6 +86,19 @@
                   </template>
                 </v-select>
               </v-col>
+                <v-col cols="6" class="py-0">
+                <v-text-field
+                  :label="$t('deck.edit.environments.namespace')"
+                  name="namespace"
+                  filled
+                  outlined
+                  type="text"
+                  :placeholder="$t('deck.edit.environments.enterNamespace')"
+                  v-model="namespace"
+                  prepend-inner-icon="$vuetify.icons.user"
+                  persistent-placeholder
+                />
+              </v-col>
           </v-row>
           <v-row>
               <v-col cols="9">
@@ -105,6 +118,7 @@
               <v-col cols="3">
                 <v-btn
                 large
+                :loading="loading"
                 block
                 color="primary"
                 @click="submit"
@@ -141,6 +155,9 @@ type sopsCredential = {
     title: {
       required,
     },
+    namespace: {
+      required,
+    },
   },
 })
 export default class EditDeck extends validationMixin {
@@ -154,6 +171,8 @@ export default class EditDeck extends validationMixin {
 
   description = this.environment?.description
 
+  namespace = this.environment?.namespace
+
   sopsCredentials: sopsCredential = this.environment?.sopsCredentials ? { text: this.environment?.sopsCredentials?.title, value: this.environment?.sopsCredentials?.id } : { text: '', value: '' }
 
   environmentTypeChoices = [{ text: 'Local', value: TEnvironmentType.Local }, { text: 'Remote', value: TEnvironmentType.Remote }]
@@ -164,26 +183,37 @@ export default class EditDeck extends validationMixin {
 
   showForm = false;
 
+  loading = false;
+
   submit(): void {
+    if (!this.namespace) {
+      return;
+    }
     const mutationVars: TCreateUpdateEnvironmentMutationVariables = {
       title: this.title || '',
       description: this.description,
       type: this.environmentType.toLowerCase(),
       deck: this.environment?.deck?.id,
+      namespace: this.namespace,
       sopsCredentials: this.sopsCredentials.value,
       valuesPath: this.valuesPath?.value,
       id: this.environment?.id,
     };
+    this.loading = true;
     this.$apollo.mutate({
       mutation: CreateUpdateEnvironment,
       variables: mutationVars,
     })
       .then((data) => {
+        this.loading = false;
         if (data.data.createUpdateEnvironment.errors.length === 0) {
           this.$emit('change');
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        this.loading = false;
+        console.log(err);
+      });
   }
 
   get valuesPathChoices(): { text: string, value: string, encrypted: boolean }[] {

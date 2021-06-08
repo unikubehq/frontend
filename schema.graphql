@@ -25,6 +25,11 @@ type AWSKMSNode {
   secretAccessKey: String!
 }
 
+type ClusterSettingsNode {
+  id: ID!
+  port: Int!
+}
+
 type CreateOrganizationMemberInvitation {
   ok: Boolean
 }
@@ -41,6 +46,7 @@ input CreateUpdateEnvironmentInput {
   sopsCredentials: ID
   valuesPath: String
   valuesType: String
+  namespace: String!
   id: ID
   clientMutationId: String
 }
@@ -152,6 +158,7 @@ type EnvironmentNode {
   type: EnvironmentType!
   valuesPath: String!
   valuesType: EnvironmentValuesType
+  namespace: String!
   sopsCredentials: SOPSProviderNode
   deployments: [DeploymentNode!]!
   specsUrl: String
@@ -194,6 +201,7 @@ type Mutation {
   deleteEnvironment(id: UUID): DeleteEnvironment
   createUpdateSops(id: UUID, sopsData: SOPSInputType!): CreateUpdateSOPS
   deleteSops(id: UUID): DeleteSOPS
+  updateClusterSettings(input: UpdateClusterSettingsInput!): UpdateClusterSettingsPayload
 }
 
 type OrganizationInvitationNode {
@@ -270,6 +278,7 @@ type ProjectNode {
   accessToken: String
   organization: OrganizationNode
   decks: [DeckNode!]!
+  clusterSettings: ClusterSettingsNode
   sops: [SOPSProviderNode]
   members: [ProjectMember]
 }
@@ -334,6 +343,19 @@ enum SOPSTypeEnum {
 }
 
 scalar UUID
+
+input UpdateClusterSettingsInput {
+  port: Int!
+  project: ID!
+  id: ID
+  clientMutationId: String
+}
+
+type UpdateClusterSettingsPayload {
+  clusterSettings: ClusterSettingsNode
+  errors: [ErrorType]
+  clientMutationId: String
+}
 
 type UpdateOrganizationMember {
   ok: Boolean

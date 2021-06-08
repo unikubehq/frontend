@@ -36,7 +36,7 @@ Component.registerHooks(['validations']);
 // eslint-disable-next-line import/prefer-default-export
 export class validationMixin extends Vue {
    validatorMapping = [
-     'email', 'required', 'url',
+     'email', 'required', 'url', 'minValue', 'maxValue',
    ]
 
    handleErrors(fieldName: string): TranslateResult[] {

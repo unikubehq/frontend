@@ -148,7 +148,7 @@
         </v-col>
       </v-row>
     </v-form>
-    <sops-edit :project="project" v-if="editMode"></sops-edit>
+    <v-divider class="mt-10 mb-10" />
   </v-container>
 </template>
 
@@ -158,15 +158,11 @@ import {
 } from 'vue-property-decorator';
 import { CreateProject, UpdateProject, TProjectNode } from '@/generated/graphql';
 import { required, url } from 'vuelidate/lib/validators';
-import SopsEdit from '@/views/Projects/SopsEdit.vue';
 import VueI18n from 'vue-i18n';
 import { validationMixin } from '@/components/mixins';
 import TranslateResult = VueI18n.TranslateResult;
 
 @Component({
-  components: {
-    SopsEdit,
-  },
   validations: {
     title: {
       required,

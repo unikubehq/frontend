@@ -92,6 +92,16 @@ const routes: Array<RouteConfig> = [
             name: 'project.detail.members',
             component: () => import('../views/Projects/ProjectDetail/ProjectMembers.vue'),
           },
+          {
+            path: '/project/:slug/sops',
+            name: 'project.detail.sops',
+            component: () => import('../views/Projects/ProjectDetail/Sops.vue'),
+          },
+          {
+            path: '/project/:slug/cluster-settings',
+            name: 'project.detail.clusterSettings',
+            component: () => import('../views/Projects/ProjectDetail/ClusterSettings.vue'),
+          },
         ],
       },
     ],
@@ -103,15 +113,5 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
 });
-//
-// router.beforeEach((to, from, next) => {
-//   // Todo determine loggedIn state
-//   const loggedIn = true;
-//   if (to.name !== 'Login' && !loggedIn) {
-//     next({ name: 'Login' });
-//   } else {
-//     next();
-//   }
-// });
 
 export default router;
