@@ -138,12 +138,9 @@
           color="primary"
           :loading="saveLoading"
           @click="submit"
-          :disabled="disableButton || saveLoading"
+          :disabled="disableButton"
         >
             {{ submitButtonText }}
-            <template v-slot:loader>
-              <span>{{ $t('general.saving') }}...</span>
-            </template>
           </v-btn>
         </v-col>
       </v-row>
