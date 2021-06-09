@@ -303,7 +303,7 @@ export default class Sops extends validationMixin {
           this.resetValues();
           this.handleShowForm(false);
         }
-        this.$parent.$emit('sops-created');
+        this.$emit('update');
       })
       .catch((err) => {
         this.$store.commit({
