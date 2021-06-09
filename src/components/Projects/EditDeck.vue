@@ -45,7 +45,6 @@
                 v-model="sopsCredentials"
                 :items="sopsProviderChoices"
                 return-object
-                prepend-inner-icon="$vuetify.icons.user"
                 persistent-placeholder
               />
               </v-col>
@@ -59,7 +58,6 @@
                     :placeholder="$t('deck.edit.environments.enterType')"
                     v-model="environmentsType"
                     :items="environmentsTypeChoices"
-                    prepend-inner-icon="$vuetify.icons.user"
                     persistent-placeholder
                   />
                 </v-col>
@@ -74,7 +72,6 @@
                     v-model="valuesPath"
                     :items="valuesPathChoices"
                     return-object
-                    prepend-inner-icon="$vuetify.icons.user"
                       persistent-placeholder
                   >
                   <template v-slot:item="data">
