@@ -750,6 +750,13 @@ export type TUpdateClusterSettingsMutationVariables = Exact<{
 
 export type TUpdateClusterSettingsMutationResult = { __typename?: 'Mutation', updateClusterSettings?: Maybe<{ __typename?: 'UpdateClusterSettingsPayload', clusterSettings?: Maybe<{ __typename?: 'ClusterSettingsNode', port: number }> }> };
 
+export type TDeleteSopsMutationVariables = Exact<{
+  input: Scalars['UUID'];
+}>;
+
+
+export type TDeleteSopsMutationResult = { __typename?: 'Mutation', deleteSops?: Maybe<{ __typename?: 'DeleteSOPS', ok?: Maybe<boolean> }> };
+
 export type TUserDetailQueryVariables = Exact<{
   id?: Maybe<Scalars['UUID']>;
 }>;
@@ -1075,6 +1082,13 @@ export const UpdateClusterSettings = gql`
     clusterSettings {
       port
     }
+  }
+}
+    `;
+export const DeleteSops = gql`
+    mutation DeleteSops($input: UUID!) {
+  deleteSops(id: $input) {
+    ok
   }
 }
     `;

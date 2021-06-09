@@ -1,35 +1,47 @@
 <template>
   <div>
-    <h3 style="font-weight: 500;">{{ $t('sops.manageSops') }}</h3>
-    <v-divider></v-divider>
     <div v-if="project.sops && project.sops.length">
-    <div
-        v-for="sops in project.sops"
-        v-bind:key="sops.title"
-        tile
-      >
-      <v-list max-width="800" class="sops-list">
-        <v-list-item two-line class="pl-0">
-          <v-list-item-content class="sops-list-item">
-            <v-list-item-title>
-              {{ sops.title }}
-              <v-btn
+      <v-row>
+      <v-col cols="6" v-for="sops in project.sops" :key="sops.id">
+        <v-card outlined>
+          <v-card-title>
+            <v-row>
+              <v-col cols="9">
+                <v-icon>$vuetify.icons.accessToken</v-icon>
+                {{ sops.title }}
+              </v-col>
+              <v-col cols="3" class="text-right">
+                <v-btn
                   outlined
-                  color="#a1a9b2"
-                  width="144"
-                  right
-                  absolute
+                  width="50"
+                  :ripple="false"
                   @click="handleSetEditSops(sops)"
                 >
-                  <v-icon size="24" class="mr-2">
+                  <v-icon size="24">
                     $vuetify.icons.edit
-                  </v-icon>{{ $t('sops.editSops') }}</v-btn>
-            </v-list-item-title>
-            <v-list-item-subtitle> {{ sops.description }}</v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
-        </v-list>
-    </div>
+                  </v-icon>
+                </v-btn>
+                <v-btn
+                  outlined
+                  width="50"
+                  :ripple="false"
+                  class="mt-3"
+                  @click="deleteSopsDialog(sops)"
+                >
+                  <v-icon size="24">
+                    $vuetify.icons.delete
+                  </v-icon>
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-card-title>
+          <v-card-text class="mt-n3">
+            {{ getSopsTypeString(sops.__typename) }}
+            <span v-if="sops.description"> - {{ sops.description }}</span>
+          </v-card-text>
+        </v-card>
+      </v-col>
+      </v-row>
     </div>
     <v-btn
       v-if="!showForm"
@@ -155,6 +167,8 @@
         </v-form>
       </v-col>
     </v-row>
+    <delete-sops :show="deleteDialog" :sops="deleteSops" @hide="deleteDialog = false;"
+    @deleted="deleteDialog = false;$emit('update');"/>
   </div>
 </template>
 
@@ -172,9 +186,14 @@ import {
   required, requiredIf, ValidationFunc, ValidationRule,
 } from 'vuelidate/lib/validators';
 import { validationMixin } from '@/components/mixins';
+import DeleteSops from '@/components/Projects/DeleteSops.vue';
 import TranslateResult = VueI18n.TranslateResult;
 
-@Component
+@Component({
+  components: {
+    DeleteSops,
+  },
+})
 export default class Sops extends validationMixin {
   @Prop() readonly project: TProjectNode | undefined
 
@@ -205,7 +224,11 @@ export default class Sops extends validationMixin {
 
   showForm = false;
 
-  pgpHover = false
+  pgpHover = false;
+
+  deleteDialog = false;
+
+  deleteSops: TSopsProviderNode | null = null;
 
   validations(): {[key: string]: {[key: string]: ValidationRule | ValidationFunc}} {
     return {
@@ -378,6 +401,22 @@ export default class Sops extends validationMixin {
       default:
         this.sopsType = null;
     }
+  }
+
+  deleteSopsDialog(sops: TSopsProviderNode): void {
+    this.deleteSops = sops;
+    this.deleteDialog = true;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  getSopsTypeString(typename: string): string {
+    if (typename === 'AWSKMSNode') {
+      return 'AWS KMS';
+    }
+    if (typename === 'PGPKeyNode') {
+      return 'PGP';
+    }
+    return '';
   }
 }
 </script>
