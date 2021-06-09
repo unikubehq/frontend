@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import * as Sentry from '@sentry/browser';
 import VueRouter, { RouteConfig } from 'vue-router';
 import CreateOrganization from '@/views/Organizations/CreateOrganization.vue';
 import i18n from '@/i18n';
@@ -165,6 +166,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   document.title = `${to.meta.label} | Unikube`;
+  Sentry.configureScope((scope) => scope.setTransactionName(to.meta.label));
   next();
 });
 
