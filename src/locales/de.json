@@ -38,6 +38,13 @@
       "warning": "Warning: Deleting a project cannot be undone.\n            Please enter the project's name in the field below.",
       "agree": "Yes, delete project"
     },
+    "deleteSopsModal": {
+      "title": "Delete SOPS {title}",
+      "intro": "Are you sure you want to delete SOPS - {title}?",
+      "warning": "Warning: Deleting a SOPS cannot be undone.\n            Please enter the SOPS's name in the field below.",
+      "agree": "Yes, delete SOPS"
+    },
+
     "addNewProject": "Add new Project",
     "projectList": "Projects List"
   },

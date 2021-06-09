@@ -306,3 +306,11 @@ mutation UpdateClusterSettings(
         }
     }
 }
+
+mutation DeleteSops(
+    $input: UUID!
+) {
+    deleteSops(id: $input) {
+        ok
+    }
+}
