@@ -1,11 +1,22 @@
 <template>
   <v-container fluid >
-    <h1 class="text-h1 mt-5" :class="overlay ? 'ml-3' : ''" v-if="project">
+    <v-skeleton-loader type="heading" tile height="50" class="mb-2 mt-5"
+      v-if="$apollo.queries.graphqlProject.loading || $apollo.queries.organization.loading"/>
+    <h1 class="text-h1 mt-5" :class="overlay ? 'ml-3' : ''" v-else>
       {{ $t('projects.addMembers') }} - {{ project.title }}
     </h1>
     <v-card>
     <v-row>
-      <v-card-text class="px-10">
+      <v-card-text class="px-10"
+          v-if="$apollo.queries.graphqlProject.loading || $apollo.queries.organization.loading">
+        <v-skeleton-loader type="text" tile width="50%"/>
+        <v-row class="mt-3">
+          <v-col cols="6"><v-skeleton-loader height="40" type="heading" tile width="90%"/></v-col>
+          <v-col cols="6"><v-skeleton-loader height="40" type="heading" tile width="90%"/></v-col>
+        </v-row>
+        <v-skeleton-loader type="button" tile class="mt-4"/>
+      </v-card-text>
+      <v-card-text class="px-10" v-else>
         <v-col :cols="overlay ? 12 : 7">
           <v-alert
             dense
@@ -106,6 +117,9 @@ import TranslateResult = VueI18n.TranslateResult;
           id: this.$store.state.context.organization.id,
         };
       },
+      skip() {
+        return !this.organizationSet;
+      },
     },
     graphqlProject: {
       query: ProjectDetailQuery,
@@ -158,6 +172,10 @@ export default class AddTeamMember extends Vue {
       { value: TProjectMemberRoleEnum.Admin, text: this.$t('general.admin') },
       { value: TProjectMemberRoleEnum.Member, text: this.$t('general.member') },
     ];
+  }
+
+  get organizationSet(): boolean {
+    return !!this.$store.state.context.organization;
   }
 
   addMemberForm(): void {
