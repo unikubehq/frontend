@@ -276,14 +276,15 @@ export default class ProjectForm extends validationMixin {
     })
       .then((data) => {
         this.saveLoading = false;
-        this.$store.dispatch('auth/refresh', -1);
-        if (data.data.createUpdateProject.project) {
-          if (this.editMode) {
-            this.$router.go(-1);
-          } else {
-            this.$router.push({ name: 'project.addMembers', params: { slug: data.data.createUpdateProject.project.id } });
+        this.$store.dispatch('auth/refresh', -1).then(() => {
+          if (data.data.createUpdateProject.project) {
+            if (this.editMode) {
+              this.$router.go(-1);
+            } else {
+              this.$router.push({ name: 'project.addMembers', params: { slug: data.data.createUpdateProject.project.id } });
+            }
           }
-        }
+        });
       })
       .catch((err) => {
         this.saveLoading = false;

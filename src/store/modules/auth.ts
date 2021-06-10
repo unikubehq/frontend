@@ -93,8 +93,8 @@ export default class Auth extends VuexModule {
   }
 
   @Action
-  refresh(seconds = 30): void {
-    this.client.updateToken(seconds).then((refreshed: boolean) => {
+  refresh(seconds = 30): Promise<boolean> {
+    return this.client.updateToken(seconds).then((refreshed: boolean) => {
       if (refreshed) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
