@@ -93,6 +93,7 @@ export default class ClusterSettings extends validationMixin {
         if (data?.clusterSettings?.port) {
           this.port = data.clusterSettings.port?.toString();
         }
+        this.$emit('update');
       })
       .catch((err) => {
         this.loading = false;
