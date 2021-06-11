@@ -78,11 +78,16 @@ export default class OrganizationTitle extends validationMixin {
       },
     }).then(({ data }) => {
       this.loading = false;
-      this.$store.dispatch('auth/refresh', -1);
-      this.$emit(
-        'success',
-        data.createUpdateOrganization?.organization,
-      );
+      this.$store.dispatch('auth/refresh', -1).then((refreshed: boolean) => {
+        if (refreshed) {
+          this.$emit(
+            'success',
+            data.createUpdateOrganization?.organization,
+          );
+        } else {
+          console.log('Something went wrong creating a new organization.');
+        }
+      });
     });
   }
 }
