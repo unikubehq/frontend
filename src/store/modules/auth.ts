@@ -93,7 +93,7 @@ export default class Auth extends VuexModule {
   }
 
   @Action
-  refresh(seconds = 30): Promise<boolean> {
+  async refresh(seconds = 30): Promise<boolean> {
     return this.client.updateToken(seconds).then((refreshed: boolean) => {
       if (refreshed) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -106,6 +106,7 @@ export default class Auth extends VuexModule {
         });
         this.context.dispatch('scheduleRefresh');
       }
+      return refreshed;
     });
   }
 }

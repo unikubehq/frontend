@@ -276,13 +276,15 @@ export default class ProjectForm extends validationMixin {
     })
       .then((data) => {
         this.saveLoading = false;
-        this.$store.dispatch('auth/refresh', -1).then(() => {
-          if (data.data.createUpdateProject.project) {
+        this.$store.dispatch('auth/refresh', -1).then((refreshed: boolean) => {
+          if (data.data.createUpdateProject.project && refreshed) {
             if (this.editMode) {
               this.$router.go(-1);
             } else {
               this.$router.push({ name: 'project.addMembers', params: { slug: data.data.createUpdateProject.project.id } });
             }
+          } else {
+            console.log('Something went wrong creating the project or refreshing the rpt.');
           }
         });
       })
