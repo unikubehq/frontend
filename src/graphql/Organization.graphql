@@ -31,8 +31,19 @@ query OrganizationMembersQuery($id: UUID!) {
             user {
                 id
                 familyName
-                givenName
+                givenName,
+                email,
+                avatarImage
             }
+        }
+    }
+}
+
+query OrganizationInvites($id: UUID!) {
+    allOrganizationInvitations(id: $id) {
+        results {
+            email,
+            id,
         }
     }
 }

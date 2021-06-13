@@ -2,7 +2,7 @@
   <div>
     <v-simple-table class="table__unikube">
       <template v-slot:default>
-        <thead class="member-thead">
+        <thead>
         <tr>
           <th class="text-left" colspan="2">{{ $t('user.name') }}</th>
           <th class="text-left">{{ $t('user.role') }}</th>
@@ -278,58 +278,4 @@ export default class ProjectMembers extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.table__unikube {
-  border: 1px solid #c4ccd4;
-  border-radius: 7px;
-  overflow: hidden;
-  ::v-deep table {
-    border-collapse: separate;
-    width: 101%;
-  }
-  tbody {
-    tr:before,
-    tr:after {
-      display: inline-block;
-      content: '';
-    }
-    tr:before {
-      width: 15px;
-    }
-    tr:after {
-      width: 20px;
-    }
-    tr[disabled] {
-      opacity: 0.5;
-      pointer-events: none;
-    }
-  }
-  .member-thead {
-    background-color: #9eaed7;
-
-    th {
-      padding-top: 11px !important;
-      padding-bottom: 10px !important;
-      font-size: 14px;
-      font-weight: 500;
-    }
-
-    th:first-child {
-      padding-left: 5%;
-    }
-  }
-  td:first-child {
-    padding-left: calc(5% - 15px) !important;
-  }
-  td:last-child {
-    padding-right: calc(5% - 15px) !important;
-  }
-  td {
-    padding-top: 24px !important;
-    padding-bottom: 24px !important;
-  }
-}
-
-.theme--light.v-data-table > .v-data-table__wrapper > table > thead > tr > th {
-  color: white;
-}
 </style>

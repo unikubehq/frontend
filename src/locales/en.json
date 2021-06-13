@@ -96,14 +96,14 @@
     "organizationRoles": {
       "title":  "Organization Roles",
       "intro": "You can set organization basic information and can also remove it.",
-      "assign":  "Assign New Role",
       "enterEmail":  "Enter Email Address",
       "existing":  "Existing Organization Roles",
       "name": "Name",
       "role":  "Role",
       "actions": "Actions",
       "admin":  "Admin",
-      "addAnother": "You can only edit/delete a role after another admin is added"
+      "addAnother": "You can only edit/delete a role after another admin is added",
+      "invite": "Invite new members"
     },
     "notifications": {
       "title": "Notifications",
@@ -116,14 +116,18 @@
     },
     "roles": {
       "title": "Organization Roles",
-      "intro": "You can set organization basic information and can also remove it.",
+      "intro": "Manage organization members and invitations.",
       "assign": "Assign New Role",
-      "existing": "Existing Organization Roles",
+      "existing": "Current Organization Members",
       "name": "Name",
       "role": "Role",
       "actions": "Actions",
       "admin": "Admin",
-      "addAnother": "You can only edit/delete a role after another admin is added"
+      "addAnother": "You can only edit/delete a role after another admin is added",
+      "invite": "Invite new members",
+      "inviteButton": "Invite new member",
+      "pendingInvites": "Pending invitations",
+      "remove": "Yes, remove from organization"
     },
     "payment": {
       "title": "Payment Methods",

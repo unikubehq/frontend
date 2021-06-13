@@ -593,7 +593,14 @@ export type TOrganizationMembersQueryVariables = Exact<{
 }>;
 
 
-export type TOrganizationMembersQueryResult = { __typename?: 'Query', organization?: Maybe<{ __typename?: 'OrganizationNode', id: any, members?: Maybe<Array<Maybe<{ __typename?: 'OrganizationMember', role?: Maybe<string>, user?: Maybe<{ __typename?: 'UserNode', id: any, familyName?: Maybe<string>, givenName?: Maybe<string> }> }>>> }> };
+export type TOrganizationMembersQueryResult = { __typename?: 'Query', organization?: Maybe<{ __typename?: 'OrganizationNode', id: any, members?: Maybe<Array<Maybe<{ __typename?: 'OrganizationMember', role?: Maybe<string>, user?: Maybe<{ __typename?: 'UserNode', id: any, familyName?: Maybe<string>, givenName?: Maybe<string>, email?: Maybe<string>, avatarImage?: Maybe<string> }> }>>> }> };
+
+export type TOrganizationInvitesQueryVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type TOrganizationInvitesQueryResult = { __typename?: 'Query', allOrganizationInvitations?: Maybe<{ __typename?: 'OrganizationInvitationNodePage', results?: Maybe<Array<Maybe<{ __typename?: 'OrganizationInvitationNode', email: string, id: any }>>> }> };
 
 export type TCreateOrganizationMutationVariables = Exact<{
   title: Scalars['String'];
@@ -802,7 +809,19 @@ export const OrganizationMembersQuery = gql`
         id
         familyName
         givenName
+        email
+        avatarImage
       }
+    }
+  }
+}
+    `;
+export const OrganizationInvites = gql`
+    query OrganizationInvites($id: UUID!) {
+  allOrganizationInvitations(id: $id) {
+    results {
+      email
+      id
     }
   }
 }

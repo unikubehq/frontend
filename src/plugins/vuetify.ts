@@ -4,6 +4,7 @@ import Vue from 'vue';
 import Vuetify from 'vuetify/lib';
 
 import Account from '@/components/icons/Account.vue';
+import AddMember from '@/components/icons/AddMember.vue';
 import AccountBlue from '@/components/icons/AccountBlue.vue';
 import BigSorry from '@/components/icons/BigSorry.vue';
 import Description from '@/components/icons/Description.vue';
@@ -12,6 +13,7 @@ import AccessUser from '@/components/icons/AccessUser.vue';
 import AccessToken from '@/components/icons/AccessToken.vue';
 import Branch from '@/components/icons/Branch.vue';
 import Cross from '@/components/icons/Cross.vue';
+import ExistingMembers from '@/components/icons/ExistingMembers.vue';
 import JoinOrganizationBig from '@/components/icons/JoinOrganizationBig.vue';
 import CreateOrganizationBig from '@/components/icons/CreateOrganizationBig.vue';
 import DropdownSmallGrey from '@/components/icons/DropdownSmallGrey.vue';
@@ -81,6 +83,9 @@ export default new Vuetify({
       accountBlue: {
         component: AccountBlue,
       },
+      addMember: {
+        component: AddMember,
+      },
       description: {
         component: Description,
       },
@@ -98,6 +103,9 @@ export default new Vuetify({
       },
       createOrganizationBig: {
         component: CreateOrganizationBig,
+      },
+      existingMembers: {
+        component: ExistingMembers,
       },
       defaultOrganization: {
         component: DefaultOrganization,
