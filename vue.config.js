@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === 'production') {
       authToken: sentryAuthToken,
       include: '.',
       ignore: ['node_modules', 'babel.config.js', 'apollo.config.js', '.eslintrc.js'],
-      release: `${process.env.VUE_APP_VERSION}`,
+      release: `unikube-frontend@${process.env.VUE_APP_VERSION}`,
     }),
   );
 }
