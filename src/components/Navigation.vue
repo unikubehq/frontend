@@ -49,9 +49,10 @@
                 :ripple="false"
                 :class="{'flex-wrap': mini}">
               <v-list-item-avatar>
-                <img v-if="$store.state.context.organization"
-                    :src="$store.state.context.organization.avatarImage">
-                <img v-else src="" alt="">
+                <v-img v-if="$store.state.context.organization &&
+                    $store.state.context.organization.avatarImage"
+                    :src="$store.state.context.organization.avatarImage"/>
+                <v-icon v-else>$vuetify.icons.defaultOrganization</v-icon>
               </v-list-item-avatar>
 
               <v-list-item-content v-if="$store.state.context.organization">
@@ -83,7 +84,9 @@
                 @click="setOrganizationContext(organization)"
             >
               <v-list-item-avatar class="organization-dropdown--icon">
-                <v-img :src="organization.avatarImage" max-width="35" contain/>
+                <v-img :src="organization.avatarImage" max-width="35" contain
+                v-if="organization.avatarImage"/>
+                <v-icon v-else>$vuetify.icons.defaultOrganization</v-icon>
               </v-list-item-avatar>
               <v-list-item-content>
                 <v-list-item-title v-text="organization.title"></v-list-item-title>
