@@ -7,6 +7,7 @@ import Account from '@/components/icons/Account.vue';
 import AccountBlue from '@/components/icons/AccountBlue.vue';
 import BigSorry from '@/components/icons/BigSorry.vue';
 import Description from '@/components/icons/Description.vue';
+import DefaultOrganization from '@/components/icons/DefaultOrganization.vue';
 import AccessUser from '@/components/icons/AccessUser.vue';
 import AccessToken from '@/components/icons/AccessToken.vue';
 import Branch from '@/components/icons/Branch.vue';
@@ -97,6 +98,9 @@ export default new Vuetify({
       },
       createOrganizationBig: {
         component: CreateOrganizationBig,
+      },
+      defaultOrganization: {
+        component: DefaultOrganization,
       },
       joinOrganizationBig: {
         component: JoinOrganizationBig,
