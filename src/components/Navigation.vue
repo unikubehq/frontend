@@ -142,9 +142,10 @@ import {
   OrganizationMembersQuery,
   OrganizationsQuery,
   TOrganizationMember,
-  TOrganizationNode,
+  TOrganizationNode, TOrganizationsQueryResult,
 } from '@/generated/graphql';
 import Strings from '@/utils/strings';
+import { ApolloQueryResult } from '@apollo/client';
 
 Component.registerHooks([
   'beforeRouteEnter',
@@ -157,25 +158,14 @@ Component.registerHooks([
     allOrganizations: {
       query: OrganizationsQuery,
       fetchPolicy: 'no-cache',
-      result(result) {
-        if (result.data.allOrganizations.results.length) {
+      result(result: ApolloQueryResult<TOrganizationsQueryResult>) {
+        if (result?.data?.allOrganizations?.results?.length) {
           // If currently no organization is set - set the first from the result set.
           if (!this.$store.state.context.organization) {
-            this.$store.commit('context/setOrganization', result.data.allOrganizations.results[0]);
-            this.setOrganizationMember(result.data.allOrganizations.results[0]);
+            this.initializeOrganization(result.data.allOrganizations.results);
           } else {
           // If currently an organization is set, check if it is still contained in the result set.
-            let contained = false;
-            result.data.allOrganizations.results.forEach((organization: TOrganizationNode) => {
-              if (this.$store.state.context.organization.id === organization.id) {
-                contained = true;
-              }
-            });
-            // If it is not contained within the result set - set the first.
-            if (!contained) {
-              this.$store.commit('context/setOrganization', result.data.allOrganizations.results[0]);
-              this.setOrganizationMember(result.data.allOrganizations.results[0]);
-            }
+            this.checkAndSetOrganization(result.data.allOrganizations.results);
           }
         } else if (this.$route.name !== 'create-organization') {
           this.$router.push({ name: 'create-organization' });
@@ -192,12 +182,51 @@ export default class Layout extends Vue {
     { icon: '$vuetify.icons.settings', title: 'Settings', to: '/settings' },
   ];
 
-  mini = false;
-
   idToVerboseId = Strings.idToVerboseId
 
   toggleMini(): void {
-    this.mini = !this.mini;
+    this.$store.commit('context/setSidebarExpansion', !this.$store.state.context.sidebarExpanded);
+  }
+
+  get mini(): boolean {
+    return !this.$store.state.context.sidebarExpanded;
+  }
+
+  checkAndSetOrganization(organizations: TOrganizationNode[]): void {
+    /* Check if currently set organization is still valid. If not change context organization */
+    let contained = false;
+    organizations.forEach((organization: TOrganizationNode) => {
+      if (this.$store.state.context.organization.id === organization.id) {
+        contained = true;
+      }
+    });
+    // If it is not contained within the result set - set the first.
+    if (!contained) {
+      this.$store.commit('context/setOrganization', organizations[0]);
+      this.setOrganizationMember(organizations[0]);
+    }
+  }
+
+  initializeOrganization(organizations: TOrganizationNode[]): void {
+    /* Initialize organization context.
+     *
+     * Currently no organization is set. Initialize from localstorage or use first organization
+     * from query result.
+     */
+    const contextOrganizationId = JSON.parse(localStorage.getItem('contextOrganization') || 'null');
+    // If organization id was stored in localstorage, set it, when present in query result.
+    if (contextOrganizationId) {
+      const organization = organizations.filter(
+        (fOrganization: TOrganizationNode) => fOrganization.id === contextOrganizationId,
+      );
+      if (organization.length) {
+        this.$store.commit('context/setOrganization', organization[0]);
+        this.setOrganizationMember(organization[0]);
+        return;
+      }
+    }
+    this.$store.commit('context/setOrganization', organizations[0]);
+    this.setOrganizationMember(organizations[0]);
   }
 
   setOrganizationContext(organization: TOrganizationNode): void {
@@ -239,6 +268,3 @@ export default class Layout extends Vue {
   }
 }
 </script>
-
-<style scoped>
-</style>

@@ -1,0 +1,34 @@
+{
+  "allProjects": {
+    "totalCount": 2,
+    "results": [
+      {
+        "title": "Unikube Cypress Project",
+        "description": "Description",
+        "currentCommit": "",
+        "currentCommitDateTime": null,
+        "id": "3b181df7-e91c-4a5b-9020-4d1c22636361",
+        "decks": [],
+        "sops": [],
+        "__typename": "ProjectNode",
+        "organization": {
+          "id": "5150dd69-b183-4f8d-96b7-708294e427ce"
+        }
+      },
+      {
+        "title": "Awesome Blueshoe Project",
+        "description": "desc",
+        "currentCommit": "",
+        "currentCommitDateTime": null,
+        "id": "b6138eac-1fd7-487e-8cac-82ef47324fc9",
+        "decks": [],
+        "sops": [],
+        "__typename": "ProjectNode",
+        "organization": {
+          "id": "5150dd69-b183-4f8d-96b7-708294e427ce"
+        }
+      }
+    ],
+    "__typename": "ProjectNodePage"
+  }
+}

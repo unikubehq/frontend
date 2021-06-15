@@ -71,6 +71,9 @@ function initializeUnikubeApp(mode: string) {
       vuetify,
       i18n,
       apolloProvider,
+      beforeCreate() {
+        this.$store.commit('context/initContext');
+      },
       render: (h) => h(App),
     }).$mount('#app');
   }
