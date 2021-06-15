@@ -156,6 +156,7 @@ Component.registerHooks([
   apollo: {
     allOrganizations: {
       query: OrganizationsQuery,
+      fetchPolicy: 'no-cache',
       result(result) {
         if (result.data.allOrganizations.results.length) {
           // If currently no organization is set - set the first from the result set.
