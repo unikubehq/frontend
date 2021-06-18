@@ -7,6 +7,7 @@
   "video": false,
   "chromeWebSecurity": false,
   "baseUrl": "http://localhost:8080",
+  "pageLoadTimeout": 60000,
   "env": {
     "VUE_APP_KEYCLOAK_JS": "/js/keycloak.js",
     "VUE_APP_KEYCLOAK_AUTHZ_JS": "/js/keycloak-authz.js",
@@ -14,5 +15,9 @@
     "auth_base_url": "http://keycloak.127.0.0.1.nip.io:8085/auth",
     "auth_realm": "unikube",
     "auth_client_id": "frontend"
+  },
+  "retries": {
+    "runMode": 2,
+    "openMode": 0
   }
 }

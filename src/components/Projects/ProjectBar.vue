@@ -5,10 +5,10 @@
     </v-col>
     <v-col class="d-flex flex-row align-center justify-space-between">
       <v-text-field outlined filled prepend-inner-icon="$vuetify.icons.search" v-model="search"
-          placeholder="Search" @input="$emit('search-change', search)"></v-text-field>
+          placeholder="Search" @input="$emit('search-change', search)" class="search__input"/>
       <v-select
         prefix="Sort:"
-        class="mx-2"
+        class="mx-2 projects__order-dropdown"
         outlined
          filled
         :items="orderChoices"

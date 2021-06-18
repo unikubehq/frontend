@@ -37,14 +37,6 @@ const routes: Array<RouteConfig> = [
         },
       },
       {
-        path: '/permissions',
-        name: 'permissions',
-        component: () => import(/* webpackChunkName: "about" */ '../views/Permissions.vue'),
-        meta: {
-          label: i18n.t('views.permission'),
-        },
-      },
-      {
         path: '/settings',
         name: 'settings',
         component: () => import(/* webpackChunkName: "settings" */ '../views/Settings.vue'),

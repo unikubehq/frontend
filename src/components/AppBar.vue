@@ -26,7 +26,7 @@
       </v-menu>
 
       <v-divider vertical class="ml-3"></v-divider>
-      <div>
+      <div class="profile-dropdown">
         <v-menu v-model="menu" offset-y nudge-bottom="5">
           <template v-slot:activator="{ on, attrs }">
             <v-btn color="343d6f" v-bind="attrs" v-on="on" text :ripple="false" class="py-9">
@@ -34,11 +34,12 @@
                 size="46"
                 class="avatar__unikube mr-3"
                 :style="avatarStyles">
-                <img v-if="$store.state.auth.avatarImage" :src="$store.state.auth.avatarImage">
+                <img v-if="$store.state.auth.avatarImage" :src="$store.state.auth.avatarImage"
+                  alt="User Avatar">
                 <span v-else-if="$store.state.context.organizationMember">
                   {{ avatar.initials }}
                 </span>
-                <img v-else src="@/assets/img/avatar.svg">
+                <img v-else src="@/assets/img/avatar.svg" alt="Default Avatar">
               </v-avatar>
               <div class="d-flex flex-column text-left">
                 <h3 class="mb-0">{{ username }}</h3>

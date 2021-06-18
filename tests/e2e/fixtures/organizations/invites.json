@@ -1,0 +1,12 @@
+{
+  "userInvitations": {
+    "results": [
+      {
+        "id": "0be9fc83-1111-2222-3333-176e1111f749",
+        "organization": {
+          "title": "Invite Organization"
+        }
+      }
+    ]
+  }
+}

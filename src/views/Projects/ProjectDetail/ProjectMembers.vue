@@ -4,10 +4,10 @@
       <template v-slot:default>
         <thead>
         <tr>
-          <th class="text-left" colspan="2">{{ $t('user.name') }}</th>
-          <th class="text-left">{{ $t('user.role') }}</th>
-          <th class="text-left">{{ $t('user.lastOnline') }}</th>
-          <th class="text-left" colspan="2">{{ $t('user.actions') }}</th>
+          <th scope="col" class="text-left" colspan="2">{{ $t('user.name') }}</th>
+          <th scope="col" class="text-left">{{ $t('user.role') }}</th>
+          <th scope="col" class="text-left">{{ $t('user.lastOnline') }}</th>
+          <th scope="col" class="text-left" colspan="2">{{ $t('user.actions') }}</th>
         </tr>
         </thead>
         <tbody>

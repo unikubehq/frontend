@@ -1,12 +1,12 @@
 <template>
   <v-main>
     <v-container fluid fill-height class="container--login">
-      <v-img src="@/assets/img/Unikube-Logo-Icon.svg" class="logo--bottom"
+      <v-img src="@/assets/img/Unikube-Logo-Icon.svg" class="logo--bottom" alt="Unikube Logo"
              height="40%" width="30%" contain position="bottom right"/>
       <v-row justify="center">
         <v-col cols="10" class="text-center">
           <v-img class="d-inline-block" src="@/assets/img/Unikube-Logo-H.svg"
-                 max-width="150"/>
+                 alt="Unikube Logo" max-width="150"/>
         </v-col>
         <create-or-join v-if="step === 0" @success="nextStep" />
         <organization-title v-if="step === 1" @success="orgaCreation"></organization-title>

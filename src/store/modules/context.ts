@@ -9,12 +9,14 @@ export default class Context extends VuexModule {
 
   organizationMember: TOrganizationMember | null = null;
 
-  sidebarExpanded = false;
+  sidebarExpanded = true;
 
   @Mutation
   setOrganization(organization: TOrganizationNode): void {
     this.organization = organization;
-    localStorage.setItem('contextOrganization', JSON.stringify(organization.id));
+    if (organization) {
+      localStorage.setItem('contextOrganization', JSON.stringify(organization.id));
+    }
   }
 
   @Mutation
@@ -31,7 +33,7 @@ export default class Context extends VuexModule {
   @Mutation
   initContext(): void {
     if (localStorage.getItem('sidebarExpanded')) {
-      this.sidebarExpanded = JSON.parse(localStorage.getItem('sidebarExpanded') || 'false');
+      this.sidebarExpanded = JSON.parse(localStorage.getItem('sidebarExpanded') || 'true');
     }
   }
 }

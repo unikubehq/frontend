@@ -3,6 +3,7 @@
       v-model="show"
       persistent
       width="550"
+      class="project-delete__modal"
     >
       <v-card v-if="show" class="py-8 px-7">
         <v-card-title class="headline">
@@ -23,7 +24,8 @@
             type="text"
             v-model="deleteTitle"
             prepend-inner-icon="$vuetify.icons.projectInput"
-              persistent-placeholder
+            persistent-placeholder
+            class="project-delete__modal-input"
           />
         </v-card-text>
         <v-card-actions class="py-0">
@@ -42,6 +44,7 @@
             block
             :ripple="false"
             color="error"
+            class="project-delete__submit"
             @click="deleteAndHide"
             :disabled="deleteTitle !== project.title"
           >{{ $t('projects.deleteModal.agree') }}</v-btn>
