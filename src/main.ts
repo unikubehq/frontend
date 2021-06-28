@@ -7,8 +7,6 @@ import Keycloak from 'keycloak-js';
 import KeycloakAuthorization from 'keycloak-js/dist/keycloak-authz';
 import router from '@/router';
 import App from '@/App.vue';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import store from '@/store';
 import vuetify from '@/plugins/vuetify';
 import setupApolloProvider from '@/vue-apollo';
@@ -17,8 +15,6 @@ import VueAxios from 'vue-axios';
 import { abilitiesPlugin, Can } from '@casl/vue';
 import { Ability, AbilityBuilder } from '@casl/ability';
 import { UnikubeAbility } from '@/typing';
-import { getModule } from 'vuex-module-decorators';
-import Auth from '@/store/modules/auth';
 import i18n from '@/i18n';
 
 console.log(`Running unikube frontend version ${process.env.VUE_APP_VERSION}`);
@@ -50,15 +46,9 @@ function initializeUnikubeApp(mode: string) {
   Vue.component('Can', Can);
   Vue.axios.defaults.baseURL = process.env.VUE_APP_UPLOAD_URL;
   let auth;
-  if (mode === 'e2e') {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    // eslint-disable-next-line no-underscore-dangle
-    window.__store__.commit('auth/setKeycloakClient', keycloak);
-  } else {
+  if (mode !== 'e2e') {
     store.commit('auth/setKeycloakClient', keycloak);
-    auth = getModule(Auth, store);
-    auth.scheduleRefresh();
+    store.dispatch('auth/scheduleRefresh');
   }
   function vueInit() {
     const apolloProvider = setupApolloProvider();

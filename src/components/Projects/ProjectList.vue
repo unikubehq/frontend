@@ -16,7 +16,9 @@
           <v-icon size="24">$vuetify.icons.edit</v-icon>
         </router-link>
         <v-divider style="height: 24px" class="mx-4 mb-n1" vertical></v-divider>
-        <v-icon @click="deleteProjectDialog(project)" size="24">$vuetify.icons.delete</v-icon>
+        <v-icon @click="deleteProjectDialog(project)" size="24" class="project-card__delete">
+          $vuetify.icons.delete
+        </v-icon>
       </v-col>
     </v-row>
     <v-row class="white px-7">

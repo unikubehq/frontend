@@ -9,7 +9,8 @@
      "src"
   ],
   "exclude": [
-     "src/components/icons/*"
+     "src/components/icons/*",
+     "src/shims*"
   ],
   "extends": "@istanbuljs/nyc-config-typescript",
   "extension": [

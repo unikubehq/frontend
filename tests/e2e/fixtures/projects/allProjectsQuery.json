@@ -11,6 +11,7 @@
         "decks": [],
         "sops": [],
         "__typename": "ProjectNode",
+        "kind": "ProjectNode",
         "organization": {
           "id": "5150dd69-b183-4f8d-96b7-708294e427ce"
         }
@@ -24,6 +25,7 @@
         "decks": [],
         "sops": [],
         "__typename": "ProjectNode",
+        "kind": "ProjectNode",
         "organization": {
           "id": "5150dd69-b183-4f8d-96b7-708294e427ce"
         }

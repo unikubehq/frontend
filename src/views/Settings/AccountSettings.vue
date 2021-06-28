@@ -20,7 +20,8 @@
                   style="display: none;"
                   id="user-avatar-file"
                   @change="handleUpload">
-              <v-img width="96" contain :src="this.previewUrl || this.$store.state.auth.avatarImage || 'https://cdn.zeplin.io/5f84546964e43c2749571f59/assets/2192D830-FF56-4E41-8DBA-F504CEFA64FC.svg'" ref="preview"></v-img>
+              <v-img width="96" contain ref="preview" alt="User Avatar"
+                  :src="this.previewUrl || this.$store.state.auth.avatarImage || 'https://cdn.zeplin.io/5f84546964e43c2749571f59/assets/2192D830-FF56-4E41-8DBA-F504CEFA64FC.svg'"/>
             </label>
           </v-avatar>
         </v-badge>

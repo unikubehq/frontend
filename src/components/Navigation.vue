@@ -1,7 +1,7 @@
 <template>
     <v-navigation-drawer app dark width="300" :mini-variant="mini" mini-variant-width="96">
       <template slot="append">
-        <v-img src="@/assets/img/navigation_background.svg"/>
+        <v-img src="@/assets/img/navigation_background.svg" alt="Navigation Background"/>
         <v-list style="position:absolute; bottom: 10px; left: 0; width: 100%;">
           <v-list-item link :ripple="false" to="/help">
             <v-list-item-icon>
@@ -20,7 +20,7 @@
               <div class="d-flex"
                   :class="{'justify-space-between': !mini, 'justify-center': mini}">
                 <router-link :to="{name: 'overview'}">
-                  <v-img src="@/assets/img/Unikube-Logo-H-NoShadow_light.svg"
+                  <v-img src="@/assets/img/Unikube-Logo-H-NoShadow_light.svg" alt="Unikube Logo"
                       max-height="45" max-width="164" contain v-if="!mini"/>
                 </router-link>
                 <v-btn  icon @click="toggleMini" :ripple="false">
@@ -50,8 +50,9 @@
                 :class="{'flex-wrap': mini}">
               <v-list-item-avatar>
                 <v-img v-if="$store.state.context.organization &&
-                    $store.state.context.organization.avatarImage"
-                    :src="$store.state.context.organization.avatarImage"/>
+                  $store.state.context.organization.avatarImage"
+                  :src="$store.state.context.organization.avatarImage"
+                  alt="Organization Avatar"/>
                 <v-icon v-else>$vuetify.icons.defaultOrganization</v-icon>
               </v-list-item-avatar>
 
@@ -59,7 +60,7 @@
                 <v-list-item-title
                     class="font-weight-bold"
                     v-if="$store.state.context.organization">
-                  {{ currentOrganizationName }}
+                  {{ $store.state.context.organization.title }}
                 </v-list-item-title>
                 <v-list-item-subtitle>
                   Organization ID: {{ idToVerboseId($store.state.context.organization.id) }}
@@ -85,7 +86,7 @@
             >
               <v-list-item-avatar class="organization-dropdown--icon">
                 <v-img :src="organization.avatarImage" max-width="35" contain
-                v-if="organization.avatarImage"/>
+                alt="Organization Avatar" v-if="organization.avatarImage"/>
                 <v-icon v-else>$vuetify.icons.defaultOrganization</v-icon>
               </v-list-item-avatar>
               <v-list-item-content>
@@ -174,10 +175,9 @@ Component.registerHooks([
     },
   },
 })
-export default class Layout extends Vue {
+export default class Navigation extends Vue {
   items = [
     { icon: '$vuetify.icons.overview', title: 'Overview', to: '/overview' },
-    { icon: '$vuetify.icons.permission', title: 'Permissions', to: '/permissions' },
     { icon: '$vuetify.icons.activity', title: 'Activity', to: '/activities' },
     { icon: '$vuetify.icons.settings', title: 'Settings', to: '/settings' },
   ];
@@ -215,24 +215,22 @@ export default class Layout extends Vue {
      */
     const contextOrganizationId = JSON.parse(localStorage.getItem('contextOrganization') || 'null');
     // If organization id was stored in localstorage, set it, when present in query result.
+    let organization = organizations[0];
     if (contextOrganizationId) {
-      const organization = organizations.filter(
+      const organizationFiltered = organizations.filter(
         (fOrganization: TOrganizationNode) => fOrganization.id === contextOrganizationId,
       );
-      if (organization.length) {
-        this.$store.commit('context/setOrganization', organization[0]);
-        this.setOrganizationMember(organization[0]);
-        return;
+      if (organizationFiltered.length) {
+        [organization] = organizationFiltered;
       }
     }
-    this.$store.commit('context/setOrganization', organizations[0]);
-    this.setOrganizationMember(organizations[0]);
+    this.setOrganizationContext(organization, false);
   }
 
-  setOrganizationContext(organization: TOrganizationNode): void {
+  setOrganizationContext(organization: TOrganizationNode, goToOverview = true): void {
     this.$store.commit('context/setOrganization', organization);
     this.setOrganizationMember(organization);
-    if (this.$route.name !== 'overview') {
+    if (this.$route.name !== 'overview' && goToOverview) {
       this.$router.push({ name: 'overview' });
     }
   }
@@ -252,10 +250,6 @@ export default class Layout extends Vue {
         currentMember,
       );
     });
-  }
-
-  get currentOrganizationName(): string {
-    return this.$store.state.context.organization.title;
   }
 
   mounted(): void {

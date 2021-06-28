@@ -4,7 +4,7 @@
       <v-avatar v-on="on" size="46"
           class="initials-avatar avatar-list-item avatar__unikube" color="primary"
           :style="avatarStyles">
-            <img v-if="avatar.image" :src="avatar.image">
+            <img v-if="avatar.image" :src="avatar.image" alt="User Avatar">
             <span v-else class="avatar-initials">{{ avatar.initials }}</span>
       </v-avatar>
     </template>
@@ -16,7 +16,7 @@
             size="46"
             class="avatar__unikube"
             :style="avatarStyles">
-            <img v-if="avatar.image" :src="avatar.image">
+            <img v-if="avatar.image" :src="avatar.image" alt="User Avatar">
             <span v-else>{{ avatar.initials }}</span>
           </v-avatar>
          </v-list-item-avatar>

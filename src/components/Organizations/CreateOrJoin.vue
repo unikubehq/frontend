@@ -36,8 +36,8 @@
            <v-list
                v-if="userInvitations && userInvitations.results && userInvitations.results.length">
              <v-list-item v-for="invite in userInvitations.results" :key="invite.id"
-              class="pl-0" two-line>
-               <v-list-item-content >
+              class="pl-0 invites__list" two-line>
+               <v-list-item-content class="invites__list-item">
                {{ invite.organization.title }}
                  </v-list-item-content>
                <v-list-item-action class="flex-row">

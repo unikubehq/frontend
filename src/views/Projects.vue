@@ -61,15 +61,6 @@ const sortAscending = (a: TProjectNode, b: TProjectNode): number => {
   }
   return 0;
 };
-const sortDescending = (a: TProjectNode, b: TProjectNode): number => {
-  if (a.title.toUpperCase() < b.title.toUpperCase()) {
-    return 1;
-  }
-  if (b.title.toUpperCase() < a.title.toUpperCase()) {
-    return -1;
-  }
-  return 0;
-};
 
 Component.registerHooks([
   'beforeRouteUpdate',
@@ -123,7 +114,7 @@ export default class Overview extends mixins(paginationMixin) {
       if (this.sorting === 'az') {
         result = result.slice().sort(sortAscending);
       } else {
-        result = result.slice().sort(sortDescending);
+        result = result.slice().sort(sortAscending).reverse();
       }
 
       if (this.search) {

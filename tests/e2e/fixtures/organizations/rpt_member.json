@@ -1,0 +1,15 @@
+{
+  "organization": {
+    "members": [
+      {
+        "user": {
+          "id": "0be9fc83-3cea-47ec-a850-176ea074f749",
+          "avatarImage": null,
+          "givenName": "Max",
+          "familyName": "Mustermann"
+        },
+        "role": "member"
+      }
+    ]
+  }
+}

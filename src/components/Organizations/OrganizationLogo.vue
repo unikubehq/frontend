@@ -26,7 +26,7 @@
                       v-bind="attrs"
                       v-on="on"
                     >
-                      <img :src="imgSrc">
+                      <img :src="imgSrc" alt="Company Logo Preview">
                     </v-avatar>
                 </v-badge>
                   </div>

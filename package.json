@@ -73,7 +73,7 @@
     "babel-plugin-istanbul": "^6.0.0",
     "cache-loader": "^4.1.0",
     "chai": "^4.3.4",
-    "cypress": "^7.3.0",
+    "cypress": "^7.5.0",
     "cypress-keycloak-commands": "^1.2.0",
     "dotenv-cli": "^4.0.0",
     "eslint": "^7.26.0",
