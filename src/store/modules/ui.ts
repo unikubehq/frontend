@@ -1,13 +1,19 @@
-import {
-  Module, Mutation, VuexModule,
-} from 'vuex-module-decorators';
+import { MutationTree } from 'vuex';
 
-@Module({ namespaced: true, name: 'ui' })
-export default class UI extends VuexModule {
-  overlay = false;
-
-  @Mutation
-  setOverlay(overlay: boolean): void {
-    this.overlay = overlay;
-  }
+class State {
+  overlay = false
 }
+
+const mutations = <MutationTree<State>>{
+  setOverlay(state: State, overlay: boolean): void {
+    state.overlay = overlay;
+  },
+};
+
+const UI = {
+  namespaced: true,
+  state: new State(),
+  mutations,
+};
+
+export default UI;

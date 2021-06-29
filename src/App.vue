@@ -14,16 +14,13 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { getModule } from 'vuex-module-decorators';
-import UI from '@/store/modules/ui';
 import { Component, Watch } from 'vue-property-decorator';
 import { UserDetailQuery } from '@/generated/graphql';
 
 @Component({})
 export default class App extends Vue {
   get overlay(): boolean {
-    const ui = getModule(UI, this.$store);
-    return ui.overlay;
+    return this.$store.state.ui.overlay;
   }
 
   get rawRpt():string {
