@@ -17,8 +17,8 @@ describe('Navbar', () => {
     cy.login(false, false, true);
     cy.intercept('/overview').as('Overview');
     cy.visit('/overview');
-    cy.wait('@Overview');
     cy.clock();
+    cy.wait('@Overview');
     cy.tick(500);
     cy.get('.profile-dropdown .d-flex > .text-capitalize').should('contain', 'member');
   });
