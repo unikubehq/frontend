@@ -1,6 +1,6 @@
 # Unikube Frontend
 
-[![Coverage Status](https://coveralls.io/repos/github/unikubehq/frontend/badge.svg?branch=master)](https://coveralls.io/github/unikubehq/frontend?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/unikubehq/frontend/badge.svg?branch=main)](https://coveralls.io/github/unikubehq/frontend?branch=main)
 
 ## Project Setup
 
