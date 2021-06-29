@@ -203,6 +203,7 @@ export default class Navigation extends Vue {
     // If it is not contained within the result set - set the first.
     if (!contained) {
       this.$store.commit('context/setOrganization', organizations[0]);
+    } else if (!this.$store.state.context.organizationMember) {
       this.setOrganizationMember(organizations[0]);
     }
   }
