@@ -4,16 +4,6 @@ describe('Navbar', () => {
     cy.setupInterceptors();
   });
 
-  it('it sets the organization member role for the current organization', () => {
-    cy.login(false, false, true);
-    cy.intercept('/overview').as('Overview');
-    cy.visit('/overview');
-    cy.wait('@Overview');
-    cy.visit('/overview');
-    cy.wait('@Overview');
-    cy.get('.profile-dropdown .d-flex > .text-capitalize').should('contain', 'member');
-  });
-
   it('displays single organization in dropdown', () => {
     // Login with user which has joined 1 organization.
     cy.login();
@@ -21,6 +11,16 @@ describe('Navbar', () => {
     cy.get('.organization-dropdown--item').click();
     cy.get('.organization-dropdown .v-list .v-list-item').should('have.length', 3);
     cy.get('.organization-dropdown .v-list .v-list-item').first().should('contain', 'Unikube');
+  });
+
+  it('it sets the organization member role for the current organization', () => {
+    cy.login(false, false, true);
+    cy.intercept('/overview').as('Overview');
+    cy.visit('/overview');
+    cy.wait('@Overview');
+    cy.clock();
+    cy.tick(500);
+    cy.get('.profile-dropdown .d-flex > .text-capitalize').should('contain', 'member');
   });
 
   it('displays 2 organizations in dropdown', () => {
