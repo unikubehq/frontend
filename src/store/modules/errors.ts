@@ -1,22 +1,20 @@
-import {
-  Module, Mutation, VuexModule,
-} from 'vuex-module-decorators';
 import { UnikubeError } from '@/typing/index';
+import { MutationTree } from 'vuex';
 
 const errorCodeMapping: any = {
   100: 'errors.100',
   101: 'errors.101',
 };
 
-@Module({ namespaced: true, name: 'errors' })
-export default class Errors extends VuexModule {
+class State {
   errors: UnikubeError[] = []
+}
 
-  @Mutation
+const mutations = <MutationTree<State>>{
   /* eslint-disable @typescript-eslint/no-explicit-any */
-  setError(payload: { error: Error, location: string, code: number }): void {
-    if (!this.errors.some((el) => el.code === payload.code)) {
-      this.errors.push(
+  setError(state: State, payload: { error: Error, location: string, code: number }): void {
+    if (!state.errors.some((el) => el.code === payload.code)) {
+      state.errors.push(
         {
           error: payload.error,
           message: errorCodeMapping[payload.code],
@@ -26,10 +24,13 @@ export default class Errors extends VuexModule {
       );
     }
     // TODO Send to Sentry
-  }
+  },
+};
 
-  @Mutation
-  clearError(): void {
-    this.errors.pop();
-  }
-}
+const Errors = {
+  namespaced: true,
+  state: new State(),
+  mutations,
+};
+
+export default Errors;

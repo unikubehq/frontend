@@ -1,39 +1,42 @@
-import {
-  Module, Mutation, VuexModule,
-} from 'vuex-module-decorators';
 import { TOrganizationMember, TOrganizationNode } from '@/generated/graphql';
+import { MutationTree } from 'vuex';
 
-@Module({ namespaced: true, name: 'context' })
-export default class Context extends VuexModule {
+class State {
   organization: TOrganizationNode | null = null;
 
   organizationMember: TOrganizationMember | null = null;
 
   sidebarExpanded = true;
+}
 
-  @Mutation
-  setOrganization(organization: TOrganizationNode): void {
-    this.organization = organization;
+const mutations = <MutationTree<State>>{
+  setOrganization(state: State, organization: TOrganizationNode): void {
+    state.organization = organization;
     if (organization) {
       localStorage.setItem('contextOrganization', JSON.stringify(organization.id));
     }
-  }
+  },
 
-  @Mutation
-  setOrganizationMember(member: TOrganizationMember): void {
-    this.organizationMember = member;
-  }
+  setOrganizationMember(state: State, member: TOrganizationMember): void {
+    state.organizationMember = member;
+  },
 
-  @Mutation
-  setSidebarExpansion(expanded: boolean): void {
-    this.sidebarExpanded = expanded;
+  setSidebarExpansion(state: State, expanded: boolean): void {
+    state.sidebarExpanded = expanded;
     localStorage.setItem('sidebarExpanded', JSON.stringify(expanded));
-  }
+  },
 
-  @Mutation
-  initContext(): void {
+  initContext(state: State): void {
     if (localStorage.getItem('sidebarExpanded')) {
-      this.sidebarExpanded = JSON.parse(localStorage.getItem('sidebarExpanded') || 'true');
+      state.sidebarExpanded = JSON.parse(localStorage.getItem('sidebarExpanded') || 'true');
     }
-  }
-}
+  },
+};
+
+const Context = {
+  namespaced: true,
+  state: new State(),
+  mutations,
+};
+
+export default Context;
