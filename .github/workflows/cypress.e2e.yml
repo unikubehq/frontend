@@ -62,6 +62,12 @@ jobs:
           command: npm run test:e2e:ci
           browser: chrome
           install: false
+      - name: Upload Screenshots 📸
+        uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: tests/e2e/screenshots
       - name: Coverage Report 📝
         run: npm run test:report
       - name: Coveralls 📒
