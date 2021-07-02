@@ -25,6 +25,9 @@ const mutations = <MutationTree<State>>{
     }
     // TODO Send to Sentry
   },
+  clearError(state: State): void {
+    state.errors.pop();
+  },
 };
 
 const Errors = {
