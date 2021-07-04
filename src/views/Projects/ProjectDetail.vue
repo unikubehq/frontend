@@ -161,7 +161,6 @@ import {
         };
       },
       result({ data, loading }: { data: TProjectDetailQueryResult, loading: boolean }) {
-        console.log(data.project.title);
         if (!loading) {
           if (this.$store.state.context.organization.id === data?.project?.organization?.id) {
             this.project = data.project;
