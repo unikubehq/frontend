@@ -440,7 +440,6 @@ export enum TProjectRepositoryStatus {
 }
 
 export enum TProjectSpecType {
-  Plain = 'PLAIN',
   Helm = 'HELM'
 }
 
@@ -489,6 +488,7 @@ export type TQueryAllOrganizationInvitationsArgs = {
 
 
 export type TQueryAllProjectsArgs = {
+  organizationId?: Maybe<Scalars['UUID']>;
   offset?: Maybe<Scalars['Int']>;
   limit?: Maybe<Scalars['Int']>;
 };
@@ -662,7 +662,7 @@ export type TProjectDetailQueryVariables = Exact<{
 }>;
 
 
-export type TProjectDetailQueryResult = { __typename?: 'Query', project?: Maybe<{ __typename?: 'ProjectNode', created: any, title: string, description?: Maybe<string>, id: any, specRepository: string, specRepositoryBranch?: Maybe<string>, specType: TProjectSpecType, currentCommit: string, currentCommitDateTime?: Maybe<any>, accessUsername: string, accessToken?: Maybe<string>, clusterSettings?: Maybe<{ __typename?: 'ClusterSettingsNode', port: number, id: string }>, members?: Maybe<Array<Maybe<{ __typename?: 'ProjectMember', role?: Maybe<string>, user?: Maybe<{ __typename?: 'UserNode', id: any, givenName?: Maybe<string>, familyName?: Maybe<string>, avatarImage?: Maybe<string>, email?: Maybe<string> }> }>>>, decks: Array<{ __typename?: 'DeckNode', title: string, description?: Maybe<string>, type: string, namespace: string, id: any, fileInformation?: Maybe<Array<Maybe<{ __typename?: 'FileInformationNode', path?: Maybe<string>, encrypted?: Maybe<boolean> }>>>, deployments?: Maybe<Array<Maybe<{ __typename?: 'DeploymentNode', id: any, title: string, description?: Maybe<string>, isSwitchable: boolean, ports: string }>>>, environment?: Maybe<Array<Maybe<{ __typename?: 'EnvironmentNode', title: string, description?: Maybe<string>, id: any, type: TEnvironmentType, valuesPath: string, namespace: string, valuesType?: Maybe<TEnvironmentValuesType>, deck: { __typename?: 'DeckNode', id: any }, sopsCredentials?: Maybe<{ __typename?: 'AWSKMSNode', title: string, id: any } | { __typename?: 'PGPKeyNode', title: string, id: any }> }>>> }>, sops?: Maybe<Array<Maybe<{ __typename?: 'AWSKMSNode', title: string, description?: Maybe<string>, accessKey: string, secretAccessKey: string, id: any } | { __typename?: 'PGPKeyNode', title: string, description?: Maybe<string>, privateKey: string, id: any }>>> }> };
+export type TProjectDetailQueryResult = { __typename?: 'Query', project?: Maybe<{ __typename?: 'ProjectNode', created: any, title: string, description?: Maybe<string>, id: any, specRepository: string, specRepositoryBranch?: Maybe<string>, specType: TProjectSpecType, currentCommit: string, currentCommitDateTime?: Maybe<any>, accessUsername: string, accessToken?: Maybe<string>, organization?: Maybe<{ __typename?: 'OrganizationNode', id: any }>, clusterSettings?: Maybe<{ __typename?: 'ClusterSettingsNode', port: number, id: string }>, members?: Maybe<Array<Maybe<{ __typename?: 'ProjectMember', role?: Maybe<string>, user?: Maybe<{ __typename?: 'UserNode', id: any, givenName?: Maybe<string>, familyName?: Maybe<string>, avatarImage?: Maybe<string>, email?: Maybe<string> }> }>>>, decks: Array<{ __typename?: 'DeckNode', title: string, description?: Maybe<string>, type: string, namespace: string, id: any, fileInformation?: Maybe<Array<Maybe<{ __typename?: 'FileInformationNode', path?: Maybe<string>, encrypted?: Maybe<boolean> }>>>, deployments?: Maybe<Array<Maybe<{ __typename?: 'DeploymentNode', id: any, title: string, description?: Maybe<string>, isSwitchable: boolean, ports: string }>>>, environment?: Maybe<Array<Maybe<{ __typename?: 'EnvironmentNode', title: string, description?: Maybe<string>, id: any, type: TEnvironmentType, valuesPath: string, namespace: string, valuesType?: Maybe<TEnvironmentValuesType>, deck: { __typename?: 'DeckNode', id: any }, sopsCredentials?: Maybe<{ __typename?: 'AWSKMSNode', title: string, id: any } | { __typename?: 'PGPKeyNode', title: string, id: any }> }>>> }>, sops?: Maybe<Array<Maybe<{ __typename?: 'AWSKMSNode', title: string, description?: Maybe<string>, accessKey: string, secretAccessKey: string, id: any } | { __typename?: 'PGPKeyNode', title: string, description?: Maybe<string>, privateKey: string, id: any }>>> }> };
 
 export type TProjectDetailOtherProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -922,6 +922,9 @@ export const ProjectDetailQuery = gql`
     created
     title
     description
+    organization {
+      id
+    }
     id
     specRepository
     specRepositoryBranch
