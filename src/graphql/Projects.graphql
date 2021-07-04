@@ -42,6 +42,9 @@ query ProjectDetailQuery($id: UUID) {
         created,
         title,
         description,
+        organization {
+            id
+        },
         id,
         specRepository,
         specRepositoryBranch,

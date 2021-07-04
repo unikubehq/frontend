@@ -63,7 +63,8 @@
     "edit": "Edit",
     "add": "Add",
     "saveChanges": "Save Changes",
-    "disagree": "Disagree"
+    "disagree": "Disagree",
+    "returnOverview": "to return to overview"
   },
   "errors": {
     "requiredError": "This field is required.",
@@ -207,6 +208,7 @@
   },
   "project": {
     "role": "Role",
+    "notFound": "Project not found",
     "chooseMember": "Add a team member",
     "addMember": "Add Member | Add Members"
   },

@@ -1,0 +1,17 @@
+{
+  "project": {
+    "title": "Unikube Cypress Project",
+    "description": "Description",
+    "currentCommit": "",
+    "currentCommitDateTime": null,
+    "id": "3b181df7-e91c-4a5b-9020-4d1c22636361",
+    "decks": [],
+    "sops": [],
+    "members": [],
+    "__typename": "ProjectNode",
+    "kind": "ProjectNode",
+    "organization": {
+      "id": "5150dd69-b183-4f8d-96b7-708294e427ce"
+    }
+  }
+}

@@ -12,7 +12,7 @@
         <p>{{ project.description }}</p>
       </v-col>
       <v-col class="text-right pr-10" v-if="$can('edit', project)">
-        <router-link :to="'/project/' + project.id + '?edit=true'">
+        <router-link class="project-card__edit" :to="'/project/' + project.id + '?edit=true'">
           <v-icon size="24">$vuetify.icons.edit</v-icon>
         </router-link>
         <v-divider style="height: 24px" class="mx-4 mb-n1" vertical></v-divider>

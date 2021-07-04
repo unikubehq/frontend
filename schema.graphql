@@ -304,7 +304,6 @@ enum ProjectRepositoryStatus {
 }
 
 enum ProjectSpecType {
-  PLAIN
   HELM
 }
 
@@ -314,7 +313,7 @@ type Query {
   organization(id: UUID!): OrganizationNode
   userInvitations(offset: Int, limit: Int): OrganizationInvitationNodePage
   allOrganizationInvitations(id: UUID!, offset: Int, limit: Int): OrganizationInvitationNodePage
-  allProjects(offset: Int, limit: Int): ProjectNodePage
+  allProjects(organizationId: UUID, offset: Int, limit: Int): ProjectNodePage
   project(id: UUID, slug: String): ProjectNode
   allDecks(organizationId: UUID, projectId: UUID, offset: Int, limit: Int): DeckNodePage
   deck(id: UUID, slug: String): DeckNode
