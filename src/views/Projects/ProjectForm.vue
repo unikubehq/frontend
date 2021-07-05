@@ -71,7 +71,7 @@
             v-model="accessUsername"
             :error-messages="accessUsernameErrors"
             prepend-inner-icon="$vuetify.icons.accessUser"
-            @blur="$v.accessUsername.$touch()"
+            @change="$v.accessUsername.$touch()"
             persistent-placeholder
           />
         </v-col>
@@ -86,7 +86,7 @@
             v-model="accessToken"
             :error-messages="accessTokenErrors"
             prepend-inner-icon="$vuetify.icons.accessToken"
-            @blur="$v.accessToken.$touch()"
+            @change="$v.accessToken.$touch()"
             persistent-placeholder
           />
         </v-col>
@@ -153,10 +153,17 @@
 import {
   Component, Prop, Watch,
 } from 'vue-property-decorator';
-import { CreateProject, UpdateProject, TProjectNode } from '@/generated/graphql';
+import {
+  CreateProject,
+  UpdateProject,
+  TProjectNode,
+  TCreateProjectMutationResult,
+  TCreateProjectMutationVariables, TUpdateProjectMutationVariables,
+} from '@/generated/graphql';
 import { required, url } from 'vuelidate/lib/validators';
 import VueI18n from 'vue-i18n';
 import { validationMixin } from '@/components/mixins';
+import { ApolloError } from '@apollo/client';
 import TranslateResult = VueI18n.TranslateResult;
 
 @Component({
@@ -184,15 +191,15 @@ export default class ProjectForm extends validationMixin {
 
   title = '';
 
-  description: string | null | undefined = '';
+  description = '';
 
   specRepository = '';
 
   submissionError = '';
 
-  specRepositoryBranch: string | null | undefined = 'master';
+  specRepositoryBranch = 'master';
 
-  specType = 'plain';
+  specType = 'helm';
 
   accessUsername = '';
 
@@ -202,7 +209,7 @@ export default class ProjectForm extends validationMixin {
 
   id = '';
 
-  specTypeChoices = ['plain', 'helm']
+  specTypeChoices = ['helm']
 
   saveLoading = false
 
@@ -237,9 +244,9 @@ export default class ProjectForm extends validationMixin {
   handleEditMode(): void {
     if (this.project) {
       this.title = this.project.title;
-      this.description = this.project.description;
+      this.description = this.project.description || '';
       this.specRepository = this.project.specRepository;
-      this.specRepositoryBranch = this.project.specRepositoryBranch;
+      this.specRepositoryBranch = this.project.specRepositoryBranch || '';
       this.specType = this.project.specType.toLowerCase();
       this.accessUsername = this.project.accessUsername;
       this.accessToken = this.project.accessUsername;
@@ -258,40 +265,60 @@ export default class ProjectForm extends validationMixin {
     }
   }
 
+  success(data: {data: TCreateProjectMutationResult}): void {
+    this.saveLoading = false;
+    this.$store.dispatch('auth/refresh', -1).then((refreshed: boolean) => {
+      if (data.data?.createUpdateProject?.project && refreshed) {
+        if (this.editMode) {
+          this.$router.go(-1);
+        } else {
+          this.$router.push({ name: 'project.addMembers', params: { slug: data.data.createUpdateProject.project.id } });
+        }
+      } else {
+        console.log('Something went wrong creating the project or refreshing the rpt.');
+      }
+    });
+  }
+
+  failed(err: ApolloError): void {
+    this.saveLoading = false;
+    this.submissionError = err.message;
+  }
+
   submit(): void {
     this.saveLoading = true;
-    this.$apollo.mutate({
-      mutation: this.editMode ? UpdateProject : CreateProject,
-      variables: {
-        title: this.title,
-        description: this.description,
-        specRepository: this.specRepository,
-        specType: this.specType,
-        accessUsername: this.accessUsername,
-        accessToken: this.accessToken,
-        specRepositoryBranch: this.specRepositoryBranch,
-        organization: this.$store.state.context.organization.id,
-        id: this.id,
-      },
-    })
-      .then((data) => {
-        this.saveLoading = false;
-        this.$store.dispatch('auth/refresh', -1).then((refreshed: boolean) => {
-          if (data.data.createUpdateProject.project && refreshed) {
-            if (this.editMode) {
-              this.$router.go(-1);
-            } else {
-              this.$router.push({ name: 'project.addMembers', params: { slug: data.data.createUpdateProject.project.id } });
-            }
-          } else {
-            console.log('Something went wrong creating the project or refreshing the rpt.');
-          }
-        });
+    const projectVariables: TCreateProjectMutationVariables = {
+      title: this.title,
+      description: this.description,
+      specRepository: this.specRepository,
+      specType: this.specType,
+      specRepositoryBranch: this.specRepositoryBranch,
+      organization: this.$store.state.context.organization.id,
+    };
+    if (this.$v.accessUsername.$dirty) {
+      projectVariables.accessUsername = this.accessUsername;
+    }
+    if (this.$v.accessToken.$dirty) {
+      projectVariables.accessToken = this.accessToken;
+    }
+    if (!this.editMode) {
+      const variables: TCreateProjectMutationVariables = projectVariables;
+      this.$apollo.mutate({
+        mutation: CreateProject,
+        variables,
       })
-      .catch((err) => {
-        this.saveLoading = false;
-        this.submissionError = err.message;
-      });
+        .then(this.success)
+        .catch(this.failed);
+    } else {
+      const variables: TUpdateProjectMutationVariables = projectVariables;
+      variables.id = this.id;
+      this.$apollo.mutate({
+        mutation: UpdateProject,
+        variables,
+      })
+        .then(this.success)
+        .catch(this.failed);
+    }
   }
 }
 </script>

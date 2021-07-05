@@ -674,8 +674,8 @@ export type TCreateProjectMutationVariables = Exact<{
   description: Scalars['String'];
   specRepository: Scalars['String'];
   specType: Scalars['String'];
-  accessUsername: Scalars['String'];
-  accessToken: Scalars['String'];
+  accessUsername?: Maybe<Scalars['String']>;
+  accessToken?: Maybe<Scalars['String']>;
   specRepositoryBranch: Scalars['String'];
   organization: Scalars['UUID'];
 }>;
@@ -688,8 +688,8 @@ export type TUpdateProjectMutationVariables = Exact<{
   description: Scalars['String'];
   specRepository: Scalars['String'];
   specType: Scalars['String'];
-  accessUsername: Scalars['String'];
-  accessToken: Scalars['String'];
+  accessUsername?: Maybe<Scalars['String']>;
+  accessToken?: Maybe<Scalars['String']>;
   specRepositoryBranch: Scalars['String'];
   id?: Maybe<Scalars['ID']>;
   organization: Scalars['UUID'];
@@ -1020,7 +1020,7 @@ export const ProjectDetailOtherProjectsQuery = gql`
 }
     `;
 export const CreateProject = gql`
-    mutation CreateProject($title: String!, $description: String!, $specRepository: String!, $specType: String!, $accessUsername: String!, $accessToken: String!, $specRepositoryBranch: String!, $organization: UUID!) {
+    mutation CreateProject($title: String!, $description: String!, $specRepository: String!, $specType: String!, $accessUsername: String, $accessToken: String, $specRepositoryBranch: String!, $organization: UUID!) {
   createUpdateProject(
     input: {title: $title, description: $description, specRepository: $specRepository, specType: $specType, specRepositoryBranch: $specRepositoryBranch, accessUsername: $accessUsername, accessToken: $accessToken, organization: $organization}
   ) {
@@ -1036,7 +1036,7 @@ export const CreateProject = gql`
 }
     `;
 export const UpdateProject = gql`
-    mutation UpdateProject($title: String!, $description: String!, $specRepository: String!, $specType: String!, $accessUsername: String!, $accessToken: String!, $specRepositoryBranch: String!, $id: ID, $organization: UUID!) {
+    mutation UpdateProject($title: String!, $description: String!, $specRepository: String!, $specType: String!, $accessUsername: String, $accessToken: String, $specRepositoryBranch: String!, $id: ID, $organization: UUID!) {
   createUpdateProject(
     input: {title: $title, description: $description, specRepository: $specRepository, specType: $specType, specRepositoryBranch: $specRepositoryBranch, accessUsername: $accessUsername, accessToken: $accessToken, organization: $organization, id: $id}
   ) {
