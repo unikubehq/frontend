@@ -150,15 +150,15 @@
 </template>
 
 <script lang="ts">
-import {
-  Component, Prop, Watch,
-} from 'vue-property-decorator';
+import { Component, Prop, Watch } from 'vue-property-decorator';
 import {
   CreateProject,
-  UpdateProject,
-  TProjectNode,
   TCreateProjectMutationResult,
-  TCreateProjectMutationVariables, TUpdateProjectMutationVariables,
+  TCreateProjectMutationVariables,
+  TProjectNode,
+  TSpecicifactionTypeEnum,
+  TUpdateProjectMutationVariables,
+  UpdateProject,
 } from '@/generated/graphql';
 import { required, url } from 'vuelidate/lib/validators';
 import VueI18n from 'vue-i18n';
@@ -199,7 +199,7 @@ export default class ProjectForm extends validationMixin {
 
   specRepositoryBranch = 'master';
 
-  specType = 'helm';
+  specType: TSpecicifactionTypeEnum = TSpecicifactionTypeEnum.Helm;
 
   accessUsername = '';
 
@@ -209,7 +209,7 @@ export default class ProjectForm extends validationMixin {
 
   id = '';
 
-  specTypeChoices = ['helm']
+  specTypeChoices = [TSpecicifactionTypeEnum.Helm]
 
   saveLoading = false
 
@@ -247,7 +247,7 @@ export default class ProjectForm extends validationMixin {
       this.description = this.project.description || '';
       this.specRepository = this.project.specRepository;
       this.specRepositoryBranch = this.project.specRepositoryBranch || '';
-      this.specType = this.project.specType.toLowerCase();
+      this.specType = this.project.specType.toLowerCase() as TSpecicifactionTypeEnum;
       this.accessUsername = this.project.accessUsername;
       this.accessToken = this.project.accessUsername;
       this.id = this.project.id;
@@ -310,8 +310,7 @@ export default class ProjectForm extends validationMixin {
         .then(this.success)
         .catch(this.failed);
     } else {
-      const variables: TUpdateProjectMutationVariables = projectVariables;
-      variables.id = this.id;
+      const variables: TUpdateProjectMutationVariables = { ...projectVariables, id: this.id };
       this.$apollo.mutate({
         mutation: UpdateProject,
         variables,

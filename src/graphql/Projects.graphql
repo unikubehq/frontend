@@ -144,7 +144,7 @@ mutation CreateProject(
   $title: String!
   $description: String!
   $specRepository: String!
-  $specType: String!
+  $specType: SpecicifactionTypeEnum!
   $accessUsername: String
   $accessToken: String
   $specRepositoryBranch: String!
@@ -166,10 +166,6 @@ mutation CreateProject(
       title,
       id
     }
-    errors {
-      messages
-      field
-    }
   }
 }
 
@@ -177,11 +173,11 @@ mutation UpdateProject(
   $title: String!
   $description: String!
   $specRepository: String!
-  $specType: String!
+  $specType: SpecicifactionTypeEnum!
   $accessUsername: String
   $accessToken: String
   $specRepositoryBranch: String!
-  $id: ID
+  $id: UUID!
   $organization: UUID!
 ) {
   createUpdateProject(
@@ -200,10 +196,6 @@ mutation UpdateProject(
     project {
       title,
       id
-    }
-    errors {
-      messages
-      field
     }
   }
 }

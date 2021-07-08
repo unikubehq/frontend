@@ -84,26 +84,9 @@ export type TCreateUpdateOrganizationPayload = {
   clientMutationId?: Maybe<Scalars['String']>;
 };
 
-export type TCreateUpdateProjectInput = {
-  title: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  specRepository: Scalars['String'];
-  specRepositoryBranch?: Maybe<Scalars['String']>;
-  specType: Scalars['String'];
-  currentCommit?: Maybe<Scalars['String']>;
-  currentCommitDateTime?: Maybe<Scalars['DateTime']>;
-  accessUsername?: Maybe<Scalars['String']>;
-  accessToken?: Maybe<Scalars['String']>;
-  organization: Scalars['UUID'];
-  id?: Maybe<Scalars['ID']>;
-  clientMutationId?: Maybe<Scalars['String']>;
-};
-
-export type TCreateUpdateProjectPayload = {
-  __typename?: 'CreateUpdateProjectPayload';
+export type TCreateUpdateProject = {
+  __typename?: 'CreateUpdateProject';
   project?: Maybe<TProjectNode>;
-  errors?: Maybe<Array<Maybe<TErrorType>>>;
-  clientMutationId?: Maybe<Scalars['String']>;
 };
 
 export type TCreateUpdateSops = {
@@ -232,7 +215,7 @@ export type TMutation = {
   answerInvitation?: Maybe<TUpdateOrganizationMemberInvitation>;
   updateOrganizationMember?: Maybe<TUpdateOrganizationMember>;
   removeOrganizationMember?: Maybe<TDeleteOrganizationMember>;
-  createUpdateProject?: Maybe<TCreateUpdateProjectPayload>;
+  createUpdateProject?: Maybe<TCreateUpdateProject>;
   createProjectMember?: Maybe<TCreateProjectMember>;
   deleteProjectMember?: Maybe<TDeleteProjectMember>;
   deleteProject?: Maybe<TDeleteProject>;
@@ -280,7 +263,7 @@ export type TMutationRemoveOrganizationMemberArgs = {
 
 
 export type TMutationCreateUpdateProjectArgs = {
-  input: TCreateUpdateProjectInput;
+  input: TProjectInputType;
 };
 
 
@@ -382,6 +365,18 @@ export type TPgpKeyNode = {
   description?: Maybe<Scalars['String']>;
   id: Scalars['UUID'];
   privateKey: Scalars['String'];
+};
+
+export type TProjectInputType = {
+  title: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['UUID']>;
+  specType: TSpecicifactionTypeEnum;
+  specRepository: Scalars['String'];
+  specRepositoryBranch: Scalars['String'];
+  accessUsername?: Maybe<Scalars['String']>;
+  accessToken?: Maybe<Scalars['String']>;
+  organization: Scalars['UUID'];
 };
 
 export type TProjectMember = {
@@ -540,6 +535,10 @@ export enum TSopsTypeEnum {
   Pgp = 'pgp'
 }
 
+export enum TSpecicifactionTypeEnum {
+  Helm = 'helm'
+}
+
 
 export type TUpdateClusterSettingsInput = {
   port: Scalars['Int'];
@@ -673,7 +672,7 @@ export type TCreateProjectMutationVariables = Exact<{
   title: Scalars['String'];
   description: Scalars['String'];
   specRepository: Scalars['String'];
-  specType: Scalars['String'];
+  specType: TSpecicifactionTypeEnum;
   accessUsername?: Maybe<Scalars['String']>;
   accessToken?: Maybe<Scalars['String']>;
   specRepositoryBranch: Scalars['String'];
@@ -681,22 +680,22 @@ export type TCreateProjectMutationVariables = Exact<{
 }>;
 
 
-export type TCreateProjectMutationResult = { __typename?: 'Mutation', createUpdateProject?: Maybe<{ __typename?: 'CreateUpdateProjectPayload', project?: Maybe<{ __typename?: 'ProjectNode', title: string, id: any }>, errors?: Maybe<Array<Maybe<{ __typename?: 'ErrorType', messages: Array<string>, field: string }>>> }> };
+export type TCreateProjectMutationResult = { __typename?: 'Mutation', createUpdateProject?: Maybe<{ __typename?: 'CreateUpdateProject', project?: Maybe<{ __typename?: 'ProjectNode', title: string, id: any }> }> };
 
 export type TUpdateProjectMutationVariables = Exact<{
   title: Scalars['String'];
   description: Scalars['String'];
   specRepository: Scalars['String'];
-  specType: Scalars['String'];
+  specType: TSpecicifactionTypeEnum;
   accessUsername?: Maybe<Scalars['String']>;
   accessToken?: Maybe<Scalars['String']>;
   specRepositoryBranch: Scalars['String'];
-  id?: Maybe<Scalars['ID']>;
+  id: Scalars['UUID'];
   organization: Scalars['UUID'];
 }>;
 
 
-export type TUpdateProjectMutationResult = { __typename?: 'Mutation', createUpdateProject?: Maybe<{ __typename?: 'CreateUpdateProjectPayload', project?: Maybe<{ __typename?: 'ProjectNode', title: string, id: any }>, errors?: Maybe<Array<Maybe<{ __typename?: 'ErrorType', messages: Array<string>, field: string }>>> }> };
+export type TUpdateProjectMutationResult = { __typename?: 'Mutation', createUpdateProject?: Maybe<{ __typename?: 'CreateUpdateProject', project?: Maybe<{ __typename?: 'ProjectNode', title: string, id: any }> }> };
 
 export type TDeleteProjectMutationVariables = Exact<{
   id?: Maybe<Scalars['UUID']>;
@@ -1020,7 +1019,7 @@ export const ProjectDetailOtherProjectsQuery = gql`
 }
     `;
 export const CreateProject = gql`
-    mutation CreateProject($title: String!, $description: String!, $specRepository: String!, $specType: String!, $accessUsername: String, $accessToken: String, $specRepositoryBranch: String!, $organization: UUID!) {
+    mutation CreateProject($title: String!, $description: String!, $specRepository: String!, $specType: SpecicifactionTypeEnum!, $accessUsername: String, $accessToken: String, $specRepositoryBranch: String!, $organization: UUID!) {
   createUpdateProject(
     input: {title: $title, description: $description, specRepository: $specRepository, specType: $specType, specRepositoryBranch: $specRepositoryBranch, accessUsername: $accessUsername, accessToken: $accessToken, organization: $organization}
   ) {
@@ -1028,25 +1027,17 @@ export const CreateProject = gql`
       title
       id
     }
-    errors {
-      messages
-      field
-    }
   }
 }
     `;
 export const UpdateProject = gql`
-    mutation UpdateProject($title: String!, $description: String!, $specRepository: String!, $specType: String!, $accessUsername: String, $accessToken: String, $specRepositoryBranch: String!, $id: ID, $organization: UUID!) {
+    mutation UpdateProject($title: String!, $description: String!, $specRepository: String!, $specType: SpecicifactionTypeEnum!, $accessUsername: String, $accessToken: String, $specRepositoryBranch: String!, $id: UUID!, $organization: UUID!) {
   createUpdateProject(
     input: {title: $title, description: $description, specRepository: $specRepository, specType: $specType, specRepositoryBranch: $specRepositoryBranch, accessUsername: $accessUsername, accessToken: $accessToken, organization: $organization, id: $id}
   ) {
     project {
       title
       id
-    }
-    errors {
-      messages
-      field
     }
   }
 }
