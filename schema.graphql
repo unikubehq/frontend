@@ -72,25 +72,8 @@ type CreateUpdateOrganizationPayload {
   clientMutationId: String
 }
 
-input CreateUpdateProjectInput {
-  title: String!
-  description: String
-  specRepository: String!
-  specRepositoryBranch: String
-  specType: String!
-  currentCommit: String
-  currentCommitDateTime: DateTime
-  accessUsername: String
-  accessToken: String
-  organization: UUID!
-  id: ID
-  clientMutationId: String
-}
-
-type CreateUpdateProjectPayload {
+type CreateUpdateProject {
   project: ProjectNode
-  errors: [ErrorType]
-  clientMutationId: String
 }
 
 type CreateUpdateSOPS {
@@ -193,7 +176,7 @@ type Mutation {
   answerInvitation(accepted: Boolean, id: UUID): UpdateOrganizationMemberInvitation
   updateOrganizationMember(id: UUID, role: OrganizationMemberRoleEnum, user: UUID): UpdateOrganizationMember
   removeOrganizationMember(id: UUID, user: UUID): DeleteOrganizationMember
-  createUpdateProject(input: CreateUpdateProjectInput!): CreateUpdateProjectPayload
+  createUpdateProject(input: ProjectInputType!): CreateUpdateProject
   createProjectMember(id: UUID, role: ProjectMemberRoleEnum, user: UUID): CreateProjectMember
   deleteProjectMember(id: UUID, user: UUID): DeleteProjectMember
   deleteProject(id: UUID): DeleteProject
@@ -250,6 +233,18 @@ type PGPKeyNode {
   description: String
   id: UUID!
   privateKey: String!
+}
+
+input ProjectInputType {
+  title: String!
+  description: String
+  id: UUID
+  specType: SpecicifactionTypeEnum!
+  specRepository: String!
+  specRepositoryBranch: String!
+  accessUsername: String
+  accessToken: String
+  organization: UUID!
 }
 
 type ProjectMember {
@@ -339,6 +334,10 @@ union SOPSProviderNode = AWSKMSNode | PGPKeyNode
 enum SOPSTypeEnum {
   aws
   pgp
+}
+
+enum SpecicifactionTypeEnum {
+  helm
 }
 
 scalar UUID
