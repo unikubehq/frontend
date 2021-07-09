@@ -36,3 +36,9 @@ export type UnikubeError = {
   location: string,
   code: number,
 }
+
+export type SnackbarMessage = {
+  message: string,
+  show: boolean,
+  id: number
+}

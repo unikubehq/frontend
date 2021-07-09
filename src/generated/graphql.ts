@@ -224,6 +224,7 @@ export type TMutation = {
   createUpdateSops?: Maybe<TCreateUpdateSops>;
   deleteSops?: Maybe<TDeleteSops>;
   updateClusterSettings?: Maybe<TUpdateClusterSettingsPayload>;
+  updateProjectRepository?: Maybe<TUpdateProjectRepository>;
 };
 
 
@@ -308,6 +309,11 @@ export type TMutationDeleteSopsArgs = {
 
 export type TMutationUpdateClusterSettingsArgs = {
   input: TUpdateClusterSettingsInput;
+};
+
+
+export type TMutationUpdateProjectRepositoryArgs = {
+  id?: Maybe<Scalars['UUID']>;
 };
 
 export type TOrganizationInvitationNode = {
@@ -564,6 +570,11 @@ export type TUpdateOrganizationMemberInvitation = {
   ok?: Maybe<Scalars['Boolean']>;
 };
 
+export type TUpdateProjectRepository = {
+  __typename?: 'UpdateProjectRepository';
+  ok?: Maybe<Scalars['Boolean']>;
+};
+
 export type TUserNode = {
   kind: 'UserNode';
   __typename?: 'UserNode';
@@ -762,6 +773,13 @@ export type TDeleteSopsMutationVariables = Exact<{
 
 
 export type TDeleteSopsMutationResult = { __typename?: 'Mutation', deleteSops?: Maybe<{ __typename?: 'DeleteSOPS', ok?: Maybe<boolean> }> };
+
+export type TUpdateProjectRepositoryMutationVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type TUpdateProjectRepositoryMutationResult = { __typename?: 'Mutation', updateProjectRepository?: Maybe<{ __typename?: 'UpdateProjectRepository', ok?: Maybe<boolean> }> };
 
 export type TUserDetailQueryVariables = Exact<{
   id?: Maybe<Scalars['UUID']>;
@@ -1101,6 +1119,13 @@ export const UpdateClusterSettings = gql`
 export const DeleteSops = gql`
     mutation DeleteSops($input: UUID!) {
   deleteSops(id: $input) {
+    ok
+  }
+}
+    `;
+export const UpdateProjectRepositoryMutation = gql`
+    mutation UpdateProjectRepositoryMutation($id: UUID!) {
+  updateProjectRepository(id: $id) {
     ok
   }
 }

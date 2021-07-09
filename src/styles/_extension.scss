@@ -182,3 +182,6 @@
 .v-icon.v-icon::after {
   display: none !important;
 }
+.v-snack {
+  transition: margin-top 400ms;
+}

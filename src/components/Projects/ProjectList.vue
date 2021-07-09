@@ -16,6 +16,10 @@
           <v-icon size="24">$vuetify.icons.edit</v-icon>
         </router-link>
         <v-divider style="height: 24px" class="mx-4 mb-n1" vertical></v-divider>
+        <v-icon class="project-card__sync" @click="syncRepo(project)" size="32">
+          $vuetify.icons.sync
+        </v-icon>
+        <v-divider style="height: 24px" class="mx-4 mb-n1" vertical></v-divider>
         <v-icon @click="deleteProjectDialog(project)" size="24" class="project-card__delete">
           $vuetify.icons.delete
         </v-icon>
@@ -63,7 +67,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { TProjectNode } from '@/generated/graphql';
+import { TProjectNode, UpdateProjectRepositoryMutation } from '@/generated/graphql';
 import DeleteProject from '@/components/Projects/DeleteProject.vue';
 import ProjectMemberAvatars from '@/components/Projects/ProjectMemberAvatars.vue';
 
@@ -83,6 +87,19 @@ export default class ProjectList extends Vue {
 
   get modifiedDate(): string {
     return this.$d(new Date(this.project?.currentCommitDateTime), 'short');
+  }
+
+  syncRepo(project: TProjectNode): void {
+    this.$apollo.mutate({
+      mutation: UpdateProjectRepositoryMutation,
+      variables: {
+        id: project.id,
+      },
+    }).then(() => {
+      this.$store.commit('context/addSnackbarMessage', this.$t('projects.sync').toString());
+    }).catch(() => {
+      this.$store.commit('context/addSnackbarMessage', this.$t('projects.syncFail').toString());
+    });
   }
 
   deleteProjectDialog(project: TProjectNode): void {

@@ -2,6 +2,15 @@
   <v-app>
     <router-view>
     </router-view>
+    <v-snackbar v-model="message.show" :key="message.id" :style="{'margin-top': (idx * 60) + 'px'}"
+        color="primary" top right v-for="(message, idx) in messages">
+      {{ message.message }}
+      <template v-slot:action="{ attrs }">
+        <v-btn color="white" text v-bind="attrs" @click="message.show = false">
+          {{ $t('general.close') }}
+        </v-btn>
+      </template>
+    </v-snackbar>
     <v-overlay :value="overlay">
       <v-progress-circular
         indeterminate
@@ -16,6 +25,7 @@
 import Vue from 'vue';
 import { Component, Watch } from 'vue-property-decorator';
 import { UserDetailQuery } from '@/generated/graphql';
+import { SnackbarMessage } from '@/typing';
 
 @Component({})
 export default class App extends Vue {
@@ -25,6 +35,10 @@ export default class App extends Vue {
 
   get rawRpt():string {
     return this.$store.state.auth.rawRpt;
+  }
+
+  get messages(): SnackbarMessage[] {
+    return this.$store.state.context.messages.filter((message: SnackbarMessage) => message.show);
   }
 
   @Watch('rawRpt', { immediate: true })

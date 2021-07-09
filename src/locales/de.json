@@ -46,7 +46,9 @@
     },
 
     "addNewProject": "Add new Project",
-    "projectList": "Projects List"
+    "projectList": "Projects List",
+    "sync": "Project synchronization was triggered!",
+    "syncFail": "Project synchronization trigger failed!"
   },
   "general": {
     "admin": "Admin",

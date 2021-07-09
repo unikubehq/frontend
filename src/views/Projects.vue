@@ -32,14 +32,6 @@
       </div>
     <v-pagination v-if="listLength > 1"
         :length="listLength" v-model="currentPage" v-on:input="changeOffset($event)" />
-    <v-snackbar v-model="snackbar" color="primary" top right>
-      {{ $t('projects.deleteSuccess') }}
-      <template v-slot:action="{ attrs }">
-        <v-btn color="white" text v-bind="attrs" @click="snackbar = false">
-          {{ $t('general.close') }}
-        </v-btn>
-      </template>
-    </v-snackbar>
   </div>
 </template>
 
@@ -92,8 +84,6 @@ Component.registerHooks([
   },
 })
 export default class Overview extends mixins(paginationMixin) {
-  snackbar = false;
-
   sorting = 'az';
 
   search = '';
@@ -136,7 +126,7 @@ export default class Overview extends mixins(paginationMixin) {
   }
 
   refetchProjects():void {
-    this.snackbar = true;
+    this.$store.commit('context/addSnackbarMessage', this.$t('projects.deleteSuccess'));
     this.$apollo.queries.allProjects.refetch();
   }
 
