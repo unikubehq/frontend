@@ -24,8 +24,9 @@
                 width="144"
                 @click="setEdit"
                 :ripple="false"
+                 v-if="$can('edit', project)"
               >
-                <v-icon size="24" class="mr-2">
+                <v-icon size="24" class="mr-2" v-if="$can('edit', project)">
                   $vuetify.icons.edit
                 </v-icon>{{ $t('projects.editProject') }}
               </v-btn>
