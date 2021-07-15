@@ -59,6 +59,7 @@ import OrganizationRoles from '@/components/icons/OrganizationRoles.vue';
 import OrganizationRolesBlue from '@/components/icons/OrganizationRolesBlue.vue';
 import Payment from '@/components/icons/Payment.vue';
 import PaymentBlue from '@/components/icons/PaymentBlue.vue';
+import Sync from '@/components/icons/Sync.vue';
 
 Vue.use(Vuetify);
 
@@ -244,6 +245,9 @@ export default new Vuetify({
       },
       paymentBlue: {
         component: PaymentBlue,
+      },
+      sync: {
+        component: Sync,
       },
     },
   },

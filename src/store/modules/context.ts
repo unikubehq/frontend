@@ -1,5 +1,6 @@
 import { TOrganizationMember, TOrganizationNode } from '@/generated/graphql';
 import { MutationTree } from 'vuex';
+import { SnackbarMessage } from '@/typing';
 
 class State {
   organization: TOrganizationNode | null = null;
@@ -7,9 +8,15 @@ class State {
   organizationMember: TOrganizationMember | null = null;
 
   sidebarExpanded = true;
+
+  messages: SnackbarMessage[] = [];
 }
 
 const mutations = <MutationTree<State>>{
+  addSnackbarMessage(state: State, message: string) {
+    state.messages.push({ message, show: true, id: new Date().getTime() });
+  },
+
   setOrganization(state: State, organization: TOrganizationNode): void {
     state.organization = organization;
     if (organization) {

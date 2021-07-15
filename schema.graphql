@@ -185,6 +185,7 @@ type Mutation {
   createUpdateSops(id: UUID, sopsData: SOPSInputType!): CreateUpdateSOPS
   deleteSops(id: UUID): DeleteSOPS
   updateClusterSettings(input: UpdateClusterSettingsInput!): UpdateClusterSettingsPayload
+  updateProjectRepository(id: UUID): UpdateProjectRepository
 }
 
 type OrganizationInvitationNode {
@@ -360,6 +361,10 @@ type UpdateOrganizationMember {
 }
 
 type UpdateOrganizationMemberInvitation {
+  ok: Boolean
+}
+
+type UpdateProjectRepository {
   ok: Boolean
 }
 

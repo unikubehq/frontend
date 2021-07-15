@@ -309,3 +309,9 @@ mutation DeleteSops(
         ok
     }
 }
+
+mutation UpdateProjectRepositoryMutation($id: UUID!) {
+    updateProjectRepository(id: $id) {
+        ok
+    }
+}
