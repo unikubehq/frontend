@@ -139,6 +139,7 @@
           :loading="saveLoading"
           @click="submit"
           :disabled="disableButton"
+          class="projectForm__submit"
         >
             {{ submitButtonText }}
           </v-btn>

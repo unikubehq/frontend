@@ -18,7 +18,7 @@
       >
       </v-select>
       <v-btn
-        class="mb-2"
+        class="mb-2 projects__createButton"
         color="primary"
         large
         elevation="0"

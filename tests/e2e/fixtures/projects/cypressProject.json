@@ -8,6 +8,11 @@
     "decks": [],
     "sops": [],
     "members": [],
+    "specType": "helm",
+    "specRepository": "http://github.com/example/testrepo",
+    "specRepositoryBranch": "main",
+    "accessUser": "TestUser",
+    "accessToken": "TestUser",
     "__typename": "ProjectNode",
     "kind": "ProjectNode",
     "organization": {
