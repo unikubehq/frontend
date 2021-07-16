@@ -2,9 +2,14 @@
   <v-app>
     <router-view>
     </router-view>
-    <v-snackbar v-model="message.show" :key="message.id" :style="{'margin-top': (idx * 60) + 'px'}"
+    <v-snackbar v-model="message.show" :key="message.id" :style="{'margin-top': (idx * 80) + 'px'}"
         color="primary" top right v-for="(message, idx) in messages">
-      {{ message.message }}
+        <v-icon size="40">
+          $vuetify.icons.tickWhiteBg
+        </v-icon>
+        <span class="font-weight-medium">
+          {{ message.message }}
+        </span>
       <template v-slot:action="{ attrs }">
         <v-btn color="white" text v-bind="attrs" @click="message.show = false">
           {{ $t('general.close') }}
