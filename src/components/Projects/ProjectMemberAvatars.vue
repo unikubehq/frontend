@@ -8,7 +8,10 @@
           class="d-inline-block ml-n2"/>
     </span>
     <span v-else>
-      <unikube-avatar :avatar-prop="avatar" v-for="avatar in avatars" :key="avatar.name"/>
+      <unikube-avatar :avatar-prop="avatar" v-for="avatar in avatars.slice(0, 3)"
+          :key="avatar.name"/>
+      <span class="ml-2 font-weight-medium"
+          v-if="avatars.length > 3" v-text="'+ ' + (avatars.length - 3)"/>
     </span>
   </div>
 </template>
@@ -42,6 +45,3 @@ export default class ProjectMemberAvatars extends Vue {
   }
 }
 </script>
-
-<style scoped>
-</style>
