@@ -60,6 +60,7 @@ import OrganizationRolesBlue from '@/components/icons/OrganizationRolesBlue.vue'
 import Payment from '@/components/icons/Payment.vue';
 import PaymentBlue from '@/components/icons/PaymentBlue.vue';
 import Sync from '@/components/icons/Sync.vue';
+import TickWhiteBg from '@/components/icons/TickWhiteBg.vue';
 
 Vue.use(Vuetify);
 
@@ -248,6 +249,9 @@ export default new Vuetify({
       },
       sync: {
         component: Sync,
+      },
+      tickWhiteBg: {
+        component: TickWhiteBg,
       },
     },
   },
