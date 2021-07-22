@@ -13,8 +13,10 @@ class State {
 }
 
 const mutations = <MutationTree<State>>{
-  addSnackbarMessage(state: State, message: string) {
-    state.messages.push({ message, show: true, id: new Date().getTime() });
+  addSnackbarMessage(state: State, { message, error }) {
+    state.messages.push({
+      message, show: true, error, id: new Date().getTime(),
+    });
   },
 
   setOrganization(state: State, organization: TOrganizationNode): void {

@@ -61,6 +61,7 @@ import Payment from '@/components/icons/Payment.vue';
 import PaymentBlue from '@/components/icons/PaymentBlue.vue';
 import Sync from '@/components/icons/Sync.vue';
 import TickWhiteBg from '@/components/icons/TickWhiteBg.vue';
+import ErrorWhiteBg from '@/components/icons/ErrorWhiteBg.vue';
 
 Vue.use(Vuetify);
 
@@ -252,6 +253,9 @@ export default new Vuetify({
       },
       tickWhiteBg: {
         component: TickWhiteBg,
+      },
+      errorWhiteBg: {
+        component: ErrorWhiteBg,
       },
     },
   },
