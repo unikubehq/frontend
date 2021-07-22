@@ -48,8 +48,6 @@ const mutations = <MutationTree<State>>{
 
 const actions = <ActionTree<State, any>>{
   async refresh(context, seconds = 30): Promise<boolean> {
-    console.log('Updating Token123');
-    console.log(context.state.client);
     return context.state.client.updateToken(seconds).then(async (refreshed: boolean) => {
       if (refreshed) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
