@@ -1,7 +1,6 @@
 <template>
   <v-container class="project-detail" fluid>
     <div v-if="project">
-      <project-bar></project-bar>
       <v-container fluid v-if="!$route.query.edit"
           class="py-5 px-8 white">
         <v-row>
