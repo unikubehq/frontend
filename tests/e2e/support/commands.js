@@ -26,7 +26,7 @@ Cypress.Commands.add('setupInterceptors', () => {
   });
 });
 
-Cypress.Commands.add('login', (multipleOrganizations, noOrganization, emptyStore, organizationContext) => {
+Cypress.Commands.add('login', (multipleOrganizations, noOrganization, emptyStore, organizationContext, noStub) => {
   // Setup store
   cy.fixture('tokens/rpt.json').then((token) => {
     Cypress.log({ name: 'Login', message: 'Loaded rpt fixture.' });
@@ -78,7 +78,9 @@ Cypress.Commands.add('login', (multipleOrganizations, noOrganization, emptyStore
       null,
     );
   }
-  cy.stub(store, 'dispatch').withArgs('auth/refresh').resolves(true).as('updateToken');
+  if (!noStub) {
+    cy.stub(store, 'dispatch').withArgs('auth/refresh').resolves(true).as('updateToken');
+  }
   // Attach store to window before load.
   cy.on('window:before:load', (window) => {
     window.__store__ = store;

@@ -13,6 +13,7 @@
     "sourceMap": true,
     "baseUrl": ".",
     "types": [
+      "cypress",
       "webpack-env",
       "mocha",
       "chai",

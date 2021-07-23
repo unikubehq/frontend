@@ -45,14 +45,13 @@ function initializeUnikubeApp(mode: string) {
   Vue.use(abilitiesPlugin, ability);
   Vue.component('Can', Can);
   Vue.axios.defaults.baseURL = process.env.VUE_APP_UPLOAD_URL;
-  let auth;
   if (mode !== 'e2e') {
     store.commit('auth/setKeycloakClient', keycloak);
     store.dispatch('auth/scheduleRefresh');
   }
   function vueInit() {
     const apolloProvider = setupApolloProvider();
-    new Vue({
+    const app = new Vue({
       router,
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
@@ -66,6 +65,9 @@ function initializeUnikubeApp(mode: string) {
       },
       render: (h) => h(App),
     }).$mount('#app');
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    window.app = app;
   }
   if (mode === 'e2e') {
     vueInit();

@@ -1,3 +1,4 @@
+import KeycloakAuthorization from 'keycloak-js/dist/keycloak-authz';
 import { AbilityBuilder, Ability, SubjectRawRule } from '@casl/ability';
 import jwtDecode from 'jwt-decode';
 import {
@@ -41,7 +42,6 @@ const mutations = <MutationTree<State>>{
   },
   // eslint-disable-next-line
   setKeycloakClient(state, keycloak: any): void {
-    console.log('set client wgaaat');
     state.client = keycloak;
   },
 };
