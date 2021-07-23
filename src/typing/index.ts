@@ -40,5 +40,6 @@ export type UnikubeError = {
 export type SnackbarMessage = {
   message: string,
   show: boolean,
+  error: boolean,
   id: number
 }

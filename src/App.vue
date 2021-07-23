@@ -3,8 +3,11 @@
     <router-view>
     </router-view>
     <v-snackbar v-model="message.show" :key="message.id" :style="{'margin-top': (idx * 80) + 'px'}"
-        color="primary" top right v-for="(message, idx) in messages">
-        <v-icon size="40">
+        :color="message.error ? 'error' : 'primary'" top right v-for="(message, idx) in messages">
+        <v-icon size="40" v-if="message.error">
+          $vuetify.icons.errorWhiteBg
+        </v-icon>
+        <v-icon size="40" v-else>
           $vuetify.icons.tickWhiteBg
         </v-icon>
         <span class="font-weight-medium">

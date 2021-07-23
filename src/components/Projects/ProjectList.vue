@@ -96,9 +96,15 @@ export default class ProjectList extends Vue {
         id: project.id,
       },
     }).then(() => {
-      this.$store.commit('context/addSnackbarMessage', this.$t('projects.sync').toString());
+      this.$store.commit('context/addSnackbarMessage', {
+        message: this.$t('projects.sync').toString(),
+        error: false,
+      });
     }).catch(() => {
-      this.$store.commit('context/addSnackbarMessage', this.$t('projects.syncFail').toString());
+      this.$store.commit('context/addSnackbarMessage', {
+        message: this.$t('projects.syncFail').toString(),
+        error: true,
+      });
     });
   }
 

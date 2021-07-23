@@ -126,7 +126,10 @@ export default class Overview extends mixins(paginationMixin) {
   }
 
   refetchProjects():void {
-    this.$store.commit('context/addSnackbarMessage', this.$t('projects.deleteSuccess'));
+    this.$store.commit('context/addSnackbarMessage', {
+      message: this.$t('projects.deleteSuccess'),
+      error: false,
+    });
     this.$apollo.queries.allProjects.refetch();
   }
 
