@@ -7,8 +7,13 @@
       <v-menu v-model="notificationsMenu" offset-y nudge-bottom="5" nudge-left="290">
         <template v-slot:activator="{ on, attrs }">
           <v-btn v-bind="attrs" v-on="on" text>
-            <v-badge :content="notifications" :value="notifications" color="#ff5e5b" overlap>
-              <v-icon width="40" height="40" @click="increment">
+            <v-badge
+              :content="notificationCount"
+              :value="notificationCount"
+              color="#ff5e5b"
+              overlap
+            >
+              <v-icon width="40" height="40">
                 $vuetify.icons.notificationBlue
               </v-icon>
             </v-badge>
@@ -18,10 +23,14 @@
           <v-card-title>
             Notifications
           </v-card-title>
-          <v-divider></v-divider>
-          <v-card-text>
-            Notification 1
-          </v-card-text>
+          <v-divider class="notification__divider"></v-divider>
+          <project-invite
+            v-for="invite in userInvitationsResults"
+            :invite="invite"
+            :key="invite.id"
+            v-on:answer-invitation="handleAnswerInvitation"
+          >
+          </project-invite>
         </v-card>
       </v-menu>
 
@@ -81,8 +90,10 @@
 import Component from 'vue-class-component';
 import Navigation from '@/components/Navigation.vue';
 import { AvatarMixin } from '@/components/mixins';
+import ProjectInvite from '@/components/Notifications/ProjectInvite.vue';
 import { Avatar } from '@/typing';
 import Converter from '@/utils/converter';
+import { UserInvitationsQuery } from '@/generated/graphql';
 
 Component.registerHooks([
   'beforeRouteEnter',
@@ -93,21 +104,33 @@ Component.registerHooks([
 @Component({
   components: {
     AppNavigation: Navigation,
+    ProjectInvite,
+  },
+  apollo: {
+    userInvitations: {
+      query: UserInvitationsQuery,
+    },
   },
 })
 export default class Layout extends AvatarMixin {
+  notificationsMenu = false;
+
   menu = false;
 
-  notifications = 0;
+  handleAnswerInvitation(): void {
+    this.$apollo.queries.userInvitations.refetch();
+  }
 
-  notificationsMenu = false;
+  get userInvitationsResults(): Record<string, unknown> {
+    return this.$data.userInvitations?.results;
+  }
+
+  get notificationCount(): number {
+    return this.$data.userInvitations?.results.length;
+  }
 
   get avatar(): Avatar {
     return Converter.memberToAvatar(this.$store.state.context.organizationMember);
-  }
-
-  increment(): void {
-    this.notifications += 1;
   }
 
   mounted(): void {
@@ -126,5 +149,9 @@ export default class Layout extends AvatarMixin {
 }
 </script>
 
-<style scoped>
+<style>
+  .notification__divider {
+    max-width: calc(100% - 32px);
+    margin: auto;
+  }
 </style>

@@ -9,7 +9,7 @@ describe('Navbar', () => {
     cy.login();
     cy.visit('/overview');
     cy.get('.organization-dropdown--item').click();
-    cy.get('.organization-dropdown .v-list .v-list-item').should('have.length', 3);
+    cy.get('.organization-dropdown .v-list .v-list-item').should('have.length', 2);
     cy.get('.organization-dropdown .v-list .v-list-item').first().should('contain', 'Unikube');
   });
 
@@ -26,7 +26,7 @@ describe('Navbar', () => {
     cy.login(true);
     cy.visit('/overview');
     cy.get('.organization-dropdown--item').click();
-    cy.get('.organization-dropdown .v-list .v-list-item').should('have.length', 4);
+    cy.get('.organization-dropdown .v-list .v-list-item').should('have.length', 3);
     cy.get('.organization-dropdown .v-list .v-list-item').first().should('contain', 'Unikube');
     cy.get('.organization-dropdown .v-list .v-list-item').eq(1).should('contain', 'Blueshoe');
   });
