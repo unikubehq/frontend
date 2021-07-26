@@ -98,7 +98,7 @@
               </v-col>
           </v-row>
           <v-row>
-              <v-col cols="9">
+              <v-col cols="6" class="mt-2">
                <a
                   class="link--secondary"
                   @click="$emit('change')"
@@ -112,11 +112,28 @@
                   </v-icon>{{ $t('general.cancel') }}
                </a>
               </v-col>
+              <v-col cols="2" offset="1">
+                <v-btn
+                class="helmOverridesButton"
+                large
+                block
+                outlined
+                :ripple="false"
+                @click="helm = !helm"
+                v-if="environment.valueSchema"
+              >
+                  <v-icon size="24" class="mr-2">
+                    $vuetify.icons.helm
+                  </v-icon>
+                  Override helm values
+                </v-btn>
+              </v-col>
               <v-col cols="3">
                 <v-btn
                 large
                 :loading="loading"
                 block
+                :ripple="false"
                 color="primary"
                 @click="submit"
                 :disabled="$v.$invalid"
@@ -124,6 +141,17 @@
               </v-col>
             </v-row>
           </v-form>
+      <v-navigation-drawer
+          temporary
+          right
+          fixed
+          width="650"
+          light
+          class="no-bg-drawer"
+          v-model="helm"
+        >
+      <helm-overrides :show="helm" :environment="environment" @hide="helm = false;"/>
+    </v-navigation-drawer>
   </v-container>
 </template>
 
@@ -140,6 +168,7 @@ import {
 import { required } from 'vuelidate/lib/validators';
 import VueI18n from 'vue-i18n';
 import { validationMixin } from '@/components/mixins';
+import HelmOverrides from '@/views/Projects/ProjectDetail/HelmOverrides.vue';
 import TranslateResult = VueI18n.TranslateResult;
 
 type sopsCredential = {
@@ -155,6 +184,9 @@ type sopsCredential = {
     namespace: {
       required,
     },
+  },
+  components: {
+    HelmOverrides,
   },
 })
 export default class EditDeck extends validationMixin {
@@ -181,6 +213,8 @@ export default class EditDeck extends validationMixin {
   showForm = false;
 
   loading = false;
+
+  helm = false;
 
   submit(): void {
     if (!this.namespace) {

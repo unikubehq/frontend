@@ -2,7 +2,7 @@
   <div>
     <v-row v-if="!deckEdit">
       <v-col cols="6" v-for="pkg in project.decks" :key="pkg.id">
-        <v-card outlined>
+        <v-card outlined class="projectDeck">
           <v-card-title>
             <v-row>
               <v-col cols="9">

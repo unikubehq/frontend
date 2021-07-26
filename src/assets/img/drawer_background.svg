@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="139" height="80" viewBox="0 0 139 80">
+    <defs>
+        <linearGradient id="gcflicqm2a" x1="0%" x2="100%" y1="50%" y2="50%">
+            <stop offset="0%" stop-color="#FFF" stop-opacity=".096"/>
+            <stop offset="100%" stop-color="#FFF" stop-opacity="0"/>
+        </linearGradient>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <g fill="url(#gcflicqm2a)" transform="translate(-1670)">
+            <g>
+                <g>
+                    <path d="M139 0L0 80 139 80z" transform="translate(1264) translate(406) matrix(1 0 0 -1 0 80)"/>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

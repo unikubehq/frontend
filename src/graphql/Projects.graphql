@@ -94,7 +94,11 @@ query ProjectDetailQuery($id: UUID) {
                 type,
                 valuesPath,
                 namespace,
-                valuesType,
+                valuesType
+                valueSchema
+                helmOverrides {
+                    overrides
+                }
                 sopsCredentials {
                     ... on AWSKMSNode {
                     title,
@@ -313,5 +317,11 @@ mutation DeleteSops(
 mutation UpdateProjectRepositoryMutation($id: UUID!) {
     updateProjectRepository(id: $id) {
         ok
+    }
+}
+
+mutation CreateUpdateHelmOverridesMutation($environmentId: UUID!, $overrides: String!) {
+    createUpdateHelmOverrides(environmentId: $environmentId, overrides: $overrides) {
+        ok,
     }
 }
