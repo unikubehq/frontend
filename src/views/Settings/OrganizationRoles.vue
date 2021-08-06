@@ -248,8 +248,12 @@ export default class OrganizationRoles extends Vue {
       this.email = '';
       this.inviteLoading = false;
       this.$apollo.queries.allOrganizationInvitations.refetch();
-    }).catch(() => {
+    }).catch((err) => {
       this.inviteLoading = false;
+      this.$store.commit('context/addSnackbarMessage', {
+        message: err,
+        error: true,
+      });
     });
   }
 
