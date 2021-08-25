@@ -57,6 +57,10 @@ type CreateUpdateEnvironmentPayload {
   clientMutationId: String
 }
 
+type CreateUpdateHelmOverrides {
+  ok: Boolean
+}
+
 input CreateUpdateOrganizationInput {
   title: String!
   description: String
@@ -142,8 +146,10 @@ type EnvironmentNode {
   valuesPath: String!
   valuesType: EnvironmentValuesType
   namespace: String!
+  valueSchema: String
   sopsCredentials: SOPSProviderNode
   deployments: [DeploymentNode!]!
+  helmOverrides: HelmOverridesNode
   specsUrl: String
 }
 
@@ -167,6 +173,11 @@ type FileInformationNode {
   encrypted: Boolean
 }
 
+type HelmOverridesNode {
+  id: ID!
+  overrides: String!
+}
+
 scalar JSONString
 
 type Mutation {
@@ -186,6 +197,7 @@ type Mutation {
   deleteSops(id: UUID): DeleteSOPS
   updateClusterSettings(input: UpdateClusterSettingsInput!): UpdateClusterSettingsPayload
   updateProjectRepository(id: UUID): UpdateProjectRepository
+  createUpdateHelmOverrides(environmentId: UUID, overrides: String): CreateUpdateHelmOverrides
 }
 
 type OrganizationInvitationNode {

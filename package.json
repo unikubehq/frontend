@@ -28,6 +28,9 @@
     "graphql-tag": "^2.12.4",
     "jwt-decode": "^3.1.2",
     "keycloak-js": "^13.0.0",
+    "monaco-editor": "^0.26.1",
+    "monaco-editor-webpack-plugin": "^4.1.1",
+    "monaco-yaml": "^3.0.0",
     "vue": "^2.6.11",
     "vue-apollo": "^3.0.7",
     "vue-axios": "^3.2.4",
@@ -38,7 +41,8 @@
     "vue2-dropzone": "^3.6.0",
     "vuelidate": "^0.7.6",
     "vuetify": "^2.5.6",
-    "vuex": "^3.6.2"
+    "vuex": "^3.6.2",
+    "yaml": "2.0.0-7"
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.9.5",
@@ -55,7 +59,7 @@
     "@types/jest": "^24.0.19",
     "@types/mocha": "^5.2.4",
     "@types/vuelidate": "^0.7.14",
-    "@typescript-eslint/eslint-plugin": "^4.24.0",
+    "@typescript-eslint/eslint-plugin": "^4.29.3",
     "@typescript-eslint/parser": "^4.24.0",
     "@vue/cli-plugin-babel": "^4.5.13",
     "@vue/cli-plugin-e2e-cypress": "^5.0.0-beta.1",

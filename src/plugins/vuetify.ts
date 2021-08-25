@@ -19,6 +19,7 @@ import CreateOrganizationBig from '@/components/icons/CreateOrganizationBig.vue'
 import DropdownSmallGrey from '@/components/icons/DropdownSmallGrey.vue';
 import HidePassword from '@/components/icons/HidePassword.vue';
 import ShowPassword from '@/components/icons/ShowPassword.vue';
+import Helm from '@/components/icons/Helm.vue';
 import Password from '@/components/icons/Password.vue';
 import Burger from '@/components/icons/Menu.vue';
 import User from '@/components/icons/User.vue';
@@ -145,6 +146,9 @@ export default new Vuetify({
       },
       logout: {
         component: Logout,
+      },
+      helm: {
+        component: Helm,
       },
       notification: {
         component: Notification,
