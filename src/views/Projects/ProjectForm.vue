@@ -198,7 +198,7 @@ export default class ProjectForm extends validationMixin {
 
   submissionError = '';
 
-  specRepositoryBranch = 'master';
+  specRepositoryBranch = 'main';
 
   specType: TSpecicifactionTypeEnum = TSpecicifactionTypeEnum.Helm;
 
