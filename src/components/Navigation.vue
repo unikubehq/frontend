@@ -170,7 +170,6 @@ Component.registerHooks([
 export default class Navigation extends Vue {
   items = [
     { icon: '$vuetify.icons.overview', title: 'Overview', to: '/overview' },
-    { icon: '$vuetify.icons.activity', title: 'Activity', to: '/activities' },
     { icon: '$vuetify.icons.settings', title: 'Settings', to: '/settings' },
   ];
 
