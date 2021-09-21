@@ -2,14 +2,18 @@
   <div class="project-card__wrapper">
     <v-row class="white pl-5 pr-10" align="center">
       <v-col cols="1">
-        <v-icon size="48">$vuetify.icons.project</v-icon>
+        <router-link :to="'/project/' + project.id ">
+          <v-icon size="48">$vuetify.icons.project</v-icon>
+        </router-link>
       </v-col>
       <v-col cols="9" class="mt-2">
-        <h3 class="mb-0">
-          <span v-if="loading"><v-skeleton-loader type="heading" tile/></span>
-          <span v-else>{{ project.title}}</span>
-        </h3>
-        <p>{{ project.description }}</p>
+        <router-link :to="'/project/' + project.id ">
+          <h3 class="mb-0">
+            <span v-if="loading"><v-skeleton-loader type="heading" tile/></span>
+            <span v-else>{{ project.title}}</span>
+          </h3>
+          <p>{{ project.description }}</p>
+        </router-link>
       </v-col>
       <v-col class="text-right pr-10" v-if="$can('edit', project)">
         <router-link class="project-card__edit" :to="'/project/' + project.id + '?edit=true'">
