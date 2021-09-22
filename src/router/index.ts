@@ -29,14 +29,6 @@ const routes: Array<RouteConfig> = [
         },
       },
       {
-        path: '/activities',
-        name: 'activities',
-        component: () => import(/* webpackChunkName: "about" */ '../views/Activities.vue'),
-        meta: {
-          label: i18n.t('views.activities'),
-        },
-      },
-      {
         path: '/settings',
         name: 'settings',
         component: () => import(/* webpackChunkName: "settings" */ '../views/Settings.vue'),
