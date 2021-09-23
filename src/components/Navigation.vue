@@ -169,8 +169,8 @@ Component.registerHooks([
 })
 export default class Navigation extends Vue {
   items = [
-    { icon: '$vuetify.icons.overview', title: 'Overview', to: '/overview' },
-    { icon: '$vuetify.icons.settings', title: 'Settings', to: '/settings' },
+    { icon: '$vuetify.icons.overview', title: this.$t('views.projects'), to: '/overview' },
+    { icon: '$vuetify.icons.settings', title: this.$t('views.settingsLabel'), to: '/settings' },
   ];
 
   idToVerboseId = Strings.idToVerboseId
