@@ -1,6 +1,10 @@
-# Unikube Frontend
 
-[![Coverage Status](https://coveralls.io/repos/github/unikubehq/frontend/badge.svg?branch=main)](https://coveralls.io/github/unikubehq/frontend?branch=main)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/unikubehq/frontend/main/project_logo.png" width="400">
+</p>
+<p align="center">
+  <a href="https://coveralls.io/github/unikubehq/frontend?branch=main"><img alt="Coverage Status" src="https://coveralls.io/repos/github/unikubehq/frontend/badge.svg?branch=main"></a>
+</p>
 
 ## Table of contents
 
