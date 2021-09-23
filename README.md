@@ -6,6 +6,8 @@
   <a href="https://coveralls.io/github/unikubehq/frontend?branch=main"><img alt="Coverage Status" src="https://coveralls.io/repos/github/unikubehq/frontend/badge.svg?branch=main"></a>
 </p>
 
+# Unikube Frontend
+
 ## Table of contents
 
 * [Development](#development)
