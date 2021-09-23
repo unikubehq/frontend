@@ -4,6 +4,8 @@
 </p>
 <p align="center">
   <a href="https://coveralls.io/github/unikubehq/frontend?branch=main"><img alt="Coverage Status" src="https://coveralls.io/repos/github/unikubehq/frontend/badge.svg?branch=main"></a>
+  <a href="https://raw.githubusercontent.com/unikubehq/frontend/main/LICENSE"><img alt="License" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg"></a>
+  <a href="https://github.com/unikubehq/frontend/releases"><img alt="GitHub release" src="https://img.shields.io/github/release/unikubehq/frontend.svg"></a>
 </p>
 
 # Unikube Frontend
