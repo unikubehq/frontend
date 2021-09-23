@@ -45,27 +45,35 @@ VUE_APP_KEYCLOAK_CLIENT_ID=frontend
 ```
 
 **Compiles and hot-reloads for development**
-```
+```shell
 npm run serve
 ```
 
 **Compiles and minifies for production**
-```
+```shell
 npm run build
 ```
 
 **Run your unit tests**
-```
+
+Unit tests are written with [Jest](https://jestjs.io/) and [Jasmine](https://jasmine.github.io/).
+
+```shell
 npm run test:unit
 ```
 
 **Run your end-to-end tests**
-```
+
+This command starts integration testing with [Cypress](https://www.cypress.io/). Cypress
+runs through different views and imitates user workflows.
+```shell
 npm run test:e2e
+# or
+npm run test:e2e:ci # for CI
 ```
 
 **Lints and fixes files**
-```
+```shell
 npm run lint
 ```
 
