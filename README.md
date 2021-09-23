@@ -2,7 +2,16 @@
 
 [![Coverage Status](https://coveralls.io/repos/github/unikubehq/frontend/badge.svg?branch=main)](https://coveralls.io/github/unikubehq/frontend?branch=main)
 
-## Project Setup
+## Table of contents
+
+* [Development](#development)
+  * [Authentication](#authentication)
+  * [GraphQL](#graphql)
+  * [Permissions](#permissions)
+      * [CASL Example](#example-casl)
+  * [New Releases](#new-releases)
+
+## Development
 
 Before you start - you need a local instance of the unikube cluster.
 
@@ -11,44 +20,6 @@ After that setup the frontend as follows:
 ```
 npm install
 ```
-
-Create a file called `.env.development.local` (and adapt according to your cluster):
-```dotenv
-VUE_APP_UPLOAD_URL=http://gateway.unikube.127.0.0.1.nip.io:8085/upload
-VUE_APP_GRAPHQL_URL=http://gateway.unikube.127.0.0.1.nip.io:8085/graphql
-VUE_APP_KEYCLOAK_JS=/js/keycloak.js
-VUE_APP_KEYCLOAK_AUTHZ_JS=/js/keycloak-authz.js
-VUE_APP_KEYCLOAK_URL=http://keycloak.127.0.0.1.nip.io:8085/auth
-VUE_APP_KEYCLOAK_REALM=unikube
-VUE_APP_KEYCLOAK_CLIENT_ID=frontend
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your unit tests
-```
-npm run test:unit
-```
-
-### Run your end-to-end tests
-```
-npm run test:e2e
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-## General Information
 
 The unikube frontend projects is mostly written with Vue, TypeScript and SASS. 
 
@@ -61,19 +32,56 @@ Notable packages used:
 - [vuex](https://vuex.vuejs.org/)
 - [GraphQL-Code-Generator](https://www.graphql-code-generator.com/)
 
-## Authentication
+
+Create a file called `.env.development.local` (and adapt according to your cluster):
+```dotenv
+VUE_APP_UPLOAD_URL=http://gateway.unikube.127.0.0.1.nip.io:8085/upload
+VUE_APP_GRAPHQL_URL=http://gateway.unikube.127.0.0.1.nip.io:8085/graphql
+VUE_APP_KEYCLOAK_JS=/js/keycloak.js
+VUE_APP_KEYCLOAK_AUTHZ_JS=/js/keycloak-authz.js
+VUE_APP_KEYCLOAK_URL=http://keycloak.127.0.0.1.nip.io:8085/auth
+VUE_APP_KEYCLOAK_REALM=unikube
+VUE_APP_KEYCLOAK_CLIENT_ID=frontend
+```
+
+**Compiles and hot-reloads for development**
+```
+npm run serve
+```
+
+**Compiles and minifies for production**
+```
+npm run build
+```
+
+**Run your unit tests**
+```
+npm run test:unit
+```
+
+**Run your end-to-end tests**
+```
+npm run test:e2e
+```
+
+**Lints and fixes files**
+```
+npm run lint
+```
+
+### Authentication
 
 Authentication as well as authorization happens via [Keycloak](https://www.keycloak.org/).
 To make sure a user is authenticated before entering the frontend application
 it (the VueJS app) is wrapped into a "Keycloak validation".
 
 If everything is fine - the application is initialized with all its plugins.
-If not the user is redirected onto the Keycloak authentication page.
+Unauthenticated users will be redirected onto the Keycloak authentication page.
 
-The Keycloak auth token is updated as soon as it valid for less then 30 seconds.
+The Keycloak auth token is updated as soon as it is valid for less than 30 seconds.
 
 
-## GraphQL
+### GraphQL
 
 Unikube makes heavy use of GraphQL between frontend and multiple 
 microservices. To perform queries we're leveraging [Apollo](https://www.apollographql.com/)
@@ -95,7 +103,7 @@ what kind of object it deals with when it comes to permissions.
 
 The automatically generated types are stored within `generated/graphql.ts`.
 
-## Permissions
+### Permissions
 We're using [CASL](https://casl.js.org/) to handle frontend permissions. 
 The `auth.ts` vuex store module converts information from the [Keycloak](https://www.keycloak.org/)
 RPT token into CASL permissions.
@@ -105,7 +113,7 @@ to create a permission-based reactive frontend. Meaning as soon as the (rpt)
 token for the frontend's requests gets updated the frontend rerenders based
 on the updated permissions. Tokens usually have a short lifetime.
 
-### Example CASL
+#### CASL Example
 
 ```typescript
 import { TProjectNode } from './graphql';
@@ -122,3 +130,25 @@ export default class ProjectList extends Vue {
 The example above may not be needed in a real case, since the backend
 will probably not return any `TProjectNode` objects which are not viewable
 for the user.
+
+### New Releases
+
+The versioning system used for this project is semantic versioning.
+
+We're using [`release-it`](https://www.npmjs.com/package/release-it) and
+[`auto-changelog`](https://www.npmjs.com/package/auto-changelog) for an automated release workflow.
+
+Depending on the kind of release (patch, minor, major) you would like to create run the following
+command:
+
+```shell
+npm run release patch
+```
+
+The command:
+- updates the CHANGELOG.md
+- creates a git tag for the new version
+- adds a new release to Github
+  
+The creation of the tag triggers a job which builds a new Docker image  containing the 
+frontend application, which then is served by NGINX.
