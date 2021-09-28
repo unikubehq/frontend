@@ -11,6 +11,7 @@
     "browseProjects": "Browse other Projects",
     "numberDecks": "No. of Decks",
     "lastUpdate": "Last Update",
+    "projectStatus": "Status",
     "dateAdded": "Date added",
     "editProject": "Edit Project",
     "deleteProject": "Delete Project",
@@ -48,7 +49,18 @@
     "addNewProject": "Add new Project",
     "projectList": "Projects List",
     "sync": "Project synchronization was triggered!",
-    "syncFail": "Project synchronization trigger failed!"
+    "syncFail": "Project synchronization trigger failed!",
+    "status": {
+      "ok": "Ok",
+      "unknown": "Unknown",
+      "parseFail": "Parsing failed",
+      "cloneSuccess": "Cloning successful",
+      "cloneFail": "Cloning failed",
+      "branchNotFound": "Branch not found",
+      "clonePending": "Cloning pending",
+      "cloning": "Cloning",
+      "authFail": "Authentication failed"
+    }
   },
   "general": {
     "admin": "Admin",
