@@ -3,6 +3,7 @@ query ProjectsQuery($limit: Int, $offset: Int) {
         totalCount
         results {
             title,
+            repositoryStatus,
             description,
             currentCommit,
             currentCommitDateTime,
@@ -48,6 +49,7 @@ query ProjectDetailQuery($id: UUID) {
         id,
         specRepository,
         specRepositoryBranch,
+        repositoryStatus,
         specType,
         currentCommit,
         currentCommitDateTime,

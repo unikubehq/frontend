@@ -6,7 +6,7 @@
           <v-icon size="48">$vuetify.icons.project</v-icon>
         </router-link>
       </v-col>
-      <v-col cols="9" class="mt-2">
+      <v-col cols="8" class="mt-2">
         <router-link :to="'/project/' + project.id">
           <h3 class="mb-0">
             <span v-if="loading"><v-skeleton-loader type="heading" tile/></span>
@@ -16,6 +16,17 @@
         </router-link>
       </v-col>
       <v-col class="text-right pr-10" v-if="$can('edit', project)">
+        <v-tooltip top>
+          <template v-slot:activator="{ on, attrs }">
+            <div v-on="on" v-bind="attrs" class="d-inline-block">
+              <small>{{ $t('projects.projectStatus') }}:</small>
+              <v-avatar size="9" class="ml-2"
+                :color="getProjectStatusLevel(project.repositoryStatus)" />
+            </div>
+            </template>
+            <span>{{ getReadableProjectStatus(project.repositoryStatus) }}</span>
+        </v-tooltip>
+        <v-divider style="height: 24px" class="mx-4 mb-n1" vertical></v-divider>
         <router-link class="project-card__edit" :to="'/project/' + project.id + '?edit=true'">
           <v-icon size="24">$vuetify.icons.edit</v-icon>
         </router-link>
@@ -74,6 +85,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import { TProjectNode, UpdateProjectRepositoryMutation } from '@/generated/graphql';
 import DeleteProject from '@/components/Projects/DeleteProject.vue';
 import ProjectMemberAvatars from '@/components/Projects/ProjectMemberAvatars.vue';
+import Converter from '@/utils/converter';
 
 @Component({
   components: { DeleteProject, ProjectMemberAvatars },
@@ -88,6 +100,10 @@ export default class ProjectList extends Vue {
   showDeleteDialog = false
 
   drawer = false;
+
+  getReadableProjectStatus = Converter.getReadableProjectStatus
+
+  getProjectStatusLevel = Converter.getProjectStatusLevel
 
   get modifiedDate(): string {
     if (this.project?.currentCommitDateTime) {
