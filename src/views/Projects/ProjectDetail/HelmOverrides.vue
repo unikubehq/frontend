@@ -56,8 +56,9 @@ export default class HelmOverrides extends Vue {
 
   error = false;
 
-  setError(errorState: boolean): void {
-    this.error = errorState;
+  setError(errorState: number): void {
+    console.log(errorState);
+    this.error = errorState !== 0;
   }
 
   save(): void {

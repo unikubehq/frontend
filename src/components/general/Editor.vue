@@ -30,14 +30,9 @@ export default class Editor extends Vue {
   errorCount = 0;
 
   updateErrorCount(): void {
-    const model = this.editor.getModel();
-    if (model) {
-      const owner = model.getModeId();
-      this.errorCount = monaco.editor.getModelMarkers({ owner }).length;
-    }
-    if (this.errorCount) {
-      this.$emit('error', this.errorCount);
-    }
+    const markers = monaco.editor.getModelMarkers({ });
+    this.errorCount = markers.length;
+    this.$emit('error', this.errorCount);
   }
 
   mounted(): void {
