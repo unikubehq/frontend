@@ -18,28 +18,32 @@
           </v-col>
           <v-col cols="2">
             <div class="float-right">
-              <v-btn
-                outlined
-                width="144"
-                @click="setEdit"
-                :ripple="false"
-                 v-if="$can('edit', project)"
-              >
-                <v-icon size="24" class="mr-2" v-if="$can('edit', project)">
-                  $vuetify.icons.edit
-                </v-icon>{{ $t('projects.editProject') }}
-              </v-btn>
-              <v-btn
-                class="mt-5 "
-                outlined
-                width="144"
-                :ripple="false"
-                @click="showDeleteDialog = true;"
-              >
-                <v-icon size="24" class="mr-2">
-                  $vuetify.icons.delete
-                </v-icon>{{ $t('projects.deleteProject') }}
-              </v-btn>
+              <div>
+                <v-btn
+                  outlined
+                  width="144"
+                  @click="setEdit"
+                  :ripple="false"
+                   v-if="$can('edit', project)"
+                >
+                  <v-icon size="24" class="mr-2" v-if="$can('edit', project)">
+                    $vuetify.icons.edit
+                  </v-icon>{{ $t('projects.editProject') }}
+                </v-btn>
+              </div>
+              <div>
+                <v-btn
+                  class="mt-5 "
+                  outlined
+                  width="144"
+                  :ripple="false"
+                  @click="showDeleteDialog = true;"
+                >
+                  <v-icon size="24" class="mr-2">
+                    $vuetify.icons.delete
+                  </v-icon>{{ $t('projects.deleteProject') }}
+                </v-btn>
+              </div>
             </div>
           </v-col>
         </v-row>
