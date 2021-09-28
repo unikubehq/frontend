@@ -90,7 +90,10 @@ export default class ProjectList extends Vue {
   drawer = false;
 
   get modifiedDate(): string {
-    return this.$d(new Date(this.project?.currentCommitDateTime), 'short');
+    if (this.project?.currentCommitDateTime) {
+      return this.$d(new Date(this.project?.currentCommitDateTime), 'short');
+    }
+    return '-';
   }
 
   syncRepo(project: TProjectNode): void {
