@@ -2,12 +2,12 @@
   <div class="project-card__wrapper">
     <v-row class="white pl-5 pr-10" align="center">
       <v-col cols="1">
-        <router-link :to="'/project/' + project.id ">
+        <router-link :to="'/project/' + project.id">
           <v-icon size="48">$vuetify.icons.project</v-icon>
         </router-link>
       </v-col>
       <v-col cols="9" class="mt-2">
-        <router-link :to="'/project/' + project.id ">
+        <router-link :to="'/project/' + project.id">
           <h3 class="mb-0">
             <span v-if="loading"><v-skeleton-loader type="heading" tile/></span>
             <span v-else>{{ project.title}}</span>
@@ -20,7 +20,7 @@
           <v-icon size="24">$vuetify.icons.edit</v-icon>
         </router-link>
         <v-divider style="height: 24px" class="mx-4 mb-n1" vertical></v-divider>
-        <v-icon class="project-card__sync" @click="syncRepo(project)" size="32">
+        <v-icon class="project-card__sync" @click="syncRepo(project)" size="24">
           $vuetify.icons.sync
         </v-icon>
         <v-divider style="height: 24px" class="mx-4 mb-n1" vertical></v-divider>
@@ -31,7 +31,7 @@
     </v-row>
     <v-row class="white px-7">
       <v-divider class="mr-7"></v-divider>
-      <router-link :to="'/project/' + project.id ">
+      <router-link :to="'/project/' + project.id">
         <v-icon class="project-card__detail" size="24">$vuetify.icons.dropdown</v-icon>
       </router-link>
     </v-row>
@@ -123,6 +123,10 @@ export default class ProjectList extends Vue {
 .project-card{
   &__wrapper {
     box-shadow: 0 2px 40px 0 rgba(183, 183, 183, 0.15);
+    a {
+      text-decoration: none;
+      color: $unikube-blue;
+    }
   }
   &__detail {
     transform: rotate(-90deg);
