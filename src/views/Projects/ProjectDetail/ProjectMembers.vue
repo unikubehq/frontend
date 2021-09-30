@@ -7,7 +7,10 @@
           <th scope="col" class="text-left" colspan="2">{{ $t('user.name') }}</th>
           <th scope="col" class="text-left">{{ $t('user.role') }}</th>
           <th scope="col" class="text-left">{{ $t('user.lastOnline') }}</th>
-          <th scope="col" class="text-left" colspan="2">{{ $t('user.actions') }}</th>
+          <th scope="col" class="text-left" colspan="2" v-if="$can('edit', project)">
+            {{ $t('user.actions') }}
+          </th>
+          <th scope="col" class="text-left" colspan="2" v-else></th>
         </tr>
         </thead>
         <tbody>
@@ -37,20 +40,23 @@
             ></v-select>
           </td>
           <td v-if="!member.editing">{{ member.user.lastLogin }}</td>
-          <td v-if="!member.editing">
-            <v-icon size="24" @click="member.editing = true;">$vuetify.icons.edit</v-icon>
-            <v-divider style="height: 24px; min-height: auto;" class="mx-4 mb-n1" vertical />
-            <v-icon size="24" @click="removeMember(member)">$vuetify.icons.delete</v-icon>
+          <td v-if="$can('edit', project)">
+            <div v-if="!member.editing">
+              <v-icon size="24" @click="member.editing = true;">$vuetify.icons.edit</v-icon>
+              <v-divider style="height: 24px; min-height: auto;" class="mx-4 mb-n1" vertical />
+              <v-icon size="24" @click="removeMember(member)">$vuetify.icons.delete</v-icon>
+            </div>
+            <div v-else>
+              <v-icon size="24" @click="member.editing = false;" class="mr-5">
+                $vuetify.icons.cross
+              </v-icon>
+              <v-btn color="neutral" dark @click="updateMember(member)" :ripple="false"
+                  elevation="0" :loading="member.loading">
+                {{ $t('general.save') }}
+              </v-btn>
+            </div>
           </td>
-          <td v-else>
-            <v-icon size="24" @click="member.editing = false;" class="mr-5">
-              $vuetify.icons.cross
-            </v-icon>
-            <v-btn color="neutral" dark @click="updateMember(member)" :ripple="false" elevation="0"
-                :loading="member.loading">
-              {{ $t('general.save') }}
-            </v-btn>
-          </td>
+          <td v-else></td>
         </tr>
         <tr v-for="(pendingMember, idx) in pendingMembers" :key="idx">
           <td>
