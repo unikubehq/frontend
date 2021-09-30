@@ -3,7 +3,7 @@
     <h2>{{ $t('settings.organization.title') }}</h2>
     <p>{{ $t('settings.organization.intro') }}</p>
     <v-divider></v-divider>
-    <v-row>
+    <v-row class="pt-3">
       <v-col cols="12">
         <v-badge
           bottom
