@@ -22,11 +22,11 @@
                   id="user-avatar-file"
                   @change="handleUpload">
               <v-img width="96" contain ref="preview" alt="User Avatar"
-                  :src="this.previewUrl || this.$store.state.auth.avatarImage || 'https://cdn.zeplin.io/5f84546964e43c2749571f59/assets/2192D830-FF56-4E41-8DBA-F504CEFA64FC.svg'"/>
+                  :src="avatarImage"/>
             </label>
           </v-avatar>
         </v-badge>
-        <a href="#" class="text--secondary d-block mt-2">
+        <a href="#" class="text--secondary d-block mt-2" @click="deleteAvatar">
           {{ $t('settings.account.removeAvatar') }}
         </a>
       </v-col>
@@ -149,6 +149,7 @@
 <script lang="ts">
 import { Component } from 'vue-property-decorator';
 import { AxiosResponse } from 'axios';
+import { DeleteAvatarMutation, TDeleteAvatarMutationResult } from '@/generated/graphql';
 import { UploadComponent } from '@/components/mixins';
 import DangerZone from '@/components/Settings/DangerZone.vue';
 
@@ -180,12 +181,31 @@ export default class AccountSettings extends UploadComponent {
     this.$store.commit('auth/setAvatar', res.data.url);
   }
 
+  deleteAvatar(): void {
+    this.$apollo.mutate({
+      mutation: DeleteAvatarMutation,
+      variables: {
+        id: this.$store.state.auth.uuid,
+      },
+    }).then((data) => {
+      const res: TDeleteAvatarMutationResult = data.data;
+      if (res?.deleteAvatar?.ok) {
+        this.previewUrl = '';
+        this.$store.commit('auth/setAvatar', '');
+      }
+    });
+  }
+
   get fullName(): string {
     return this.$store.state.auth.username;
   }
 
   get email(): string {
     return this.$store.state.auth.email;
+  }
+
+  get avatarImage(): string {
+    return this.previewUrl || this.$store.state.auth.avatarImage || 'https://cdn.zeplin.io/5f84546964e43c2749571f59/assets/2192D830-FF56-4E41-8DBA-F504CEFA64FC.svg';
   }
 
   setDataChanged(): void {
