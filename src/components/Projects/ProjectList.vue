@@ -6,7 +6,7 @@
           <v-icon size="48">$vuetify.icons.project</v-icon>
         </router-link>
       </v-col>
-      <v-col cols="8" class="mt-2">
+      <v-col cols="7" class="mt-2">
         <router-link :to="'/project/' + project.id">
           <h3 class="mb-0">
             <span v-if="loading"><v-skeleton-loader type="heading" tile/></span>
@@ -15,7 +15,7 @@
           <p>{{ project.description }}</p>
         </router-link>
       </v-col>
-      <v-col class="text-right pr-10" v-if="$can('edit', project)">
+      <v-col class="text-right pr-10">
         <v-tooltip top>
           <template v-slot:activator="{ on, attrs }">
             <div v-on="on" v-bind="attrs" class="d-inline-block">
@@ -26,18 +26,20 @@
             </template>
             <span>{{ getReadableProjectStatus(project.repositoryStatus) }}</span>
         </v-tooltip>
-        <v-divider style="height: 24px" class="mx-4 mb-n1" vertical></v-divider>
-        <router-link class="project-card__edit" :to="'/project/' + project.id + '?edit=true'">
-          <v-icon size="24">$vuetify.icons.edit</v-icon>
-        </router-link>
-        <v-divider style="height: 24px" class="mx-4 mb-n1" vertical></v-divider>
-        <v-icon class="project-card__sync" @click="syncRepo(project)" size="24">
-          $vuetify.icons.sync
-        </v-icon>
-        <v-divider style="height: 24px" class="mx-4 mb-n1" vertical></v-divider>
-        <v-icon @click="deleteProjectDialog(project)" size="24" class="project-card__delete">
-          $vuetify.icons.delete
-        </v-icon>
+        <div class="d-inline-block" v-if="$can('edit', project)">
+          <v-divider style="height: 24px" class="mx-4 mb-n1" vertical></v-divider>
+          <router-link class="project-card__edit" :to="'/project/' + project.id + '?edit=true'">
+            <v-icon size="24">$vuetify.icons.edit</v-icon>
+          </router-link>
+          <v-divider style="height: 24px" class="mx-4 mb-n1" vertical></v-divider>
+          <v-icon class="project-card__sync" @click="syncRepo(project)" size="24">
+            $vuetify.icons.sync
+          </v-icon>
+          <v-divider style="height: 24px" class="mx-4 mb-n1" vertical></v-divider>
+          <v-icon @click="deleteProjectDialog(project)" size="24" class="project-card__delete">
+            $vuetify.icons.delete
+          </v-icon>
+        </div>
       </v-col>
     </v-row>
     <v-row class="white px-7">
