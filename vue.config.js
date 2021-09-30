@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-var-requires,import/no-extraneous-dependencies
 const SentryCliPlugin = require('@sentry/webpack-plugin');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fs = require('fs');
