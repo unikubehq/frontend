@@ -1,4 +1,9 @@
 /* eslint-disable */
+/*
+ * This script open generated/graphql.ts and adds an attribute 'kind' to every GraphQL node.
+ *
+ * The kind is needed by `CASL` which is used for permission checks.
+ */
 const fs = require('fs');
 
 fs.readFile('./src/generated/graphql.ts', 'utf8', (err, data) => {

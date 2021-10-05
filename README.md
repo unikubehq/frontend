@@ -112,8 +112,11 @@ npm run codegen
 ```
 
 This command is provided by the [GraphQL-Code-Generator](https://www.graphql-code-generator.com/).
+The configuration can be found in `codegen.yml`.
+
 It is extended by a custom command (`npm run kindify`) which extends
-the GraphQL converted nodes (TypeScript types then) by a field `kind`.
+the GraphQL converted nodes (TypeScript types then) by a field `kind`. The command
+is called as part of an `afterOneFileWrite` hook configured in `codegen.yml`.
 This field contains an identifier which then is used by CASL to determine
 what kind of object it deals with when it comes to permissions.
 
