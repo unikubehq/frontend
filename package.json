@@ -78,7 +78,7 @@
     "cypress": "^8.5.0",
     "dotenv-cli": "^4.0.0",
     "eslint": "^7.26.0",
-    "eslint-plugin-import": "^2.23.2",
+    "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-vue": "^7.9.0",
     "istanbul-lib-coverage": "^3.0.0",
     "lint-staged": "^11.2.0",
