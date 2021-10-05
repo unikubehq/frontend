@@ -41,10 +41,10 @@
 </template>
 <script lang="ts">
 import { Component } from 'vue-property-decorator';
-import { CreateOrganizationMutation } from '@/generated/graphql';
-import { validationMixin } from '@/components/mixins';
 import { required } from 'vuelidate/lib/validators';
 import VueI18n from 'vue-i18n';
+import { CreateOrganizationMutation } from '@/generated/graphql';
+import { validationMixin } from '@/components/mixins';
 import TranslateResult = VueI18n.TranslateResult;
 
 @Component({

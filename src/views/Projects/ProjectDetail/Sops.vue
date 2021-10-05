@@ -174,6 +174,10 @@
 
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator';
+import VueI18n from 'vue-i18n';
+import {
+  required, requiredIf, ValidationFunc, ValidationRule,
+} from 'vuelidate/lib/validators';
 import {
   CreateUpdateSops,
   Maybe, TCreateUpdateSopsMutationVariables,
@@ -181,10 +185,6 @@ import {
   TSopsProviderNode,
   TSopsTypeEnum,
 } from '@/generated/graphql';
-import VueI18n from 'vue-i18n';
-import {
-  required, requiredIf, ValidationFunc, ValidationRule,
-} from 'vuelidate/lib/validators';
 import { validationMixin } from '@/components/mixins';
 import DeleteSops from '@/components/Projects/DeleteSops.vue';
 import TranslateResult = VueI18n.TranslateResult;

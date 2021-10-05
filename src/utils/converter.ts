@@ -1,7 +1,7 @@
+import VueI18n from 'vue-i18n';
 import { TOrganizationMember, TProjectMember, TProjectRepositoryStatus } from '@/generated/graphql';
 import { Avatar } from '@/typing';
 import i18n from '@/i18n';
-import VueI18n from 'vue-i18n';
 import TranslateResult = VueI18n.TranslateResult;
 
 export default class Converter {

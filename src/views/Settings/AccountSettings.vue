@@ -147,8 +147,8 @@
 
 <script lang="ts">
 import { Component } from 'vue-property-decorator';
-import { UploadComponent } from '@/components/mixins';
 import { AxiosResponse } from 'axios';
+import { UploadComponent } from '@/components/mixins';
 
 @Component({})
 export default class AccountSettings extends UploadComponent {

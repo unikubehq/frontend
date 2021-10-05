@@ -80,8 +80,8 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import VueI18n from 'vue-i18n';
-import { OrganizationQuery } from '@/generated/graphql';
 import { required } from 'vuelidate/lib/validators';
+import { OrganizationQuery } from '@/generated/graphql';
 import { Dropzone } from '@/typing/';
 import 'vue2-dropzone/dist/vue2Dropzone.min.css';
 import TranslateResult = VueI18n.TranslateResult;

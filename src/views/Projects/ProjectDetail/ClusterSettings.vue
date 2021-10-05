@@ -42,14 +42,14 @@
 <script lang="ts">
 import { Component, Prop, Watch } from 'vue-property-decorator';
 import {
+  required, minValue, maxValue,
+} from 'vuelidate/lib/validators';
+import VueI18n from 'vue-i18n';
+import {
   TProjectNode,
   TUpdateClusterSettingsInput, TUpdateClusterSettingsPayload, UpdateClusterSettings,
 } from '@/generated/graphql';
-import {
-  required, minValue, maxValue,
-} from 'vuelidate/lib/validators';
 import { validationMixin } from '@/components/mixins';
-import VueI18n from 'vue-i18n';
 import TranslateResult = VueI18n.TranslateResult;
 
 @Component({

@@ -1,5 +1,5 @@
-import { TOrganizationMember, TOrganizationNode } from '@/generated/graphql';
 import { MutationTree } from 'vuex';
+import { TOrganizationMember, TOrganizationNode } from '@/generated/graphql';
 import { SnackbarMessage } from '@/typing';
 
 class State {

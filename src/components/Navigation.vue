@@ -131,6 +131,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import { ApolloQueryResult } from '@apollo/client';
 import {
   OrganizationMembersQuery,
   OrganizationsQuery,
@@ -138,7 +139,6 @@ import {
   TOrganizationNode, TOrganizationsQueryResult,
 } from '@/generated/graphql';
 import Strings from '@/utils/strings';
-import { ApolloQueryResult } from '@apollo/client';
 
 Component.registerHooks([
   'beforeRouteEnter',

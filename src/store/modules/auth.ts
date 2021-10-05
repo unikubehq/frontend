@@ -1,10 +1,10 @@
 import { AbilityBuilder, Ability, SubjectRawRule } from '@casl/ability';
 import jwtDecode from 'jwt-decode';
+import Vue from 'vue';
+import { ActionTree, MutationTree } from 'vuex';
 import {
   Action as UAction, IPermission, UnikubeAbility,
 } from '@/typing';
-import Vue from 'vue';
-import { ActionTree, MutationTree } from 'vuex';
 
 class State {
   // eslint-disable-next-line

@@ -133,6 +133,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { email, required } from 'vuelidate/lib/validators';
 import {
   DeleteOrganizationMember,
   InviteToOrganization,
@@ -142,7 +143,6 @@ import {
 } from '@/generated/graphql';
 import UnikubeAvatar from '@/components/general/Avatar.vue';
 import Converter from '@/utils/converter';
-import { email, required } from 'vuelidate/lib/validators';
 import DeleteOrganizationMemberComponent from '@/components/Settings/DeleteOrganizationMember.vue';
 
 @Component({

@@ -36,13 +36,13 @@
 </template>
 
 <script lang="ts">
-import ProjectBar from '@/components/Projects/ProjectBar.vue';
-import ProjectList from '@/components/Projects/ProjectList.vue';
 import { Component } from 'vue-property-decorator';
-import { ProjectsQuery, TProjectNode } from '@/generated/graphql';
-import { paginationMixin } from '@/components/mixins';
 import { mixins } from 'vue-class-component';
 import { Route } from 'vue-router';
+import ProjectBar from '@/components/Projects/ProjectBar.vue';
+import ProjectList from '@/components/Projects/ProjectList.vue';
+import { ProjectsQuery, TProjectNode } from '@/generated/graphql';
+import { paginationMixin } from '@/components/mixins';
 
 const sortAscending = (a: TProjectNode, b: TProjectNode): number => {
   if (a.title.toUpperCase() < b.title.toUpperCase()) {

@@ -152,6 +152,10 @@
 
 <script lang="ts">
 import { Component, Prop, Watch } from 'vue-property-decorator';
+import { required, url } from 'vuelidate/lib/validators';
+import VueI18n from 'vue-i18n';
+import { ApolloError } from '@apollo/client';
+import { validationMixin } from '@/components/mixins';
 import {
   CreateProject,
   TCreateProjectMutationResult,
@@ -161,10 +165,6 @@ import {
   TUpdateProjectMutationVariables,
   UpdateProject,
 } from '@/generated/graphql';
-import { required, url } from 'vuelidate/lib/validators';
-import VueI18n from 'vue-i18n';
-import { validationMixin } from '@/components/mixins';
-import { ApolloError } from '@apollo/client';
 import TranslateResult = VueI18n.TranslateResult;
 
 @Component({

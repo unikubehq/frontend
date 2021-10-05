@@ -1,8 +1,8 @@
 /* eslint-disable max-classes-per-file */
 import { AxiosResponse } from 'axios';
-import { Avatar } from '@/typing';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import VueI18n from 'vue-i18n';
+import { Avatar } from '@/typing';
 import TranslateResult = VueI18n.TranslateResult;
 
 @Component

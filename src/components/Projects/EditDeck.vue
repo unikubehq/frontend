@@ -157,6 +157,8 @@
 
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator';
+import { required } from 'vuelidate/lib/validators';
+import VueI18n from 'vue-i18n';
 import {
   CreateUpdateEnvironment,
   TEnvironmentNode,
@@ -165,8 +167,6 @@ import {
   TDeckNode,
   TSopsProviderNode, TCreateUpdateEnvironmentMutationVariables,
 } from '@/generated/graphql';
-import { required } from 'vuelidate/lib/validators';
-import VueI18n from 'vue-i18n';
 import { validationMixin } from '@/components/mixins';
 import HelmOverrides from '@/views/Projects/ProjectDetail/HelmOverrides.vue';
 import TranslateResult = VueI18n.TranslateResult;
