@@ -79,11 +79,11 @@
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import VueI18n from 'vue-i18n';
 import { OrganizationQuery } from '@/generated/graphql';
 import { required } from 'vuelidate/lib/validators';
 import { Dropzone } from '@/typing/';
 import 'vue2-dropzone/dist/vue2Dropzone.min.css';
-import VueI18n from 'vue-i18n';
 import TranslateResult = VueI18n.TranslateResult;
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const vue2Dropzone = require('vue2-dropzone');
