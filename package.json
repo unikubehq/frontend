@@ -18,7 +18,7 @@
     "@apollo/client": "^3.3.18",
     "@casl/ability": "^5.4.3",
     "@casl/vue": "^1.2.2",
-    "@mdi/font": "^5.9.55",
+    "@mdi/font": "^6.2.95",
     "@sentry/browser": "^5.30.0",
     "@sentry/integrations": "^5.30.0",
     "axios": "^0.21.1",
