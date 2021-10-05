@@ -1,8 +1,8 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createLocalVue, mount } from '@vue/test-utils';
-import ErrorHandler from '@/components/ErrorHandler.vue';
 import Vuetify from 'vuetify';
 import Vuex, { Store } from 'vuex';
+import ErrorHandler from '@/components/ErrorHandler.vue';
 import Errors from '@/store/modules/errors';
 
 describe('ErrorHandler.vue', () => {

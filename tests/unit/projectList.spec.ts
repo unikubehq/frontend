@@ -1,8 +1,8 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { shallowMount, createLocalVue } from '@vue/test-utils';
-import ProjectList from '@/components/Projects/ProjectList.vue';
 import Vuetify from 'vuetify';
 import VueRouter from 'vue-router';
+import ProjectList from '@/components/Projects/ProjectList.vue';
 
 const project = {
   title: 'Openlane-project',

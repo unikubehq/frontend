@@ -1,5 +1,5 @@
-import { UnikubeError } from '@/typing/index';
 import { MutationTree } from 'vuex';
+import { UnikubeError } from '@/typing/index';
 
 const errorCodeMapping: any = {
   100: 'errors.100',

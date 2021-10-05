@@ -1,5 +1,5 @@
-import { TProjectMember, TProjectNode } from '@/generated/graphql';
 import { Ability, InferSubjects } from '@casl/ability';
+import { TProjectMember, TProjectNode } from '@/generated/graphql';
 
 export interface IPermission {
   rsid: string

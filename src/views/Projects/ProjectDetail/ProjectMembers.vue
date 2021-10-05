@@ -120,6 +120,7 @@ import {
   Vue,
   Watch,
 } from 'vue-property-decorator';
+import VueI18n from 'vue-i18n';
 import {
   CreateProjectMemberMutation,
   Maybe, OrganizationMembersQuery,
@@ -130,7 +131,6 @@ import { TProjectMemberEdit } from '@/typing';
 import UnikubeAvatar from '@/components/general/Avatar.vue';
 import RemoveMember from '@/components/Projects/RemoveMember.vue';
 import Converter from '@/utils/converter';
-import VueI18n from 'vue-i18n';
 import TranslateResult = VueI18n.TranslateResult;
 
 @Component({

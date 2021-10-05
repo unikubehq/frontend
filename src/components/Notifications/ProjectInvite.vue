@@ -33,8 +33,8 @@
 
 <script lang="ts">
 import Component from 'vue-class-component';
-import { AnswerInvitation } from '@/generated/graphql';
 import { Prop, Vue } from 'vue-property-decorator';
+import { AnswerInvitation } from '@/generated/graphql';
 
 @Component({})
 export default class ProjectInvite extends Vue {

@@ -90,6 +90,8 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import { email } from 'vuelidate/lib/validators';
+import VueI18n from 'vue-i18n';
 import {
   CreateProjectMemberMutation,
   Maybe,
@@ -101,8 +103,6 @@ import {
   TProjectMemberRoleEnum,
   TProjectNode,
 } from '@/generated/graphql';
-import { email } from 'vuelidate/lib/validators';
-import VueI18n from 'vue-i18n';
 import TranslateResult = VueI18n.TranslateResult;
 
 @Component({
