@@ -53,7 +53,7 @@
     "@intlify/vue-i18n-loader": "^1.1.0",
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
     "@sentry/webpack-plugin": "^1.17.1",
-    "@types/chai": "^4.2.18",
+    "@types/chai": "^4.2.22",
     "@types/dropzone": "^5.7.3",
     "@types/jest": "^24.0.19",
     "@types/mocha": "^5.2.4",
