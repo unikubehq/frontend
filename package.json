@@ -81,7 +81,7 @@
     "eslint-plugin-import": "^2.23.2",
     "eslint-plugin-vue": "^7.9.0",
     "istanbul-lib-coverage": "^3.0.0",
-    "lint-staged": "^9.5.0",
+    "lint-staged": "^11.2.0",
     "mock-apollo-client": "^1.1.0",
     "nyc": "^15.1.0",
     "release-it": "^14.8.0",
