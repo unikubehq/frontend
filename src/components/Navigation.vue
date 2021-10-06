@@ -3,12 +3,12 @@
       <template slot="append">
         <v-img src="@/assets/img/navigation_background.svg" alt="Navigation Background"/>
         <v-list style="position:absolute; bottom: 10px; left: 0; width: 100%;">
-          <v-list-item link :ripple="false" to="/help">
+          <v-list-item link :ripple="false" href="https://unikube.io/docs/" target="_blank">
             <v-list-item-icon>
               <v-icon>$vuetify.icons.help</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
-              <v-list-item-title>Help</v-list-item-title>
+              <v-list-item-title>{{ $t('navigation.help') }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list>
