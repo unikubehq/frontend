@@ -42,7 +42,7 @@
     "vuex": "^3.6.2"
   },
   "devDependencies": {
-    "@cypress/code-coverage": "^3.9.5",
+    "@cypress/code-coverage": "^3.9.11",
     "@graphql-codegen/add": "^2.0.2",
     "@graphql-codegen/cli": "1.18.0",
     "@graphql-codegen/schema-ast": "^1.18.2",
