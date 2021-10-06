@@ -18,6 +18,7 @@
   * [Permissions](#permissions)
       * [CASL Example](#example-casl)
   * [New Releases](#new-releases)
+  * [Docker Image](#docker-image)
 
 ## Development
 
@@ -171,3 +172,19 @@ The command:
   
 The creation of the tag triggers a job which builds a new Docker image  containing the 
 frontend application, which then is served by NGINX.
+
+### Docker Image
+
+On a new release a Docker image is automatically created and pushed to
+[quay](https://quay.io/repository/unikube/frontend).
+
+There are 2 versions of the image - production and development.
+The development, which image is used for local development with Unikube, 
+is tagged with a `-dev` suffix.
+
+For every release 2 new tags are created, based on the version e.g.
+1.0.0 and 1.0.0-dev.
+
+Furthermore the `latest` and `latest-dev` tag are bumped to the latest
+release.
+
