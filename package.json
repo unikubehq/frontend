@@ -83,7 +83,7 @@
     "lint-staged": "^11.2.0",
     "mock-apollo-client": "^1.1.0",
     "nyc": "^15.1.0",
-    "release-it": "^14.8.0",
+    "release-it": "^14.11.6",
     "sass": "^1.32.13",
     "sass-loader": "^10.2.0",
     "typescript": "^3.9.9",
