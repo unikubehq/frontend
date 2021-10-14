@@ -44,7 +44,7 @@
   "devDependencies": {
     "@cypress/code-coverage": "^3.9.11",
     "@graphql-codegen/add": "^2.0.2",
-    "@graphql-codegen/cli": "1.18.0",
+    "@graphql-codegen/cli": "2.2.1",
     "@graphql-codegen/schema-ast": "^1.18.2",
     "@graphql-codegen/typescript": "1.17.11",
     "@graphql-codegen/typescript-document-nodes": "1.17.8",
