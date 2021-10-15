@@ -24,13 +24,18 @@
             Notifications
           </v-card-title>
           <v-divider class="notification__divider"></v-divider>
-          <project-invite
-            v-for="invite in userInvitationsResults"
-            :invite="invite"
-            :key="invite.id"
-            v-on:answer-invitation="handleAnswerInvitation"
-          >
-          </project-invite>
+          <div v-if="hasInvitations">
+            <project-invite
+              v-for="invite in userInvitationsResults"
+              :invite="invite"
+              :key="invite.id"
+              v-on:answer-invitation="handleAnswerInvitation"
+            >
+            </project-invite>
+          </div>
+          <v-card-text v-else>
+            There are no new notifications.
+          </v-card-text>
         </v-card>
       </v-menu>
 
@@ -123,6 +128,10 @@ export default class Layout extends AvatarMixin {
 
   get userInvitationsResults(): Record<string, unknown> {
     return this.$data.userInvitations?.results;
+  }
+
+  get hasInvitations(): boolean {
+    return this.$data.userInvitations?.results?.length;
   }
 
   get notificationCount(): number {
