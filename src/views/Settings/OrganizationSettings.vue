@@ -52,10 +52,19 @@
         <v-divider></v-divider>
       </v-col>
       <v-col cols="8" class="mt-8">
-        <h2>{{ $t('settings.organization.disable') }}</h2>
+      <danger-zone
+        :explanation="$t('settings.account.disableExplanation')"
+      >
+        <h3>{{ $t('settings.organization.disable') }}</h3>
         <p>{{ $t('settings.organization.disableWarning') }}
           <a href="#">{{ $t('settings.organization.delete') }}</a>
         </p>
+        <v-btn
+          solid
+          color="error"
+          class="white--text"
+        >{{ $t('settings.organization.delete') }}</v-btn>
+      </danger-zone>
       </v-col>
       </v-row>
   </div>
@@ -66,8 +75,13 @@
 import { Component, Ref } from 'vue-property-decorator';
 import { OrganizationQuery } from '@/generated/graphql';
 import { UploadComponent } from '@/components/mixins';
+import DangerZone from '@/components/Settings/DangerZone.vue';
 
-@Component({})
+@Component({
+  components: {
+    DangerZone,
+  },
+})
 export default class OrganizationSettings extends UploadComponent {
   @Ref() readonly preview!: HTMLImageElement
 
