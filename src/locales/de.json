@@ -219,7 +219,9 @@
     "joinOrganization": "Join Another Organization",
     "accountSettings": "Account Settings",
     "logout": "Logout",
-    "help": "Help"
+    "help": "Help",
+    "notifications": "Notifications",
+    "noNotifications": "There are no new notifications."
   },
   "project": {
     "role": "Role",

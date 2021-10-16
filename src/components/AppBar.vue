@@ -20,9 +20,7 @@
           </v-btn>
         </template>
         <v-card width="340">
-          <v-card-title>
-            Notifications
-          </v-card-title>
+          <v-card-title>{{ $t('navigation.notifications') }}</v-card-title>
           <v-divider class="notification__divider"></v-divider>
           <div v-if="hasInvitations">
             <project-invite
@@ -33,9 +31,7 @@
             >
             </project-invite>
           </div>
-          <v-card-text v-else>
-            There are no new notifications.
-          </v-card-text>
+          <v-card-text v-else>{{ $t('navigation.noNotifications') }}</v-card-text>
         </v-card>
       </v-menu>
 
