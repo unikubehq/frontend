@@ -157,7 +157,8 @@
       "disable": "Deactivate Account",
       "disableWarning": "By doing this all your organizations and project/teams under your account will be\n          permanently lost and you will not be able to retrieve..",
       "delete": "Delete organization"
-    }
+    },
+    "dangerZone": "Danger Zone"
   },
   "forms": {
     "enterEmail": "'Enter Email Address'"

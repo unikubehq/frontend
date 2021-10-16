@@ -134,12 +134,13 @@
           </v-btn>
         </v-form>
       </v-col>
-      <v-col cols="12">
-        <v-divider></v-divider>
-      </v-col>
       <v-col cols="8" class="mt-8">
-        <h2>{{ $t('settings.account.disableAccount') }}</h2>
-        <p>{{ $t('settings.account.disableExplanation') }}</p>
+        <danger-zone
+          :explanation="$t('settings.account.disableExplanation')"
+        >
+          <h3>{{ $t('settings.account.disableAccount') }}</h3>
+          <p>{{ $t('settings.account.disableExplanation') }}</p>
+        </danger-zone>
       </v-col>
     </v-row>
   </div>
@@ -149,8 +150,13 @@
 import { Component } from 'vue-property-decorator';
 import { AxiosResponse } from 'axios';
 import { UploadComponent } from '@/components/mixins';
+import DangerZone from '@/components/Settings/DangerZone.vue';
 
-@Component({})
+@Component({
+  components: {
+    DangerZone,
+  },
+})
 export default class AccountSettings extends UploadComponent {
   dataChanged = false
 
