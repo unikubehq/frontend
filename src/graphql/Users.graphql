@@ -18,3 +18,9 @@ query UserInvitationsQuery {
         }
     }
 }
+
+mutation DeleteAvatarMutation($id: UUID!) {
+    deleteAvatar(id: $id) {
+        ok
+    }
+}

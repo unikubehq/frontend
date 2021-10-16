@@ -833,6 +833,13 @@ export type TUserInvitationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type TUserInvitationsQueryResult = { __typename?: 'Query', userInvitations?: Maybe<{ __typename?: 'OrganizationInvitationNodePage', results?: Maybe<Array<Maybe<{ __typename?: 'OrganizationInvitationNode', id: any, organization: { __typename?: 'OrganizationNode', title: string } }>>> }> };
 
+export type TDeleteAvatarMutationVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type TDeleteAvatarMutationResult = { __typename?: 'Mutation', deleteAvatar?: Maybe<{ __typename?: 'DeleteAvatar', ok?: Maybe<boolean> }> };
+
 
 export const OrganizationsQuery = gql`
     query OrganizationsQuery {
@@ -1202,6 +1209,13 @@ export const UserInvitationsQuery = gql`
         title
       }
     }
+  }
+}
+    `;
+export const DeleteAvatarMutation = gql`
+    mutation DeleteAvatarMutation($id: UUID!) {
+  deleteAvatar(id: $id) {
+    ok
   }
 }
     `;
