@@ -24,11 +24,11 @@ export type Scalars = {
 export type TAwskmsNode = {
   kind: 'AwskmsNode';
   __typename?: 'AWSKMSNode';
-  title: Scalars['String'];
+  accessKey: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   id: Scalars['UUID'];
-  accessKey: Scalars['String'];
   secretAccessKey: Scalars['String'];
+  title: Scalars['String'];
 };
 
 export type TClusterSettingsNode = {
@@ -49,23 +49,23 @@ export type TCreateProjectMember = {
 };
 
 export type TCreateUpdateEnvironmentInput = {
-  title: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  type: Scalars['String'];
+  clientMutationId?: Maybe<Scalars['String']>;
   deck: Scalars['ID'];
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['ID']>;
+  namespace: Scalars['String'];
   sopsCredentials?: Maybe<Scalars['ID']>;
+  title: Scalars['String'];
+  type: Scalars['String'];
   valuesPath?: Maybe<Scalars['String']>;
   valuesType?: Maybe<Scalars['String']>;
-  namespace: Scalars['String'];
-  id?: Maybe<Scalars['ID']>;
-  clientMutationId?: Maybe<Scalars['String']>;
 };
 
 export type TCreateUpdateEnvironmentPayload = {
   __typename?: 'CreateUpdateEnvironmentPayload';
+  clientMutationId?: Maybe<Scalars['String']>;
   environment?: Maybe<TEnvironmentNode>;
   errors?: Maybe<Array<Maybe<TErrorType>>>;
-  clientMutationId?: Maybe<Scalars['String']>;
 };
 
 export type TCreateUpdateHelmOverrides = {
@@ -74,19 +74,19 @@ export type TCreateUpdateHelmOverrides = {
 };
 
 export type TCreateUpdateOrganizationInput = {
-  title: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  onTrial?: Maybe<Scalars['Boolean']>;
   avatarImage?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['ID']>;
   clientMutationId?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['ID']>;
+  onTrial?: Maybe<Scalars['Boolean']>;
+  title: Scalars['String'];
 };
 
 export type TCreateUpdateOrganizationPayload = {
   __typename?: 'CreateUpdateOrganizationPayload';
-  organization?: Maybe<TOrganizationNode>;
-  errors?: Maybe<Array<Maybe<TErrorType>>>;
   clientMutationId?: Maybe<Scalars['String']>;
+  errors?: Maybe<Array<Maybe<TErrorType>>>;
+  organization?: Maybe<TOrganizationNode>;
 };
 
 export type TCreateUpdateProject = {
@@ -103,17 +103,17 @@ export type TCreateUpdateSops = {
 export type TDeckNode = {
   kind: 'DeckNode';
   __typename?: 'DeckNode';
-  title: Scalars['String'];
+  deployments?: Maybe<Array<Maybe<TDeploymentNode>>>;
   description?: Maybe<Scalars['String']>;
-  id: Scalars['UUID'];
-  project: TProjectNode;
   dirPath: Scalars['String'];
-  type: Scalars['String'];
-  namespace: Scalars['String'];
+  environment?: Maybe<Array<Maybe<TEnvironmentNode>>>;
   fileInformation?: Maybe<Array<Maybe<TFileInformationNode>>>;
   hash: Scalars['String'];
-  deployments?: Maybe<Array<Maybe<TDeploymentNode>>>;
-  environment?: Maybe<Array<Maybe<TEnvironmentNode>>>;
+  id: Scalars['UUID'];
+  namespace: Scalars['String'];
+  project: TProjectNode;
+  title: Scalars['String'];
+  type: Scalars['String'];
 };
 
 
@@ -129,11 +129,16 @@ export type TDeckNodeEnvironmentArgs = {
 
 export type TDeckNodePage = {
   __typename?: 'DeckNodePage';
-  totalCount?: Maybe<Scalars['Int']>;
-  resultCount?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
   limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  resultCount?: Maybe<Scalars['Int']>;
   results?: Maybe<Array<Maybe<TDeckNode>>>;
+  totalCount?: Maybe<Scalars['Int']>;
+};
+
+export type TDeleteAvatar = {
+  __typename?: 'DeleteAvatar';
+  ok?: Maybe<Scalars['Boolean']>;
 };
 
 export type TDeleteEnvironment = {
@@ -164,30 +169,30 @@ export type TDeleteSops = {
 export type TDeploymentNode = {
   kind: 'DeploymentNode';
   __typename?: 'DeploymentNode';
-  title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
-  id: Scalars['UUID'];
-  ports: Scalars['String'];
   environment: TEnvironmentNode;
+  id: Scalars['UUID'];
   isSwitchable: Scalars['Boolean'];
+  ports: Scalars['String'];
+  title: Scalars['String'];
 };
 
 export type TEnvironmentNode = {
   kind: 'EnvironmentNode';
   __typename?: 'EnvironmentNode';
-  title: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  id: Scalars['UUID'];
   deck: TDeckNode;
+  deployments: Array<TDeploymentNode>;
+  description?: Maybe<Scalars['String']>;
+  helmOverrides?: Maybe<THelmOverridesNode>;
+  id: Scalars['UUID'];
+  namespace: Scalars['String'];
+  sopsCredentials?: Maybe<TSopsProviderNode>;
+  specsUrl?: Maybe<Scalars['String']>;
+  title: Scalars['String'];
   type: TEnvironmentType;
+  valueSchema?: Maybe<Scalars['String']>;
   valuesPath: Scalars['String'];
   valuesType?: Maybe<TEnvironmentValuesType>;
-  namespace: Scalars['String'];
-  valueSchema?: Maybe<Scalars['String']>;
-  sopsCredentials?: Maybe<TSopsProviderNode>;
-  deployments: Array<TDeploymentNode>;
-  helmOverrides?: Maybe<THelmOverridesNode>;
-  specsUrl?: Maybe<Scalars['String']>;
 };
 
 export enum TEnvironmentType {
@@ -196,8 +201,8 @@ export enum TEnvironmentType {
 }
 
 export enum TEnvironmentValuesType {
-  File = 'FILE',
-  Dir = 'DIR'
+  Dir = 'DIR',
+  File = 'FILE'
 }
 
 export type TErrorType = {
@@ -209,8 +214,8 @@ export type TErrorType = {
 export type TFileInformationNode = {
   kind: 'FileInformationNode';
   __typename?: 'FileInformationNode';
-  path?: Maybe<Scalars['String']>;
   encrypted?: Maybe<Scalars['Boolean']>;
+  path?: Maybe<Scalars['String']>;
 };
 
 export type THelmOverridesNode = {
@@ -223,39 +228,24 @@ export type THelmOverridesNode = {
 
 export type TMutation = {
   __typename?: 'Mutation';
-  createUpdateOrganization?: Maybe<TCreateUpdateOrganizationPayload>;
-  createInvitation?: Maybe<TCreateOrganizationMemberInvitation>;
-  revokeInvitation?: Maybe<TRevokeOrganizationMemberInvitation>;
   answerInvitation?: Maybe<TUpdateOrganizationMemberInvitation>;
-  updateOrganizationMember?: Maybe<TUpdateOrganizationMember>;
-  removeOrganizationMember?: Maybe<TDeleteOrganizationMember>;
-  createUpdateProject?: Maybe<TCreateUpdateProject>;
+  createInvitation?: Maybe<TCreateOrganizationMemberInvitation>;
   createProjectMember?: Maybe<TCreateProjectMember>;
-  deleteProjectMember?: Maybe<TDeleteProjectMember>;
-  deleteProject?: Maybe<TDeleteProject>;
   createUpdateEnvironment?: Maybe<TCreateUpdateEnvironmentPayload>;
-  deleteEnvironment?: Maybe<TDeleteEnvironment>;
-  createUpdateSops?: Maybe<TCreateUpdateSops>;
-  deleteSops?: Maybe<TDeleteSops>;
-  updateClusterSettings?: Maybe<TUpdateClusterSettingsPayload>;
-  updateProjectRepository?: Maybe<TUpdateProjectRepository>;
   createUpdateHelmOverrides?: Maybe<TCreateUpdateHelmOverrides>;
-};
-
-
-export type TMutationCreateUpdateOrganizationArgs = {
-  input: TCreateUpdateOrganizationInput;
-};
-
-
-export type TMutationCreateInvitationArgs = {
-  email?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['UUID']>;
-};
-
-
-export type TMutationRevokeInvitationArgs = {
-  id?: Maybe<Scalars['UUID']>;
+  createUpdateOrganization?: Maybe<TCreateUpdateOrganizationPayload>;
+  createUpdateProject?: Maybe<TCreateUpdateProject>;
+  createUpdateSops?: Maybe<TCreateUpdateSops>;
+  deleteAvatar?: Maybe<TDeleteAvatar>;
+  deleteEnvironment?: Maybe<TDeleteEnvironment>;
+  deleteProject?: Maybe<TDeleteProject>;
+  deleteProjectMember?: Maybe<TDeleteProjectMember>;
+  deleteSops?: Maybe<TDeleteSops>;
+  removeOrganizationMember?: Maybe<TDeleteOrganizationMember>;
+  revokeInvitation?: Maybe<TRevokeOrganizationMemberInvitation>;
+  updateClusterSettings?: Maybe<TUpdateClusterSettingsPayload>;
+  updateOrganizationMember?: Maybe<TUpdateOrganizationMember>;
+  updateProjectRepository?: Maybe<TUpdateProjectRepository>;
 };
 
 
@@ -265,21 +255,9 @@ export type TMutationAnswerInvitationArgs = {
 };
 
 
-export type TMutationUpdateOrganizationMemberArgs = {
+export type TMutationCreateInvitationArgs = {
+  email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['UUID']>;
-  role?: Maybe<TOrganizationMemberRoleEnum>;
-  user?: Maybe<Scalars['UUID']>;
-};
-
-
-export type TMutationRemoveOrganizationMemberArgs = {
-  id?: Maybe<Scalars['UUID']>;
-  user?: Maybe<Scalars['UUID']>;
-};
-
-
-export type TMutationCreateUpdateProjectArgs = {
-  input: TProjectInputType;
 };
 
 
@@ -290,24 +268,24 @@ export type TMutationCreateProjectMemberArgs = {
 };
 
 
-export type TMutationDeleteProjectMemberArgs = {
-  id?: Maybe<Scalars['UUID']>;
-  user?: Maybe<Scalars['UUID']>;
-};
-
-
-export type TMutationDeleteProjectArgs = {
-  id?: Maybe<Scalars['UUID']>;
-};
-
-
 export type TMutationCreateUpdateEnvironmentArgs = {
   input: TCreateUpdateEnvironmentInput;
 };
 
 
-export type TMutationDeleteEnvironmentArgs = {
-  id?: Maybe<Scalars['UUID']>;
+export type TMutationCreateUpdateHelmOverridesArgs = {
+  environmentId?: Maybe<Scalars['UUID']>;
+  overrides?: Maybe<Scalars['String']>;
+};
+
+
+export type TMutationCreateUpdateOrganizationArgs = {
+  input: TCreateUpdateOrganizationInput;
+};
+
+
+export type TMutationCreateUpdateProjectArgs = {
+  input: TProjectInputType;
 };
 
 
@@ -317,7 +295,39 @@ export type TMutationCreateUpdateSopsArgs = {
 };
 
 
+export type TMutationDeleteAvatarArgs = {
+  id?: Maybe<Scalars['UUID']>;
+};
+
+
+export type TMutationDeleteEnvironmentArgs = {
+  id?: Maybe<Scalars['UUID']>;
+};
+
+
+export type TMutationDeleteProjectArgs = {
+  id?: Maybe<Scalars['UUID']>;
+};
+
+
+export type TMutationDeleteProjectMemberArgs = {
+  id?: Maybe<Scalars['UUID']>;
+  user?: Maybe<Scalars['UUID']>;
+};
+
+
 export type TMutationDeleteSopsArgs = {
+  id?: Maybe<Scalars['UUID']>;
+};
+
+
+export type TMutationRemoveOrganizationMemberArgs = {
+  id?: Maybe<Scalars['UUID']>;
+  user?: Maybe<Scalars['UUID']>;
+};
+
+
+export type TMutationRevokeInvitationArgs = {
   id?: Maybe<Scalars['UUID']>;
 };
 
@@ -327,37 +337,38 @@ export type TMutationUpdateClusterSettingsArgs = {
 };
 
 
-export type TMutationUpdateProjectRepositoryArgs = {
+export type TMutationUpdateOrganizationMemberArgs = {
   id?: Maybe<Scalars['UUID']>;
+  role?: Maybe<TOrganizationMemberRoleEnum>;
+  user?: Maybe<Scalars['UUID']>;
 };
 
 
-export type TMutationCreateUpdateHelmOverridesArgs = {
-  environmentId?: Maybe<Scalars['UUID']>;
-  overrides?: Maybe<Scalars['String']>;
+export type TMutationUpdateProjectRepositoryArgs = {
+  id?: Maybe<Scalars['UUID']>;
 };
 
 export type TOrganizationInvitationNode = {
   kind: 'OrganizationInvitationNode';
   __typename?: 'OrganizationInvitationNode';
+  email: Scalars['String'];
   id: Scalars['UUID'];
   organization: TOrganizationNode;
-  email: Scalars['String'];
 };
 
 export type TOrganizationInvitationNodePage = {
   __typename?: 'OrganizationInvitationNodePage';
-  totalCount?: Maybe<Scalars['Int']>;
-  resultCount?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
   limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  resultCount?: Maybe<Scalars['Int']>;
   results?: Maybe<Array<Maybe<TOrganizationInvitationNode>>>;
+  totalCount?: Maybe<Scalars['Int']>;
 };
 
 export type TOrganizationMember = {
   __typename?: 'OrganizationMember';
-  user?: Maybe<TUserNode>;
   role?: Maybe<Scalars['String']>;
+  user?: Maybe<TUserNode>;
 };
 
 export enum TOrganizationMemberRoleEnum {
@@ -368,48 +379,48 @@ export enum TOrganizationMemberRoleEnum {
 export type TOrganizationNode = {
   kind: 'OrganizationNode';
   __typename?: 'OrganizationNode';
+  avatarImage?: Maybe<Scalars['String']>;
   created: Scalars['DateTime'];
-  title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   id: Scalars['UUID'];
-  avatarImage?: Maybe<Scalars['String']>;
   members?: Maybe<Array<Maybe<TOrganizationMember>>>;
+  title: Scalars['String'];
 };
 
 export type TOrganizationNodePage = {
   __typename?: 'OrganizationNodePage';
-  totalCount?: Maybe<Scalars['Int']>;
-  resultCount?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
   limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  resultCount?: Maybe<Scalars['Int']>;
   results?: Maybe<Array<Maybe<TOrganizationNode>>>;
+  totalCount?: Maybe<Scalars['Int']>;
 };
 
 export type TPgpKeyNode = {
   kind: 'PgpKeyNode';
   __typename?: 'PGPKeyNode';
-  title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   id: Scalars['UUID'];
   privateKey: Scalars['String'];
+  title: Scalars['String'];
 };
 
 export type TProjectInputType = {
-  title: Scalars['String'];
+  accessToken?: Maybe<Scalars['String']>;
+  accessUsername?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['UUID']>;
-  specType: TSpecicifactionTypeEnum;
+  organization: Scalars['UUID'];
   specRepository: Scalars['String'];
   specRepositoryBranch: Scalars['String'];
-  accessUsername?: Maybe<Scalars['String']>;
-  accessToken?: Maybe<Scalars['String']>;
-  organization: Scalars['UUID'];
+  specType: TSpecicifactionTypeEnum;
+  title: Scalars['String'];
 };
 
 export type TProjectMember = {
   __typename?: 'ProjectMember';
-  user?: Maybe<TUserNode>;
   role?: Maybe<Scalars['String']>;
+  user?: Maybe<TUserNode>;
 };
 
 export enum TProjectMemberRoleEnum {
@@ -420,45 +431,45 @@ export enum TProjectMemberRoleEnum {
 export type TProjectNode = {
   kind: 'ProjectNode';
   __typename?: 'ProjectNode';
-  title: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  keycloakData: Scalars['JSONString'];
-  id: Scalars['UUID'];
-  specRepository: Scalars['String'];
-  specRepositoryBranch?: Maybe<Scalars['String']>;
+  accessToken?: Maybe<Scalars['String']>;
+  accessUsername: Scalars['String'];
+  clusterSettings?: Maybe<TClusterSettingsNode>;
   created: Scalars['DateTime'];
-  specType: TProjectSpecType;
   currentCommit: Scalars['String'];
   currentCommitDateTime?: Maybe<Scalars['DateTime']>;
-  repositoryStatus: TProjectRepositoryStatus;
-  accessUsername: Scalars['String'];
-  accessToken?: Maybe<Scalars['String']>;
-  organization?: Maybe<TOrganizationNode>;
   decks: Array<TDeckNode>;
-  clusterSettings?: Maybe<TClusterSettingsNode>;
-  sops?: Maybe<Array<Maybe<TSopsProviderNode>>>;
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['UUID'];
+  keycloakData: Scalars['JSONString'];
   members?: Maybe<Array<Maybe<TProjectMember>>>;
+  organization?: Maybe<TOrganizationNode>;
+  repositoryStatus: TProjectRepositoryStatus;
+  sops?: Maybe<Array<Maybe<TSopsProviderNode>>>;
+  specRepository: Scalars['String'];
+  specRepositoryBranch?: Maybe<Scalars['String']>;
+  specType: TProjectSpecType;
+  title: Scalars['String'];
 };
 
 export type TProjectNodePage = {
   __typename?: 'ProjectNodePage';
-  totalCount?: Maybe<Scalars['Int']>;
-  resultCount?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
   limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  resultCount?: Maybe<Scalars['Int']>;
   results?: Maybe<Array<Maybe<TProjectNode>>>;
+  totalCount?: Maybe<Scalars['Int']>;
 };
 
 export enum TProjectRepositoryStatus {
-  Unknown = 'UNKNOWN',
-  CloningPending = 'CLONING_PENDING',
+  AuthFailed = 'AUTH_FAILED',
+  BranchUnavailable = 'BRANCH_UNAVAILABLE',
   Cloning = 'CLONING',
   CloningFailed = 'CLONING_FAILED',
+  CloningPending = 'CLONING_PENDING',
   CloningSuccessful = 'CLONING_SUCCESSFUL',
-  BranchUnavailable = 'BRANCH_UNAVAILABLE',
-  AuthFailed = 'AUTH_FAILED',
+  Ok = 'OK',
   ParsingFailed = 'PARSING_FAILED',
-  Ok = 'OK'
+  Unknown = 'UNKNOWN'
 }
 
 export enum TProjectSpecType {
@@ -467,66 +478,44 @@ export enum TProjectSpecType {
 
 export type TQuery = {
   __typename?: 'Query';
-  user?: Maybe<TUserNode>;
-  allOrganizations?: Maybe<TOrganizationNodePage>;
-  organization?: Maybe<TOrganizationNode>;
-  userInvitations?: Maybe<TOrganizationInvitationNodePage>;
-  allOrganizationInvitations?: Maybe<TOrganizationInvitationNodePage>;
-  allProjects?: Maybe<TProjectNodePage>;
-  project?: Maybe<TProjectNode>;
   allDecks?: Maybe<TDeckNodePage>;
+  allOrganizationInvitations?: Maybe<TOrganizationInvitationNodePage>;
+  allOrganizations?: Maybe<TOrganizationNodePage>;
+  allProjects?: Maybe<TProjectNodePage>;
   deck?: Maybe<TDeckNode>;
   environment?: Maybe<TEnvironmentNode>;
+  organization?: Maybe<TOrganizationNode>;
+  project?: Maybe<TProjectNode>;
+  user?: Maybe<TUserNode>;
+  userInvitations?: Maybe<TOrganizationInvitationNodePage>;
 };
 
 
-export type TQueryUserArgs = {
-  id?: Maybe<Scalars['UUID']>;
-};
-
-
-export type TQueryAllOrganizationsArgs = {
-  offset?: Maybe<Scalars['Int']>;
+export type TQueryAllDecksArgs = {
   limit?: Maybe<Scalars['Int']>;
-};
-
-
-export type TQueryOrganizationArgs = {
-  id: Scalars['UUID'];
-};
-
-
-export type TQueryUserInvitationsArgs = {
   offset?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
+  organizationId?: Maybe<Scalars['UUID']>;
+  projectId?: Maybe<Scalars['UUID']>;
 };
 
 
 export type TQueryAllOrganizationInvitationsArgs = {
   id: Scalars['UUID'];
-  offset?: Maybe<Scalars['Int']>;
   limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+};
+
+
+export type TQueryAllOrganizationsArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
 };
 
 
 export type TQueryAllProjectsArgs = {
-  organizationId?: Maybe<Scalars['UUID']>;
-  offset?: Maybe<Scalars['Int']>;
   limit?: Maybe<Scalars['Int']>;
-};
-
-
-export type TQueryProjectArgs = {
-  id?: Maybe<Scalars['UUID']>;
-  slug?: Maybe<Scalars['String']>;
-};
-
-
-export type TQueryAllDecksArgs = {
-  organizationId?: Maybe<Scalars['UUID']>;
-  projectId?: Maybe<Scalars['UUID']>;
   offset?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
+  organizationId?: Maybe<Scalars['UUID']>;
 };
 
 
@@ -540,19 +529,41 @@ export type TQueryEnvironmentArgs = {
   id?: Maybe<Scalars['UUID']>;
 };
 
+
+export type TQueryOrganizationArgs = {
+  id: Scalars['UUID'];
+};
+
+
+export type TQueryProjectArgs = {
+  id?: Maybe<Scalars['UUID']>;
+  slug?: Maybe<Scalars['String']>;
+};
+
+
+export type TQueryUserArgs = {
+  id?: Maybe<Scalars['UUID']>;
+};
+
+
+export type TQueryUserInvitationsArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+};
+
 export type TRevokeOrganizationMemberInvitation = {
   __typename?: 'RevokeOrganizationMemberInvitation';
   ok?: Maybe<Scalars['Boolean']>;
 };
 
 export type TSopsInputType = {
-  title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
-  sopsType: TSopsTypeEnum;
   project: Scalars['UUID'];
   secret1?: Maybe<Scalars['String']>;
   secret2?: Maybe<Scalars['String']>;
   secret3?: Maybe<Scalars['String']>;
+  sopsType: TSopsTypeEnum;
+  title: Scalars['String'];
 };
 
 export type TSopsProviderNode = TAwskmsNode | TPgpKeyNode;
@@ -568,17 +579,17 @@ export enum TSpecicifactionTypeEnum {
 
 
 export type TUpdateClusterSettingsInput = {
+  clientMutationId?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['ID']>;
   port: Scalars['Int'];
   project: Scalars['ID'];
-  id?: Maybe<Scalars['ID']>;
-  clientMutationId?: Maybe<Scalars['String']>;
 };
 
 export type TUpdateClusterSettingsPayload = {
   __typename?: 'UpdateClusterSettingsPayload';
+  clientMutationId?: Maybe<Scalars['String']>;
   clusterSettings?: Maybe<TClusterSettingsNode>;
   errors?: Maybe<Array<Maybe<TErrorType>>>;
-  clientMutationId?: Maybe<Scalars['String']>;
 };
 
 export type TUpdateOrganizationMember = {
@@ -599,12 +610,12 @@ export type TUpdateProjectRepository = {
 export type TUserNode = {
   kind: 'UserNode';
   __typename?: 'UserNode';
-  id: Scalars['UUID'];
+  avatarImage?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
   familyName?: Maybe<Scalars['String']>;
   givenName?: Maybe<Scalars['String']>;
-  avatarImage?: Maybe<Scalars['String']>;
+  id: Scalars['UUID'];
+  name?: Maybe<Scalars['String']>;
 };
 
 export type TOrganizationsQueryVariables = Exact<{ [key: string]: never; }>;

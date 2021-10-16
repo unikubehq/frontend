@@ -18,11 +18,11 @@ directive @requires(fields: String!) on FIELD_DEFINITION
 directive @resolve(graph: String!) on FIELD_DEFINITION
 
 type AWSKMSNode {
-  title: String!
+  accessKey: String!
   description: String
   id: UUID!
-  accessKey: String!
   secretAccessKey: String!
+  title: String!
 }
 
 type ClusterSettingsNode {
@@ -39,22 +39,22 @@ type CreateProjectMember {
 }
 
 input CreateUpdateEnvironmentInput {
-  title: String!
-  description: String
-  type: String!
+  clientMutationId: String
   deck: ID!
+  description: String
+  id: ID
+  namespace: String!
   sopsCredentials: ID
+  title: String!
+  type: String!
   valuesPath: String
   valuesType: String
-  namespace: String!
-  id: ID
-  clientMutationId: String
 }
 
 type CreateUpdateEnvironmentPayload {
+  clientMutationId: String
   environment: EnvironmentNode
   errors: [ErrorType]
-  clientMutationId: String
 }
 
 type CreateUpdateHelmOverrides {
@@ -62,18 +62,18 @@ type CreateUpdateHelmOverrides {
 }
 
 input CreateUpdateOrganizationInput {
-  title: String!
-  description: String
-  onTrial: Boolean
   avatarImage: String
-  id: ID
   clientMutationId: String
+  description: String
+  id: ID
+  onTrial: Boolean
+  title: String!
 }
 
 type CreateUpdateOrganizationPayload {
-  organization: OrganizationNode
-  errors: [ErrorType]
   clientMutationId: String
+  errors: [ErrorType]
+  organization: OrganizationNode
 }
 
 type CreateUpdateProject {
@@ -87,25 +87,29 @@ type CreateUpdateSOPS {
 scalar DateTime
 
 type DeckNode {
-  title: String!
+  deployments(level: String, switchable: Boolean): [DeploymentNode]
   description: String
-  id: UUID!
-  project: ProjectNode!
   dirPath: String!
-  type: String!
-  namespace: String!
+  environment(level: String): [EnvironmentNode]
   fileInformation: [FileInformationNode]
   hash: String!
-  deployments(level: String, switchable: Boolean): [DeploymentNode]
-  environment(level: String): [EnvironmentNode]
+  id: UUID!
+  namespace: String!
+  project: ProjectNode!
+  title: String!
+  type: String!
 }
 
 type DeckNodePage {
-  totalCount: Int
-  resultCount: Int
-  offset: Int
   limit: Int
+  offset: Int
+  resultCount: Int
   results: [DeckNode]
+  totalCount: Int
+}
+
+type DeleteAvatar {
+  ok: Boolean
 }
 
 type DeleteEnvironment {
@@ -129,28 +133,28 @@ type DeleteSOPS {
 }
 
 type DeploymentNode {
-  title: String!
   description: String
-  id: UUID!
-  ports: String!
   environment: EnvironmentNode!
+  id: UUID!
   isSwitchable: Boolean!
+  ports: String!
+  title: String!
 }
 
 type EnvironmentNode {
-  title: String!
-  description: String
-  id: UUID!
   deck: DeckNode!
+  deployments: [DeploymentNode!]!
+  description: String
+  helmOverrides: HelmOverridesNode
+  id: UUID!
+  namespace: String!
+  sopsCredentials: SOPSProviderNode
+  specsUrl: String
+  title: String!
   type: EnvironmentType!
+  valueSchema: String
   valuesPath: String!
   valuesType: EnvironmentValuesType
-  namespace: String!
-  valueSchema: String
-  sopsCredentials: SOPSProviderNode
-  deployments: [DeploymentNode!]!
-  helmOverrides: HelmOverridesNode
-  specsUrl: String
 }
 
 enum EnvironmentType {
@@ -159,8 +163,8 @@ enum EnvironmentType {
 }
 
 enum EnvironmentValuesType {
-  FILE
   DIR
+  FILE
 }
 
 type ErrorType {
@@ -169,8 +173,8 @@ type ErrorType {
 }
 
 type FileInformationNode {
-  path: String
   encrypted: Boolean
+  path: String
 }
 
 type HelmOverridesNode {
@@ -181,42 +185,43 @@ type HelmOverridesNode {
 scalar JSONString
 
 type Mutation {
-  createUpdateOrganization(input: CreateUpdateOrganizationInput!): CreateUpdateOrganizationPayload
-  createInvitation(email: String, id: UUID): CreateOrganizationMemberInvitation
-  revokeInvitation(id: UUID): RevokeOrganizationMemberInvitation
   answerInvitation(accepted: Boolean, id: UUID): UpdateOrganizationMemberInvitation
-  updateOrganizationMember(id: UUID, role: OrganizationMemberRoleEnum, user: UUID): UpdateOrganizationMember
-  removeOrganizationMember(id: UUID, user: UUID): DeleteOrganizationMember
-  createUpdateProject(input: ProjectInputType!): CreateUpdateProject
+  createInvitation(email: String, id: UUID): CreateOrganizationMemberInvitation
   createProjectMember(id: UUID, role: ProjectMemberRoleEnum, user: UUID): CreateProjectMember
-  deleteProjectMember(id: UUID, user: UUID): DeleteProjectMember
-  deleteProject(id: UUID): DeleteProject
   createUpdateEnvironment(input: CreateUpdateEnvironmentInput!): CreateUpdateEnvironmentPayload
-  deleteEnvironment(id: UUID): DeleteEnvironment
-  createUpdateSops(id: UUID, sopsData: SOPSInputType!): CreateUpdateSOPS
-  deleteSops(id: UUID): DeleteSOPS
-  updateClusterSettings(input: UpdateClusterSettingsInput!): UpdateClusterSettingsPayload
-  updateProjectRepository(id: UUID): UpdateProjectRepository
   createUpdateHelmOverrides(environmentId: UUID, overrides: String): CreateUpdateHelmOverrides
+  createUpdateOrganization(input: CreateUpdateOrganizationInput!): CreateUpdateOrganizationPayload
+  createUpdateProject(input: ProjectInputType!): CreateUpdateProject
+  createUpdateSops(id: UUID, sopsData: SOPSInputType!): CreateUpdateSOPS
+  deleteAvatar(id: UUID): DeleteAvatar
+  deleteEnvironment(id: UUID): DeleteEnvironment
+  deleteProject(id: UUID): DeleteProject
+  deleteProjectMember(id: UUID, user: UUID): DeleteProjectMember
+  deleteSops(id: UUID): DeleteSOPS
+  removeOrganizationMember(id: UUID, user: UUID): DeleteOrganizationMember
+  revokeInvitation(id: UUID): RevokeOrganizationMemberInvitation
+  updateClusterSettings(input: UpdateClusterSettingsInput!): UpdateClusterSettingsPayload
+  updateOrganizationMember(id: UUID, role: OrganizationMemberRoleEnum, user: UUID): UpdateOrganizationMember
+  updateProjectRepository(id: UUID): UpdateProjectRepository
 }
 
 type OrganizationInvitationNode {
+  email: String!
   id: UUID!
   organization: OrganizationNode!
-  email: String!
 }
 
 type OrganizationInvitationNodePage {
-  totalCount: Int
-  resultCount: Int
-  offset: Int
   limit: Int
+  offset: Int
+  resultCount: Int
   results: [OrganizationInvitationNode]
+  totalCount: Int
 }
 
 type OrganizationMember {
-  user: UserNode
   role: String
+  user: UserNode
 }
 
 enum OrganizationMemberRoleEnum {
@@ -225,44 +230,44 @@ enum OrganizationMemberRoleEnum {
 }
 
 type OrganizationNode {
+  avatarImage: String
   created: DateTime!
-  title: String!
   description: String
   id: UUID!
-  avatarImage: String
   members: [OrganizationMember]
+  title: String!
 }
 
 type OrganizationNodePage {
-  totalCount: Int
-  resultCount: Int
-  offset: Int
   limit: Int
+  offset: Int
+  resultCount: Int
   results: [OrganizationNode]
+  totalCount: Int
 }
 
 type PGPKeyNode {
-  title: String!
   description: String
   id: UUID!
   privateKey: String!
+  title: String!
 }
 
 input ProjectInputType {
-  title: String!
+  accessToken: String
+  accessUsername: String
   description: String
   id: UUID
-  specType: SpecicifactionTypeEnum!
+  organization: UUID!
   specRepository: String!
   specRepositoryBranch: String!
-  accessUsername: String
-  accessToken: String
-  organization: UUID!
+  specType: SpecicifactionTypeEnum!
+  title: String!
 }
 
 type ProjectMember {
-  user: UserNode
   role: String
+  user: UserNode
 }
 
 enum ProjectMemberRoleEnum {
@@ -271,44 +276,44 @@ enum ProjectMemberRoleEnum {
 }
 
 type ProjectNode {
-  title: String!
-  description: String
-  keycloakData: JSONString!
-  id: UUID!
-  specRepository: String!
-  specRepositoryBranch: String
+  accessToken: String
+  accessUsername: String!
+  clusterSettings: ClusterSettingsNode
   created: DateTime!
-  specType: ProjectSpecType!
   currentCommit: String!
   currentCommitDateTime: DateTime
-  repositoryStatus: ProjectRepositoryStatus!
-  accessUsername: String!
-  accessToken: String
-  organization: OrganizationNode
   decks: [DeckNode!]!
-  clusterSettings: ClusterSettingsNode
-  sops: [SOPSProviderNode]
+  description: String
+  id: UUID!
+  keycloakData: JSONString!
   members: [ProjectMember]
+  organization: OrganizationNode
+  repositoryStatus: ProjectRepositoryStatus!
+  sops: [SOPSProviderNode]
+  specRepository: String!
+  specRepositoryBranch: String
+  specType: ProjectSpecType!
+  title: String!
 }
 
 type ProjectNodePage {
-  totalCount: Int
-  resultCount: Int
-  offset: Int
   limit: Int
+  offset: Int
+  resultCount: Int
   results: [ProjectNode]
+  totalCount: Int
 }
 
 enum ProjectRepositoryStatus {
-  UNKNOWN
-  CLONING_PENDING
+  AUTH_FAILED
+  BRANCH_UNAVAILABLE
   CLONING
   CLONING_FAILED
+  CLONING_PENDING
   CLONING_SUCCESSFUL
-  BRANCH_UNAVAILABLE
-  AUTH_FAILED
-  PARSING_FAILED
   OK
+  PARSING_FAILED
+  UNKNOWN
 }
 
 enum ProjectSpecType {
@@ -316,16 +321,16 @@ enum ProjectSpecType {
 }
 
 type Query {
-  user(id: UUID): UserNode
-  allOrganizations(offset: Int, limit: Int): OrganizationNodePage
-  organization(id: UUID!): OrganizationNode
-  userInvitations(offset: Int, limit: Int): OrganizationInvitationNodePage
-  allOrganizationInvitations(id: UUID!, offset: Int, limit: Int): OrganizationInvitationNodePage
-  allProjects(organizationId: UUID, offset: Int, limit: Int): ProjectNodePage
-  project(id: UUID, slug: String): ProjectNode
-  allDecks(organizationId: UUID, projectId: UUID, offset: Int, limit: Int): DeckNodePage
+  allDecks(limit: Int, offset: Int, organizationId: UUID, projectId: UUID): DeckNodePage
+  allOrganizationInvitations(id: UUID!, limit: Int, offset: Int): OrganizationInvitationNodePage
+  allOrganizations(limit: Int, offset: Int): OrganizationNodePage
+  allProjects(limit: Int, offset: Int, organizationId: UUID): ProjectNodePage
   deck(id: UUID, slug: String): DeckNode
   environment(id: UUID): EnvironmentNode
+  organization(id: UUID!): OrganizationNode
+  project(id: UUID, slug: String): ProjectNode
+  user(id: UUID): UserNode
+  userInvitations(limit: Int, offset: Int): OrganizationInvitationNodePage
 }
 
 type RevokeOrganizationMemberInvitation {
@@ -333,13 +338,13 @@ type RevokeOrganizationMemberInvitation {
 }
 
 input SOPSInputType {
-  title: String!
   description: String
-  sopsType: SOPSTypeEnum!
   project: UUID!
   secret1: String
   secret2: String
   secret3: String
+  sopsType: SOPSTypeEnum!
+  title: String!
 }
 
 union SOPSProviderNode = AWSKMSNode | PGPKeyNode
@@ -356,16 +361,16 @@ enum SpecicifactionTypeEnum {
 scalar UUID
 
 input UpdateClusterSettingsInput {
+  clientMutationId: String
+  id: ID
   port: Int!
   project: ID!
-  id: ID
-  clientMutationId: String
 }
 
 type UpdateClusterSettingsPayload {
+  clientMutationId: String
   clusterSettings: ClusterSettingsNode
   errors: [ErrorType]
-  clientMutationId: String
 }
 
 type UpdateOrganizationMember {
@@ -381,10 +386,10 @@ type UpdateProjectRepository {
 }
 
 type UserNode {
-  id: UUID!
+  avatarImage: String
   email: String
-  name: String
   familyName: String
   givenName: String
-  avatarImage: String
+  id: UUID!
+  name: String
 }
