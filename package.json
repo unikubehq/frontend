@@ -35,7 +35,7 @@
     "vue-class-component": "^7.2.3",
     "vue-i18n": "^8.24.4",
     "vue-property-decorator": "^8.4.2",
-    "vue-router": "^3.5.1",
+    "vue-router": "^3.5.2",
     "vue2-dropzone": "^3.6.0",
     "vuelidate": "^0.7.6",
     "vuetify": "^2.5.9",
@@ -44,7 +44,7 @@
   "devDependencies": {
     "@cypress/code-coverage": "^3.9.11",
     "@graphql-codegen/add": "^2.0.2",
-    "@graphql-codegen/cli": "1.18.0",
+    "@graphql-codegen/cli": "2.2.1",
     "@graphql-codegen/schema-ast": "^1.18.2",
     "@graphql-codegen/typescript": "1.17.11",
     "@graphql-codegen/typescript-document-nodes": "1.17.8",
