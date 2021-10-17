@@ -149,7 +149,7 @@ export default class Layout extends AvatarMixin {
   }
 
   get currentRoute(): string | null | undefined {
-    return this.$route.meta.label;
+    return this.$route?.meta?.label;
   }
 }
 </script>
