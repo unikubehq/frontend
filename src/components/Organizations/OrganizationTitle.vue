@@ -1,9 +1,7 @@
 <template>
   <v-col cols="12" sm="8" md="3">
-    <h1 class="text-h1">Create New Organization</h1>
-    <p class="text--secondary">
-      Tell us the name of your organization.
-    </p>
+    <h1 class="text-h1">{{ $t('organization.createNewOrganization') }}</h1>
+    <p class="text--secondary">{{ $t('organization.createNameOfOrganization') }}</p>
     <v-form class="text-center">
       <v-text-field
           class="mt-6"
@@ -29,9 +27,7 @@
           @click="handleCreateOrganization"
           :loading="loading"
           :disabled="enableButton"
-      >
-        Next
-      </v-btn>
+      >{{ $t('general.next') }}</v-btn>
       <div class="error" v-if="errors && errors.detail">
         {{ errors.detail }}
       </div>

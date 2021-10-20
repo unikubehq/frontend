@@ -1,10 +1,7 @@
 <template>
   <v-col cols="12" sm="8" md="3">
-    <h1 class="text-h1">Add Team Members</h1>
-          <p class="text--secondary">
-            Add team members by entering their email addresses they used while registering
-            on Unikube. You can also set member role from ‘Permissions’ later.
-          </p>
+    <h1 class="text-h1">{{ $t('organization.addTeamMember') }}</h1>
+          <p class="text--secondary">{{ $t('orginzation.memberAdd') }}</p>
     <v-form>
       <div v-for="(v, index) in $v.members.$each.$iter" :key="index">
         <v-text-field
@@ -25,20 +22,19 @@
       <v-btn :ripple="false" elevation="0" @click="addMember">
         <v-icon size="24" class="mr-2">
           $vuetify.icons.addRound
-        </v-icon>
-        Add another
-      </v-btn>
+        </v-icon>{{ $t('organization.addAnother') }}</v-btn>
       <v-btn
         class="mt-3"
         color="primary"
         block
         large
         @click="inviteEmails"
-      >Finish</v-btn>
-      <small class="text-center">
-        Or
-        <a href="#" @click="$emit('success')">Skip</a>
-        this for now
+      >{{ $t('general.finish') }}</v-btn>
+      <small class="text-center">{{ $t('general.or') }}
+        <a href="#" @click="$emit('success')">
+          {{ $t('organization.skip') }}
+        </a>
+        {{ $t('organization.forNow') }}
       </small>
     </v-form>
   </v-col>
