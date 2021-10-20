@@ -10,7 +10,7 @@
     </div>
     <div v-else>
       <div class="text-center">
-        <div class="orga-loader"></div>
+        <div class="uni-loader"></div>
       </div>
       <h1>Finishing up...</h1>
       <p class="text--secondary">Please wait while we create a new organization for you.</p>
@@ -39,8 +39,9 @@ export default class OrgaDone extends Vue {
 }
 </script>
 
-<style scoped>
-.orga-loader {
+<style>
+
+.uni-loader {
   width: 20px;
   height: 20px;
   position: relative;
@@ -68,5 +69,4 @@ export default class OrgaDone extends Vue {
     -13px 46px 0 #00DAA4;
   }
 }
-
 </style>

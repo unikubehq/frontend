@@ -1,0 +1,28 @@
+.uni-loader {
+  width: 20px;
+  height: 20px;
+  position: relative;
+  animation: loading 1s ease infinite;
+  top: 50%;
+  margin: 0 auto 0 auto;
+  margin-bottom: 80px;
+}
+
+@keyframes loading {
+  0%, 100% {
+    box-shadow: -13px 20px 0 #00DAA4, 13px 20px 0 #61DFC0, 13px 46px 0 #A2E7D6,
+    -13px 46px 0 #CAF1E7;
+  }
+  25% {
+    box-shadow: -13px 20px 0 #CAF1E7, 13px 20px 0 #00DAA4, 13px 46px 0 #61DFC0,
+    -13px 46px 0 #A2E7D6;
+  }
+  50% {
+    box-shadow: -13px 20px 0 #A2E7D6, 13px 20px 0 #CAF1E7, 13px 46px 0 #00DAA4,
+    -13px 46px 0 #61DFC0;
+  }
+  75% {
+    box-shadow: -13px 20px 0 #61DFC0, 13px 20px 0 #A2E7D6, 13px 46px 0 #CAF1E7,
+    -13px 46px 0 #00DAA4;
+  }
+}

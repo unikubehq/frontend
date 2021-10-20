@@ -1,152 +1,236 @@
 <template>
   <v-container fluid>
     <v-form>
-      <v-row>
-        <v-col cols="6" class="py-0">
-          <v-text-field
-            :label="$t('projects.name')"
-            name="projectName"
-            filled
-            outlined
-            type="text"
-            :error-messages="titleErrors"
-            :placeholder="$t('projects.enterName')"
-            v-model="title"
-            @blur="$v.title.$touch()"
-            prepend-inner-icon="$vuetify.icons.projectInput"
-            persistent-placeholder
-          />
-        </v-col>
-        <v-col cols="6" class="py-0">
-          <v-text-field
-            :label="$t('projects.description')"
-            name="description"
-            filled
-            outlined
-            type="text"
-            :placeholder="$t('projects.enterDescription')"
-            v-model="description"
-            prepend-inner-icon="$vuetify.icons.description"
-            persistent-placeholder
-          />
-        </v-col>
-        <v-col cols="6" class="py-0">
-          <v-text-field
-            :label="$t('projects.specificationRepository')"
-            name="specRepo"
-            filled
-            outlined
-            type="text"
-            :placeholder="$t('projects.enterSpecificationRepository')"
-            v-model="specRepository"
-            :error-messages="specRepositoryErrors"
-            prepend-inner-icon="$vuetify.icons.repository"
-            @blur="$v.specRepository.$touch()"
-            persistent-placeholder
-          />
-        </v-col>
-        <v-col cols="6" class="py-0">
-          <v-text-field
-            :label="$t('projects.specificationRepositoryBranch')"
-            name="specRepoBranch"
-            filled
-            outlined
-            type="text"
-            :placeholder="$t('projects.enterSpecificationRepositoryBranch')"
-            v-model="specRepositoryBranch"
-            :error-messages="specRepositoryBranchErrors"
-            prepend-inner-icon="$vuetify.icons.branch"
-            @blur="$v.specRepositoryBranch.$touch()"
-            persistent-placeholder
-          />
-        </v-col>
-        <v-col cols="6" class="py-0">
-          <v-text-field
-            :label="$t('projects.accessUsername')"
-            name="accessUsername"
-            filled
-            outlined
-            type="text"
-            :placeholder="$t('projects.enterAccessUsername')"
-            v-model="accessUsername"
-            :error-messages="accessUsernameErrors"
-            prepend-inner-icon="$vuetify.icons.accessUser"
-            @change="$v.accessUsername.$touch()"
-            persistent-placeholder
-          />
-        </v-col>
-        <v-col cols="6" class="py-0">
-          <v-text-field
-            :label="$t('projects.accessToken')"
-            name="accessToken"
-            filled
-            outlined
-            type="password"
-            :placeholder="$t('projects.enterAccessToken')"
-            v-model="accessToken"
-            :error-messages="accessTokenErrors"
-            prepend-inner-icon="$vuetify.icons.accessToken"
-            @change="$v.accessToken.$touch()"
-            persistent-placeholder
-          />
-        </v-col>
-        <v-col cols="6" class="py-0">
-          <v-select
-            :label="$t('projects.specificationType')"
-            name="specType"
-            filled
-            outlined
-            type="text"
-            :placeholder="$t('projects.enterSpecificationType')"
-            v-model="specType"
-            :items="specTypeChoices"
-            persistent-placeholder
-          />
-        </v-col>
-      </v-row>
+      <v-stepper v-model="step">
+        <v-stepper-header>
+          <v-stepper-step
+              :complete="step > 1"
+              step="1"
+          >
+            General
+          </v-stepper-step>
+          <v-divider></v-divider>
+          <v-stepper-step
+              :complete="step > 2"
+              step="2"
+          >
+            VCS
+          </v-stepper-step>
+          <v-divider></v-divider>
+          <v-stepper-step
+              :complete="step > 3"
+              step="3"
+              v-if="!editMode"
+          >
+            Project Creation
+            <small>Please wait</small>
+          </v-stepper-step>
+          <v-divider></v-divider>
+          <v-stepper-step
+              :complete="step > 4"
+              :step="editMode ? 3 : 4"
+          >
+            Team
+          </v-stepper-step>
+        </v-stepper-header>
+        <v-stepper-items>
+          <v-stepper-content step="1">
+            <v-row class="mt-1">
+              <v-col cols="6" class="py-0">
+                <v-text-field
+                    :label="$t('projects.name')"
+                    name="projectName"
+                    filled
+                    outlined
+                    type="text"
+                    :error-messages="titleErrors"
+                    :placeholder="$t('projects.enterName')"
+                    v-model="title"
+                    @blur="$v.title.$touch()"
+                    prepend-inner-icon="$vuetify.icons.projectInput"
+                    persistent-placeholder
+                />
+              </v-col>
+              <v-col cols="6" class="py-0">
+                <v-text-field
+                    :label="$t('projects.description')"
+                    name="description"
+                    filled
+                    outlined
+                    type="text"
+                    :placeholder="$t('projects.enterDescription')"
+                    v-model="description"
+                    prepend-inner-icon="$vuetify.icons.description"
+                    persistent-placeholder
+                />
+              </v-col>
+            </v-row>
+            <v-row class="mt-1">
+              <v-col cols="12">
+                <v-btn
+                    color="primary"
+                    @click="step = 2"
+                    large
+                >
+                  Continue
+                </v-btn>
+                <v-btn text>
+                  Cancel
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-stepper-content>
+          <v-stepper-content step="2">
+            <v-row class="mt-1">
+              <v-col cols="6" class="py-0">
+                <v-text-field
+                    :label="$t('projects.specificationRepository')"
+                    name="specRepo"
+                    filled
+                    outlined
+                    type="text"
+                    :placeholder="$t('projects.enterSpecificationRepository')"
+                    v-model="specRepository"
+                    :error-messages="specRepositoryErrors"
+                    prepend-inner-icon="$vuetify.icons.repository"
+                    @blur="$v.specRepository.$touch()"
+                    persistent-placeholder
+                />
+              </v-col>
+              <v-col cols="6" class="py-0">
+                <v-text-field
+                    :label="$t('projects.specificationRepositoryBranch')"
+                    name="specRepoBranch"
+                    filled
+                    outlined
+                    type="text"
+                    :placeholder="$t('projects.enterSpecificationRepositoryBranch')"
+                    v-model="specRepositoryBranch"
+                    :error-messages="specRepositoryBranchErrors"
+                    prepend-inner-icon="$vuetify.icons.branch"
+                    @blur="$v.specRepositoryBranch.$touch()"
+                    persistent-placeholder
+                />
+              </v-col>
+              <v-col cols="6" class="py-0">
+                <v-text-field
+                    :label="$t('projects.accessUsername')"
+                    name="accessUsername"
+                    filled
+                    outlined
+                    type="text"
+                    :placeholder="$t('projects.enterAccessUsername')"
+                    v-model="accessUsername"
+                    :error-messages="accessUsernameErrors"
+                    prepend-inner-icon="$vuetify.icons.accessUser"
+                    @change="$v.accessUsername.$touch()"
+                    persistent-placeholder
+                />
+              </v-col>
+              <v-col cols="6" class="py-0">
+                <v-text-field
+                    :label="$t('projects.accessToken')"
+                    name="accessToken"
+                    filled
+                    outlined
+                    type="password"
+                    :placeholder="$t('projects.enterAccessToken')"
+                    v-model="accessToken"
+                    :error-messages="accessTokenErrors"
+                    prepend-inner-icon="$vuetify.icons.accessToken"
+                    @change="$v.accessToken.$touch()"
+                    persistent-placeholder
+                />
+              </v-col>
+              <v-col cols="6" class="py-0">
+                <v-select
+                    :label="$t('projects.specificationType')"
+                    name="specType"
+                    filled
+                    outlined
+                    type="text"
+                    :placeholder="$t('projects.enterSpecificationType')"
+                    v-model="specType"
+                    :items="specTypeChoices"
+                    persistent-placeholder
+                />
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="12">
+                <v-btn
+                    color="primary"
+                    @click="step = 3"
+                    large
+                >
+                  Continue
+                </v-btn>
+                <v-btn text>
+                  Cancel
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-stepper-content>
+          <v-stepper-content step="3">
+            <div class="uni-loader"></div>
+            <h1 class="text-center">
+              Project is being created . . . <br>
+              <small class="text-center">Please wait</small>
+            </h1>
+          </v-stepper-content>
+          <v-stepper-content step="4">
+            <v-row v-if="step === 4">
+              <add-team-member :project-prop="project"></add-team-member>
+            </v-row>
+            <v-row>
+              <v-col cols="9">
+                <a
+                    class="link--secondary"
+                    @click="$router.go(-1)"
+                    v-if="editMode"
+                >
+                  <v-icon
+                      style="transform: rotate(180deg)"
+                      class="mr-1"
+                      small
+                  >
+                    $vuetify.icons.arrowRightGrey
+                  </v-icon>
+                  {{ $t('general.goBack') }}
+                </a>
+              </v-col>
+              <v-col cols="3">
+                <v-btn text @click="step = 1">{{ $t('general.goBack') }}</v-btn>
+                <v-btn
+                    block
+                    large
+                    color="primary"
+                    :loading="saveLoading"
+                    @click="submit"
+                    :disabled="disableButton"
+                    class="projectForm__submit"
+                >
+                  {{ submitButtonText }}
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-stepper-content>
+        </v-stepper-items>
+      </v-stepper>
       <v-row>
         <v-col cols="12">
           <v-alert
-            dense
-            outlined
-            icon="$vuetify.icons.warning"
-            type="error"
-            v-if="submissionError">
+              dense
+              outlined
+              icon="$vuetify.icons.warning"
+              type="error"
+              v-if="submissionError">
             {{ submissionError }}
           </v-alert>
         </v-col>
       </v-row>
-      <v-row>
-        <v-col cols="9">
-          <a
-            class="link--secondary"
-            @click="$router.go(-1)"
-            v-if="editMode"
-          >
-            <v-icon
-                style="transform: rotate(180deg)"
-                class="mr-1"
-                small
-            >
-              $vuetify.icons.arrowRightGrey
-            </v-icon>{{ $t('general.goBack') }}</a>
-        </v-col>
-        <v-col cols="3">
-          <v-btn
-          block
-          large
-          color="primary"
-          :loading="saveLoading"
-          @click="submit"
-          :disabled="disableButton"
-          class="projectForm__submit"
-        >
-            {{ submitButtonText }}
-          </v-btn>
-        </v-col>
-      </v-row>
     </v-form>
-    <v-divider class="mt-10 mb-10" />
+    <v-divider class="mt-10 mb-10"/>
   </v-container>
 </template>
 
@@ -166,8 +250,10 @@ import {
   UpdateProject,
 } from '@/generated/graphql';
 import TranslateResult = VueI18n.TranslateResult;
+import AddTeamMember from '@/views/Projects/AddTeamMember.vue';
 
 @Component({
+  components: { AddTeamMember },
   validations: {
     title: {
       required,
@@ -179,16 +265,16 @@ import TranslateResult = VueI18n.TranslateResult;
     specRepositoryBranch: {
       required,
     },
-    accessUsername: {
-    },
-    accessToken: {
-    },
+    accessUsername: {},
+    accessToken: {},
   },
 })
 export default class ProjectForm extends validationMixin {
-  @Prop() readonly editMode: boolean | undefined
+  @Prop() readonly editMode: boolean | undefined;
 
-  @Prop() readonly project: TProjectNode | undefined
+  @Prop() readonly project: TProjectNode | undefined;
+
+  step = 1;
 
   title = '';
 
@@ -210,9 +296,9 @@ export default class ProjectForm extends validationMixin {
 
   id = '';
 
-  specTypeChoices = [TSpecicifactionTypeEnum.Helm]
+  specTypeChoices = [TSpecicifactionTypeEnum.Helm];
 
-  saveLoading = false
+  saveLoading = false;
 
   get titleErrors(): TranslateResult[] {
     return this.handleErrors('title');
@@ -266,7 +352,7 @@ export default class ProjectForm extends validationMixin {
     }
   }
 
-  success(data: {data: TCreateProjectMutationResult}): void {
+  success(data: { data: TCreateProjectMutationResult }): void {
     this.saveLoading = false;
     this.$store.dispatch('auth/refresh', -1).then((refreshed: boolean) => {
       if (data.data?.createUpdateProject?.project && refreshed) {
@@ -307,17 +393,13 @@ export default class ProjectForm extends validationMixin {
       this.$apollo.mutate({
         mutation: CreateProject,
         variables,
-      })
-        .then(this.success)
-        .catch(this.failed);
+      }).then(this.success).catch(this.failed);
     } else {
       const variables: TUpdateProjectMutationVariables = { ...projectVariables, id: this.id };
       this.$apollo.mutate({
         mutation: UpdateProject,
         variables,
-      })
-        .then(this.success)
-        .catch(this.failed);
+      }).then(this.success).catch(this.failed);
     }
   }
 }
