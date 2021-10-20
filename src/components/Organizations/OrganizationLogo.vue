@@ -1,10 +1,8 @@
 <template>
 
         <v-col cols="12" sm="8" md="3">
-          <h1 class="text-h1">Create New Organization</h1>
-          <p class="text--secondary">
-            Do you have a logo?
-          </p>
+          <h1 class="text-h1">{{ $t('organization.createNewHead') }}</h1>
+          <p class="text--secondary">{{ $t('organization.haveLogo') }}</p>
           <v-form class="text-center">
             <v-dialog
               v-model="dialog"
@@ -32,9 +30,7 @@
                   </div>
               </template>
               <v-card>
-                <v-card-title>
-                  Upload Photo
-                </v-card-title>
+                <v-card-title>{{ $t('organization.uploadLogo') }}</v-card-title>
                 <v-card-text class="text-center">
                   <vue2-dropzone
                     ref="dropzoneElement"
@@ -43,8 +39,9 @@
                     :useCustomSlot="true"
                     class="mx-auto"
                   >
-                    <div>
-                      Drag & Drop files here or <a href="#">Click Here</a> to browse
+                    <div>{{ $t('organization.dragDrop') }}
+                      <a href="#">{{ $t('general.clickHere') }}</a>
+                      {{ $t('organization.toBrowse') }}
                     </div>
                   </vue2-dropzone>
                 </v-card-text>
@@ -57,9 +54,7 @@
                     :ripple="false"
                     @click="handleUpload"
                     :loading="loading"
-                  >
-                    Save
-                  </v-btn>
+                  >{{ $t('general.save') }}</v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>

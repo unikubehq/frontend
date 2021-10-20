@@ -2,18 +2,16 @@
   <v-col cols="12" sm="8" md="3" class="text-center">
     <div v-if="rptRefreshed">
       <v-icon size="60">$vuetify.icons.done</v-icon>
-      <h1>We're all done!</h1>
-      <p class="text--secondary">Ta-da! {{ orgaTitle }} has been created successfully.
-      You can share the organization ID below with the team members you’d like to add in
-      this project</p>
-      <router-link to="/overview">Go to Dashboard</router-link>
+      <h1>{{ $t('organization.wereDone') }}</h1>
+      <p class="text--secondary">{{ $t('organization.tada', orgaTitle) }}</p>orgaTitle
+      <router-link to="/overview">{{ $t('organization.goToDashboard') }}</router-link>
     </div>
     <div v-else>
       <div class="text-center">
         <div class="orga-loader"></div>
       </div>
-      <h1>Finishing up...</h1>
-      <p class="text--secondary">Please wait while we create a new organization for you.</p>
+      <h1>{{ $t('organization.finishingUp') }}</h1>
+      <p class="text--secondary">{{ $t('organization.pleaseWait') }}</p>
     </div>
   </v-col>
 </template>

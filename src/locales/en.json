@@ -78,7 +78,9 @@
     "add": "Add",
     "saveChanges": "Save Changes",
     "disagree": "Disagree",
-    "returnOverview": "to return to overview"
+    "returnOverview": "to return to overview",
+    "finish": "Finish",
+    "or": "Or"
   },
   "errors": {
     "requiredError": "This field is required.",
@@ -239,7 +241,23 @@
     "joinButton": "Join",
     "declineButton": "Decline",
     "backToOverview": "Back to overview",
-    "inviteNotification": "You were invited to join"
+    "inviteNotification": "You were invited to join",
+    "createNewOrganization": "Create New Organization",
+    "createNameOfOrganization": "Tell us the name of your organization.",
+    "addTeamMember": "Add Team Members",
+    "addAnother": "Add another",
+    "skip": "Skip",
+    "forNow": "this for now",
+    "haveLogo": "Do you have a logo?",
+    "createNewHead": "Create New Organization",
+    "uploadLogo": "Upload Logo",
+    "dragDrop": "Drag & Drop files here or",
+    "toBrowse": "to browse",
+    "wereDone": "We're all done!",
+    "goToDashboard": "Go to Dashboard",
+    "finishingUp": "Finishing up...",
+    "pleaseWait": "Please wait while we create a new organization for you.",
+    "tada": "Ta-da! { orgaTitle } has been created successfully. You can share the organization ID below with the team members you’d like to add in this project"
   },
   "views": {
     "overview": "Overview",
@@ -263,5 +281,8 @@
       "sops": "Project - SOPS",
       "clusterSettings": "Project - Cluster Settings"
     }
+  },
+  "orginzation": {
+    "memberAdd": "Add team members by entering their email addresses they used while registering\n            on Unikube. You can also set member role from ‘Permissions’ later."
   }
 }
