@@ -61,6 +61,8 @@ import PaymentBlue from '@/components/icons/PaymentBlue.vue';
 import Sync from '@/components/icons/Sync.vue';
 import TickWhiteBg from '@/components/icons/TickWhiteBg.vue';
 import ErrorWhiteBg from '@/components/icons/ErrorWhiteBg.vue';
+import Cli from '@/components/icons/Cli.vue';
+import SmallBulb from '@/components/icons/SmallBulb.vue';
 
 Vue.use(Vuetify);
 
@@ -128,6 +130,12 @@ export default new Vuetify({
       },
       burger: {
         component: Burger,
+      },
+      cli: {
+        component: Cli,
+      },
+      smallBulb: {
+        component: SmallBulb,
       },
       cross: {
         component: Cross,

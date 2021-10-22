@@ -1,5 +1,6 @@
 import { Ability, InferSubjects } from '@casl/ability';
 import { TProjectMember, TProjectNode } from '@/generated/graphql';
+import { TranslateResult } from 'vue-i18n';
 
 export interface IPermission {
   rsid: string
@@ -42,4 +43,9 @@ export type SnackbarMessage = {
   show: boolean,
   error: boolean,
   id: number
+}
+
+export type CliHintMessage = {
+  command: string,
+  hint: TranslateResult,
 }

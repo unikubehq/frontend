@@ -284,5 +284,14 @@
   },
   "orginzation": {
     "memberAdd": "Add team members by entering their email addresses they used while registering\n            on Unikube. You can also set member role from ‘Permissions’ later."
+  },
+  "cli": {
+    "util": {
+      "copySuccessful": "Copied to clipboard."
+    },
+    "project": {
+      "up": "Starts or resumes a Kubernetes cluster for the specified project",
+      "prune": "Removes unused clusters."
+    }
   }
 }

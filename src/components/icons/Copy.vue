@@ -4,7 +4,7 @@
         <g stroke-width="2">
             <g>
                 <g>
-                    <g stroke="#343D6F" stroke-linecap="round">
+                    <g stroke="#fff" stroke-linecap="round">
                         <path d="M6 4h10c1.105 0 2 .895 2 2v12c0 1.105-.895 2-2 2H6c-1.105 0-2-.895-2-2V6c0-1.105.895-2 2-2z" transform="translate(-1031 -596) translate(848 584) translate(183 12) translate(3 2)"/>
                         <path d="M0 16V2C0 .895.895 0 2 0h12" transform="translate(-1031 -596) translate(848 584) translate(183 12) translate(3 2)"/>
                     </g>
