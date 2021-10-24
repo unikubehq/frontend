@@ -25,7 +25,7 @@ describe('Helm Overrides', () => {
     cy.get('.project-card__wrapper .project-card__detail').first().click();
     cy.location('pathname', { timeout: 3000 })
       .should('include', '/project');
-    cy.get('.projectDeck button').first().click();
+    cy.get('.projectDeck .projectDeck-edit').first().click();
   });
 
   it('it show helm overrides button when schema is available', () => {

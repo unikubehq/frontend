@@ -6,7 +6,7 @@
           <v-icon size="48">$vuetify.icons.project</v-icon>
         </router-link>
       </v-col>
-      <v-col cols="7" class="mt-2">
+      <v-col cols="6" class="mt-2">
         <router-link :to="'/project/' + project.id">
           <h3 class="mb-0">
             <span v-if="loading"><v-skeleton-loader type="heading" tile/></span>
@@ -27,6 +27,8 @@
             <span>{{ getReadableProjectStatus(project.repositoryStatus) }}</span>
         </v-tooltip>
         <div class="d-inline-block" v-if="$can('edit', project)">
+          <v-divider style="height: 24px" class="mx-4 mb-n1" vertical></v-divider>
+          <cli-hint :commands="projectCliHintMessage"/>
           <v-divider style="height: 24px" class="mx-4 mb-n1" vertical></v-divider>
           <router-link class="project-card__edit" :to="'/project/' + project.id + '?edit=true'">
             <v-icon size="24">$vuetify.icons.edit</v-icon>
@@ -85,12 +87,14 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { TProjectNode, UpdateProjectRepositoryMutation } from '@/generated/graphql';
+import { CliHintMessage } from '@/typing/index';
+import CliHint from '@/components/general/CliHint.vue';
 import DeleteProject from '@/components/Projects/DeleteProject.vue';
 import ProjectMemberAvatars from '@/components/Projects/ProjectMemberAvatars.vue';
 import Converter from '@/utils/converter';
 
 @Component({
-  components: { DeleteProject, ProjectMemberAvatars },
+  components: { CliHint, DeleteProject, ProjectMemberAvatars },
 })
 export default class ProjectList extends Vue {
   @Prop() readonly project: TProjectNode | undefined
@@ -102,6 +106,17 @@ export default class ProjectList extends Vue {
   showDeleteDialog = false
 
   drawer = false;
+
+  projectCliHintMessage: CliHintMessage[] = [
+    {
+      command: 'unikube project up',
+      hint: this.$t('cli.project.up'),
+    },
+    {
+      command: 'unikube project prune',
+      hint: this.$t('cli.project.prune'),
+    },
+  ];
 
   getReadableProjectStatus = Converter.getReadableProjectStatus
 
