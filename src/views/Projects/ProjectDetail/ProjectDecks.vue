@@ -5,20 +5,17 @@
         <v-card outlined class="projectDeck">
           <v-card-title>
             <v-row>
-              <v-col cols="9">
-                {{ pkg.title }}
+              <v-col cols="8">
+                  {{ pkg.title }}
               </v-col>
-              <v-col cols="3" class="text-right">
-                <v-btn
-                  outlined
-                  width="50"
-                  :ripple="false"
-                  @click="setDeckEdit(pkg)"
-                >
-                  <v-icon size="24">
-                    $vuetify.icons.edit
-                  </v-icon>
-                </v-btn>
+              <v-col cols="4" class="text-right">
+                <cli-hint :commands="deckCliHintMessage"/>
+                <v-divider style="height: 24px" class="mx-4 mb-n1" vertical></v-divider>
+                <v-icon size="24"
+                  class="mr-2 projectDeck-edit"
+                  @click="setDeckEdit(pkg)">
+                  $vuetify.icons.edit
+                </v-icon>
               </v-col>
               <v-divider></v-divider>
             </v-row>
@@ -62,10 +59,13 @@ import {
   TProjectNode,
 } from '@/generated/graphql';
 import EditDeck from '@/components/Projects/EditDeck.vue';
+import { CliHintMessage } from '@/typing';
+import CliHint from '@/components/general/CliHint.vue';
 
 @Component({
   components: {
     EditDeck,
+    CliHint,
   },
 })
 export default class ProjectDecks extends Vue {
@@ -76,6 +76,17 @@ export default class ProjectDecks extends Vue {
   deckToBeEdited: TDeckNode | undefined;
 
   memberDrawer = false;
+
+  deckCliHintMessage: CliHintMessage[] = [
+    {
+      command: 'unikube deck install',
+      hint: this.$t('cli.deck.install').toString(),
+    },
+    {
+      command: 'unikube deck ingress',
+      hint: this.$t('cli.deck.ingress').toString(),
+    },
+  ];
 
   setEdit(): void {
     this.$router.push({ query: { edit: 'true' } });

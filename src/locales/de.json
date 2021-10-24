@@ -292,6 +292,17 @@
     "project": {
       "up": "Starts or resumes a Kubernetes cluster for the specified project",
       "prune": "Removes unused clusters."
+    },
+    "deck": {
+      "install": "Installs a deck to the cluster currently running.",
+      "ingress": "Displays ingress information for the current cluster."
+    },
+    "hint": {
+      "caption": "CLI command hints"
+    },
+    "table": {
+      "command": "CLI command",
+      "actions": "Actions"
     }
   }
 }
