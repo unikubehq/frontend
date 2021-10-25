@@ -48,7 +48,7 @@
     "@graphql-codegen/schema-ast": "^2.2.0",
     "@graphql-codegen/typescript": "1.17.11",
     "@graphql-codegen/typescript-document-nodes": "1.17.8",
-    "@graphql-codegen/typescript-operations": "1.17.8",
+    "@graphql-codegen/typescript-operations": "2.1.8",
     "@intlify/vue-i18n-loader": "^1.1.0",
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
     "@sentry/webpack-plugin": "^1.18.2",
