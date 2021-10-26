@@ -1,8 +1,7 @@
 import Vue from 'vue';
 import VueApollo from 'vue-apollo';
 import Vuelidate from 'vuelidate';
-import * as Sentry from '@sentry/browser';
-import * as Integrations from '@sentry/integrations';
+import * as Sentry from '@sentry/vue';
 import Keycloak from 'keycloak-js';
 import KeycloakAuthorization from 'keycloak-js/dist/keycloak-authz';
 import axios from 'axios';
@@ -93,13 +92,8 @@ if (process.env.NODE_ENV === 'e2e') {
     if (authenticated) {
       if (process.env.NODE_ENV === 'production') {
         Sentry.init({
+          Vue,
           dsn: process.env.VUE_APP_SENTRY_DSN,
-          integrations: [
-            new Integrations.Vue({
-              Vue,
-              attachProps: true,
-            }),
-          ],
         });
       }
 
