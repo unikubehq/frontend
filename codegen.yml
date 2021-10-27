@@ -12,6 +12,7 @@ generates:
   src/generated/graphql.ts:
     config:
       federation: true
+      avoidOptionals: true
       omitOperationSuffix: false
       operationResultSuffix: 'Result'
       dedupeOperationSuffix: true
