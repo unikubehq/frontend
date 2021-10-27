@@ -11,6 +11,7 @@
     "test:report": "nyc report --reporter=text",
     "lint": "vue-cli-service lint",
     "codegen": "graphql-codegen --config codegen.yml",
+    "test:codegen": "graphql-codegen --config tests/graphql/codegen.yml -e",
     "kindify": "node kindify.js",
     "release": "dotenv release-it"
   },
