@@ -1,0 +1,31 @@
+overwrite: true
+schema: tests/graphql/schema.graphql
+documents: "src/**/*.graphql"
+generates:
+  schema.graphql:
+    plugins:
+      - schema-ast
+    config:
+      includeDirectives: true
+  src/generated/graphql.ts:
+    config:
+      federation: true
+      avoidOptionals: true
+      omitOperationSuffix: false
+      operationResultSuffix: 'Result'
+      dedupeOperationSuffix: true
+      typesPrefix: T
+      namingConvention:
+        transformUnderscore: true
+      preResolveTypes: true
+    plugins:
+      - add:
+          content: '/* eslint-disable */'
+      - typescript
+      - typescript-operations
+      - typescript-document-nodes
+    hooks:
+      afterOneFileWrite:
+        - eslint --fix
+        - npm run kindify
+
