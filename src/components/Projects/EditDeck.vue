@@ -165,7 +165,7 @@ import {
   TEnvironmentType,
   TFileInformationNode,
   TDeckNode,
-  TSopsProviderNode, TCreateUpdateEnvironmentMutationVariables,
+  TSopsProviderNode, TCreateUpdateEnvironmentMutationVariables, Maybe,
 } from '@/generated/graphql';
 import { validationMixin } from '@/components/mixins';
 import HelmOverrides from '@/views/Projects/ProjectDetail/HelmOverrides.vue';
@@ -250,7 +250,7 @@ export default class EditDeck extends validationMixin {
   get valuesPathChoices(): { text: string, value: string, encrypted: boolean }[] {
     if (this.deck?.fileInformation?.length) {
       return this.deck.fileInformation.map(
-        (fileInfo: TFileInformationNode | null) => ({
+        (fileInfo: Maybe<TFileInformationNode> | null) => ({
           text: fileInfo?.path || '',
           value: fileInfo?.path || '',
           encrypted: fileInfo?.encrypted || false,
