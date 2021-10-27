@@ -11,6 +11,7 @@
     "test:report": "nyc report --reporter=text",
     "lint": "vue-cli-service lint",
     "codegen": "graphql-codegen --config codegen.yml",
+    "test:codegen": "graphql-codegen --config tests/graphql/codegen.yml -e",
     "kindify": "node kindify.js",
     "release": "dotenv release-it"
   },
@@ -33,7 +34,7 @@
     "vue-apollo": "^3.0.7",
     "vue-axios": "^3.2.4",
     "vue-class-component": "^7.2.3",
-    "vue-i18n": "^8.24.4",
+    "vue-i18n": "^8.26.5",
     "vue-property-decorator": "^8.4.2",
     "vue-router": "^3.5.2",
     "vue2-dropzone": "^3.6.0",
