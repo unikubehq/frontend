@@ -45,7 +45,7 @@
   "devDependencies": {
     "@babel/runtime": "^7.15.4",
     "@cypress/code-coverage": "^3.9.11",
-    "@graphql-codegen/add": "^2.0.2",
+    "@graphql-codegen/add": "^3.1.0",
     "@graphql-codegen/cli": "2.2.1",
     "@graphql-codegen/schema-ast": "^2.2.0",
     "@graphql-codegen/typescript": "2.2.4",
