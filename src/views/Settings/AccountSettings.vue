@@ -41,12 +41,12 @@
               name="fullname"
               filled
               outlined
+              disabled
               type="text"
               :placeholder="$t('settings.account.enterName')"
               v-model="fullName"
               prepend-inner-icon="$vuetify.icons.user"
               @blur="$v.fullName.$touch()"
-              @change="setDataChanged"
               persistent-placeholder
           />
           <v-text-field
@@ -63,9 +63,15 @@
               @blur="$v.email.$touch()"
               persistent-placeholder
           />
-          <v-btn color="primary" :disabled="!dataChanged" large elevation="0" :ripple="false">
-            {{ $t('general.saveChanges') }}
-          </v-btn>
+          <div class="mb-3">
+            {{ $t('settings.account.updateProfileInformation') }}
+            <a
+              href="#"
+              class="link--secondary"
+              @click="changeGeneralInformation">
+              {{ $t('settings.account.generalInformation') }}
+            </a>
+          </div>
         </v-form>
       </v-col>
       <v-col cols="12">
@@ -73,66 +79,15 @@
       </v-col>
       <v-col cols="8" class="mt-8">
         <h2>{{ $t('settings.account.changePassword') }}</h2>
-        <v-form>
-          <v-text-field
-              id="password"
-              :label="$t('settings.account.oldPassword')"
-              name="password"
-              filled
-              outlined
-              :type="clearText ? 'text' : 'password'"
-              :placeholder="$t('settings.account.enterOldPassword')"
-              v-model="password"
-              prepend-inner-icon="$vuetify.icons.password"
-              :append-icon="clearText ? '$vuetify.icons.eyeOpen' : '$vuetify.icons.eye'"
-              @click:append="clearText = !clearText"
-              @blur="$v.password.$touch()"
-              persistent-placeholder
-          >
-          </v-text-field>
-          <router-link class="link--secondary" to="/forgot-password">
-            {{ $t('settings.account.forgotPassword') }}
-          </router-link>
-          <v-row>
-            <v-col cols="6">
-              <v-text-field
-                  id="new-password"
-                  :label="$t('settings.account.newPassword')"
-                  name="new-password"
-                  filled
-                  outlined
-                  :placeholder="$t('settings.account.enterNewPassword')"
-                  v-model="newPassword"
-                  prepend-inner-icon="$vuetify.icons.password"
-                  :append-icon="clearText ? '$vuetify.icons.eyeOpen' : '$vuetify.icons.eye'"
-                  @click:append="clearText = !clearText"
-                  :type="clearText ? 'text' : 'password'"
-                  persistent-placeholder
-
-              ></v-text-field>
-            </v-col>
-            <v-col cols="6">
-              <v-text-field
-                  id="new-password"
-                  :label="$t('settings.account.reenterPassword')"
-                  name="new-password"
-                  filled
-                  outlined
-                  :placeholder="$t('settings.account.enterNewPassword')"
-                  v-model="reEnterNewPassword"
-                  prepend-inner-icon="$vuetify.icons.password"
-                  :append-icon="clearText ? '$vuetify.icons.eyeOpen' : '$vuetify.icons.eye'"
-                  @click:append="clearText = !clearText"
-                  :type="clearText ? 'text' : 'password'"
-                  persistent-placeholder
-
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-btn color="primary" disabled large elevation="0" :ripple="false">
-            {{ $t('settings.account.setNewPassword') }}
-          </v-btn>
-        </v-form>
+        <div class="mb-3">
+          {{ $t('settings.account.updatePassword') }}
+        <a
+          class="link--secondary"
+          href="#"
+          @click="updatePassword">
+          {{ $t('settings.account.setNewPassword') }}
+        </a>
+        </div>
       </v-col>
       <v-col cols="8" class="mt-8">
         <danger-zone
@@ -159,8 +114,6 @@ import DangerZone from '@/components/Settings/DangerZone.vue';
   },
 })
 export default class AccountSettings extends UploadComponent {
-  dataChanged = false
-
   clearText = false
 
   password = ''
@@ -208,8 +161,16 @@ export default class AccountSettings extends UploadComponent {
     return this.previewUrl || this.$store.state.auth.avatarImage || 'https://cdn.zeplin.io/5f84546964e43c2749571f59/assets/2192D830-FF56-4E41-8DBA-F504CEFA64FC.svg';
   }
 
-  setDataChanged(): void {
-    this.dataChanged = true;
+  updatePassword(): void {
+    this.$store.state.auth.client.login({ action: 'UPDATE_PASSWORD' });
+  }
+
+  changeGeneralInformation(): void {
+    this.$store.state.auth.client.login({ action: 'UPDATE_PROFILE' });
+  }
+
+  created(): void {
+    console.log(this.$store.state.auth.client.createAccountUrl());
   }
 }
 </script>

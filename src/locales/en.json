@@ -108,7 +108,10 @@
       "reenterPassword": "Re-Enter New Password",
       "setNewPassword": "Set new Password",
       "disableAccount": "Deactivate Account",
-      "disableExplanation": "By doing this all your organizations and project/teams under your account will be\n        permanently lost and you will not be able to retrieve."
+      "disableExplanation": "By doing this all your organizations and project/teams under your account will be\n        permanently lost and you will not be able to retrieve.",
+      "updatePassword": "Update your password by clicking on the following button.",
+      "generalInformation": "Change profile information",
+      "updateProfileInformation": "Update your profile information by clicking on the following button."
     },
     "organizationRoles": {
       "title":  "Organization Roles",
