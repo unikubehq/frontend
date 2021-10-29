@@ -7,7 +7,7 @@
         </router-link>
       </v-col>
       <v-col cols="6" class="mt-2">
-        <router-link :to="'/project/' + project.id">
+        <router-link :to="projectUrl">
           <h3 class="mb-0">
             <span v-if="loading"><v-skeleton-loader type="heading" tile/></span>
             <span v-else>{{ project.title}}</span>
@@ -30,7 +30,7 @@
           <v-divider style="height: 24px" class="mx-4 mb-n1" vertical></v-divider>
           <cli-hint :commands="projectCliHintMessage"/>
           <v-divider style="height: 24px" class="mx-4 mb-n1" vertical></v-divider>
-          <router-link class="project-card__edit" :to="'/project/' + project.id + '?edit=true'">
+          <router-link class="project-card__edit" :to="editUrl">
             <v-icon size="24">$vuetify.icons.edit</v-icon>
           </router-link>
           <v-divider style="height: 24px" class="mx-4 mb-n1" vertical></v-divider>
@@ -46,7 +46,7 @@
     </v-row>
     <v-row class="white px-7">
       <v-divider class="mr-7"></v-divider>
-      <router-link :to="'/project/' + project.id">
+      <router-link :to="projectUrl">
         <v-icon class="project-card__detail" size="24">$vuetify.icons.dropdown</v-icon>
       </router-link>
     </v-row>
@@ -127,6 +127,14 @@ export default class ProjectList extends Vue {
       return this.$d(new Date(this.project?.currentCommitDateTime), 'short');
     }
     return '-';
+  }
+
+  get editUrl(): string {
+    return this.loading ? '' : `/project/${this.project?.id}?edit=true`;
+  }
+
+  get projectUrl(): string {
+    return this.loading ? '' : `/project/${this.project?.id}`;
   }
 
   syncRepo(project: TProjectNode): void {
