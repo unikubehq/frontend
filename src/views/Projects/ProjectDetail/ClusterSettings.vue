@@ -46,6 +46,7 @@ import {
 } from 'vuelidate/lib/validators';
 import VueI18n from 'vue-i18n';
 import {
+  Scalars,
   TProjectNode,
   TUpdateClusterSettingsInput, TUpdateClusterSettingsPayload, UpdateClusterSettings,
 } from '@/generated/graphql';
@@ -73,11 +74,12 @@ export default class ClusterSettings extends validationMixin {
   }
 
   submit(): void {
-    if (!this.port || !this.project) {
+    if (!this.port || !this.project || !this.project.clusterSettings) {
       return;
     }
     const variables: TUpdateClusterSettingsInput = {
-      id: this.project?.clusterSettings?.id,
+      clientMutationId: null,
+      id: this.project.clusterSettings.id,
       port: parseInt(this.port, 10),
       project: this.project.id,
     };

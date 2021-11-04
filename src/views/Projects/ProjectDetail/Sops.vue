@@ -304,9 +304,13 @@ export default class Sops extends validationMixin {
     }
     const variables: TCreateUpdateSopsMutationVariables = {
       title: this.title,
-      description: this.description,
+      description: this.description || '',
       project: this?.project?.id,
       sopsType: this.sopsType,
+      id: null,
+      secret1: null,
+      secret2: null,
+      secret3: null,
     };
     if (this.edit && this.currentSops) {
       variables.id = this.currentSops.id;
