@@ -78,7 +78,7 @@
     "chai": "^4.3.4",
     "cypress": "^8.5.0",
     "dotenv-cli": "^4.0.0",
-    "eslint": "^7.32.0",
+    "eslint": "^8.1.0",
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-vue": "^7.20.0",
     "istanbul-lib-coverage": "^3.2.0",
