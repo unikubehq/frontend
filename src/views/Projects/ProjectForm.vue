@@ -295,12 +295,18 @@ export default class ProjectForm extends validationMixin {
       specType: this.specType,
       specRepositoryBranch: this.specRepositoryBranch,
       organization: this.$store.state.context.organization.id,
+      accessToken: null,
+      accessUsername: null,
     };
     if (this.$v.accessUsername.$dirty) {
       projectVariables.accessUsername = this.accessUsername;
+    } else if (!projectVariables.accessToken) {
+      delete projectVariables.accessToken;
     }
     if (this.$v.accessToken.$dirty) {
       projectVariables.accessToken = this.accessToken;
+    } else if (!projectVariables.accessUsername) {
+      delete projectVariables.accessUsername;
     }
     if (!this.editMode) {
       const variables: TCreateProjectMutationVariables = projectVariables;

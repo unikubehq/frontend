@@ -198,7 +198,7 @@ export default class EditDeck extends validationMixin {
 
   title = this.environment?.title
 
-  description = this.environment?.description
+  description = this.environment?.description || ''
 
   namespace = this.environment?.namespace
 
