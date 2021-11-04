@@ -60,7 +60,8 @@
       "clonePending": "Cloning pending",
       "cloning": "Cloning",
       "authFail": "Authentication failed"
-    }
+    },
+    "scripts": "Scripts"
   },
   "general": {
     "admin": "Admin",
@@ -282,7 +283,8 @@
       "decks": "Project - Decks",
       "members": "Project - Members",
       "sops": "Project - SOPS",
-      "clusterSettings": "Project - Cluster Settings"
+      "clusterSettings": "Project - Cluster Settings",
+      "scripts": "Project - Scripts"
     }
   },
   "orginzation": {
@@ -307,5 +309,8 @@
       "command": "CLI command",
       "actions": "Actions"
     }
+  },
+  "scripts": {
+    "addNew": "Add new Script"
   }
 }

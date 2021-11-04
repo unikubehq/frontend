@@ -136,6 +136,14 @@ const routes: Array<RouteConfig> = [
               label: i18n.t('views.project.clusterSettings'),
             },
           },
+          {
+            path: '/project/:slug/scripts',
+            name: 'project.detail.scripts',
+            component: () => import('../views/Projects/ProjectDetail/Scripts.vue'),
+            meta: {
+              label: i18n.t('views.project.scripts'),
+            },
+          },
         ],
       },
     ],

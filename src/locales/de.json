@@ -60,7 +60,8 @@
       "clonePending": "Cloning pending",
       "cloning": "Cloning",
       "authFail": "Authentication failed"
-    }
+    },
+    "scripts": "Scripts"
   },
   "general": {
     "admin": "Admin",
@@ -106,12 +107,12 @@
       "newPassword": "New Password",
       "enterNewPassword": "Enter New Password",
       "reenterPassword": "Re-Enter New Password",
-      "setNewPassword": "here.",
+      "setNewPassword": "Set new Password",
       "disableAccount": "Deactivate Account",
       "disableExplanation": "By doing this all your organizations and project/teams under your account will be\n        permanently lost and you will not be able to retrieve.",
-      "updatePassword": "Update your password ",
-      "generalInformation": "here.",
-      "updateProfileInformation": "Update your profile information by clicking"
+      "updatePassword": "Update your password by clicking on the following button.",
+      "generalInformation": "Change profile information",
+      "updateProfileInformation": "Update your profile information by clicking on the following button."
     },
     "organizationRoles": {
       "title":  "Organization Roles",
@@ -282,7 +283,8 @@
       "decks": "Project - Decks",
       "members": "Project - Members",
       "sops": "Project - SOPS",
-      "clusterSettings": "Project - Cluster Settings"
+      "clusterSettings": "Project - Cluster Settings",
+      "scripts": "Project - Scripts"
     }
   },
   "orginzation": {

@@ -150,7 +150,7 @@
           class="no-bg-drawer"
           v-model="helm"
         >
-      <helm-overrides :show="helm" :environment="environment" @hide="helm = false;"/>
+      <helm-overrides :environment="environment" @hide="helm = false;"/>
     </v-navigation-drawer>
   </v-container>
 </template>
