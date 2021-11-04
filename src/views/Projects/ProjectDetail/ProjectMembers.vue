@@ -166,7 +166,7 @@ export default class ProjectMembers extends Vue {
   translateMembers(): void {
     if (this.project?.members?.length) {
       this.membersEdit = this.project?.members?.map(
-        (member: TProjectMember | null): TProjectMemberEdit => {
+        (member: Maybe<TProjectMember>): TProjectMemberEdit => {
           const editMember: TProjectMemberEdit = { ...member } as TProjectMemberEdit;
           editMember.editing = false;
           editMember.loading = false;
@@ -221,7 +221,7 @@ export default class ProjectMembers extends Vue {
 
   updateMember(editMember: TProjectMemberEdit): void {
     if (this.project?.members?.length) {
-      const member = this.project?.members?.find((projectMember: TProjectMember | null) => {
+      const member = this.project?.members?.find((projectMember: Maybe<TProjectMember>) => {
         if (projectMember) {
           return projectMember.user?.id === editMember.user?.id;
         }

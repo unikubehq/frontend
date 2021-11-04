@@ -7,6 +7,7 @@
   <a href="https://sonarcloud.io/dashboard?id=unikubehq_frontend"><img alt="SonarCloud Quality Gate" src="https://sonarcloud.io/api/project_badges/measure?project=unikubehq_frontend&metric=alert_status"></a>
   <a href="https://raw.githubusercontent.com/unikubehq/frontend/main/LICENSE"><img alt="License" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg"></a>
   <a href="https://github.com/unikubehq/frontend/releases"><img alt="GitHub release" src="https://img.shields.io/github/release/unikubehq/frontend.svg"></a>
+  <a href="https://unikubeworkspace.slack.com"><img alt="Unikube Slack Community" src="https://raw.githubusercontent.com/unikubehq/frontend/main/.github/slack.svg"></a>
 </p>
 
 # Unikube Frontend

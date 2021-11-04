@@ -41,7 +41,6 @@ const mutations = <MutationTree<State>>{
   },
   // eslint-disable-next-line
   setKeycloakClient(state, keycloak: any): void {
-    console.log('set client wgaaat');
     state.client = keycloak;
   },
 };

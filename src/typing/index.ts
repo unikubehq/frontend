@@ -1,6 +1,6 @@
 import { Ability, InferSubjects } from '@casl/ability';
-import { TProjectMember, TProjectNode } from '@/generated/graphql';
 import { TranslateResult } from 'vue-i18n';
+import { TProjectMember, TProjectNode } from '@/generated/graphql';
 
 export interface IPermission {
   rsid: string
