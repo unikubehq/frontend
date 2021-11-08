@@ -6,6 +6,7 @@ on:
       - '*'
 jobs:
   build_local_dev_docker_image:
+    timeout-minutes: 15
     name: Build docker images (dev and prod).
     runs-on: ubuntu-latest
     strategy:
