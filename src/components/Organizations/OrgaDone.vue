@@ -3,7 +3,9 @@
     <div v-if="rptRefreshed">
       <v-icon size="60">$vuetify.icons.done</v-icon>
       <h1>{{ $t('organization.wereDone') }}</h1>
-      <p class="text--secondary">{{ $t('organization.tada', orgaTitle) }}</p>orgaTitle
+      <p class="text--secondary">
+        {{ $t('organization.tada', { orgaTitle: this.orgaTitle }) }}
+      </p>
       <router-link to="/overview">{{ $t('organization.goToDashboard') }}</router-link>
     </div>
     <div v-else>
