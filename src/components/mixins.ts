@@ -112,3 +112,14 @@ export class AvatarMixin extends Vue {
     return randomHSL(this.avatar.name);
   }
 }
+
+@Component
+// eslint-disable-next-line import/prefer-default-export
+export class DefaultInputFieldMixin extends Vue {
+  inputProps = {
+    filled: true,
+    outlined: true,
+    persistentPlaceholder: true,
+    type: 'text',
+  }
+}

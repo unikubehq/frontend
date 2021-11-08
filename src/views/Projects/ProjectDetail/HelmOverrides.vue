@@ -7,7 +7,7 @@
     <br><br>
     <v-row>
       <v-col cols="12">
-        <editor :schemas="schemas" v-model="editorContent" @error="setError"/>
+        <editor :schemas="schemas" v-model="editorContent" language="yaml" @error="setError"/>
       </v-col>
     </v-row>
     <template v-slot:actions>

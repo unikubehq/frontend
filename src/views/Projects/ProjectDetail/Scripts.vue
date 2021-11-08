@@ -18,17 +18,7 @@
         </v-form>
       </v-col>
     </v-row>
-    <v-navigation-drawer
-        temporary
-        right
-        fixed
-        width="650"
-        light
-        class="no-bg-drawer"
-        v-model="overlay"
-      >
-      <script-overlay @hide="overlay = false;"/>
-    </v-navigation-drawer>
+    <script-form/>
   </div>
 </template>
 
@@ -45,7 +35,7 @@ import {
 import { validationMixin } from '@/components/mixins';
 import TranslateResult = VueI18n.TranslateResult;
 import Drawer from '@/components/general/Drawer.vue';
-import ScriptOverlay from '@/components/Projects/ScriptOverlay.vue';
+import ScriptForm from '@/components/Projects/ScriptForm.vue';
 
 @Component({
   validations: {
@@ -57,7 +47,7 @@ import ScriptOverlay from '@/components/Projects/ScriptOverlay.vue';
   },
   components: {
     Drawer,
-    ScriptOverlay,
+    ScriptForm,
   },
 })
 export default class Scripts extends validationMixin {
@@ -66,8 +56,6 @@ export default class Scripts extends validationMixin {
   port: string | null = null
 
   loading = false
-
-  overlay = false;
 
   get portErrors(): TranslateResult[] {
     return this.handleErrors('port');

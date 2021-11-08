@@ -21,6 +21,8 @@ export default class Editor extends Vue {
 
   @Prop() readonly value!: string;
 
+  @Prop() readonly language!: string;
+
   $refs!: {
     editor: HTMLElement
   };
@@ -46,18 +48,20 @@ export default class Editor extends Vue {
       colors: { comment: 'ff0000' },
     });
 
-    setDiagnosticsOptions({
-      enableSchemaRequest: true,
-      hover: true,
-      completion: true,
-      validate: true,
-      format: true,
-      schemas: this.schemas,
-    });
+    if (this.language === 'yaml') {
+      setDiagnosticsOptions({
+        enableSchemaRequest: true,
+        hover: true,
+        completion: true,
+        validate: true,
+        format: true,
+        schemas: this.schemas,
+      });
+    }
 
     this.editor = monaco.editor.create(this.$refs.editor, {
       value: '',
-      language: 'yaml',
+      language: this.language,
       theme: 'unikube',
       formatOnPaste: true,
       formatOnType: true,
