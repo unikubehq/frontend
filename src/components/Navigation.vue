@@ -1,5 +1,13 @@
 <template>
-    <v-navigation-drawer app dark width="300" :mini-variant="mini" mini-variant-width="96">
+    <v-navigation-drawer
+        app
+        dark
+        width="300"
+        :mini-variant="mini"
+        mini-variant-width="96"
+        mobile-breakpoint="0"
+        :disable-resize-watcher="true"
+    >
       <template slot="append">
         <v-img src="@/assets/img/navigation_background.svg" alt="Navigation Background"/>
         <v-list style="position:absolute; bottom: 10px; left: 0; width: 100%;">
@@ -175,6 +183,8 @@ export default class Navigation extends Vue {
 
   idToVerboseId = Strings.idToVerboseId
 
+  mobile = false;
+
   toggleMini(): void {
     this.$store.commit('context/setSidebarExpansion', !this.$store.state.context.sidebarExpanded);
   }
@@ -251,6 +261,8 @@ export default class Navigation extends Vue {
         this.$apollo.queries.allOrganizations.refetch();
       }
     });
+
+    this.$store.commit('context/setSidebarExpansion', window.outerWidth > 1180);
   }
 }
 </script>
