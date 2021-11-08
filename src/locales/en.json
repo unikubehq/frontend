@@ -260,7 +260,7 @@
     "goToDashboard": "Go to Dashboard",
     "finishingUp": "Finishing up...",
     "pleaseWait": "Please wait while we create a new organization for you.",
-    "tada": "Ta-da! { orgaTitle } has been created successfully. You can share the organization ID below with the team members you’d like to add in this project"
+    "tada": "Ta-da! {orgaTitle} has been created successfully. You can share the organization ID below with the team members you’d like to add in this project"
   },
   "views": {
     "overview": "Overview",

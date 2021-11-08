@@ -13,7 +13,7 @@
         <organization-logo v-if="step === 2" @success="logoCreation"
             :organization-id="organizationId" />
         <organization-members v-if="step === 4" @success="nextStep"/>
-        <orga-done v-if="step === 5" :orgaId="organizationId" :orgaTitle="organizationTitle" />
+        <orga-done v-if="step === 5" :orgaId="organizationId" :orga-title="organizationTitle" />
       </v-row>
     </v-container>
   </v-main>
