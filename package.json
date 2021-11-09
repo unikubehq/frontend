@@ -47,7 +47,7 @@
     "@cypress/code-coverage": "^3.9.11",
     "@graphql-codegen/add": "^3.1.0",
     "@graphql-codegen/cli": "2.2.1",
-    "@graphql-codegen/schema-ast": "^2.2.0",
+    "@graphql-codegen/schema-ast": "^2.4.0",
     "@graphql-codegen/typescript": "2.2.4",
     "@graphql-codegen/typescript-document-nodes": "2.1.6",
     "@graphql-codegen/typescript-operations": "2.1.8",
