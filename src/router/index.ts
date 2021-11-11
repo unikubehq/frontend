@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import * as Sentry from '@sentry/browser';
+import * as Sentry from '@sentry/vue';
 import VueRouter, { Route, RouteConfig } from 'vue-router';
 import CreateOrganization from '@/views/Organizations/CreateOrganization.vue';
 import i18n from '@/i18n';
