@@ -1,5 +1,6 @@
 <template>
   <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Payment</title>
     <g id="Icons/Small/Payment-Method-(blue)" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round">
         <g id="Group-11" transform="translate(1.000000, 3.000000)" stroke-width="2">
             <path d="M19.8,17.59945 L2.2,17.59945 C0.9856,17.59945 0,16.61495 0,15.39945 L0,2.19945 C0,0.98505 0.9856,-0.00055 2.2,-0.00055 L19.8,-0.00055 C21.0144,-0.00055 22,0.98505 22,2.19945 L22,15.39945 C22,16.61495 21.0144,17.59945 19.8,17.59945 Z" id="Stroke-1" stroke="#343D6F"></path>

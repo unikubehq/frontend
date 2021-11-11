@@ -1,5 +1,6 @@
 <template>
   <svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Organization</title>
     <defs>
         <polygon id="path-1" points="0.568765 0.608 10.714765 0.608 10.714765 4.297515 0.568765 4.297515"></polygon>
         <polygon id="path-3" points="0.162545 0.553185 14.920795 0.553185 14.920795 19 0.162545 19"></polygon>

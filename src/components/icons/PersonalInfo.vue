@@ -1,5 +1,6 @@
 <template>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="40" height="40" viewBox="0 0 40 40">
+  <title>Personal Information</title>
     <defs>
         <path id="zb80uhjbsa" d="M0 0.487L20 0.487 20 20 0 20z"/>
     </defs>

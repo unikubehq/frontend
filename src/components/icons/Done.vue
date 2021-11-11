@@ -1,5 +1,6 @@
 <template>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="40" height="40" viewBox="0 0 40 40">
+  <title>Done</title>
     <defs>
         <filter id="3ktbvyq8ca" width="182.5%" height="182.5%" x="-41.2%" y="-33.8%" filterUnits="objectBoundingBox">
             <feOffset dy="3" in="SourceAlpha" result="shadowOffsetOuter1"/>

@@ -1,5 +1,6 @@
 <template>
   <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Access Token</title>
     <g id="Icons/Small/Access-Token" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round">
         <g id="Group-7" transform="translate(4.000000, 2.000000)" stroke-width="2">
             <path d="M13.6454588,19.3035294 L1.88263529,19.3035294 C0.842635294,19.3035294 0.000282352941,18.4602353 0.000282352941,17.4211765 L0.000282352941,9.34494118 C0.000282352941,8.30494118 0.842635294,7.46258824 1.88263529,7.46258824 L13.6454588,7.46258824 C14.6845176,7.46258824 15.5278118,8.30494118 15.5278118,9.34494118 L15.5278118,17.4211765 C15.5278118,18.4602353 14.6845176,19.3035294 13.6454588,19.3035294 Z" id="Stroke-1" stroke="#C4CCD4"></path>

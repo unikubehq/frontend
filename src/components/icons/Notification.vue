@@ -1,5 +1,6 @@
 <template>
   <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Notification</title>
     <g id="Icons/Small/Notification" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="Group-13" transform="translate(2.000000, 0.000000)">
             <path d="M7.6871,2.76042412 C7.6871,1.32842412 8.8481,0.167424118 10.2801,0.167424118 C11.7131,0.167424118 12.8741,1.32842412 12.8741,2.76042412" id="Path" fill="#C4CCD4"></path>

@@ -1,5 +1,6 @@
 <template>
   <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Access User</title>
     <g id="Icons/Small/Access-Username" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round">
         <g id="Group-13" transform="translate(2.000000, 2.000000)" stroke-width="2">
             <path d="M10.1406667,4.16152381 C10.1406667,6.45961905 8.27685714,8.32342857 5.9787619,8.32342857 C3.68066667,8.32342857 1.81780952,6.45961905 1.81780952,4.16152381 C1.81780952,1.86342857 3.68066667,-0.000380952381 5.9787619,-0.000380952381 C8.27685714,-0.000380952381 10.1406667,1.86342857 10.1406667,4.16152381 Z" id="Stroke-1" stroke="#C4CCD4"></path>

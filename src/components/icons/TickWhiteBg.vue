@@ -1,5 +1,6 @@
 <template>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="44" height="45" viewBox="0 0 44 45">
+  <title>Tick</title>
     <defs>
         <circle id="mv1c60ltua" cx="20" cy="20" r="20"/>
         <circle id="sot24sk7od" cx="20" cy="20" r="12"/>

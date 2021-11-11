@@ -5,7 +5,7 @@
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
       xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>Icons/Small/Dropdown arrow (White)</title>
+    <title>Arrow Down</title>
     <g id="Icons/Small/Dropdown-arrow-(White)" stroke="none"
         stroke-width="1" fill="none" fill-rule="evenodd">
       <polyline id="Stroke-1" stroke="#FFFFFF" stroke-width="2"

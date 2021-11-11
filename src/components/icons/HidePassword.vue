@@ -1,5 +1,6 @@
 <template>
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="Name">
+    <title>Hide Password</title>
     <g stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round">
       <path
           d="M1 12.287S5.982 5.5 12.129 5.5c6.147 0 11.13 6.787 11.13 6.787m-2.334

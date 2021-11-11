@@ -1,7 +1,7 @@
 <template>
   <svg width="20px" height="18px" viewBox="0 0 20 18" version="1.1" xmlns="http://www.w3.org/2000/svg"
        xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>Group 2</title>
+    <title>Menu</title>
     <g id="Unikube-Central-Library" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
       <g id="Icons/Small/Nav-Collapse" transform="translate(-2.000000, -3.000000)" stroke="#FFFFFF"
          stroke-width="2">

@@ -5,7 +5,7 @@
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
       xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>Icons/Small/Settings</title>
+    <title>Settings</title>
     <g id="Icons/Small/Settings" stroke="none" stroke-width="1" fill="none"
         fill-rule="evenodd" stroke-linecap="round">
       <g id="Group-5" transform="translate(2.000000, 2.000000)" stroke-width="2">

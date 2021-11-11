@@ -5,7 +5,7 @@
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
       xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>Icons/Small/Join Organization</title>
+    <title>Join Organization</title>
     <g id="Icons/Small/Join-Organization"
         stroke="none"
         stroke-width="1"

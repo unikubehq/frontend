@@ -5,7 +5,7 @@
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
       xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>Icons/Small/Create Organization</title>
+    <title>Create Organization</title>
     <g id="Icons/Small/Create-Organization"
         stroke="none"
         stroke-width="1"

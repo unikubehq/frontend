@@ -1,6 +1,6 @@
 <template>
 <svg width="48px" height="39px" viewBox="0 0 48 39" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>Icons/Big/CLI</title>
+    <title>CLI</title>
     <g id="Unikube-Central-Library" stroke="none" stroke-width="4" fill="none" fill-rule="evenodd">
         <g id="Website---Icons" transform="translate(-50.000000, -115.000000)">
             <g id="Group-3" transform="translate(50.000000, 110.000000)">

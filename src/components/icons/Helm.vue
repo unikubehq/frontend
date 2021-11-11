@@ -1,5 +1,6 @@
 <template>
   <svg width="25px" height="25px" viewBox="0 0 25 25" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Helm</title>
     <g id="Unikube-Central-Library" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="Webapp---Icons" transform="translate(-40.000000, -420.000000)">
             <g id="Group-Copy-2" transform="translate(40.000000, 420.000000)">
