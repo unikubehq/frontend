@@ -1,6 +1,7 @@
 import { AbilityBuilder, Ability, SubjectRawRule } from '@casl/ability';
 import jwtDecode from 'jwt-decode';
 import Vue from 'vue';
+import * as Sentry from '@sentry/vue';
 import { ActionTree, MutationTree } from 'vuex';
 import {
   Action as UAction, IPermission, UnikubeAbility,
@@ -35,6 +36,7 @@ const mutations = <MutationTree<State>>{
     state.username = state.rpt.name;
     state.email = state.rpt.email;
     state.uuid = state.rpt.sub;
+    Sentry.setUser({ email: state.email });
   },
   setAvatar(state, avatarUrl: string): void {
     state.avatarImage = avatarUrl;
@@ -61,6 +63,7 @@ const actions = <ActionTree<State, any>>{
     });
   },
   logout(context): void {
+    Sentry.configureScope((scope) => scope.setUser(null));
     context.state.client.logout();
   },
   scheduleRefresh(context): void {
