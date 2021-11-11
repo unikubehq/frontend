@@ -1,6 +1,6 @@
 <template>
   <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-      <title>Icons/Small/Organization Settings (blue)</title>
+      <title>Organization Settings</title>
       <g id="Icons/Small/Organization-Settings-(blue)" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
           <g id="Group-11" transform="translate(1.000000, 3.000000)">
               <path d="M18,15.981 L18,18 L2,18 L2,2.07 C2,0.927 2.927,0 4.07,0 L15.93,0 C17.073,0 18,0.927 18,2.07 L18,2.893" id="Stroke-1" stroke="#343D6F" stroke-width="2" stroke-linecap="round"></path>

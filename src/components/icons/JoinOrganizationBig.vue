@@ -1,6 +1,6 @@
 <template>
   <svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>Icons/Big/Join Organization</title>
+    <title>Join Organization</title>
     <defs>
         <polygon id="path-1" points="0.922802307 0.829564772 20 0.829564772 20 16.9562363 0.922802307 16.9562363"></polygon>
         <polygon id="path-3" points="0.2176 0.9834 3.2346 0.9834 3.2346 4 0.2176 4"></polygon>

@@ -1,5 +1,6 @@
 <template>
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="Name">
+    <title>Password</title>
     <g id="Icons/Small/Password" stroke="none" stroke-width="1" fill="none"
        fill-rule="evenodd" stroke-linecap="round">
       <g id="Group-9" transform="translate(2.000000, 3.000000)" stroke-width="2">

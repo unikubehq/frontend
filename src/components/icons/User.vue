@@ -1,5 +1,6 @@
 <template>
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="Name">
+    <title>User</title>
     <g id="Icons/Small/Name" stroke="none" stroke-width="1" fill="none"
        fill-rule="evenodd" stroke-linecap="round">
       <g id="Group-7" transform="translate(4.000000, 3.000000)" stroke-width="2">

@@ -1,5 +1,6 @@
 <template>
   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21">
+    <title>Arrow Right</title>
     <g fill="none" fill-rule="evenodd">
       <g fill="#A1A9B2">
         <g>

@@ -1,6 +1,6 @@
 <template>
   <svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>Icons/Big/Create Organization</title>
+    <title>Create Organization</title>
     <g id="Icons/Big/Create-Organization" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <path d="M5.6792,61.5036 L5.2642,61.3806 C5.1022,61.3326 4.9752,61.2046 4.9262,61.0426 L4.8032,60.6286 L4.6082,60.6286 L4.4852,61.0426 C4.4372,61.2046 4.3092,61.3326 4.1472,61.3806 L3.7332,61.5036 L3.7332,61.6986 L4.1472,61.8216 C4.3092,61.8706 4.4372,61.9976 4.4852,62.1596 L4.6082,62.5746 L4.8032,62.5746 L4.9262,62.1596 C4.9752,61.9976 5.1022,61.8706 5.2642,61.8216 L5.6792,61.6986 L5.6792,61.5036 Z" id="Fill-8" fill="#343D6F"></path>
         <g id="Group-55" transform="translate(0.000000, 2.000000)">

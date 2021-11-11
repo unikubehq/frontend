@@ -1,5 +1,6 @@
 <template>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48" viewBox="0 0 48 48">
+  <title>Project</title>
     <defs>
         <path id="ikafgoewza" d="M0.263 0.354L15.614 0.354 15.614 14.621 0.263 14.621z"/>
         <path id="v13y93tinc" d="M0 0.812L3.188 0.812 3.188 4 0 4z"/>

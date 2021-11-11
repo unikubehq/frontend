@@ -1,5 +1,6 @@
 <template>
   <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Organization Role</title>
     <g id="Icons/Small/Organization-Roles" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round">
         <g id="Group-11" transform="translate(2.000000, 3.000000)" stroke-width="2">
             <path d="M16.6224,4.4571 C16.6224,6.9181 14.6274,8.9141 12.1654,8.9141 C9.7034,8.9141 7.7084,6.9181 7.7084,4.4571 C7.7084,1.9951 9.7034,0.0001 12.1654,0.0001 C14.6274,0.0001 16.6224,1.9951 16.6224,4.4571 Z" id="Stroke-1" stroke="#C4CCD4"></path>

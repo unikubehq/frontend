@@ -1,5 +1,6 @@
 <template>
   <svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Add Member</title>
     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <rect id="Rectangle" fill="#F1FBF3" x="0" y="0" width="40" height="40" rx="4"></rect>
         <g id="Group-22" transform="translate(8.000000, 10.000000)">

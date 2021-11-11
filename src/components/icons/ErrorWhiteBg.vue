@@ -1,5 +1,6 @@
 <template>
 <svg width="44" height="45" viewBox="0 0 44 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <title>Error</title>
 <mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="2" y="0" width="40" height="40">
 <path d="M22 40C33.0457 40 42 31.0457 42 20C42 8.9543 33.0457 0 22 0C10.9543 0 2 8.9543 2 20C2 31.0457 10.9543 40 22 40Z" fill="white"/>
 </mask>

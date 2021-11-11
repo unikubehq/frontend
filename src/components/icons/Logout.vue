@@ -1,7 +1,7 @@
 <template>
   <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1"
        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>Icons/Small/Logout</title>
+    <title>Logout</title>
     <g id="Icons/Small/Logout" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"
        stroke-linecap="round">
       <g id="Group-9" transform="translate(2.000000, 2.000000)" stroke-width="2">

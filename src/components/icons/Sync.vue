@@ -1,5 +1,6 @@
 <template>
   <svg width="23px" height="23px" viewBox="0 0 23 23" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Synchronize</title>
     <g id="Unikube-Central-Library" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="Webapp---Icons" transform="translate(-41.000000, -335.000000)">
             <g id="Group" transform="translate(40.000000, 334.000000)">

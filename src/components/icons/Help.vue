@@ -5,7 +5,7 @@
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
       xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>Icons/Small/Help</title>
+    <title>Help</title>
     <defs>
       <polygon id="path-1" points="0.1733 0.8388 3.605 0.8388 3.605 4.2698 0.1733 4.2698"></polygon>
     </defs>

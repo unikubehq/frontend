@@ -1,5 +1,6 @@
 <template>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="120" height="120" viewBox="0 0 120 120">
+  <title>Not Found</title>
     <defs>
         <path id="9t7ptmmn0a" d="M0.004 0.538L21.473 0.538 21.473 26.716 0.004 26.716z"/>
     </defs>

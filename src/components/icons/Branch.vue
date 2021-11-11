@@ -1,5 +1,6 @@
 <template>
   <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Branch</title>
     <g id="Icons/Small/Repository-Branch" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round">
         <g id="Group-11" transform="translate(2.000000, 3.000000)" stroke-width="2">
             <path d="M19.3056,17.9563 L14.8366,17.9563 C14.3426,17.9563 13.9436,17.5563 13.9436,17.0623 L13.9436,13.4873 C13.9436,12.9943 14.3426,12.5943 14.8366,12.5943 L19.3056,12.5943 C19.7986,12.5943 20.1996,12.9943 20.1996,13.4873 L20.1996,17.0623 C20.1996,17.5563 19.7986,17.9563 19.3056,17.9563 Z" id="Stroke-1" stroke="#C4CCD4"></path>

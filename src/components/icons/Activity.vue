@@ -5,7 +5,7 @@
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
       xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>Icons/Small/Activity</title>
+    <title>Activity</title>
     <g id="Icons/Small/Activity" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
       <g id="Group-9" transform="translate(3.000000, 2.000000)">
         <path d="M18,12.3235412 L18,17.9596588 C18,19.1518941 17.136,20.1175412

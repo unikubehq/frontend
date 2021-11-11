@@ -5,7 +5,7 @@
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
       xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>Icons/Small/Overview</title>
+    <title>Overview</title>
     <g id="Icons/Small/Overview" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
       <g id="Group-11" transform="translate(3.000000, 3.000000)">
         <path d="M16.9619,19.0002 L2.0379,19.0002 C0.9119,19.0002 -0.0001,18.0872

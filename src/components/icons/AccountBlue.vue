@@ -1,5 +1,6 @@
 <template>
   <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Account</title>
     <defs>
         <polygon id="account-blue-wheel" points="0.0014 0.4849 11.517 0.4849 11.517 11.9999 0.0014 11.9999"></polygon>
     </defs>
