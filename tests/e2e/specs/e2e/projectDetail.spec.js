@@ -35,7 +35,7 @@ describe('ProjectDetail', () => {
     });
     cy.login(true, false, true);
     cy.visit('/overview');
-    cy.get('.project-card__wrapper .project-card__detail').first().click();
+    cy.get('.project-card__wrapper a .project-card__detail').first().parent().click();
     cy.location('href').should('include', '/project/');
     cy.location().then((loc) => {
       cy.get('.project-detail__title').should('contain', project.project.title);
