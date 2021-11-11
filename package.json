@@ -50,7 +50,7 @@
     "@graphql-codegen/typescript": "2.2.4",
     "@graphql-codegen/typescript-document-nodes": "2.1.6",
     "@graphql-codegen/typescript-operations": "2.1.8",
-    "@intlify/vue-i18n-loader": "^1.1.0",
+    "@intlify/vue-i18n-loader": "^3.3.0",
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
     "@sentry/webpack-plugin": "^1.18.3",
     "@types/chai": "^4.2.22",
