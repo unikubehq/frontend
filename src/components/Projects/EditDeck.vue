@@ -17,7 +17,6 @@
                   v-model="title"
                   @blur="$v.title.$touch()"
                   :error-messages="titleErrors"
-                  prepend-inner-icon="$vuetify.icons.user"
                     persistent-placeholder
                 />
             </v-col>
@@ -30,7 +29,6 @@
                 type="text"
                 :placeholder="$t('deck.edit.environments.enterDescription')"
                 v-model="description"
-                prepend-inner-icon="$vuetify.icons.user"
                   persistent-placeholder
               />
             </v-col>
@@ -92,7 +90,6 @@
                   type="text"
                   :placeholder="$t('deck.edit.environments.enterNamespace')"
                   v-model="namespace"
-                  prepend-inner-icon="$vuetify.icons.user"
                   persistent-placeholder
                 />
               </v-col>
