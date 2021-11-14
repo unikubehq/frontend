@@ -17,11 +17,13 @@ jobs:
             keycloak_url: https://login.unikube.io/auth
             upload_url: https://api.unikube.io/upload
             tag_suffix: ''
+            sentry_env: production
           # dev image
           - graphql_url: http://gateway.unikube.127.0.0.1.nip.io:8085/graphql
             keycloak_url: http://keycloak.127.0.0.1.nip.io:8085/auth
             upload_url: http://gateway.unikube.127.0.0.1.nip.io:8085/upload
             tag_suffix: '-dev'
+            sentry_env: development
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -64,6 +66,7 @@ jobs:
             VUE_APP_GRAPHQL_URL=${{ matrix.graphql_url }}
             VUE_APP_KEYCLOAK_URL=${{ matrix.keycloak_url }}
             VUE_APP_UPLOAD_URL=${{ matrix.upload_url }}
+            VUE_APP_SENTRY_ENVIRONMENT=${{ matrix.sentry_env }}
             VUE_APP_VERSION=${{ steps.meta.outputs.version }}
             SENTRY_RELEASE=${{ steps.meta.outputs.version }}
             VUE_APP_SENTRY_DSN=${{ secrets.SENTRY_DSN }}

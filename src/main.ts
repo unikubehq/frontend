@@ -90,10 +90,12 @@ if (process.env.NODE_ENV === 'e2e') {
     checkLoginIframe: false,
   }).then((authenticated: boolean) => {
     if (authenticated) {
-      if (process.env.NODE_ENV === 'production') {
+      if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_SENTRY_DSN) {
         Sentry.init({
           Vue,
           dsn: process.env.VUE_APP_SENTRY_DSN,
+          release: `unikube-frontend@${process.env.VUE_APP_VERSION}`,
+          environment: process.env.VUE_APP_SENTRY_ENVIRONMENT,
         });
       }
 
