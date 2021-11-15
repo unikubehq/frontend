@@ -95,7 +95,7 @@
               </v-col>
           </v-row>
           <v-row>
-              <v-col cols="6" class="mt-2">
+              <v-col cols="5" class="mt-2">
                <a
                   class="link--secondary"
                   @click="$emit('change')"
@@ -109,7 +109,7 @@
                   </v-icon>{{ $t('general.cancel') }}
                </a>
               </v-col>
-              <v-col cols="2" offset="1">
+              <v-col cols="3" offset="1">
                 <v-btn
                 class="helmOverridesButton"
                 large
