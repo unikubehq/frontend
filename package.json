@@ -16,7 +16,7 @@
     "release": "dotenv release-it"
   },
   "dependencies": {
-    "@apollo/client": "^3.3.18",
+    "@apollo/client": "^3.4.17",
     "@casl/ability": "^5.4.3",
     "@casl/vue": "^1.2.2",
     "@sentry/vue": "^6.14.0",
@@ -78,7 +78,7 @@
     "cypress": "^8.5.0",
     "dotenv-cli": "^4.0.0",
     "eslint": "^7.32.0",
-    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-vue": "^7.20.0",
     "istanbul-lib-coverage": "^3.2.0",
     "lint-staged": "^11.2.4",
