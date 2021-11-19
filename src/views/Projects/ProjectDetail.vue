@@ -80,6 +80,10 @@
               :to="{name: 'project.detail.clusterSettings'}">
             {{ $t('projects.clusterSettings') }}
           </v-tab>
+          <v-tab v-if="project.gitSettings | true" :ripple="false"
+              :to="{name: 'project.detail.gitSettings'}">
+            {{ $t('projects.gitSettings') }}
+          </v-tab>
         </v-tabs>
         <div class="py-8">
           <router-view :project="project" @update="updateProject"></router-view>

@@ -136,6 +136,14 @@ const routes: Array<RouteConfig> = [
               label: i18n.t('views.project.clusterSettings'),
             },
           },
+          {
+            path: '/project/:slug/git-settings',
+            name: 'project.detail.gitSettings',
+            component: () => import('../views/Projects/ProjectDetail/GitSettings.vue'),
+            meta: {
+              label: i18n.t('views.project.gitSettings'),
+            },
+          },
         ],
       },
     ],
