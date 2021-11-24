@@ -49,7 +49,7 @@
     "@graphql-codegen/schema-ast": "^2.4.0",
     "@graphql-codegen/typescript": "2.4.1",
     "@graphql-codegen/typescript-document-nodes": "2.1.6",
-    "@graphql-codegen/typescript-operations": "2.2.0",
+    "@graphql-codegen/typescript-operations": "2.2.1",
     "@intlify/vue-i18n-loader": "^3.3.0",
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
     "@sentry/webpack-plugin": "^1.18.3",
