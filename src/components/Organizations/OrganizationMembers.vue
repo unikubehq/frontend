@@ -30,12 +30,6 @@
         large
         @click="inviteEmails"
       >{{ $t('general.finish') }}</v-btn>
-      <small class="text-center">{{ $t('general.or') }}
-        <a href="#" @click="$emit('success')">
-          {{ $t('organization.skip') }}
-        </a>
-        {{ $t('organization.forNow') }}
-      </small>
     </v-form>
   </v-col>
 </template>
