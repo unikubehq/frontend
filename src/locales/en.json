@@ -79,8 +79,7 @@
     "saveChanges": "Save Changes",
     "disagree": "Disagree",
     "returnOverview": "to return to overview",
-    "finish": "Finish",
-    "or": "Or"
+    "finish": "Finish"
   },
   "errors": {
     "requiredError": "This field is required.",
@@ -249,8 +248,6 @@
     "createNameOfOrganization": "Tell us the name of your organization.",
     "addTeamMember": "Add Team Members",
     "addAnother": "Add another",
-    "skip": "Skip",
-    "forNow": "this for now",
     "haveLogo": "Do you have a logo?",
     "createNewHead": "Create New Organization",
     "uploadLogo": "Upload Logo",
