@@ -5,14 +5,61 @@
 // and then use the `file:preprocessor` event
 // as explained in the cypress docs
 // https://docs.cypress.io/api/plugins/preprocessors-api.html#Examples
-
+const path = require('path');
 // /* eslint-disable import/no-extraneous-dependencies, global-require */
-// const webpack = require('@cypress/webpack-preprocessor')
+const webpack = require('@cypress/webpack-preprocessor');
+// The webpack pre-processor is used to make sure all compiled files are also
+// instrumented. Otherwise we have experienced some issues - e.g. the Vuex store files
+// have not been instrumented properly and therefore seemed to have no code coverage.
 
 module.exports = (on, config) => {
   /* eslint-disable import/no-extraneous-dependencies */
   require('@cypress/code-coverage/task')(on, config);
+  const options = webpack.defaultOptions;
+  options.webpackOptions.resolve = {
+    alias: {
+      '@': path.resolve(__dirname, '../../../src'),
+    },
+    extensions: [
+      '.tsx',
+      '.ts',
+      '.mjs',
+      '.js',
+      '.jsx',
+      '.vue',
+      '.json',
+    ],
+  };
+  options.webpackOptions.module.rules.push({
+    test: /\.ts$/,
+    use: [
+      {
+        loader: './node_modules/cache-loader/dist/cjs.js',
+        options: {
+          cacheDirectory: './node_modules/.cache/ts-loader',
+          cacheIdentifier: '21abf4fa',
+        },
+      },
+      {
+        loader: './node_modules/babel-loader/lib/index.js',
+      },
+      {
+        loader: './node_modules/ts-loader/index.js',
+        options: {
+          transpileOnly: true,
+          appendTsSuffixTo: [
+            '\\.vue$',
+          ],
+          happyPackMode: false,
+        },
+      },
+    ],
+  });
 
+  on(
+    'file:preprocessor',
+    webpack(options),
+  );
   return {
     ...config,
     fixturesFolder: 'tests/e2e/fixtures',
