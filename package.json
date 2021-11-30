@@ -6,8 +6,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
-    "test:e2e": "NODE_ENV='e2e' nyc --reporter=lcov --reporter=text vue-cli-service test:e2e",
-    "test:e2e:ci": "NODE_ENV='e2e' nyc --reporter=lcov --reporter=text vue-cli-service test:e2e --headless --browser chrome",
+    "test:e2e": "NODE_ENV='e2e' CYPRESS_coverage=true nyc --reporter=lcov --reporter=text vue-cli-service test:e2e",
+    "test:e2e:ci": "NODE_ENV='e2e' CYPRESS_coverage=true nyc --reporter=lcov --reporter=text vue-cli-service test:e2e --headless --browser chrome",
     "test:report": "nyc report --reporter=text",
     "lint": "vue-cli-service lint",
     "codegen": "graphql-codegen --config codegen.yml",
@@ -44,6 +44,7 @@
   "devDependencies": {
     "@babel/runtime": "^7.16.3",
     "@cypress/code-coverage": "^3.9.11",
+    "@cypress/webpack-preprocessor": "^5.10.0",
     "@graphql-codegen/add": "^3.1.0",
     "@graphql-codegen/cli": "2.2.1",
     "@graphql-codegen/schema-ast": "^2.4.0",

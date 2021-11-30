@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import store from '@/store';
+import store from '@/store/index.ts';
 import organization from '../fixtures/organizations/organization.json';
 import organizationBlueshoe from '../fixtures/organizations/organization_blueshoe.json';
 import allProjects from '../fixtures/projects/allProjectsQuery.json';
