@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "@babel/runtime": "^7.16.3",
-    "@cypress/code-coverage": "^3.9.11",
+    "@cypress/code-coverage": "^3.9.12",
     "@cypress/webpack-preprocessor": "^5.10.0",
     "@graphql-codegen/add": "^3.1.0",
     "@graphql-codegen/cli": "2.2.1",
