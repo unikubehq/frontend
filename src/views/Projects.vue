@@ -30,8 +30,12 @@
           <v-col></v-col>
         </v-row>
       </div>
-    <v-pagination v-if="listLength > 1"
-        :length="listLength" v-model="currentPage" v-on:input="changeOffset($event)" />
+    <v-pagination
+      next-icon="$vuetify.icons.dropdown"
+      prev-icon="$vuetify.icons.dropdown"
+      :length="listLength"
+      v-model="currentPage"
+      v-on:input="changeOffset($event)" />
   </div>
 </template>
 

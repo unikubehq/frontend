@@ -188,3 +188,10 @@
 .v-navigation-drawer__headline {
   background-color: $unikube-blue;
 }
+
+.v-pagination li:first-child .v-pagination__navigation .v-icon {
+  transform: scale(0.6) rotate(90deg);
+}
+.v-pagination li:last-child .v-pagination__navigation .v-icon {
+  transform: scale(0.6) rotate(-90deg);
+}
