@@ -21,17 +21,16 @@ describe('Overview', () => {
     cy.visit('/overview');
     cy.wait('@Overview');
     cy.wait('@ProjectsQuery');
-
-    cy.get('.project-card__wrapper h3').first().should('contain', 'Awesome Blueshoe Project');
-    cy.get('.project-card__wrapper h3').last().should('contain', 'Unikube Cypress Project');
+    cy.get('.project-card__wrapper h3').first().contains('Awesome Blueshoe Project');
+    cy.get('.project-card__wrapper h3').last().contains('Unikube Cypress Project');
     cy.get('.projects__order-dropdown').click();
     cy.get('.v-menu__content .v-list-item').last().click();
-    cy.get('.project-card__wrapper h3').first().should('contain', 'Unikube Cypress Project');
-    cy.get('.project-card__wrapper h3').last().should('contain', 'Awesome Blueshoe Project');
+    cy.get('.project-card__wrapper h3').first().contains('Unikube Cypress Project');
+    cy.get('.project-card__wrapper h3').last().contains('Awesome Blueshoe Project');
     cy.get('.projects__order-dropdown').click();
     cy.get('.v-menu__content .v-list-item').first().click();
-    cy.get('.project-card__wrapper h3').first().should('contain', 'Awesome Blueshoe Project');
-    cy.get('.project-card__wrapper h3').last().should('contain', 'Unikube Cypress Project');
+    cy.get('.project-card__wrapper h3').first().contains('Awesome Blueshoe Project');
+    cy.get('.project-card__wrapper h3').last().contains('Unikube Cypress Project');
   });
 
   it('filter projects on search bar input', () => {
