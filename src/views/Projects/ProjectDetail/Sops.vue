@@ -173,14 +173,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop } from 'vue-property-decorator';
+import { Component, Prop, Watch } from 'vue-property-decorator';
 import VueI18n from 'vue-i18n';
 import {
   required, requiredIf, ValidationFunc, ValidationRule,
 } from 'vuelidate/lib/validators';
 import {
   CreateUpdateSops,
-  Maybe, TCreateUpdateSopsMutationVariables,
+  Maybe, Scalars, TCreateUpdateSopsMutationVariables,
   TProjectNode,
   TSopsProviderNode,
   TSopsTypeEnum,
@@ -205,7 +205,7 @@ export default class Sops extends validationMixin {
 
   description: null | undefined | string = ''
 
-  projectId = this?.project?.id || null
+  projectId: Maybe<Scalars['UUID']> = null
 
   secret1 = ''
 
@@ -421,6 +421,11 @@ export default class Sops extends validationMixin {
       return 'PGP';
     }
     return '';
+  }
+
+  @Watch('project', { deep: true })
+  projectChanged(value: TProjectNode): void {
+    this.projectId = value.id;
   }
 }
 </script>

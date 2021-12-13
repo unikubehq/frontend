@@ -54,8 +54,8 @@
                     outlined
                     type="text"
                     :placeholder="$t('deck.edit.environments.enterType')"
-                    v-model="environmentsType"
-                    :items="environmentsTypeChoices"
+                    v-model="environmentType"
+                    :items="environmentTypeChoices"
                     persistent-placeholder
                   />
                 </v-col>
@@ -153,7 +153,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop } from 'vue-property-decorator';
+import { Component, Prop, Watch } from 'vue-property-decorator';
 import { required } from 'vuelidate/lib/validators';
 import VueI18n from 'vue-i18n';
 import {
@@ -193,19 +193,19 @@ export default class EditDeck extends validationMixin {
 
   @Prop() readonly deck!: TDeckNode
 
-  title = this.environment?.title
+  title = ''
 
-  description = this.environment?.description || ''
+  description = ''
 
-  namespace = this.environment?.namespace
+  namespace = ''
 
-  sopsCredentials: sopsCredential = this.environment?.sopsCredentials ? { text: this.environment?.sopsCredentials?.title, value: this.environment?.sopsCredentials?.id } : { text: '', value: '' }
+  sopsCredentials: sopsCredential = { text: '', value: '' }
 
   environmentTypeChoices = [{ text: 'Local', value: TEnvironmentType.Local }, { text: 'Remote', value: TEnvironmentType.Remote }]
 
-  environmentType: TEnvironmentType = this.environment?.type || TEnvironmentType.Local
+  environmentType: TEnvironmentType = TEnvironmentType.Local
 
-  valuesPath = this.environment?.valuesPath ? { text: this.environment?.valuesPath, value: this.environment?.valuesPath } : { text: '', value: '' }
+  valuesPath = { text: '', value: '' }
 
   showForm = false;
 
@@ -267,6 +267,15 @@ export default class EditDeck extends validationMixin {
 
   get titleErrors(): TranslateResult[] {
     return this.handleErrors('title');
+  }
+
+  @Watch('environment', { deep: true, immediate: true })
+  environmentChanged(value: TEnvironmentNode): void {
+    this.title = value.title;
+    this.namespace = value.namespace;
+    this.environmentType = value.type;
+    this.sopsCredentials = value.sopsCredentials ? { text: value.sopsCredentials?.title, value: value.sopsCredentials?.id } : { text: '', value: '' };
+    this.valuesPath = value.valuesPath ? { text: value.valuesPath, value: value.valuesPath } : { text: '', value: '' };
   }
 }
 </script>
