@@ -1,9 +1,9 @@
 <template>
   <v-row>
-    <v-col class="d-flex align-center">
+    <v-col cols="12" lg="2" class="d-flex align-center">
       <h2 style="font-weight: 500;">{{ $t('projects.projectList') }}</h2>
     </v-col>
-    <v-col class="d-flex flex-row align-center justify-space-between">
+    <v-col cols="12" lg="10" class="d-flex align-center mt-n12 mt-lg-0">
       <v-text-field outlined filled prepend-inner-icon="$vuetify.icons.search" v-model="search"
           placeholder="Search" @input="$emit('search-change', search)" class="search__input"/>
       <v-select
