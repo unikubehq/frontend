@@ -50,7 +50,7 @@
               <v-icon size="24" @click="member.editing = false;" class="mr-5">
                 $vuetify.icons.cross
               </v-icon>
-              <v-btn color="neutral" dark @click="updateMember(member)" :ripple="false"
+              <v-btn color="primary" dark @click="updateMember(member)" :ripple="false"
                   elevation="0" :loading="member.loading">
                 {{ $t('general.save') }}
               </v-btn>
@@ -86,7 +86,7 @@
                 @click="removePendingMember(idx)" :ripple="false">
               <v-icon size="24">$vuetify.icons.cross</v-icon>
             </v-btn>
-            <v-btn color="neutral" dark @click="addMember(idx)" :ripple="false" elevation="0"
+            <v-btn color="primary" dark @click="addMember(idx)" :ripple="false" elevation="0"
                 :loading="pendingMember.loading">
               {{ $t('general.save') }}
             </v-btn>
