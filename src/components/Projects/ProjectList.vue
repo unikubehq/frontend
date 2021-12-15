@@ -63,8 +63,10 @@
     <v-row justify="space-around" class="white pl-5 pt-3 pb-3 pr-10">
       <v-col>
         <h4>
-          <span v-if="loading"><v-skeleton-loader type="heading" tile/></span>
-          <span v-else v-text="project.currentCommit || '-'"></span>
+          <span v-if="loading">
+            <v-skeleton-loader type="heading" tile />
+          </span>
+          <span v-else>{{ project.currentCommit || '-' }}</span>
         </h4>
         <small>Commit</small>
       </v-col>
