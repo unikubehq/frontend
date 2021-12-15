@@ -77,7 +77,7 @@
 <script lang="ts">
 
 export default {
-  name: 'Settings.vue',
+  name: 'SettingsView',
 };
 </script>
 

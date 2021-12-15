@@ -42,7 +42,7 @@ function initializeUnikubeApp(mode: string) {
   Vue.use(VueApollo);
   Vue.use(Vuelidate);
   Vue.use(abilitiesPlugin, ability);
-  Vue.component('Can', Can);
+  Vue.component('CaslCan', Can);
   Vue.axios.defaults.baseURL = process.env.VUE_APP_UPLOAD_URL;
   let auth;
   if (mode !== 'e2e') {
