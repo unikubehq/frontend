@@ -92,7 +92,7 @@
             </v-btn>
           </td>
         </tr>
-        <tr>
+        <tr v-if="$can('edit', project)">
           <td colspan="4">
             <v-btn :ripple="false" color="transparent" elevation="0"
                 @click="pendingMembers.push({user: null, role: null, loading: false})"
