@@ -3,20 +3,6 @@ schema {
   mutation: Mutation
 }
 
-directive @composedGraph(version: Int!) on SCHEMA
-
-directive @graph(name: String!, url: String!) on SCHEMA
-
-directive @key(fields: String!, graph: String!) on OBJECT
-
-directive @owner(graph: String!) on OBJECT
-
-directive @provides(fields: String!) on FIELD_DEFINITION
-
-directive @requires(fields: String!) on FIELD_DEFINITION
-
-directive @resolve(graph: String!) on FIELD_DEFINITION
-
 type AWSKMSNode {
   accessKey: String!
   description: String

@@ -1,6 +1,7 @@
 /* eslint-disable */
 import gql from 'graphql-tag';
 export type Maybe<T> = T | null | undefined;
+export type InputMaybe<T> = T | null | undefined;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
@@ -11,6 +12,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  _FieldSet: any;
   DateTime: any;
   JSONString: any;
   UUID: any;
@@ -44,16 +46,16 @@ export type TCreateProjectMember = {
 };
 
 export type TCreateUpdateEnvironmentInput = {
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   deck: Scalars['ID'];
-  description?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['ID']>;
+  description?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
   namespace: Scalars['String'];
-  sopsCredentials?: Maybe<Scalars['ID']>;
+  sopsCredentials?: InputMaybe<Scalars['ID']>;
   title: Scalars['String'];
   type: Scalars['String'];
-  valuesPath?: Maybe<Scalars['String']>;
-  valuesType?: Maybe<Scalars['String']>;
+  valuesPath?: InputMaybe<Scalars['String']>;
+  valuesType?: InputMaybe<Scalars['String']>;
 };
 
 export type TCreateUpdateEnvironmentPayload = {
@@ -69,11 +71,11 @@ export type TCreateUpdateHelmOverrides = {
 };
 
 export type TCreateUpdateOrganizationInput = {
-  avatarImage?: Maybe<Scalars['String']>;
-  clientMutationId?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['ID']>;
-  onTrial?: Maybe<Scalars['Boolean']>;
+  avatarImage?: InputMaybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  onTrial?: InputMaybe<Scalars['Boolean']>;
   title: Scalars['String'];
 };
 
@@ -112,13 +114,13 @@ export type TDeckNode = {
 
 
 export type TDeckNodeDeploymentsArgs = {
-  level?: Maybe<Scalars['String']>;
-  switchable?: Maybe<Scalars['Boolean']>;
+  level?: InputMaybe<Scalars['String']>;
+  switchable?: InputMaybe<Scalars['Boolean']>;
 };
 
 
 export type TDeckNodeEnvironmentArgs = {
-  level?: Maybe<Scalars['String']>;
+  level?: InputMaybe<Scalars['String']>;
 };
 
 export type TDeckNodePage = {
@@ -243,21 +245,21 @@ export type TMutation = {
 
 
 export type TMutationAnswerInvitationArgs = {
-  accepted?: Maybe<Scalars['Boolean']>;
-  id?: Maybe<Scalars['UUID']>;
+  accepted?: InputMaybe<Scalars['Boolean']>;
+  id?: InputMaybe<Scalars['UUID']>;
 };
 
 
 export type TMutationCreateInvitationArgs = {
-  email?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['UUID']>;
+  email?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
 };
 
 
 export type TMutationCreateProjectMemberArgs = {
-  id?: Maybe<Scalars['UUID']>;
-  role?: Maybe<TProjectMemberRoleEnum>;
-  user?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  role?: InputMaybe<TProjectMemberRoleEnum>;
+  user?: InputMaybe<Scalars['UUID']>;
 };
 
 
@@ -267,8 +269,8 @@ export type TMutationCreateUpdateEnvironmentArgs = {
 
 
 export type TMutationCreateUpdateHelmOverridesArgs = {
-  environmentId?: Maybe<Scalars['UUID']>;
-  overrides?: Maybe<Scalars['String']>;
+  environmentId?: InputMaybe<Scalars['UUID']>;
+  overrides?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -283,45 +285,45 @@ export type TMutationCreateUpdateProjectArgs = {
 
 
 export type TMutationCreateUpdateSopsArgs = {
-  id?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
   sopsData: TSopsInputType;
 };
 
 
 export type TMutationDeleteAvatarArgs = {
-  id?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
 };
 
 
 export type TMutationDeleteEnvironmentArgs = {
-  id?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
 };
 
 
 export type TMutationDeleteProjectArgs = {
-  id?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
 };
 
 
 export type TMutationDeleteProjectMemberArgs = {
-  id?: Maybe<Scalars['UUID']>;
-  user?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  user?: InputMaybe<Scalars['UUID']>;
 };
 
 
 export type TMutationDeleteSopsArgs = {
-  id?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
 };
 
 
 export type TMutationRemoveOrganizationMemberArgs = {
-  id?: Maybe<Scalars['UUID']>;
-  user?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  user?: InputMaybe<Scalars['UUID']>;
 };
 
 
 export type TMutationRevokeInvitationArgs = {
-  id?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
 };
 
 
@@ -331,14 +333,14 @@ export type TMutationUpdateClusterSettingsArgs = {
 
 
 export type TMutationUpdateOrganizationMemberArgs = {
-  id?: Maybe<Scalars['UUID']>;
-  role?: Maybe<TOrganizationMemberRoleEnum>;
-  user?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  role?: InputMaybe<TOrganizationMemberRoleEnum>;
+  user?: InputMaybe<Scalars['UUID']>;
 };
 
 
 export type TMutationUpdateProjectRepositoryArgs = {
-  id?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
 };
 
 export type TOrganizationInvitationNode = {
@@ -399,10 +401,10 @@ export type TPgpKeyNode = {
 };
 
 export type TProjectInputType = {
-  accessToken?: Maybe<Scalars['String']>;
-  accessUsername?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['UUID']>;
+  accessToken?: InputMaybe<Scalars['String']>;
+  accessUsername?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
   organization: Scalars['UUID'];
   specRepository: Scalars['String'];
   specRepositoryBranch: Scalars['String'];
@@ -485,41 +487,41 @@ export type TQuery = {
 
 
 export type TQueryAllDecksArgs = {
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  organizationId?: Maybe<Scalars['UUID']>;
-  projectId?: Maybe<Scalars['UUID']>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  organizationId?: InputMaybe<Scalars['UUID']>;
+  projectId?: InputMaybe<Scalars['UUID']>;
 };
 
 
 export type TQueryAllOrganizationInvitationsArgs = {
   id: Scalars['UUID'];
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
 };
 
 
 export type TQueryAllOrganizationsArgs = {
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
 };
 
 
 export type TQueryAllProjectsArgs = {
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  organizationId?: Maybe<Scalars['UUID']>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  organizationId?: InputMaybe<Scalars['UUID']>;
 };
 
 
 export type TQueryDeckArgs = {
-  id?: Maybe<Scalars['UUID']>;
-  slug?: Maybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  slug?: InputMaybe<Scalars['String']>;
 };
 
 
 export type TQueryEnvironmentArgs = {
-  id?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
 };
 
 
@@ -529,19 +531,19 @@ export type TQueryOrganizationArgs = {
 
 
 export type TQueryProjectArgs = {
-  id?: Maybe<Scalars['UUID']>;
-  slug?: Maybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  slug?: InputMaybe<Scalars['String']>;
 };
 
 
 export type TQueryUserArgs = {
-  id?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
 };
 
 
 export type TQueryUserInvitationsArgs = {
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
 };
 
 export type TRevokeOrganizationMemberInvitation = {
@@ -550,11 +552,11 @@ export type TRevokeOrganizationMemberInvitation = {
 };
 
 export type TSopsInputType = {
-  description?: Maybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
   project: Scalars['UUID'];
-  secret1?: Maybe<Scalars['String']>;
-  secret2?: Maybe<Scalars['String']>;
-  secret3?: Maybe<Scalars['String']>;
+  secret1?: InputMaybe<Scalars['String']>;
+  secret2?: InputMaybe<Scalars['String']>;
+  secret3?: InputMaybe<Scalars['String']>;
   sopsType: TSopsTypeEnum;
   title: Scalars['String'];
 };
@@ -571,8 +573,8 @@ export enum TSpecicifactionTypeEnum {
 }
 
 export type TUpdateClusterSettingsInput = {
-  clientMutationId?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['ID']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
   port: Scalars['Int'];
   project: Scalars['ID'];
 };
@@ -659,40 +661,40 @@ export type TRevokeOrganizationInviteMutationVariables = Exact<{
 export type TRevokeOrganizationInviteMutationResult = { __typename?: 'Mutation', revokeInvitation?: { __typename?: 'RevokeOrganizationMemberInvitation', ok?: boolean | null | undefined } | null | undefined };
 
 export type TAnswerInvitationMutationVariables = Exact<{
-  accepted?: Maybe<Scalars['Boolean']>;
-  invitationId?: Maybe<Scalars['UUID']>;
+  accepted?: InputMaybe<Scalars['Boolean']>;
+  invitationId?: InputMaybe<Scalars['UUID']>;
 }>;
 
 
 export type TAnswerInvitationMutationResult = { __typename?: 'Mutation', answerInvitation?: { __typename?: 'UpdateOrganizationMemberInvitation', ok?: boolean | null | undefined } | null | undefined };
 
 export type TUpdateOrganizationMemberMutationVariables = Exact<{
-  organizationId?: Maybe<Scalars['UUID']>;
-  role?: Maybe<TOrganizationMemberRoleEnum>;
-  userId?: Maybe<Scalars['UUID']>;
+  organizationId?: InputMaybe<Scalars['UUID']>;
+  role?: InputMaybe<TOrganizationMemberRoleEnum>;
+  userId?: InputMaybe<Scalars['UUID']>;
 }>;
 
 
 export type TUpdateOrganizationMemberMutationResult = { __typename?: 'Mutation', updateOrganizationMember?: { __typename?: 'UpdateOrganizationMember', ok?: boolean | null | undefined } | null | undefined };
 
 export type TDeleteOrganizationMemberMutationVariables = Exact<{
-  organizationId?: Maybe<Scalars['UUID']>;
-  userId?: Maybe<Scalars['UUID']>;
+  organizationId?: InputMaybe<Scalars['UUID']>;
+  userId?: InputMaybe<Scalars['UUID']>;
 }>;
 
 
 export type TDeleteOrganizationMemberMutationResult = { __typename?: 'Mutation', removeOrganizationMember?: { __typename?: 'DeleteOrganizationMember', ok?: boolean | null | undefined } | null | undefined };
 
 export type TProjectsQueryVariables = Exact<{
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
 }>;
 
 
 export type TProjectsQueryResult = { __typename?: 'Query', allProjects?: { __typename?: 'ProjectNodePage', totalCount?: number | null | undefined, results?: Array<{ __typename?: 'ProjectNode', title: string, repositoryStatus: TProjectRepositoryStatus, description?: string | null | undefined, currentCommit: string, currentCommitDateTime?: any | null | undefined, id: any, organization?: { __typename?: 'OrganizationNode', id: any } | null | undefined, members?: Array<{ __typename?: 'ProjectMember', role?: string | null | undefined, user?: { __typename?: 'UserNode', id: any, givenName?: string | null | undefined, familyName?: string | null | undefined, avatarImage?: string | null | undefined, email?: string | null | undefined } | null | undefined } | null | undefined> | null | undefined, decks: Array<{ __typename?: 'DeckNode', title: string }>, sops?: Array<{ __typename?: 'AWSKMSNode', title: string, id: any } | { __typename?: 'PGPKeyNode', title: string, id: any } | null | undefined> | null | undefined } | null | undefined> | null | undefined } | null | undefined };
 
 export type TProjectDetailQueryVariables = Exact<{
-  id?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
 }>;
 
 
@@ -708,8 +710,8 @@ export type TCreateProjectMutationVariables = Exact<{
   description: Scalars['String'];
   specRepository: Scalars['String'];
   specType: TSpecicifactionTypeEnum;
-  accessUsername?: Maybe<Scalars['String']>;
-  accessToken?: Maybe<Scalars['String']>;
+  accessUsername?: InputMaybe<Scalars['String']>;
+  accessToken?: InputMaybe<Scalars['String']>;
   specRepositoryBranch: Scalars['String'];
   organization: Scalars['UUID'];
 }>;
@@ -722,8 +724,8 @@ export type TUpdateProjectMutationVariables = Exact<{
   description: Scalars['String'];
   specRepository: Scalars['String'];
   specType: TSpecicifactionTypeEnum;
-  accessUsername?: Maybe<Scalars['String']>;
-  accessToken?: Maybe<Scalars['String']>;
+  accessUsername?: InputMaybe<Scalars['String']>;
+  accessToken?: InputMaybe<Scalars['String']>;
   specRepositoryBranch: Scalars['String'];
   id: Scalars['UUID'];
   organization: Scalars['UUID'];
@@ -733,7 +735,7 @@ export type TUpdateProjectMutationVariables = Exact<{
 export type TUpdateProjectMutationResult = { __typename?: 'Mutation', createUpdateProject?: { __typename?: 'CreateUpdateProject', project?: { __typename?: 'ProjectNode', title: string, id: any } | null | undefined } | null | undefined };
 
 export type TDeleteProjectMutationVariables = Exact<{
-  id?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
 }>;
 
 
@@ -741,13 +743,13 @@ export type TDeleteProjectMutationResult = { __typename?: 'Mutation', deleteProj
 
 export type TCreateUpdateSopsMutationVariables = Exact<{
   title: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
   sopsType: TSopsTypeEnum;
   project: Scalars['UUID'];
-  secret1?: Maybe<Scalars['String']>;
-  secret2?: Maybe<Scalars['String']>;
-  secret3?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['UUID']>;
+  secret1?: InputMaybe<Scalars['String']>;
+  secret2?: InputMaybe<Scalars['String']>;
+  secret3?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
 }>;
 
 
@@ -755,12 +757,12 @@ export type TCreateUpdateSopsMutationResult = { __typename?: 'Mutation', createU
 
 export type TCreateUpdateEnvironmentMutationVariables = Exact<{
   title: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
   type: Scalars['String'];
   deck: Scalars['ID'];
-  sopsCredentials?: Maybe<Scalars['ID']>;
-  valuesPath?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['ID']>;
+  sopsCredentials?: InputMaybe<Scalars['ID']>;
+  valuesPath?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
   namespace: Scalars['String'];
 }>;
 
@@ -768,17 +770,17 @@ export type TCreateUpdateEnvironmentMutationVariables = Exact<{
 export type TCreateUpdateEnvironmentMutationResult = { __typename?: 'Mutation', createUpdateEnvironment?: { __typename?: 'CreateUpdateEnvironmentPayload', environment?: { __typename?: 'EnvironmentNode', title: string, id: any } | null | undefined, errors?: Array<{ __typename?: 'ErrorType', field: string, messages: Array<string> } | null | undefined> | null | undefined } | null | undefined };
 
 export type TCreateProjectMemberMutationVariables = Exact<{
-  id?: Maybe<Scalars['UUID']>;
-  user?: Maybe<Scalars['UUID']>;
-  role?: Maybe<TProjectMemberRoleEnum>;
+  id?: InputMaybe<Scalars['UUID']>;
+  user?: InputMaybe<Scalars['UUID']>;
+  role?: InputMaybe<TProjectMemberRoleEnum>;
 }>;
 
 
 export type TCreateProjectMemberMutationResult = { __typename?: 'Mutation', createProjectMember?: { __typename?: 'CreateProjectMember', ok?: boolean | null | undefined } | null | undefined };
 
 export type TDeleteProjectMemberMutationVariables = Exact<{
-  id?: Maybe<Scalars['UUID']>;
-  user?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  user?: InputMaybe<Scalars['UUID']>;
 }>;
 
 
@@ -814,7 +816,7 @@ export type TCreateUpdateHelmOverridesMutationVariables = Exact<{
 export type TCreateUpdateHelmOverridesMutationResult = { __typename?: 'Mutation', createUpdateHelmOverrides?: { __typename?: 'CreateUpdateHelmOverrides', ok?: boolean | null | undefined } | null | undefined };
 
 export type TUserDetailQueryVariables = Exact<{
-  id?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
 }>;
 
 
