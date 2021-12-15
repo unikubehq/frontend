@@ -1,20 +1,25 @@
 <template>
   <div class="project-card__wrapper">
     <v-row class="white pl-5 pr-10" align="center">
-      <v-col cols="1">
+      <v-col cols="7" class="mt-2">
         <component
             :is="loading ? 'span' : 'router-link'"
-            :to="projectUrl">
+            :to="projectUrl"
+            class="mr-6 d-inline-block">
           <v-icon size="48">$vuetify.icons.project</v-icon>
         </component>
-      </v-col>
-      <v-col cols="6" class="mt-2">
         <component
             :is="loading ? 'span' : 'router-link'"
-            :to="projectUrl">
+            :to="projectUrl"
+            class="d-inline-block">
           <h3 class="mb-0">
             <span v-if="loading"><v-skeleton-loader type="heading" tile/></span>
-            <span v-else>{{ project.title}}</span>
+            <span v-else>
+              {{ project.title}}
+              <span class="project-card__role">
+                {{ $can('edit', project) ? $t('general.admin') : $t('general.member') }}
+              </span>
+            </span>
           </h3>
           <p>{{ project.description }}</p>
         </component>
@@ -186,6 +191,20 @@ export default class ProjectList extends Vue {
   }
   &__detail {
     transform: rotate(-90deg);
+  }
+  &__role {
+    border: 2px solid $unikube-blue;
+    line-height: 16px;
+    height: 20px;
+    border-radius: 10px;
+    font-size: 12px;
+    color: $unikube-blue;
+    font-weight: 600;
+    padding: 0 10px;
+    margin-left: 18px;
+    vertical-align: middle;
+    margin-bottom: 2px;
+    display: inline-block;
   }
 }
 hr {
