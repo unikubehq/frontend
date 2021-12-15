@@ -193,7 +193,7 @@ export default class ProjectMembers extends Vue {
 
   get memberChoices(): Array<{value: string, text: string}> {
     const result : Array<{value: string, text: string}> = [];
-    const members = [...this.$data?.organization?.members];
+    const members = this.$data?.organization?.members || [];
     members?.forEach((member: TOrganizationMember) => {
       if (!this.project?.members?.every(
         (projectMember: Maybe<TProjectMember>) => projectMember?.user?.id !== member?.user?.id,

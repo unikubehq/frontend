@@ -99,6 +99,7 @@
                <a
                   class="link--secondary"
                   @click="$emit('change')"
+                  @keydown.space="$emit('change')"
                 >
                   <v-icon
                       style="transform: rotate(180deg)"

@@ -250,39 +250,27 @@ export default class Sops extends validationMixin {
 
   get secret1Label(): string {
     const map = new Map();
-    map.set(
-      'aws', this.$t('sops.accessKey').toString(),
-    );
-    map.set(
-      'pgp', this.$t('sops.pgpKey').toString(),
-    );
+    map.set('aws', this.$t('sops.accessKey').toString());
+    map.set('pgp', this.$t('sops.pgpKey').toString());
     return map.get(this.sopsType);
   }
 
   get secret1Placeholder(): string {
     const map = new Map();
-    map.set(
-      'aws', this.$t('sops.enterAccessKey').toString(),
-    );
-    map.set(
-      'pgp', this.$t('sops.enterPgpKey').toString(),
-    );
+    map.set('aws', this.$t('sops.enterAccessKey').toString());
+    map.set('pgp', this.$t('sops.enterPgpKey').toString());
     return map.get(this.sopsType);
   }
 
   get secret2Label(): string {
     const map = new Map();
-    map.set(
-      'aws', this.$t('sops.secretAccessKey').toString(),
-    );
+    map.set('aws', this.$t('sops.secretAccessKey').toString());
     return map.get(this.sopsType);
   }
 
   get secret2Placeholder(): string {
     const map = new Map();
-    map.set(
-      'aws', this.$t('sops.enterSecretAccessKey').toString(),
-    );
+    map.set('aws', this.$t('sops.enterSecretAccessKey').toString());
     return map.get(this.sopsType);
   }
 

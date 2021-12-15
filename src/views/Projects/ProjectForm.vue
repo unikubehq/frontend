@@ -121,6 +121,7 @@
           <a
             class="link--secondary"
             @click="$router.go(-1)"
+            @keydown.space="$router.go(-1)"
             v-if="editMode"
           >
             <v-icon
