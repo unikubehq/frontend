@@ -107,7 +107,7 @@
       "reenterPassword": "Re-Enter New Password",
       "setNewPassword": "Set new Password",
       "disableAccount": "Deactivate Account",
-      "disableExplanation": "By doing this all your organizations and project/teams under your account will be\n        permanently lost and you will not be able to retrieve.",
+      "disableExplanation": "After confirming deletion all your account information will be permanently removed and cannot be recovered.",
       "updatePassword": "Update your password by clicking on the following button.",
       "generalInformation": "Change profile information",
       "updateProfileInformation": "Update your profile information by clicking on the following button."
