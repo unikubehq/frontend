@@ -175,10 +175,6 @@ export default class AccountSettings extends UploadComponent {
   deleteAccount(): void {
     this.$store.state.auth.client.login({ action: 'delete_account' });
   }
-
-  created(): void {
-    console.log(this.$store.state.auth.client.createAccountUrl());
-  }
 }
 </script>
 
