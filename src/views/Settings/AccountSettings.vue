@@ -168,10 +168,6 @@ export default class AccountSettings extends UploadComponent {
   changeGeneralInformation(): void {
     this.$store.state.auth.client.login({ action: 'UPDATE_PROFILE' });
   }
-
-  created(): void {
-    console.log(this.$store.state.auth.client.createAccountUrl());
-  }
 }
 </script>
 
