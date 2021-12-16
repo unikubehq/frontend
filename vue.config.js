@@ -38,9 +38,6 @@ module.exports = {
     'vuetify',
   ],
   configureWebpack: {
-    devServer: {
-      disableHostCheck: true,
-    },
     plugins,
   },
   chainWebpack: (config) => {
