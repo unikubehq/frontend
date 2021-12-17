@@ -95,6 +95,9 @@
         >
           <h3>{{ $t('settings.account.disableAccount') }}</h3>
           <p>{{ $t('settings.account.disableExplanation') }}</p>
+          <v-btn color="error" elevation="0" :ripple="false" @click="deleteAccount">
+            Delete Account
+          </v-btn>
         </danger-zone>
       </v-col>
     </v-row>
@@ -167,6 +170,10 @@ export default class AccountSettings extends UploadComponent {
 
   changeGeneralInformation(): void {
     this.$store.state.auth.client.login({ action: 'UPDATE_PROFILE' });
+  }
+
+  deleteAccount(): void {
+    this.$store.state.auth.client.login({ action: 'delete_account' });
   }
 }
 </script>

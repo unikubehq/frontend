@@ -33,6 +33,9 @@
             <v-row>
           <v-col class="py-0"><v-btn
             large
+            color="#a1a9b2"
+            outlined
+            elevation="0"
             block
             :ripple="false"
             text
@@ -42,6 +45,7 @@
           <v-col class="py-0"><v-btn
             large
             block
+            elevation="0"
             :ripple="false"
             color="error"
             class="project-delete__submit"
