@@ -69,8 +69,10 @@
                 :placeholder="$t('settings.account.enterEmail')"
                 v-model="email"
                 @blur="$v.email.$touch()"
+                :error-messages="emailErrors"
                 prepend-inner-icon="$vuetify.icons.email"
                 persistent-placeholder
+                class="mb-2"
               />
             </v-col>
           </v-row>
@@ -132,8 +134,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
 import { email, required } from 'vuelidate/lib/validators';
+import VueI18n from 'vue-i18n';
 import {
   DeleteOrganizationMember,
   InviteToOrganization,
@@ -144,6 +147,8 @@ import {
 import UnikubeAvatar from '@/components/general/Avatar.vue';
 import Converter from '@/utils/converter';
 import DeleteOrganizationMemberComponent from '@/components/Settings/DeleteOrganizationMember.vue';
+import { validationMixin } from '@/components/mixins';
+import TranslateResult = VueI18n.TranslateResult;
 
 @Component({
   apollo: {
@@ -181,7 +186,7 @@ import DeleteOrganizationMemberComponent from '@/components/Settings/DeleteOrgan
     },
   },
 })
-export default class OrganizationRoles extends Vue {
+export default class OrganizationRoles extends validationMixin {
   email = ''
 
   dataChanged = false
@@ -214,6 +219,10 @@ export default class OrganizationRoles extends Vue {
       memberIds.push(member.user.id);
       return !included;
     });
+  }
+
+  get emailErrors(): TranslateResult[] {
+    return this.handleErrors('email');
   }
 
   get organizationSet(): boolean {
