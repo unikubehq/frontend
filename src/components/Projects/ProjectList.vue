@@ -35,9 +35,9 @@
             </template>
             <span>{{ getReadableProjectStatus(project.repositoryStatus) }}</span>
         </v-tooltip>
+        <v-divider style="height: 24px" class="mx-4 mb-n1" vertical></v-divider>
+        <cli-hint :commands="projectCliHintMessage"/>
         <div class="d-inline-block" v-if="$can('edit', project)">
-          <v-divider style="height: 24px" class="mx-4 mb-n1" vertical></v-divider>
-          <cli-hint :commands="projectCliHintMessage"/>
           <v-divider style="height: 24px" class="mx-4 mb-n1" vertical></v-divider>
           <component
               :is="loading ? 'span' : 'router-link'"
