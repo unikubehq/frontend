@@ -28,6 +28,7 @@
     "specificationRepositoryBranch": "Specification Repository Branch",
     "enterSpecificationRepositoryBranch": "Enter Repository Branch",
     "accessUsername": "Access Username",
+    "accessUsernameHint": "When using GitHub, enter your GitHub username.",
     "enterAccessUsername": "Enter Access Username",
     "accessToken": "Access Token",
     "enterAccessToken": "Enter Access Token",

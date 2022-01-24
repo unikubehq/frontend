@@ -64,6 +64,8 @@
           <v-text-field
             :label="$t('projects.accessUsername')"
             name="accessUsername"
+            :hint="$t('projects.accessUsernameHint')"
+            autocomplete="off"
             filled
             outlined
             type="text"
