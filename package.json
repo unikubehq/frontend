@@ -58,7 +58,7 @@
     "@types/chai": "^4.3.0",
     "@types/dropzone": "^5.7.4",
     "@types/jest": "^27.0.3",
-    "@types/mocha": "^9.0.0",
+    "@types/mocha": "^9.1.0",
     "@types/vuelidate": "^0.7.15",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
