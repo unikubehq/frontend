@@ -1,7 +1,5 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { shallowMount, createLocalVue } from '@vue/test-utils';
-import Vuetify from 'vuetify';
-import VueRouter from 'vue-router';
+import { shallowMount } from '@vue/test-utils';
 import ProjectList from '@/components/Projects/ProjectList.vue';
 
 const project = {
@@ -27,19 +25,9 @@ const project = {
 };
 
 describe('Overview.vue', () => {
-  const localVue = createLocalVue();
-
-  let vuetify: Vuetify;
-  beforeEach(() => {
-    vuetify = new Vuetify();
-    localVue.use(VueRouter);
-  });
 
   it('renders correctly', async () => {
-    const wrapper = shallowMount(ProjectList, {
-      localVue,
-      vuetify,
-    });
+    const wrapper = shallowMount(ProjectList);
     expect(wrapper.get('h3').text()).toContain('No Projects Found');
     wrapper.setProps({ project });
     await wrapper.vm.$nextTick();
@@ -56,9 +44,7 @@ describe('Overview.vue', () => {
     };
     const mutate = jest.fn().mockImplementation(() => Promise.resolve(data));
     const wrapper = shallowMount(ProjectList, {
-      localVue,
-      vuetify,
-      propsData: {
+      props: {
         project,
       },
       mocks: {
@@ -77,9 +63,7 @@ describe('Overview.vue', () => {
 
   it('gets correct avatar initials', async () => {
     const wrapper = shallowMount(ProjectList, {
-      localVue,
-      vuetify,
-      propsData: {
+      props: {
         project,
       },
     });

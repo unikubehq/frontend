@@ -1,17 +1,23 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import Auth from '@/store/modules/auth';
+import { createStore } from 'vuex';
 import UI from '@/store/modules/ui';
-import Context from '@/store/modules/context';
+import { State as AuthState } from '@/store/modules/auth/state';
+import { State as ContextState } from '@/store/modules/context/state';
+import { store as auth } from './modules/auth';
+import { store as context } from '@/store/modules/context';
 import Errors from '@/store/modules/errors';
 
-Vue.use(Vuex);
+export type RootState = {
+  context: ContextState;
+  auth: AuthState;
+};
 
-export default new Vuex.Store({
+const store: Store = createStore({
   modules: {
-    auth: Auth,
+    auth,
+    context,
     ui: UI,
-    context: Context,
     errors: Errors,
   },
 });
+
+export default store;

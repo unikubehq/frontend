@@ -102,7 +102,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Vue } from 'vue-class-component';
 import { TProjectNode, UpdateProjectRepositoryMutation } from '@/generated/graphql';
 import { CliHintMessage } from '@/typing/index';
 import CliHint from '@/components/general/CliHint.vue';

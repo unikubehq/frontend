@@ -2,6 +2,7 @@
 import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client/core';
 import { setContext } from '@apollo/client/link/context';
 import { ErrorResponse, onError } from '@apollo/client/link/error';
+import { createApolloProvider } from '@vue/apollo-option';
 import VueApollo from 'vue-apollo';
 import store from '@/store';
 import router from './router';
@@ -30,8 +31,8 @@ const apolloClient = new ApolloClient({
   cache,
 });
 
-export default function setupApolloProvider(): VueApollo {
-  return new VueApollo({
-    defaultClient: apolloClient,
-  });
-}
+const apolloProvider = createApolloProvider({
+  defaultClient: apolloClient,
+});
+
+export default apolloProvider;

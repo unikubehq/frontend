@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import { createApp } from 'vue';
 import VueApollo from 'vue-apollo';
 import Vuelidate from 'vuelidate';
 import * as Sentry from '@sentry/vue';
@@ -8,11 +8,11 @@ import axios from 'axios';
 import VueAxios from 'vue-axios';
 import { abilitiesPlugin, Can } from '@casl/vue';
 import { Ability, AbilityBuilder } from '@casl/ability';
+import { createVuetify } from 'vuetify';
 import router from '@/router';
 import App from '@/App.vue';
 import store from '@/store';
-import vuetify from '@/plugins/vuetify';
-import setupApolloProvider from '@/vue-apollo';
+import apolloProvider from '@/vue-apollo';
 import { UnikubeAbility } from '@/typing';
 import i18n from '@/i18n';
 
@@ -37,13 +37,17 @@ function initializeUnikubeApp(mode: string) {
     detectSubjectType: (object) => object.__typename,
   }) as UnikubeAbility;
 
-  Vue.config.productionTip = false;
-  Vue.use(VueAxios, axios);
-  Vue.use(VueApollo);
-  Vue.use(Vuelidate);
-  Vue.use(abilitiesPlugin, ability);
-  Vue.component('CaslCan', Can);
-  Vue.axios.defaults.baseURL = process.env.VUE_APP_UPLOAD_URL;
+  const app = createApp(App);
+  const vuetify = createVuetify();
+
+  app.config.productionTip = false;
+  app.use(VueAxios, axios);
+  app.use(apolloProvider);
+  app.use(store);
+  app.use(Vuelidate);
+  app.use(abilitiesPlugin, ability, { useGlobalProperties: true });
+  app.component('CaslCan', Can);
+  app.axios.defaults.baseURL = process.env.VUE_APP_UPLOAD_URL;
   let auth;
   if (mode !== 'e2e') {
     store.commit('auth/setKeycloakClient', keycloak);

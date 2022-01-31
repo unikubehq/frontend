@@ -1,8 +1,5 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import {
-  shallowMount, createLocalVue,
-// eslint-disable-next-line import/no-extraneous-dependencies
-} from '@vue/test-utils';
+import { shallowMount } from '@vue/test-utils';
 import Vuetify from 'vuetify';
 import VueRouter from 'vue-router';
 import Projects from '@/views/Projects.vue';
@@ -31,18 +28,9 @@ const project = {
 };
 
 describe('Projects.vue', () => {
-  const localVue = createLocalVue();
-
-  let vuetify: Vuetify;
-  beforeEach(() => {
-    vuetify = new Vuetify();
-    localVue.use(VueRouter);
-  });
 
   it('renders correctly', async () => {
     const wrapper = shallowMount(Projects, {
-      localVue,
-      vuetify,
       stubs: {
         'project-list': ProjectList,
       },
@@ -53,8 +41,6 @@ describe('Projects.vue', () => {
   it('refetches projects', async () => {
     const refetch = jest.fn().mockImplementation(() => Promise.resolve());
     const wrapper = shallowMount(Projects, {
-      localVue,
-      vuetify,
       data() {
         return {
           $apolloData: {

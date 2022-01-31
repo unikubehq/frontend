@@ -72,7 +72,6 @@
 </template>
 
 <script lang="ts">
-import { Component, Ref } from 'vue-property-decorator';
 import { OrganizationQuery } from '@/generated/graphql';
 import { UploadComponent } from '@/components/mixins';
 import DangerZone from '@/components/Settings/DangerZone.vue';

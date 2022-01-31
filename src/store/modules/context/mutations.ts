@@ -1,16 +1,6 @@
 import { MutationTree } from 'vuex';
 import { TOrganizationMember, TOrganizationNode } from '@/generated/graphql';
-import { SnackbarMessage } from '@/typing';
-
-class State {
-  organization: TOrganizationNode | null = null;
-
-  organizationMember: TOrganizationMember | null = null;
-
-  sidebarExpanded = true;
-
-  messages: SnackbarMessage[] = [];
-}
+import { State } from './state';
 
 const mutations = <MutationTree<State>>{
   addSnackbarMessage(state: State, { message, error }) {
@@ -42,10 +32,4 @@ const mutations = <MutationTree<State>>{
   },
 };
 
-const Context = {
-  namespaced: true,
-  state: new State(),
-  mutations,
-};
-
-export default Context;
+export default mutations;

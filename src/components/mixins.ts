@@ -1,11 +1,10 @@
 /* eslint-disable max-classes-per-file */
 import { AxiosResponse } from 'axios';
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Vue } from 'vue-class-component';
 import VueI18n from 'vue-i18n';
 import { Avatar } from '@/typing';
 import TranslateResult = VueI18n.TranslateResult;
 
-@Component
 // eslint-disable-next-line import/prefer-default-export
 export class paginationMixin extends Vue {
   offset = 0;
@@ -32,7 +31,6 @@ export class paginationMixin extends Vue {
 
 Component.registerHooks(['validations']);
 
-@Component
 // eslint-disable-next-line import/prefer-default-export
 export class validationMixin extends Vue {
    validatorMapping = [
@@ -51,7 +49,6 @@ export class validationMixin extends Vue {
    }
 }
 
-@Component
 // eslint-disable-next-line import/prefer-default-export
 export class UploadComponent extends Vue {
   previewUrl: string | null = null
@@ -86,7 +83,6 @@ export class UploadComponent extends Vue {
   }
 }
 
-@Component
 // eslint-disable-next-line import/prefer-default-export
 export class AvatarMixin extends Vue {
   @Prop() readonly avatarProp!: Avatar;

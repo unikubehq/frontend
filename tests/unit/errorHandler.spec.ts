@@ -1,20 +1,14 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { createLocalVue, mount } from '@vue/test-utils';
-import Vuetify from 'vuetify';
+import { mount } from '@vue/test-utils';
 import Vuex, { Store } from 'vuex';
 import ErrorHandler from '@/components/ErrorHandler.vue';
 import Errors from '@/store/modules/errors';
 
 describe('ErrorHandler.vue', () => {
-  const localVue = createLocalVue();
-  localVue.use(Vuex);
-
   let store: Store<any>;
-  let vuetify: Vuetify;
   const errorCode = 100;
 
   beforeEach(() => {
-    vuetify = new Vuetify();
     store = new Vuex.Store({
       modules: {
         errors: Errors,
@@ -25,8 +19,6 @@ describe('ErrorHandler.vue', () => {
   it('renders errors correctly', async () => {
     const $t = jest.fn();
     const wrapper = mount(ErrorHandler, {
-      localVue,
-      vuetify,
       store,
       mocks: {
         $t,
