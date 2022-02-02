@@ -80,7 +80,7 @@
     "dotenv-cli": "^4.1.1",
     "eslint": "^7.32.0",
     "eslint-plugin-import": "^2.25.4",
-    "eslint-plugin-vue": "^8.3.0",
+    "eslint-plugin-vue": "^8.4.0",
     "istanbul-lib-coverage": "^3.2.0",
     "lint-staged": "^12.3.1",
     "nyc": "^15.1.0",
