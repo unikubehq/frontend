@@ -19,24 +19,37 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { defineComponent, ref } from '@vue/runtime-core';
+import { useStore } from 'vuex'
 
-@Component({})
-export default class OrgaDone extends Vue {
-  @Prop() readonly orgaId: string | undefined
+export default defineComponent({
+  props: {
+    orgaId: {
+      type: String,
+      required: false,
+    },
+    orgaTitle: {
+      type: String,
+      required: false,
+    },
+  },
 
-  @Prop() readonly orgaTitle: string | undefined
+  setup(props) {
+    const store = useStore()
+    const rptRefreshed = ref(false);
+    const snackbar = ref(false);
+    const orgaTitle = props.orgaTitle;
 
-  snackbar = false;
+    store.dispatch('auth/refresh', -1).then(() => {
+      rptRefreshed.value = true;    });
 
-  rptRefreshed = false;
-
-  created(): void {
-    this.$store.dispatch('auth/refresh', -1).then(() => {
-      this.rptRefreshed = true;
-    });
-  }
-}
+    return {
+      rptRefreshed,
+      orgaTitle,
+      snackbar,
+    };
+  },
+})
 </script>
 
 <style scoped>

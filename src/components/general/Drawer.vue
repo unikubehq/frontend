@@ -26,14 +26,22 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { defineComponent } from 'vue';
 
-@Component
-export default class HelmOverrides extends Vue {
-  @Prop() readonly title!: string;
-
-  @Prop() readonly subtitle: string | undefined;
-
-  @Prop() readonly intro: string | undefined;
-}
+export default defineComponent({
+  props: {
+    title: {
+      type: String,
+      required: true,
+    },
+    subtitle: {
+      type: String,
+      required: false,
+    },
+    intro: {
+      type: String,
+      required: false,
+    },
+  },
+})
 </script>
