@@ -132,20 +132,56 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
 import { email, required } from 'vuelidate/lib/validators';
 import {
   DeleteOrganizationMember,
   InviteToOrganization,
   OrganizationMembersQuery,
   TOrganizationMember,
-  OrganizationInvites, RevokeOrganizationInvite,
+  OrganizationInvites, RevokeOrganizationInvite, TOrganizationNode, Maybe,
 } from '@/generated/graphql';
 import UnikubeAvatar from '@/components/general/Avatar.vue';
 import Converter from '@/utils/converter';
 import DeleteOrganizationMemberComponent from '@/components/Settings/DeleteOrganizationMember.vue';
+import { defineComponent, PropType } from 'vue';
 
-@Component({
+// @Component({
+//   apollo: {
+//     organization: {
+//       query: OrganizationMembersQuery,
+//       variables() {
+//         return {
+//           id: this.$store.state.context.organization.id,
+//         };
+//       },
+//       skip() {
+//         return !this.organizationSet;
+//       },
+//     },
+//     allOrganizationInvitations: {
+//       query: OrganizationInvites,
+//       variables() {
+//         return {
+//           id: this.$store.state.context.organization.id,
+//         };
+//       },
+//       skip() {
+//         return !this.organizationSet;
+//       },
+//     },
+//   },
+//   components: {
+//     DeleteOrganizationMember: DeleteOrganizationMemberComponent,
+//     UnikubeAvatar,
+//   },
+//   validations: {
+//     email: {
+//       email,
+//       required,
+//     },
+//   },
+// })
+export default defineComponent({
   apollo: {
     organization: {
       query: OrganizationMembersQuery,
@@ -170,102 +206,105 @@ import DeleteOrganizationMemberComponent from '@/components/Settings/DeleteOrgan
       },
     },
   },
-  components: {
-    DeleteOrganizationMember: DeleteOrganizationMemberComponent,
-    UnikubeAvatar,
+  props: {
+    dialog: {
+      type: Boolean,
+      default: false
+    },
+    showDeleteDialog: {
+      type: Boolean,
+      default: false
+    },
+    deleteMember: {
+      type: Object as PropType<TOrganizationMember>,
+      required: false,
+      default: () => {
+        return undefined
+      }
+    },
+    // memberToAvatar = Converter.memberToAvatar;
   },
-  validations: {
-    email: {
-      email,
-      required,
+  data() {
+    return {
+      dataChanged: false,
+      email: '',
+      inviteLoading: false,
+      memberErrors: [] as string[],
+      organization: {} as TOrganizationNode
+    }
+  },
+  computed: {
+    isOrganizationAdmin(): boolean {
+      return this.$store.state.context.organization && this.$can('edit', this.$store.state.context.organization);
+    },
+
+    organizationSet(): boolean {
+      return !!this.$store.state.context.organization;
+    },
+
+    members(): TOrganizationMember[] {
+      const memberIds: Array<string> = [];
+      if (this.organization?.members?.length > 0) {
+
+      }
+      // return this.organization?.members?.filter((member: Maybe<TOrganizationMember>) => {
+      //   if (!member.user) { return false; }
+      //   const included = memberIds.includes(member.user.id);
+      //   memberIds.push(member.user.id);
+      //   return !included;
+      // }) || [];
     },
   },
-})
-export default class OrganizationRoles extends Vue {
-  email = ''
 
-  dataChanged = false
-
-  dialog = false
-
-  memberToAvatar = Converter.memberToAvatar;
-
-  inviteLoading = false;
-
-  memberErrors: string[] = [];
-
-  deleteMember: TOrganizationMember | undefined;
-
-  showDeleteDialog = false;
-
-  setDataChanged(): void {
-    this.dataChanged = true;
-  }
-
-  get isOrganizationAdmin(): boolean {
-    return this.$store.state.context.organization && this.$can('edit', this.$store.state.context.organization);
-  }
-
-  get members(): TOrganizationMember[] {
-    const memberIds: Array<string> = [];
-    return this.$data.organization?.members?.filter((member: TOrganizationMember) => {
-      if (!member.user) { return false; }
-      const included = memberIds.includes(member.user.id);
-      memberIds.push(member.user.id);
-      return !included;
-    });
-  }
-
-  get organizationSet(): boolean {
-    return !!this.$store.state.context.organization;
-  }
-
-  removeMember(member: TOrganizationMember): void {
-    if (!member.user) {
-      return;
-    }
-    this.$apollo.mutate({
-      mutation: DeleteOrganizationMember,
-      variables: {
-        id: member.user.id,
-      },
-    }).then(() => {
-      this.$apollo.queries.organization.refetch();
-    }).catch((error) => {
-      this.memberErrors = [error.message];
-    });
-  }
-
-  inviteEmail(): void {
-    this.inviteLoading = true;
-    this.$apollo.mutate({
-      mutation: InviteToOrganization,
-      variables: {
-        email: this.email,
-        organization: this.$store.state.context.organization.id,
-      },
-    }).then(() => {
-      this.email = '';
-      this.inviteLoading = false;
-      this.$apollo.queries.allOrganizationInvitations.refetch();
-    }).catch((err) => {
-      this.inviteLoading = false;
-      this.$store.commit('context/addSnackbarMessage', {
-        message: err,
-        error: true,
+  methods: {
+    setDataChanged(): void {
+      this.dataChanged = true;
+    },
+    removeMember(member: TOrganizationMember): void {
+      if (!member.user) {
+        return;
+      }
+      this.$apollo.mutate({
+        mutation: DeleteOrganizationMember,
+        variables: {
+          id: member.user.id,
+        },
+      }).then(() => {
+        this.$apollo.queries.organization.refetch();
+      }).catch((error) => {
+        this.memberErrors = [error.message];
       });
-    });
+    },
+    inviteEmail(): void {
+      this.inviteLoading = true;
+      this.$apollo.mutate({
+        mutation: InviteToOrganization,
+        variables: {
+          email: this.email,
+          organization: this.$store.state.context.organization.id,
+        },
+      }).then(() => {
+        this.email = '';
+        this.inviteLoading = false;
+        this.$apollo.queries.allOrganizationInvitations.refetch();
+      }).catch((err) => {
+        this.inviteLoading = false;
+        this.$store.commit('context/addSnackbarMessage', {
+          message: err,
+          error: true,
+        });
+      });
+    },
+    revokeInvite(id: string): void {
+      this.$apollo.mutate({
+        mutation: RevokeOrganizationInvite,
+        variables: {
+          inviteId: id,
+        },
+      }).then(() => {
+        this.$apollo.queries.allOrganizationInvitations.refetch();
+      });
+    }
   }
-
-  revokeInvite(id: string): void {
-    this.$apollo.mutate({
-      mutation: RevokeOrganizationInvite,
-      variables: {
-        inviteId: id,
-      },
-    }).then(() => {
-      this.$apollo.queries.allOrganizationInvitations.refetch();
-    });
-  }
-}
+})
 </script>
