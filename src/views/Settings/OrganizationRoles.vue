@@ -145,42 +145,6 @@ import Converter from '@/utils/converter';
 import DeleteOrganizationMemberComponent from '@/components/Settings/DeleteOrganizationMember.vue';
 import { defineComponent, PropType } from 'vue';
 
-// @Component({
-//   apollo: {
-//     organization: {
-//       query: OrganizationMembersQuery,
-//       variables() {
-//         return {
-//           id: this.$store.state.context.organization.id,
-//         };
-//       },
-//       skip() {
-//         return !this.organizationSet;
-//       },
-//     },
-//     allOrganizationInvitations: {
-//       query: OrganizationInvites,
-//       variables() {
-//         return {
-//           id: this.$store.state.context.organization.id,
-//         };
-//       },
-//       skip() {
-//         return !this.organizationSet;
-//       },
-//     },
-//   },
-//   components: {
-//     DeleteOrganizationMember: DeleteOrganizationMemberComponent,
-//     UnikubeAvatar,
-//   },
-//   validations: {
-//     email: {
-//       email,
-//       required,
-//     },
-//   },
-// })
 export default defineComponent({
   apollo: {
     organization: {
@@ -190,7 +154,7 @@ export default defineComponent({
           id: this.$store.state.context.organization.id,
         };
       },
-      skip() {
+      skip(): boolean {
         return !this.organizationSet;
       },
     },
@@ -201,9 +165,15 @@ export default defineComponent({
           id: this.$store.state.context.organization.id,
         };
       },
-      skip() {
+      skip(): boolean {
         return !this.organizationSet;
       },
+    },
+  },
+  validations: {
+    email: {
+      email,
+      required,
     },
   },
   props: {
@@ -222,7 +192,6 @@ export default defineComponent({
         return undefined
       }
     },
-    // memberToAvatar = Converter.memberToAvatar;
   },
   data() {
     return {
@@ -230,7 +199,8 @@ export default defineComponent({
       email: '',
       inviteLoading: false,
       memberErrors: [] as string[],
-      organization: {} as TOrganizationNode
+      organization: {} as TOrganizationNode,
+      memberToAvatar: Converter.memberToAvatar,
     }
   },
   computed: {
@@ -244,15 +214,17 @@ export default defineComponent({
 
     members(): TOrganizationMember[] {
       const memberIds: Array<string> = [];
-      if (this.organization?.members?.length > 0) {
-
+      if (this.organization?.members) {
+        return (this.organization?.members || []).filter((member: Maybe<TOrganizationMember>) => {
+          if (!member || !member.user) {
+            return false;
+          }
+          const included = memberIds.includes(member.user.id);
+          memberIds.push(member.user.id);
+          return !included;
+        }) as TOrganizationMember[] || [];
       }
-      // return this.organization?.members?.filter((member: Maybe<TOrganizationMember>) => {
-      //   if (!member.user) { return false; }
-      //   const included = memberIds.includes(member.user.id);
-      //   memberIds.push(member.user.id);
-      //   return !included;
-      // }) || [];
+      return [];
     },
   },
 
@@ -305,6 +277,11 @@ export default defineComponent({
         this.$apollo.queries.allOrganizationInvitations.refetch();
       });
     }
-  }
+  },
+
+  components: {
+    DeleteOrganizationMember: DeleteOrganizationMemberComponent,
+    UnikubeAvatar,
+  },
 })
 </script>

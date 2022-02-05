@@ -41,18 +41,25 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
 
-@Component({})
-export default class DeleteOrganizationMember extends Vue {
-  @Prop() readonly show: boolean | undefined
+import { defineComponent } from 'vue';
 
-  @Prop() readonly memberName!: string
-
-  deleteMember(): void {
-    this.$emit('delete');
+export default defineComponent({
+  props: {
+    show: {
+      type: Boolean
+    },
+    memberName: {
+      type: String,
+      required: true
+    }
+  },
+  methods: {
+    deleteMember(): void {
+      this.$emit('delete');
+    }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

@@ -17,5 +17,6 @@ declare module '@vue/runtime-core' {
     $apollo: DollarApollo<this>;
     $ability: UnikubeAbility;
     $can(this: this, ...args: Parameters<UnikubeAbility['can']>): boolean;
+    validations: any;
   }
 }

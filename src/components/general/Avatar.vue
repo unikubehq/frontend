@@ -45,12 +45,42 @@
 </template>
 
 <script lang="ts">
-import Component from 'vue-class-component';
-import { AvatarMixin } from '@/components/mixins';
+import { computed, defineComponent, PropType } from 'vue';
+import { Avatar } from '@/typing';
 
-@Component
-export default class UnikubeAvatar extends AvatarMixin {
+type AvatarColor = {
+  color: string,
+  backgroundColor: string
 }
+
+export default defineComponent({
+  props: {
+    avatarProp: {
+      type: Object as PropType<Avatar>,
+      required: true
+    },
+  },
+  setup(props) {
+    const randomHSL = (name: string, lum: string): string => {
+      const number = name.length;
+      const firstLetter = name[0].charCodeAt(0);
+      const lastLetter = name[name.length - 1].charCodeAt(0);
+
+      const avatarNumber = (number + firstLetter + lastLetter) / 10;
+
+      return `hsla(${Math.floor(360 * avatarNumber)},70%,${lum},1)`;
+    };
+    const avatarColor = (lum: string): string => {
+      return randomHSL(props.avatarProp.name, lum)
+    }
+    const avatarStyles = computed((): AvatarColor => {
+      return {
+        color: avatarColor('50%'),
+        backgroundColor: `${avatarColor('95%')} !important`
+      };
+    });
+  },
+})
 </script>
 
 <style scoped>
