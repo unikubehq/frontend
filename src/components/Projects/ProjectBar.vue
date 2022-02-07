@@ -32,25 +32,27 @@
   </v-row>
 </template>
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { defineComponent } from 'vue';
 import VueI18n from 'vue-i18n';
 import TranslateResult = VueI18n.TranslateResult;
 
-@Component({})
-export default class ProjectBar extends Vue {
-  orderChoice = 'az'
-
-  search = ''
-
-  projects = []
-
-  get orderChoices(): Array<{[key:string]: TranslateResult}> {
-    return [
-      { value: 'az', text: this.$t('A-Z ascending') },
-      { value: 'za', text: this.$t('A-Z descending') },
-    ];
-  }
-}
+export default defineComponent({
+  data() {
+    return {
+      orderChoice: 'az',
+      search: '',
+      projects: [],
+    };
+  },
+  computed: {
+    orderChoices(): Array<{[key:string]: TranslateResult}> {
+      return [
+        { value: 'az', text: this.$t('A-Z ascending') },
+        { value: 'za', text: this.$t('A-Z descending') },
+      ];
+    },
+  },
+});
 </script>
 <style scoped>
 
