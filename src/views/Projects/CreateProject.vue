@@ -8,20 +8,21 @@
 </template>
 
 <script lang="ts">
-import {
-  Component, Prop, Vue,
-} from 'vue-property-decorator';
+import { defineComponent, PropType } from 'vue';
 import { TProjectNode } from '@/generated/graphql';
 import ProjectForm from '@/views/Projects/ProjectForm.vue';
 
-@Component({
+export default defineComponent({
   components: {
     ProjectForm,
   },
-})
-export default class CreateProjectView extends Vue {
-  @Prop() readonly project: TProjectNode | undefined
-}
+  props: {
+    project: {
+      required: false,
+      type: Object as PropType<TProjectNode> | undefined,
+    },
+  },
+});
 </script>
 
 <style>
