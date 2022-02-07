@@ -45,23 +45,24 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { defineComponent } from 'vue';
 import { UnikubeError } from '@/typing';
 
-@Component({})
-export default class ErrorHandler extends Vue {
-  get errors(): UnikubeError {
-    return this.$store.state.errors.errors;
-  }
-
-  get showErrorDialog(): boolean {
-    return this.$store.state.errors.errors.length > 0;
-  }
-
-  handleAcknowledge(): void {
-    this.$store.commit('errors/clearError');
-  }
-}
+export default defineComponent({
+  computed: {
+    errors(): UnikubeError {
+      return this.$store.state.errors.errors;
+    },
+    showErrorDialog(): boolean {
+      return this.$store.state.errors.errors.length > 0;
+    },
+  },
+  methods: {
+    handleAcknowledge(): void {
+      this.$store.commit('errors/clearError');
+    },
+  },
+});
 </script>
 
 <style>
