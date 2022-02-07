@@ -54,37 +54,46 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { defineComponent, PropType } from 'vue';
 import { DeleteSops, TSopsProviderNode } from '@/generated/graphql';
 
-@Component({})
-export default class SopsDeleteDialog extends Vue {
-  @Prop() readonly sops!: TSopsProviderNode
-
-  @Prop() readonly show: boolean | undefined
-
-  deleteTitle = ''
-
-  deleteAndHide():void {
-    this.$emit('hide');
-    this.deleteSops(this.sops.id);
-  }
-
-  deleteSops(id: string): void {
-    this.$apollo.mutate({
-      mutation: DeleteSops,
-      variables: {
-        input: id,
-      },
-    })
-      .then((data) => {
-        if (data.data.deleteSops.ok) {
-          this.$emit('deleted');
-        }
+export default defineComponent({
+  props: {
+    sops: {
+      type: Object as PropType<TSopsProviderNode>,
+      required: true,
+    },
+    show: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  data() {
+    return {
+      deleteTitle: '',
+    };
+  },
+  methods: {
+    deleteAndHide():void {
+      this.$emit('hide');
+      this.deleteSops(this.sops.id);
+    },
+    deleteSops(id: string): void {
+      this.$apollo.mutate({
+        mutation: DeleteSops,
+        variables: {
+          input: id,
+        },
       })
-      .catch((err) => console.log(err));
-  }
-}
+        .then((data) => {
+          if (data.data.deleteSops.ok) {
+            this.$emit('deleted');
+          }
+        })
+        .catch((err) => console.log(err));
+    },
+  },
+});
 </script>
 
 <style lang="scss" scoped>
