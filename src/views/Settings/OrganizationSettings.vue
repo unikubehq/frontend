@@ -72,49 +72,63 @@
 </template>
 
 <script lang="ts">
+import { defineComponent, ref, reactive } from 'vue';
 import { OrganizationQuery } from '@/generated/graphql';
-import { UploadComponent } from '@/components/mixins';
 import DangerZone from '@/components/Settings/DangerZone.vue';
+import setupUpload from '@/utils/upload';
+import { AxiosError } from 'axios';
+import { useQuery } from '@vue/apollo-composable';
+import { useStore } from 'vuex';
 
-@Component({
+export default defineComponent({
   components: {
     DangerZone,
   },
-})
-export default class OrganizationSettings extends UploadComponent {
-  @Ref() readonly preview!: HTMLImageElement
-
-  previewUrl: string | null = null
-
-  dataChanged = false
-
-  dialog = false
-
-  uploadUrl = '/orgas-http/upload-avatar/';
-
-  get organizationName(): string {
-    return this.$store.state.context.organization.title;
-  }
-
-  getUploadUrl(): string {
-    return `${this.uploadUrl + this.$store.state.context.organization.id}/`;
-  }
-
-  uploadCallback(): void {
-    this.$apollo.query({
-      query: OrganizationQuery,
-      variables: {
-        id: this.$store.state.context.organization.id,
-      },
-    }).then((result) => {
-      this.$store.commit('context/setOrganization', result.data.organization);
+  setup() {
+    const dataChanged = ref(false);
+    const uploadUrl = '/orgas-http/upload-avatar/';
+    const store = useStore();
+    const variables = reactive({
+      id: store.state.context.organization.id,
     });
-  }
+    const uploadCallback = (): void => {
+      const { result, error } = useQuery(OrganizationQuery, variables);
+      if (result && !error) {
+        store.commit('context/setOrganization', result.value.organization);
+      }
+    };
 
-  setDataChanged(): void {
-    this.dataChanged = true;
-  }
-}
+    const uploadError = (err: AxiosError) => {
+      console.log(err);
+    };
+
+    const setDataChanged = () => {
+      dataChanged.value = true;
+    };
+
+    const { previewUrl, handleUpload } = setupUpload(
+      `${uploadUrl + store.state.context.organization.id}/`,
+      uploadCallback,
+      uploadError,
+    );
+    return {
+      previewUrl,
+      handleUpload,
+      setDataChanged,
+    };
+  },
+  data() {
+    return {
+      dialog: false,
+    };
+  },
+
+  computed: {
+    organizationName(): string {
+      return this.$store.state.context.organization.title;
+    },
+  },
+});
 </script>
 
 <style>

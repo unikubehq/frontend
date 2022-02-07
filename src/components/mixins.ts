@@ -29,60 +29,6 @@ export class paginationMixin extends Vue {
   }
 }
 
-Component.registerHooks(['validations']);
-
-// eslint-disable-next-line import/prefer-default-export
-export class validationMixin extends Vue {
-   validatorMapping = [
-     'email', 'required', 'url', 'minValue', 'maxValue',
-   ]
-
-   handleErrors(fieldName: string): TranslateResult[] {
-     const errors: TranslateResult[] = [];
-
-     this.validatorMapping.forEach((value) => {
-       if (!this.$v[fieldName][value] && value in this.$v[fieldName]) {
-         errors.push(this.$t(`errors.${value}Error`));
-       }
-     });
-     return this.$v[fieldName].$dirty ? errors : [];
-   }
-}
-
-// eslint-disable-next-line import/prefer-default-export
-export class UploadComponent extends Vue {
-  previewUrl: string | null = null
-
-  uploadUrl!: string;
-
-  uploadCallback(res: AxiosResponse): void {
-    console.log('Implement this ', this, res);
-  }
-
-  uploadErrorCallback(): void {
-    console.log('Implement this ', this);
-  }
-
-  getUploadUrl(): string {
-    return this.uploadUrl;
-  }
-
-  handleUpload(e: {target: HTMLInputElement}): void {
-    if (e && e.target && e.target.files) {
-      const file = e.target.files[0];
-      this.previewUrl = URL.createObjectURL(file);
-      const formData = new FormData();
-      formData.append('avatar_image', file);
-      this.axios.post(`${this.getUploadUrl()}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${this.$store.state.auth.rawRpt}`,
-        },
-      }).then(this.uploadCallback).catch(this.uploadErrorCallback);
-    }
-  }
-}
-
 // eslint-disable-next-line import/prefer-default-export
 export class AvatarMixin extends Vue {
   @Prop() readonly avatarProp!: Avatar;

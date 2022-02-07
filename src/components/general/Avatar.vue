@@ -57,7 +57,7 @@ export default defineComponent({
   props: {
     avatarProp: {
       type: Object as PropType<Avatar>,
-      required: true
+      required: true,
     },
   },
   setup(props) {
@@ -70,17 +70,17 @@ export default defineComponent({
 
       return `hsla(${Math.floor(360 * avatarNumber)},70%,${lum},1)`;
     };
-    const avatarColor = (lum: string): string => {
-      return randomHSL(props.avatarProp.name, lum)
-    }
-    const avatarStyles = computed((): AvatarColor => {
-      return {
-        color: avatarColor('50%'),
-        backgroundColor: `${avatarColor('95%')} !important`
-      };
-    });
+    const avatarColor = (lum: string): string => randomHSL(props.avatarProp.name, lum);
+    const avatarStyles = computed((): AvatarColor => ({
+      color: avatarColor('50%'),
+      backgroundColor: `${avatarColor('95%')} !important`,
+    }));
+    return {
+      avatarStyles,
+      avatar: computed(() => props.avatarProp),
+    };
   },
-})
+});
 </script>
 
 <style scoped>

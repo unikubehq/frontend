@@ -75,11 +75,11 @@
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-class-component';
+import { defineComponent } from 'vue';
 
-export default class SettingsView extends Vue {
+export default defineComponent({
   name: 'SettingsView'
-}
+})
 </script>
 
 <style scoped>

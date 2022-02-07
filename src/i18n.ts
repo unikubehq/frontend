@@ -17,7 +17,7 @@ function loadLocaleMessages() {
   return messages;
 }
 
-export default new VueI18n({
+export default VueI18n.createI18n<[MessageSchema], 'de' | 'en'>({
   locale: 'de',
   fallbackLocale: 'en',
   messages: loadLocaleMessages(),

@@ -44,6 +44,7 @@ function initializeUnikubeApp(mode: string) {
   app.use(VueAxios, axios);
   app.use(apolloProvider);
   app.use(store);
+  app.use(i18n);
   app.use(Vuelidate);
   app.use(abilitiesPlugin, ability, { useGlobalProperties: true });
   app.component('CaslCan', Can);
@@ -62,7 +63,6 @@ function initializeUnikubeApp(mode: string) {
       // eslint-disable-next-line no-underscore-dangle
       store: mode !== 'e2e' ? store : window.__store__,
       vuetify,
-      i18n,
       apolloProvider,
       beforeCreate() {
         this.$store.commit('context/initContext');

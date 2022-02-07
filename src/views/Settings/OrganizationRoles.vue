@@ -179,18 +179,16 @@ export default defineComponent({
   props: {
     dialog: {
       type: Boolean,
-      default: false
+      default: false,
     },
     showDeleteDialog: {
       type: Boolean,
-      default: false
+      default: false,
     },
     deleteMember: {
       type: Object as PropType<TOrganizationMember>,
       required: false,
-      default: () => {
-        return undefined
-      }
+      default: () => undefined,
     },
   },
   data() {
@@ -201,7 +199,7 @@ export default defineComponent({
       memberErrors: [] as string[],
       organization: {} as TOrganizationNode,
       memberToAvatar: Converter.memberToAvatar,
-    }
+    };
   },
   computed: {
     isOrganizationAdmin(): boolean {
@@ -276,12 +274,12 @@ export default defineComponent({
       }).then(() => {
         this.$apollo.queries.allOrganizationInvitations.refetch();
       });
-    }
+    },
   },
 
   components: {
     DeleteOrganizationMember: DeleteOrganizationMemberComponent,
     UnikubeAvatar,
   },
-})
+});
 </script>
