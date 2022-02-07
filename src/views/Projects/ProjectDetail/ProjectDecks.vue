@@ -69,7 +69,7 @@ export default defineComponent({
   },
   props: {
     project: {
-      type: Object as PropType<TProjectNode>
+      type: Object as PropType<TProjectNode>,
     },
   },
   data() {
