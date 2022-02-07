@@ -42,32 +42,41 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { defineComponent, PropType } from 'vue';
 import { DeleteProjectMemberMutation, TProjectMember, TProjectNode } from '@/generated/graphql';
 
-@Component({})
-export default class RemoveMember extends Vue {
-  @Prop() readonly project!: TProjectNode
-
-  @Prop() readonly member!: TProjectMember
-
-  @Prop({ default: false }) readonly show!: boolean
-
-  removeProjectMember(): void {
-    if (this.member?.user) {
-      this.$apollo.mutate({
-        mutation: DeleteProjectMemberMutation,
-        variables: {
-          id: this.project.id,
-          user: this.member.user.id,
-        },
-      }).then(() => {
-        this.$emit('removed');
-        this.$emit('hide');
-      });
-    }
-  }
-}
+defineComponent({
+  props: {
+    project: {
+      type: Object as PropType<TProjectNode>,
+      required: true,
+    },
+    member: {
+      type: Object as PropType<TProjectMember>,
+      required: true,
+    },
+    show: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  methods: {
+    removeProjectMember(): void {
+      if (this.member?.user) {
+        this.$apollo.mutate({
+          mutation: DeleteProjectMemberMutation,
+          variables: {
+            id: this.project.id,
+            user: this.member.user.id,
+          },
+        }).then(() => {
+          this.$emit('removed');
+          this.$emit('hide');
+        });
+      }
+    },
+  },
+});
 </script>
 
 <style lang="scss" scoped>
