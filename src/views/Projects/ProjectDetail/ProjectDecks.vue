@@ -53,7 +53,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { defineComponent, PropType } from 'vue';
 import {
   TDeckNode,
   TProjectNode,
@@ -62,41 +62,43 @@ import EditDeck from '@/components/Projects/EditDeck.vue';
 import { CliHintMessage } from '@/typing';
 import CliHint from '@/components/general/CliHint.vue';
 
-@Component({
+export default defineComponent({
   components: {
     EditDeck,
     CliHint,
   },
-})
-export default class ProjectDecks extends Vue {
-  @Prop() readonly project!: TProjectNode;
-
-  deckEdit = false;
-
-  deckToBeEdited: TDeckNode | undefined;
-
-  memberDrawer = false;
-
-  deckCliHintMessage: CliHintMessage[] = [
-    {
-      command: 'unikube deck install',
-      hint: this.$t('cli.deck.install').toString(),
+  props: {
+    project: {
+      type: Object as PropType<TProjectNode>
     },
-    {
-      command: 'unikube deck ingress',
-      hint: this.$t('cli.deck.ingress').toString(),
+  },
+  data() {
+    return {
+      deckEdit: false,
+      deckToBeEdited: undefined as TDeckNode | undefined,
+      memberDrawer: false,
+      deckCliHintMessage: [
+        {
+          command: 'unikube deck install',
+          hint: this.$t('cli.deck.install').toString(),
+        },
+        {
+          command: 'unikube deck ingress',
+          hint: this.$t('cli.deck.ingress').toString(),
+        },
+      ] as CliHintMessage[],
+    };
+  },
+  methods: {
+    setEdit(): void {
+      this.$router.push({ query: { edit: 'true' } });
     },
-  ];
-
-  setEdit(): void {
-    this.$router.push({ query: { edit: 'true' } });
-  }
-
-  setDeckEdit(pkg: TDeckNode): void {
-    this.deckToBeEdited = pkg;
-    this.deckEdit = true;
-  }
-}
+    setDeckEdit(pkg: TDeckNode): void {
+      this.deckToBeEdited = pkg;
+      this.deckEdit = true;
+    },
+  },
+});
 </script>
 
 <style lang="scss" scoped>
