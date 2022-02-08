@@ -173,11 +173,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Watch } from 'vue-property-decorator';
+import { defineComponent, PropType } from 'vue';
 import VueI18n from 'vue-i18n';
 import {
-  required, requiredIf, ValidationFunc, ValidationRule,
-} from 'vuelidate/lib/validators';
+  required, requiredIf,
+} from '@vuelidate/validators';
 import {
   CreateUpdateSops,
   Maybe, Scalars, TCreateUpdateSopsMutationVariables,
@@ -185,52 +185,53 @@ import {
   TSopsProviderNode,
   TSopsTypeEnum,
 } from '@/generated/graphql';
-import { validationMixin } from '@/components/mixins';
 import DeleteSops from '@/components/Projects/DeleteSops.vue';
+import setupErrorHandler from '@/utils/validations';
 import TranslateResult = VueI18n.TranslateResult;
 
-@Component({
+export default defineComponent({
+  setup() {
+    const { handleErrors, v } = setupErrorHandler();
+    return {
+      $v: v,
+      handleErrors,
+    };
+  },
   components: {
     DeleteSops,
   },
-})
-export default class Sops extends validationMixin {
-  @Prop() readonly project: TProjectNode | undefined
-
-  @Prop() readonly sops: TSopsProviderNode | undefined
-
-  @Prop({ default: false }) edit = false
-
-  title = ''
-
-  description: null | undefined | string = ''
-
-  projectId: Maybe<Scalars['UUID']> = null
-
-  secret1 = ''
-
-  secret2 = ''
-
-  secret3 = ''
-
-  sopsType: Maybe<TSopsTypeEnum> = null
-
-  currentSops: Maybe<TSopsProviderNode> = null
-
-  sopsTypeChoices = [
-    { text: 'AWS KMS', value: TSopsTypeEnum.Aws },
-    { text: 'PGP', value: TSopsTypeEnum.Pgp },
-  ]
-
-  showForm = false;
-
-  pgpHover = false;
-
-  deleteDialog = false;
-
-  deleteSops: TSopsProviderNode | null = null;
-
-  validations(): {[key: string]: {[key: string]: ValidationRule | ValidationFunc}} {
+  props: {
+    project: {
+      type: Object as PropType<TProjectNode>,
+      required: false,
+    },
+    sops: {
+      type: Object as PropType<TSopsProviderNode>,
+      required: false,
+    },
+  },
+  data() {
+    return {
+      title: '',
+      edit: false,
+      description: '' as Maybe<string>,
+      projectId: null as Maybe<Scalars['UUID']>,
+      secret1: '',
+      secret2: '',
+      secret3: '',
+      sopsType: null as Maybe<TSopsTypeEnum>,
+      currentSops: null as Maybe<TSopsProviderNode>,
+      sopsTypeChoices: [
+        { text: 'AWS KMS', value: TSopsTypeEnum.Aws },
+        { text: 'PGP', value: TSopsTypeEnum.Pgp },
+      ],
+      showForm: false,
+      pgpHover: false,
+      deleteDialog: false,
+      deleteSops: null as TSopsProviderNode | null,
+    };
+  },
+  validations() {
     return {
       title: {
         required,
@@ -242,180 +243,170 @@ export default class Sops extends validationMixin {
         required: requiredIf((): boolean => this.sopsType === TSopsTypeEnum.Aws),
       },
     };
-  }
-
-  get headlinePrefix(): TranslateResult {
-    return this.edit ? this.$t('general.edit').toString() : this.$t('general.add').toString();
-  }
-
-  get secret1Label(): string {
-    const map = new Map();
-    map.set('aws', this.$t('sops.accessKey').toString());
-    map.set('pgp', this.$t('sops.pgpKey').toString());
-    return map.get(this.sopsType);
-  }
-
-  get secret1Placeholder(): string {
-    const map = new Map();
-    map.set('aws', this.$t('sops.enterAccessKey').toString());
-    map.set('pgp', this.$t('sops.enterPgpKey').toString());
-    return map.get(this.sopsType);
-  }
-
-  get secret2Label(): string {
-    const map = new Map();
-    map.set('aws', this.$t('sops.secretAccessKey').toString());
-    return map.get(this.sopsType);
-  }
-
-  get secret2Placeholder(): string {
-    const map = new Map();
-    map.set('aws', this.$t('sops.enterSecretAccessKey').toString());
-    return map.get(this.sopsType);
-  }
-
-  get titleErrors(): TranslateResult[] {
-    return this.handleErrors('title');
-  }
-
-  get secret1Errors(): TranslateResult[] {
-    return this.handleErrors('secret1');
-  }
-
-  get secret2Errors(): TranslateResult[] {
-    return this.handleErrors('secret2');
-  }
-
-  submit(): void {
-    if (!this.sopsType) {
-      return;
-    }
-    const variables: TCreateUpdateSopsMutationVariables = {
-      title: this.title,
-      description: this.description || '',
-      project: this?.project?.id,
-      sopsType: this.sopsType,
-      id: null,
-      secret1: null,
-      secret2: null,
-      secret3: null,
-    };
-    if (this.edit && this.currentSops) {
-      variables.id = this.currentSops.id;
-    }
-    if (this.secret1 !== 'True') {
-      variables.secret1 = this.secret1;
-    }
-    if (this.secret2 && this.secret2 !== 'True') {
-      variables.secret2 = this.secret2;
-    }
-    this.$apollo.mutate({
-      mutation: CreateUpdateSops,
-      variables,
-    })
-      .then((data) => {
-        if (data.data.createUpdateSops.ok) {
-          this.resetValues();
-          this.handleShowForm(false);
-        }
-        this.$emit('update');
+  },
+  computed: {
+    headlinePrefix(): TranslateResult {
+      return this.edit ? this.$t('general.edit').toString() : this.$t('general.add').toString();
+    },
+    secret1Label(): string {
+      const map = new Map();
+      map.set('aws', this.$t('sops.accessKey').toString());
+      map.set('pgp', this.$t('sops.pgpKey').toString());
+      return map.get(this.sopsType);
+    },
+    secret1Placeholder(): string {
+      const map = new Map();
+      map.set('aws', this.$t('sops.enterAccessKey').toString());
+      map.set('pgp', this.$t('sops.enterPgpKey').toString());
+      return map.get(this.sopsType);
+    },
+    secret2Label(): string {
+      const map = new Map();
+      map.set('aws', this.$t('sops.secretAccessKey').toString());
+      return map.get(this.sopsType);
+    },
+    secret2Placeholder(): string {
+      const map = new Map();
+      map.set('aws', this.$t('sops.enterSecretAccessKey').toString());
+      return map.get(this.sopsType);
+    },
+    titleErrors(): TranslateResult[] {
+      return this.handleErrors('title');
+    },
+    secret1Errors(): TranslateResult[] {
+      return this.handleErrors('secret1');
+    },
+    secret2Errors(): TranslateResult[] {
+      return this.handleErrors('secret2');
+    },
+  },
+  methods: {
+    submit(): void {
+      if (!this.sopsType) {
+        return;
+      }
+      const variables: TCreateUpdateSopsMutationVariables = {
+        title: this.title,
+        description: this.description || '',
+        project: this?.project?.id,
+        sopsType: this.sopsType,
+        id: null,
+        secret1: null,
+        secret2: null,
+        secret3: null,
+      };
+      if (this.edit && this.currentSops) {
+        variables.id = this.currentSops.id;
+      }
+      if (this.secret1 !== 'True') {
+        variables.secret1 = this.secret1;
+      }
+      if (this.secret2 && this.secret2 !== 'True') {
+        variables.secret2 = this.secret2;
+      }
+      this.$apollo.mutate({
+        mutation: CreateUpdateSops,
+        variables,
       })
-      .catch((err) => {
-        this.$store.commit({
-          type: 'errors/setError',
-          error: err,
-          message: 'Something went wrong.',
-          location: 'SopsEdit',
+        .then((data) => {
+          if (data.data.createUpdateSops.ok) {
+            this.resetValues();
+            this.handleShowForm(false);
+          }
+          this.$emit('update');
+        })
+        .catch((err) => {
+          this.$store.commit({
+            type: 'errors/setError',
+            error: err,
+            message: 'Something went wrong.',
+            location: 'SopsEdit',
+          });
         });
+    },
+    dragover(event: { currentTarget: HTMLInputElement, preventDefault: () => void }): void {
+      event.preventDefault();
+      // Add some visual fluff to show the user can drop its files
+      this.pgpHover = true;
+    },
+    dragleave(): void {
+      // Clean up
+      this.pgpHover = false;
+    },
+    drop(event: {
+      currentTarget: HTMLInputElement,
+      preventDefault: () => void,
+      dataTransfer: DataTransfer
+    }): void {
+      event.preventDefault();
+      this.pgpHover = false;
+      const file = event.dataTransfer.files[0];
+      const reader = new FileReader();
+      // eslint-disable-next-line
+      reader.addEventListener('load', (readerEvent: any) => {
+        this.secret1 = readerEvent.target.result;
       });
-  }
-
-  dragover(event: { currentTarget: HTMLInputElement, preventDefault: () => void }): void {
-    event.preventDefault();
-    // Add some visual fluff to show the user can drop its files
-    this.pgpHover = true;
-  }
-
-  dragleave(): void {
-    // Clean up
-    this.pgpHover = false;
-  }
-
-  drop(event: {
-    currentTarget: HTMLInputElement,
-    preventDefault: () => void,
-    dataTransfer: DataTransfer
-  }): void {
-    event.preventDefault();
-    this.pgpHover = false;
-    const file = event.dataTransfer.files[0];
-    const reader = new FileReader();
-    // eslint-disable-next-line
-    reader.addEventListener('load', (readerEvent: any) => {
-      this.secret1 = readerEvent.target.result;
-    });
-    reader.readAsText(file);
-  }
-
-  handleShowForm(show: boolean): void {
-    this.showForm = show;
-    if (!show) {
-      this.resetValues();
-    }
-  }
-
-  resetValues(): void {
-    this.title = '';
-    this.description = '';
-    this.secret1 = '';
-    this.secret2 = '';
-    this.sopsType = null;
-    this.currentSops = null;
-  }
-
-  handleSetEditSops(sops: TSopsProviderNode): void {
-    this.showForm = true;
-    this.title = sops.title;
-    this.description = sops.description;
-    this.edit = true;
-    this.currentSops = sops;
-    // eslint-disable-next-line no-underscore-dangle
-    switch (sops.__typename) {
-      case 'AWSKMSNode':
-        this.sopsType = TSopsTypeEnum.Aws;
-        this.secret1 = sops.accessKey;
-        this.secret2 = sops.secretAccessKey;
-        break;
-      case 'PGPKeyNode':
-        this.sopsType = TSopsTypeEnum.Pgp;
-        this.secret1 = sops.privateKey;
-        break;
-      default:
-        this.sopsType = null;
-    }
-  }
-
-  deleteSopsDialog(sops: TSopsProviderNode): void {
-    this.deleteSops = sops;
-    this.deleteDialog = true;
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  getSopsTypeString(typename: string): string {
-    if (typename === 'AWSKMSNode') {
-      return 'AWS KMS';
-    }
-    if (typename === 'PGPKeyNode') {
-      return 'PGP';
-    }
-    return '';
-  }
-
-  @Watch('project', { deep: true })
-  projectChanged(value: TProjectNode): void {
-    this.projectId = value.id;
-  }
-}
+      reader.readAsText(file);
+    },
+    handleShowForm(show: boolean): void {
+      this.showForm = show;
+      if (!show) {
+        this.resetValues();
+      }
+    },
+    resetValues(): void {
+      this.title = '';
+      this.description = '';
+      this.secret1 = '';
+      this.secret2 = '';
+      this.sopsType = null;
+      this.currentSops = null;
+    },
+    handleSetEditSops(sops: TSopsProviderNode): void {
+      this.showForm = true;
+      this.title = sops.title;
+      this.edit = true;
+      this.description = sops.description;
+      this.currentSops = sops;
+      // eslint-disable-next-line no-underscore-dangle
+      switch (sops.__typename) {
+        case 'AWSKMSNode':
+          this.sopsType = TSopsTypeEnum.Aws;
+          this.secret1 = sops.accessKey;
+          this.secret2 = sops.secretAccessKey;
+          break;
+        case 'PGPKeyNode':
+          this.sopsType = TSopsTypeEnum.Pgp;
+          this.secret1 = sops.privateKey;
+          break;
+        default:
+          this.sopsType = null;
+      }
+    },
+    deleteSopsDialog(sops: TSopsProviderNode): void {
+      this.deleteSops = sops;
+      this.deleteDialog = true;
+    },
+    // eslint-disable-next-line class-methods-use-this
+    getSopsTypeString(typename: string): string {
+      if (typename === 'AWSKMSNode') {
+        return 'AWS KMS';
+      }
+      if (typename === 'PGPKeyNode') {
+        return 'PGP';
+      }
+      return '';
+    },
+  },
+  watch: {
+    project: {
+      deep: true,
+      handler(value: TProjectNode): void {
+        this.projectId = value.id;
+      },
+    },
+  },
+});
 </script>
 
 <style scoped lang="scss">
