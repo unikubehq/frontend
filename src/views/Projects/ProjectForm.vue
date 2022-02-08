@@ -154,11 +154,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Watch } from 'vue-property-decorator';
-import { required, url } from 'vuelidate/lib/validators';
+import { defineComponent, PropType } from 'vue';
+import { required, url } from '@vuelidate/validators';
 import VueI18n from 'vue-i18n';
-import { ApolloError } from '@apollo/client';
-import { validationMixin } from '@/components/mixins';
+import { ApolloError, FetchResult } from '@apollo/client';
 import {
   CreateProject,
   TCreateProjectMutationResult,
@@ -169,8 +168,16 @@ import {
   UpdateProject,
 } from '@/generated/graphql';
 import TranslateResult = VueI18n.TranslateResult;
+import setupErrorHandler from '@/utils/validations';
 
-@Component({
+export default defineComponent({
+  setup() {
+    const { handleErrors, v } = setupErrorHandler();
+    return {
+      handleErrors,
+      $v: v,
+    };
+  },
   validations: {
     title: {
       required,
@@ -187,149 +194,138 @@ import TranslateResult = VueI18n.TranslateResult;
     accessToken: {
     },
   },
-})
-export default class ProjectForm extends validationMixin {
-  @Prop() readonly editMode: boolean | undefined
-
-  @Prop() readonly project: TProjectNode | undefined
-
-  title = '';
-
-  description = '';
-
-  specRepository = '';
-
-  submissionError = '';
-
-  specRepositoryBranch = 'main';
-
-  specType: TSpecicifactionTypeEnum = TSpecicifactionTypeEnum.Helm;
-
-  accessUsername = '';
-
-  accessToken = '';
-
-  repoDir = '';
-
-  id = '';
-
-  specTypeChoices = [TSpecicifactionTypeEnum.Helm]
-
-  saveLoading = false
-
-  get titleErrors(): TranslateResult[] {
-    return this.handleErrors('title');
-  }
-
-  get specRepositoryErrors(): TranslateResult[] {
-    return this.handleErrors('specRepository');
-  }
-
-  get specRepositoryBranchErrors(): TranslateResult[] {
-    return this.handleErrors('specRepositoryBranch');
-  }
-
-  get accessUsernameErrors(): TranslateResult[] {
-    return this.handleErrors('accessUsername');
-  }
-
-  get accessTokenErrors(): TranslateResult[] {
-    return this.handleErrors('accessToken');
-  }
-
-  get disableButton(): boolean {
-    return this.$v.$invalid;
-  }
-
-  get submitButtonText(): TranslateResult {
-    return this.editMode ? this.$t('general.save').toString() : this.$t('general.next').toString();
-  }
-
-  handleEditMode(): void {
-    if (this.project) {
-      this.title = this.project.title;
-      this.description = this.project.description || '';
-      this.specRepository = this.project.specRepository;
-      this.specRepositoryBranch = this.project.specRepositoryBranch || '';
-      this.specType = this.project.specType.toLowerCase() as TSpecicifactionTypeEnum;
-      this.accessUsername = this.project.accessUsername;
-      this.accessToken = this.project.accessUsername;
-      this.id = this.project.id;
-    }
-  }
-
-  @Watch('project')
-  handleProjectChange(): void {
-    this.handleEditMode();
-  }
-
+  props: {
+    editMode: {
+      type: Boolean,
+      default: false,
+    },
+    project: {
+      type: Object as PropType<TProjectNode>,
+      required: false,
+    },
+  },
+  data() {
+    return {
+      title: '',
+      description: '',
+      specRepository: '',
+      submissionError: '',
+      specRepositoryBranch: 'main',
+      specType: TSpecicifactionTypeEnum.Helm,
+      accessUsername: '',
+      accessToken: '',
+      repoDir: '',
+      id: '',
+      specTypeChoices: [TSpecicifactionTypeEnum.Helm],
+      saveLoading: false,
+    };
+  },
+  computed: {
+    titleErrors(): TranslateResult[] {
+      return this.handleErrors('title');
+    },
+    specRepositoryErrors(): TranslateResult[] {
+      return this.handleErrors('specRepository');
+    },
+    specRepositoryBranchErrors(): TranslateResult[] {
+      return this.handleErrors('specRepositoryBranch');
+    },
+    accessUsernameErrors(): TranslateResult[] {
+      return this.handleErrors('accessUsername');
+    },
+    accessTokenErrors(): TranslateResult[] {
+      return this.handleErrors('accessToken');
+    },
+    disableButton(): boolean {
+      return this.$v.$invalid;
+    },
+    submitButtonText(): TranslateResult {
+      return this.editMode ? this.$t('general.save').toString() : this.$t('general.next').toString();
+    },
+  },
+  methods: {
+    handleEditMode(): void {
+      if (this.project) {
+        this.title = this.project.title;
+        this.description = this.project.description || '';
+        this.specRepository = this.project.specRepository;
+        this.specRepositoryBranch = this.project.specRepositoryBranch || '';
+        this.specType = this.project.specType.toLowerCase() as TSpecicifactionTypeEnum;
+        this.accessUsername = this.project.accessUsername;
+        this.accessToken = this.project.accessUsername;
+        this.id = this.project.id;
+      }
+    },
+    success(data: FetchResult<TCreateProjectMutationResult>): void {
+      this.saveLoading = false;
+      this.$store.dispatch('auth/refresh', -1).then((refreshed: boolean) => {
+        if (data.data?.createUpdateProject?.project && refreshed) {
+          if (this.editMode) {
+            this.$router.go(-1);
+          } else {
+            this.$router.push({ name: 'project.addMembers', params: { slug: data.data.createUpdateProject.project.id } });
+          }
+        } else {
+          console.log('Something went wrong creating the project or refreshing the rpt.');
+        }
+      });
+    },
+    failed(err: ApolloError): void {
+      this.saveLoading = false;
+      this.submissionError = err.message;
+    },
+    submit(): void {
+      this.saveLoading = true;
+      const projectVariables: TCreateProjectMutationVariables = {
+        title: this.title,
+        description: this.description,
+        specRepository: this.specRepository,
+        specType: this.specType,
+        specRepositoryBranch: this.specRepositoryBranch,
+        organization: this.$store.state.context.organization.id,
+        accessToken: null,
+        accessUsername: null,
+      };
+      if (this.$v.accessUsername.$dirty) {
+        projectVariables.accessUsername = this.accessUsername;
+      } else if (!projectVariables.accessToken) {
+        delete projectVariables.accessToken;
+      }
+      if (this.$v.accessToken.$dirty) {
+        projectVariables.accessToken = this.accessToken;
+      } else if (!projectVariables.accessUsername) {
+        delete projectVariables.accessUsername;
+      }
+      if (!this.editMode) {
+        const variables: TCreateProjectMutationVariables = projectVariables;
+        this.$apollo.mutate({
+          mutation: CreateProject,
+          variables,
+        })
+          .then(this.success)
+          .catch(this.failed);
+      } else {
+        const variables: TUpdateProjectMutationVariables = { ...projectVariables, id: this.id };
+        this.$apollo.mutate({
+          mutation: UpdateProject,
+          variables,
+        })
+          .then(this.success)
+          .catch(this.failed);
+      }
+    },
+  },
   mounted(): void {
     if (this.editMode) {
       this.handleEditMode();
     }
-  }
-
-  success(data: {data: TCreateProjectMutationResult}): void {
-    this.saveLoading = false;
-    this.$store.dispatch('auth/refresh', -1).then((refreshed: boolean) => {
-      if (data.data?.createUpdateProject?.project && refreshed) {
-        if (this.editMode) {
-          this.$router.go(-1);
-        } else {
-          this.$router.push({ name: 'project.addMembers', params: { slug: data.data.createUpdateProject.project.id } });
-        }
-      } else {
-        console.log('Something went wrong creating the project or refreshing the rpt.');
-      }
-    });
-  }
-
-  failed(err: ApolloError): void {
-    this.saveLoading = false;
-    this.submissionError = err.message;
-  }
-
-  submit(): void {
-    this.saveLoading = true;
-    const projectVariables: TCreateProjectMutationVariables = {
-      title: this.title,
-      description: this.description,
-      specRepository: this.specRepository,
-      specType: this.specType,
-      specRepositoryBranch: this.specRepositoryBranch,
-      organization: this.$store.state.context.organization.id,
-      accessToken: null,
-      accessUsername: null,
-    };
-    if (this.$v.accessUsername.$dirty) {
-      projectVariables.accessUsername = this.accessUsername;
-    } else if (!projectVariables.accessToken) {
-      delete projectVariables.accessToken;
-    }
-    if (this.$v.accessToken.$dirty) {
-      projectVariables.accessToken = this.accessToken;
-    } else if (!projectVariables.accessUsername) {
-      delete projectVariables.accessUsername;
-    }
-    if (!this.editMode) {
-      const variables: TCreateProjectMutationVariables = projectVariables;
-      this.$apollo.mutate({
-        mutation: CreateProject,
-        variables,
-      })
-        .then(this.success)
-        .catch(this.failed);
-    } else {
-      const variables: TUpdateProjectMutationVariables = { ...projectVariables, id: this.id };
-      this.$apollo.mutate({
-        mutation: UpdateProject,
-        variables,
-      })
-        .then(this.success)
-        .catch(this.failed);
-    }
-  }
-}
+  },
+  watch: {
+    project() {
+      this.handleEditMode();
+    },
+  },
+});
 </script>
 
 <style>

@@ -1,6 +1,5 @@
 import { createApp } from 'vue';
 import VueApollo from 'vue-apollo';
-import Vuelidate from 'vuelidate';
 import * as Sentry from '@sentry/vue';
 import Keycloak from 'keycloak-js';
 import KeycloakAuthorization from 'keycloak-js/dist/keycloak-authz';
@@ -40,12 +39,11 @@ function initializeUnikubeApp(mode: string) {
   const app = createApp(App);
   const vuetify = createVuetify();
 
-  app.config.productionTip = false;
   app.use(VueAxios, axios);
   app.use(apolloProvider);
   app.use(store);
+  app.use(router);
   app.use(i18n);
-  app.use(Vuelidate);
   app.use(abilitiesPlugin, ability, { useGlobalProperties: true });
   app.component('CaslCan', Can);
   app.axios.defaults.baseURL = process.env.VUE_APP_UPLOAD_URL;
@@ -57,7 +55,6 @@ function initializeUnikubeApp(mode: string) {
   function vueInit() {
     const apolloProvider = setupApolloProvider();
     new Vue({
-      router,
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       // eslint-disable-next-line no-underscore-dangle

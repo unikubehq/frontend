@@ -1,20 +1,24 @@
-
-Component.registerHooks(['validations']);
+import { TranslateResult, useI18n } from 'vue-i18n';
+import useVuelidate from '@vuelidate/core';
 
 export default function setupErrorHandler() {
   const validatorMapping = [
     'email', 'required', 'url', 'minValue', 'maxValue',
-  ]
+  ];
+  const v = useVuelidate();
+
   const handleErrors = (fieldName: string): TranslateResult[] => {
-    const { t } = useI18n({ useScope: 'global' })
+    const { t } = useI18n({ useScope: 'global' });
     const errors: TranslateResult[] = [];
 
     validatorMapping.forEach((value) => {
-      if (!this.$v[fieldName][value] && value in this.$v[fieldName]) {
-        errors.push(this.$t(`errors.${value}Error`));
+      if (!v[fieldName][value] && value in v[fieldName]) {
+        errors.push(t(`errors.${value}Error`));
       }
     });
-    return this.$v[fieldName].$dirty ? errors : [];
-  }
-
+    return v[fieldName].$dirty ? errors : [];
+  };
+  return {
+    v, handleErrors,
+  };
 }
