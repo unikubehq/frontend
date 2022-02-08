@@ -1,13 +1,15 @@
 // eslint-disable-next-line import/prefer-default-export
 import { AxiosError, AxiosResponse } from 'axios';
 import { ref } from 'vue';
+import { useStore } from 'vuex';
 
 export default function setupUpload(
   uploadUrl: string,
   successCallback: (res: AxiosResponse) => void,
   errorCallback: (err: AxiosError) => void,
 ) {
-  const previewUrl: string | null = ref(null);
+  const previewUrl = ref('');
+  const store = useStore();
 
   const handleUpload = (e: {target: HTMLInputElement}): void => {
     if (e && e.target && e.target.files) {
@@ -18,7 +20,7 @@ export default function setupUpload(
       this.axios.post(uploadUrl, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${this.$store.state.auth.rawRpt}`,
+          Authorization: `Bearer ${store.state.auth.rawRpt}`,
         },
       }).then(successCallback).catch(errorCallback);
     }

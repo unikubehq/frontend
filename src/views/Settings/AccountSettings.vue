@@ -105,79 +105,73 @@
 </template>
 
 <script lang="ts">
-import { Component } from 'vue-property-decorator';
-import { AxiosResponse } from 'axios';
+import { defineComponent } from 'vue';
+import { AxiosError, AxiosResponse } from 'axios';
 import { DeleteAvatarMutation, TDeleteAvatarMutationResult } from '@/generated/graphql';
-import { UploadComponent } from '@/components/mixins';
 import DangerZone from '@/components/Settings/DangerZone.vue';
+import setupUpload from '@/utils/upload';
+import { useStore } from 'vuex';
 
-@Component({
+export default defineComponent({
   components: {
     DangerZone,
   },
-})
-export default class AccountSettings extends UploadComponent {
-  clearText = false
+  setup() {
+    const store = useStore();
 
-  password = ''
-
-  newPassword = ''
-
-  reEnterNewPassword = ''
-
-  dialog = false
-
-  uploadUrl = '/users-http/upload-avatar/';
-
-  getUploadUrl(): string {
-    return `${this.uploadUrl + this.$store.state.auth.uuid}/`;
-  }
-
-  uploadCallback(res: AxiosResponse): void {
-    this.$store.commit('auth/setAvatar', res.data.url);
-  }
-
-  deleteAvatar(): void {
-    this.$apollo.mutate({
-      mutation: DeleteAvatarMutation,
-      variables: {
-        id: this.$store.state.auth.uuid,
-      },
-    }).then((data) => {
-      const res: TDeleteAvatarMutationResult = data.data;
-      if (res?.deleteAvatar?.ok) {
-        this.previewUrl = '';
-        this.$store.commit('auth/setAvatar', '');
-      }
-    });
-  }
-
-  get fullName(): string {
-    return this.$store.state.auth.username;
-  }
-
-  get email(): string {
-    return this.$store.state.auth.email;
-  }
-
-  get avatarImage(): string {
-    return this.previewUrl || this.$store.state.auth.avatarImage || 'https://cdn.zeplin.io/5f84546964e43c2749571f59/assets/2192D830-FF56-4E41-8DBA-F504CEFA64FC.svg';
-  }
-
-  updatePassword(): void {
-    this.$store.state.auth.client.login({ action: 'UPDATE_PASSWORD' });
-  }
-
-  changeGeneralInformation(): void {
-    this.$store.state.auth.client.login({ action: 'UPDATE_PROFILE' });
-  }
-
-  deleteAccount(): void {
-    this.$store.state.auth.client.login({ action: 'delete_account' });
-  }
-}
+    const uploadCallback = (res: AxiosResponse): void => {
+      store.commit('auth/setAvatar', res.data.url);
+    };
+    const uploadError = (err: AxiosError) => {
+      console.log(err);
+    };
+    const { previewUrl } = setupUpload(
+      `/users-http/upload-avatar/${store.state.auth.uuid}/`,
+      uploadCallback,
+      uploadError,
+    );
+    return {
+      previewUrl,
+    };
+  },
+  data() {
+    return {
+      clearText: false,
+      password: '',
+      newPassword: '',
+      reEnterNewPassword: '',
+      dialog: false,
+    };
+  },
+  methods: {
+    deleteAvatar(): void {
+      this.$apollo.mutate({
+        mutation: DeleteAvatarMutation,
+        variables: {
+          id: this.$store.state.auth.uuid,
+        },
+      }).then((data) => {
+        const res: TDeleteAvatarMutationResult = data.data;
+        if (res?.deleteAvatar?.ok) {
+          this.previewUrl = '';
+          this.$store.commit('auth/setAvatar', '');
+        }
+      });
+    },
+  },
+  computed: {
+    fullName(): string {
+      return this.$store.state.auth.username;
+    },
+    email(): string {
+      return this.$store.state.auth.email;
+    },
+    avatarImage(): string {
+      return this.previewUrl || this.$store.state.auth.avatarImage || 'https://cdn.zeplin.io/5f84546964e43c2749571f59/assets/2192D830-FF56-4E41-8DBA-F504CEFA64FC.svg';
+    },
+  },
+});
 </script>
-
 <style scoped>
 
 </style>
