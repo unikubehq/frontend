@@ -2,8 +2,6 @@ import Vue from 'vue';
 import VueApollo from 'vue-apollo';
 import Vuelidate from 'vuelidate';
 import * as Sentry from '@sentry/vue';
-import Keycloak from 'keycloak-js';
-import KeycloakAuthorization from 'keycloak-js/dist/keycloak-authz';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
 import { abilitiesPlugin, Can } from '@casl/vue';
@@ -15,6 +13,9 @@ import vuetify from '@/plugins/vuetify';
 import setupApolloProvider from '@/vue-apollo';
 import { UnikubeAbility } from '@/typing';
 import i18n from '@/i18n';
+
+declare const Keycloak: typeof import('keycloak-js');
+declare const KeycloakAuthorization: typeof import('keycloak-js/dist/keycloak-authz');
 
 console.log(`Running unikube frontend version ${process.env.VUE_APP_VERSION}`);
 
