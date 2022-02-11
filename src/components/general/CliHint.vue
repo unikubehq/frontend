@@ -64,22 +64,21 @@ import { CliHintMessage } from '@/typing/index';
 import { defineComponent, PropType } from 'vue';
 
 export default defineComponent({
-    props: {
-        commands: {
-            type: Array as PropType<CliHintMessage[]>,
-            required: true,
-        },
+  props: {
+    commands: {
+      type: Array as PropType<CliHintMessage[]>,
+      required: true,
     },
-
-    copyToClipboard(command: string): void {
-      navigator.clipboard.writeText(command).then(() => {
-        this.$store.commit('context/addSnackbarMessage', {
-          message: this.$t('cli.util.copySuccessful').toString(),
-          error: false,
-        });
+  },
+  copyToClipboard(command: string): void {
+    navigator.clipboard.writeText(command).then(() => {
+      this.$store.commit('context/addSnackbarMessage', {
+        message: this.$t('cli.util.copySuccessful').toString(),
+        error: false,
       });
-    }
-})
+    });
+  },
+});
 </script>
 
 <style lang="scss" scoped>
