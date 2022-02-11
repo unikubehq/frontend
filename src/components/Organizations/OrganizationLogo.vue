@@ -73,9 +73,9 @@
 
 </template>
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { defineComponent } from 'vue';
 import VueI18n from 'vue-i18n';
-import { required } from 'vuelidate/lib/validators';
+import { required } from '@vuelidate/validators';
 import { OrganizationQuery } from '@/generated/graphql';
 import { Dropzone } from '@/typing/';
 import 'vue2-dropzone/dist/vue2Dropzone.min.css';
@@ -83,7 +83,7 @@ import TranslateResult = VueI18n.TranslateResult;
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const vue2Dropzone = require('vue2-dropzone');
 
-@Component({
+export default defineComponent({
   components: {
     vue2Dropzone,
   },
@@ -92,59 +92,62 @@ const vue2Dropzone = require('vue2-dropzone');
       required,
     },
   },
-})
-export default class OrganizationLogo extends Vue {
-  @Prop() readonly organizationId!: string;
-
-  dialog = false;
-
-  loading = false;
-
-  imgSrc = 'https://cdn.zeplin.io/5f84546964e43c2749571f59/assets/2192D830-FF56-4E41-8DBA-F504CEFA64FC.svg';
-
-  fileSet = false;
-
-  dropzoneOptions = {
-    url: 'http://unikube.app',
-    thumbnailWidth: 150,
-    maxFilesize: 0.5,
-    autoQueue: false,
-  };
-
-  handleUpload(): void {
-    // TODO this is not really good code.
-    this.loading = true;
-    const file = (this.$refs.dropzoneElement as unknown as Dropzone).getAcceptedFiles()[0];
-    this.fileSet = true;
-    const formData = new FormData();
-    formData.append('avatar_image', file);
-    this.axios.post(`/orgas-http/upload-avatar/${this.organizationId}/`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        Authorization: `Bearer ${this.$store.state.auth.rawRpt}`,
+  props: {
+    organizationId: {
+      type: String,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      dialog: false,
+      loading: false,
+      imgSrc: 'https://cdn.zeplin.io/5f84546964e43c2749571f59/assets/2192D830-FF56-4E41-8DBA-F504CEFA64FC.svg',
+      fileSet: false,
+      dropzoneOptions: {
+        url: 'http://unikube.app',
+        thumbnailWidth: 150,
+        maxFilesize: 0.5,
+        autoQueue: false,
       },
-    }).then(() => {
-      this.loading = false;
-      this.$apollo.query({
-        query: OrganizationQuery,
-        variables: {
-          id: this.organizationId,
+    };
+  },
+  methods: {
+    handleUpload(): void {
+      // TODO this is not really good code.
+      this.loading = true;
+      const file = (this.$refs.dropzoneElement as unknown as Dropzone).getAcceptedFiles()[0];
+      this.fileSet = true;
+      const formData = new FormData();
+      formData.append('avatar_image', file);
+      this.axios.post(`/orgas-http/upload-avatar/${this.organizationId}/`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${this.$store.state.auth.rawRpt}`,
         },
-      }).then((result) => {
-        this.imgSrc = result.data.organization.avatarImage;
+      }).then(() => {
+        this.loading = false;
+        this.$apollo.query({
+          query: OrganizationQuery,
+          variables: {
+            id: this.organizationId,
+          },
+        }).then((result) => {
+          this.imgSrc = result.data.organization.avatarImage;
+        });
+        this.dialog = false;
       });
-      this.dialog = false;
-    });
-  }
-
-  next(): void {
-    this.$emit('success');
-  }
-
-  get buttonText(): TranslateResult {
-    return this.fileSet ? this.$t('general.next') : this.$t('general.skip');
-  }
-}
+    },
+    next(): void {
+      this.$emit('success');
+    },
+  },
+  computed: {
+    buttonText(): TranslateResult {
+      return this.fileSet ? this.$t('general.next') : this.$t('general.skip');
+    },
+  },
+});
 </script>
 
 <style lang="scss" scoped>
