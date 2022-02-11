@@ -78,8 +78,8 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'SettingsView'
-})
+  name: 'SettingsView',
+});
 </script>
 
 <style scoped>
