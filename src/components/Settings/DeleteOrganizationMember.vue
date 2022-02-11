@@ -47,19 +47,19 @@ import { defineComponent } from 'vue';
 export default defineComponent({
   props: {
     show: {
-      type: Boolean
+      type: Boolean,
     },
     memberName: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   methods: {
     deleteMember(): void {
       this.$emit('delete');
-    }
-  }
-})
+    },
+  },
+});
 </script>
 
 <style lang="scss" scoped>
