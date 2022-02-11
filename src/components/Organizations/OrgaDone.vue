@@ -19,8 +19,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from '@vue/runtime-core';
-import { useStore } from 'vuex'
+import { defineComponent, ref } from 'vue';
+import { useStore } from 'vuex';
 
 export default defineComponent({
   props: {
@@ -34,22 +34,21 @@ export default defineComponent({
     },
   },
 
-  setup(props) {
-    const store = useStore()
+  setup() {
+    const store = useStore();
     const rptRefreshed = ref(false);
     const snackbar = ref(false);
-    const orgaTitle = props.orgaTitle;
 
     store.dispatch('auth/refresh', -1).then(() => {
-      rptRefreshed.value = true;    });
+      rptRefreshed.value = true;
+    });
 
     return {
       rptRefreshed,
-      orgaTitle,
       snackbar,
     };
   },
-})
+});
 </script>
 
 <style scoped>
