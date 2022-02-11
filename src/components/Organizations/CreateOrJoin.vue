@@ -84,52 +84,45 @@
   </v-col>
 </template>
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { defineComponent } from 'vue';
 import { AnswerInvitation, UserInvitationsQuery } from '@/generated/graphql';
 import CreateOrganizationBig from '@/components/icons/CreateOrganizationBig.vue';
 import JoinOrganizationBig from '@/components/icons/JoinOrganizationBig.vue';
 
-@Component({
+export default defineComponent({
   components: { CreateOrganizationBig, JoinOrganizationBig },
   apollo: {
     userInvitations: {
       query: UserInvitationsQuery,
     },
   },
-})
-export default class CreateOrJoin extends Vue {
-  loading: {[key: string]: boolean} = {}
-
-  answerInvite(id: string, accepted: boolean): void {
-    Vue.set(
-      this.loading,
-      id,
-      true,
-    );
-    this.$apollo.mutate({
-      mutation: AnswerInvitation,
-      variables: {
-        invitationId: id,
-        accepted,
-      },
-    }).then(() => {
-      Vue.set(
-        this.loading,
-        id,
-        accepted,
-      );
-      this.$apollo.queries.userInvitations.refetch();
-    });
-  }
-
-  acceptInvite(inviteId: string): void {
-    this.answerInvite(inviteId, true);
-  }
-
-  declineInvite(inviteId: string): void {
-    this.answerInvite(inviteId, false);
-  }
-}
+  data() {
+    return {
+      loading: {} as {[key: string]: boolean},
+    };
+  },
+  methods: {
+    answerInvite(id: string, accepted: boolean): void {
+      this.loading.id = true;
+      this.$apollo.mutate({
+        mutation: AnswerInvitation,
+        variables: {
+          invitationId: id,
+          accepted,
+        },
+      }).then(() => {
+        this.loading.id = accepted;
+        this.$apollo.queries.userInvitations.refetch();
+      });
+    },
+    acceptInvite(inviteId: string): void {
+      this.answerInvite(inviteId, true);
+    },
+    declineInvite(inviteId: string): void {
+      this.answerInvite(inviteId, false);
+    },
+  },
+});
 </script>
 
 <style lang="scss" scoped>
