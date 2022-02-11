@@ -190,6 +190,7 @@ import setupErrorHandler from '@/utils/validations';
 import TranslateResult = VueI18n.TranslateResult;
 
 export default defineComponent({
+  name: 'SopsForm',
   setup() {
     const { handleErrors, v } = setupErrorHandler();
     return {
