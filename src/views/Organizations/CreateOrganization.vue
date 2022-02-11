@@ -20,7 +20,7 @@
 
 </template>
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { defineComponent } from 'vue';
 import CreateOrJoin from '@/components/Organizations/CreateOrJoin.vue';
 import OrganizationTitle from '@/components/Organizations/OrganizationTitle.vue';
 import OrganizationLogo from '@/components/Organizations/OrganizationLogo.vue';
@@ -28,7 +28,7 @@ import OrganizationMembers from '@/components/Organizations/OrganizationMembers.
 import OrgaDone from '@/components/Organizations/OrgaDone.vue';
 import { TOrganizationNode } from '@/generated/graphql';
 
-@Component({
+export default defineComponent({
   components: {
     CreateOrJoin,
     OrganizationTitle,
@@ -36,29 +36,28 @@ import { TOrganizationNode } from '@/generated/graphql';
     OrganizationMembers,
     OrgaDone,
   },
-})
-export default class CreateOrganization extends Vue {
-  step = 0;
-
-  organizationId = '';
-
-  organizationTitle = '';
-
-  nextStep(): void {
-    this.step += 1;
-  }
-
-  orgaCreation(organization: TOrganizationNode): void {
-    this.organizationId = organization.id;
-    this.organizationTitle = organization.title;
-    this.$store.commit('context/setOrganization', organization);
-    this.step = 2;
-  }
-
-  logoCreation(): void {
-    this.step = 4;
-  }
-}
+  data() {
+    return {
+      step: 0,
+      organizationId: '',
+      organizationTitle: '',
+    };
+  },
+  methods: {
+    nextStep(): void {
+      this.step += 1;
+    },
+    orgaCreation(organization: TOrganizationNode): void {
+      this.organizationId = organization.id;
+      this.organizationTitle = organization.title;
+      this.$store.commit('context/setOrganization', organization);
+      this.step = 2;
+    },
+    logoCreation(): void {
+      this.step = 4;
+    },
+  },
+});
 </script>
 
 <style lang="scss" scoped>

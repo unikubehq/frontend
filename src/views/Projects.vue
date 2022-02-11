@@ -52,6 +52,7 @@ import { RouteLocationNormalized } from 'vue-router';
 import setupPagination from '@/utils/pagination';
 import { useQuery } from '@vue/apollo-composable';
 import { useStore } from 'vuex';
+import { useI18n } from 'vue-i18n';
 
 const sortAscending = (a: TProjectNode, b: TProjectNode): number => {
   if (a.title.toUpperCase() < b.title.toUpperCase()) {
@@ -94,7 +95,10 @@ export default defineComponent({
       currentPage,
     } = setupPagination(limit.value, offset.value, totalObjectCount.value);
 
+    const { t } = useI18n({ useScope: 'global' });
+
     return {
+      $t: t,
       totalObjectCount,
       changeOffset,
       offset,
