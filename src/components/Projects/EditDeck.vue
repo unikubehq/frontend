@@ -154,8 +154,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Watch } from 'vue-property-decorator';
-import { required } from 'vuelidate/lib/validators';
+import { defineComponent, PropType } from 'vue';
+import { required } from '@vuelidate/validators';
 import VueI18n from 'vue-i18n';
 import {
   CreateUpdateEnvironment,
@@ -165,8 +165,8 @@ import {
   TDeckNode,
   TSopsProviderNode, TCreateUpdateEnvironmentMutationVariables, Maybe,
 } from '@/generated/graphql';
-import { validationMixin } from '@/components/mixins';
 import HelmOverrides from '@/views/Projects/ProjectDetail/HelmOverrides.vue';
+import setupErrorHandler from '@/utils/validations';
 import TranslateResult = VueI18n.TranslateResult;
 
 type sopsCredential = {
@@ -174,7 +174,13 @@ type sopsCredential = {
     value: string
   }
 
-@Component({
+export default defineComponent({
+  setup() {
+    const { handleErrors } = setupErrorHandler();
+    return {
+      handleErrors,
+    };
+  },
   validations: {
     title: {
       required,
@@ -186,99 +192,104 @@ type sopsCredential = {
   components: {
     HelmOverrides,
   },
-})
-export default class EditDeck extends validationMixin {
-  @Prop() readonly environment: TEnvironmentNode | undefined
-
-  @Prop() readonly sopsProviders: TSopsProviderNode[] | undefined
-
-  @Prop() readonly deck!: TDeckNode
-
-  title = ''
-
-  description = ''
-
-  namespace = ''
-
-  sopsCredentials: sopsCredential = { text: '', value: '' }
-
-  environmentTypeChoices = [{ text: 'Local', value: TEnvironmentType.Local }, { text: 'Remote', value: TEnvironmentType.Remote }]
-
-  environmentType: TEnvironmentType = TEnvironmentType.Local
-
-  valuesPath = { text: '', value: '' }
-
-  showForm = false;
-
-  loading = false;
-
-  helm = false;
-
-  submit(): void {
-    if (!this.namespace) {
-      return;
-    }
-    const mutationVars: TCreateUpdateEnvironmentMutationVariables = {
-      title: this.title || '',
-      description: this.description,
-      type: this.environmentType.toLowerCase(),
-      deck: this.environment?.deck?.id,
-      namespace: this.namespace,
-      sopsCredentials: this.sopsCredentials.value,
-      valuesPath: this.valuesPath?.value,
-      id: this.environment?.id,
+  props: {
+    environment: {
+      type: Object as PropType<TEnvironmentNode>,
+      required: false,
+    },
+    sopsProviders: {
+      type: Object as PropType<TSopsProviderNode[]>,
+      required: false,
+    },
+    deck: {
+      type: Object as PropType<TDeckNode>,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      title: '',
+      description: '',
+      namespace: '',
+      sopsCredentials: { text: '', value: '' } as sopsCredential,
+      environmentTypeChoices: [{ text: 'Local', value: TEnvironmentType.Local }, { text: 'Remote', value: TEnvironmentType.Remote }],
+      environmentType: TEnvironmentType.Local,
+      valuesPath: {} as { text: string, value: string },
+      showForm: false,
+      loading: false,
+      helm: false,
     };
-    this.loading = true;
-    this.$apollo.mutate({
-      mutation: CreateUpdateEnvironment,
-      variables: mutationVars,
-    })
-      .then((data) => {
-        this.loading = false;
-        if (data.data.createUpdateEnvironment.errors.length === 0) {
-          this.$emit('change');
-        }
+  },
+  methods: {
+    submit(): void {
+      if (!this.namespace) {
+        return;
+      }
+      const mutationVars: TCreateUpdateEnvironmentMutationVariables = {
+        title: this.title || '',
+        description: this.description,
+        type: this.environmentType.toLowerCase(),
+        deck: this.environment?.deck?.id,
+        namespace: this.namespace,
+        sopsCredentials: this.sopsCredentials.value,
+        valuesPath: this.valuesPath?.value,
+        id: this.environment?.id,
+      };
+      this.loading = true;
+      this.$apollo.mutate({
+        mutation: CreateUpdateEnvironment,
+        variables: mutationVars,
       })
-      .catch((err) => {
-        this.loading = false;
-        console.log(err);
+        .then((data) => {
+          this.loading = false;
+          if (data.data.createUpdateEnvironment.errors.length === 0) {
+            this.$emit('change');
+          }
+        })
+        .catch((err) => {
+          this.loading = false;
+          console.log(err);
+        });
+    },
+  },
+  computed: {
+    valuesPathChoices(): { text: string, value: string, encrypted: boolean }[] {
+      if (this.deck?.fileInformation?.length) {
+        return this.deck.fileInformation.map(
+          (fileInfo: Maybe<TFileInformationNode> | null) => ({
+            text: fileInfo?.path || '',
+            value: fileInfo?.path || '',
+            encrypted: fileInfo?.encrypted || false,
+          }),
+        );
+      }
+      return [];
+    },
+    sopsProviderChoices(): { text: string, value: string }[] {
+      const choices: sopsCredential[] = [];
+      this.sopsProviders?.forEach((provider) => {
+        choices.push({ text: provider.title, value: provider.id });
       });
-  }
-
-  get valuesPathChoices(): { text: string, value: string, encrypted: boolean }[] {
-    if (this.deck?.fileInformation?.length) {
-      return this.deck.fileInformation.map(
-        (fileInfo: Maybe<TFileInformationNode> | null) => ({
-          text: fileInfo?.path || '',
-          value: fileInfo?.path || '',
-          encrypted: fileInfo?.encrypted || false,
-        }),
-      );
-    }
-    return [];
-  }
-
-  get sopsProviderChoices(): { text: string, value: string }[] {
-    const choices: sopsCredential[] = [];
-    this.sopsProviders?.forEach((provider) => {
-      choices.push({ text: provider.title, value: provider.id });
-    });
-    return choices;
-  }
-
-  get titleErrors(): TranslateResult[] {
-    return this.handleErrors('title');
-  }
-
-  @Watch('environment', { deep: true, immediate: true })
-  environmentChanged(value: TEnvironmentNode): void {
-    this.title = value.title;
-    this.namespace = value.namespace;
-    this.environmentType = value.type;
-    this.sopsCredentials = value.sopsCredentials ? { text: value.sopsCredentials?.title, value: value.sopsCredentials?.id } : { text: '', value: '' };
-    this.valuesPath = value.valuesPath ? { text: value.valuesPath, value: value.valuesPath } : { text: '', value: '' };
-  }
-}
+      return choices;
+    },
+    titleErrors(): TranslateResult[] {
+      return this.handleErrors('title');
+    },
+  },
+  watch: {
+    environment: {
+      deep: true,
+      immediate: true,
+      handler(value: TEnvironmentNode): void {
+        this.title = value.title;
+        this.namespace = value.namespace;
+        this.environmentType = value.type;
+        this.sopsCredentials = value.sopsCredentials ? { text: value.sopsCredentials?.title, value: value.sopsCredentials?.id } : { text: '', value: '' };
+        this.valuesPath = value.valuesPath ? { text: value.valuesPath, value: value.valuesPath } : { text: '', value: '' };
+      },
+    },
+  },
+});
 </script>
 
 <style scoped lang="scss">
