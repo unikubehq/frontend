@@ -167,8 +167,8 @@ import {
   TUpdateProjectMutationVariables,
   UpdateProject,
 } from '@/generated/graphql';
-import TranslateResult = VueI18n.TranslateResult;
 import setupErrorHandler from '@/utils/validations';
+import TranslateResult = VueI18n.TranslateResult;
 
 export default defineComponent({
   setup() {
