@@ -45,7 +45,7 @@
 import { defineComponent, PropType } from 'vue';
 import { DeleteProjectMemberMutation, TProjectMember, TProjectNode } from '@/generated/graphql';
 
-defineComponent({
+export default defineComponent({
   props: {
     project: {
       type: Object as PropType<TProjectNode>,

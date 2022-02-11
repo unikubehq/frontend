@@ -114,17 +114,12 @@
 </template>
 
 <script lang="ts">
-import {
-  Component,
-  Prop,
-  Vue,
-  Watch,
-} from 'vue-property-decorator';
+import { defineComponent, PropType } from 'vue';
 import VueI18n from 'vue-i18n';
 import {
   CreateProjectMemberMutation,
   Maybe, OrganizationMembersQuery,
-  TOrganizationMember, TProjectMember, TProjectMemberRoleEnum,
+  TOrganizationMember, TOrganizationNode, TProjectMember, TProjectMemberRoleEnum,
   TProjectNode,
 } from '@/generated/graphql';
 import { TProjectMemberEdit } from '@/typing';
@@ -133,7 +128,7 @@ import RemoveMember from '@/components/Projects/RemoveMember.vue';
 import Converter from '@/utils/converter';
 import TranslateResult = VueI18n.TranslateResult;
 
-@Component({
+export default defineComponent({
   components: {
     UnikubeAvatar,
     RemoveMember,
@@ -149,138 +144,130 @@ import TranslateResult = VueI18n.TranslateResult;
       deep: true,
     },
   },
-})
-export default class ProjectMembers extends Vue {
-  @Prop() readonly project!: TProjectNode;
-
-  memberToAvatar = Converter.memberToAvatar;
-
-  memberToDelete : TProjectMember | null = null
-
-  membersEdit: Maybe<TProjectMemberEdit[]> = []
-
-  showDeleteDialog = false
-
-  pendingMembers: Array<{user: string, role: string, loading: boolean}> = []
-
-  translateMembers(): void {
-    if (this.project?.members?.length) {
-      this.membersEdit = this.project?.members?.map(
-        (member: Maybe<TProjectMember>): TProjectMemberEdit => {
-          const editMember: TProjectMemberEdit = { ...member } as TProjectMemberEdit;
-          editMember.editing = false;
-          editMember.loading = false;
-          return editMember;
-        },
-      );
-    } else {
-      this.membersEdit = [];
-    }
-  }
-
-  disabledRow(member: TProjectMemberEdit): boolean {
-    if (this.membersEdit?.length) {
-      const editIDs = this.membersEdit.map(
-        (editMember: TProjectMemberEdit) => (editMember.editing ? editMember.user?.id : null),
-      );
-      if (editIDs.some((flag: boolean) => flag !== null)) {
-        return !editIDs.includes(member.user?.id);
+  props: {
+    project: {
+      type: Object as PropType<TProjectNode>,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      organization: null as Maybe<TOrganizationNode>,
+      memberToAvatar: Converter.memberToAvatar,
+      memberToDelete: null as Maybe<TProjectMember>,
+      membersEdit: [] as Maybe<TProjectMemberEdit[]>,
+      showDeleteDialog: false,
+      pendingMembers: [] as Array<{user: string, role: string, loading: boolean}>,
+    };
+  },
+  methods: {
+    translateMembers(): void {
+      if (this.project?.members?.length) {
+        this.membersEdit = this.project?.members?.map(
+          (member: Maybe<TProjectMember>): TProjectMemberEdit => {
+            const editMember: TProjectMemberEdit = { ...member } as TProjectMemberEdit;
+            editMember.editing = false;
+            editMember.loading = false;
+            return editMember;
+          },
+        );
+      } else {
+        this.membersEdit = [];
       }
-      return false;
-    }
-    return false;
-  }
-
-  get memberChoices(): Array<{value: string, text: string}> {
-    const result : Array<{value: string, text: string}> = [];
-    const members = this.$data?.organization?.members || [];
-    members?.forEach((member: TOrganizationMember) => {
-      if (!this.project?.members?.every(
-        (projectMember: Maybe<TProjectMember>) => projectMember?.user?.id !== member?.user?.id,
-      )) {
-        return;
-      }
-      if (member && member?.user) {
-        const name = member.user?.familyName || member.user?.givenName
-          ? `${member.user?.givenName} ${member.user?.familyName}` : member.user.id;
-        result.push({
-          value: member.user.id,
-          text: name,
-        });
-      }
-    });
-    return result;
-  }
-
-  get projectMemberRoles(): Array<{value: string, text: TranslateResult}> {
-    return [
-      { value: TProjectMemberRoleEnum.Admin, text: this.$t('general.admin') },
-      { value: TProjectMemberRoleEnum.Member, text: this.$t('general.member') },
-    ];
-  }
-
-  updateMember(editMember: TProjectMemberEdit): void {
-    if (this.project?.members?.length) {
-      const member = this.project?.members?.find((projectMember: Maybe<TProjectMember>) => {
-        if (projectMember) {
-          return projectMember.user?.id === editMember.user?.id;
+    },
+    disabledRow(member: TProjectMemberEdit): boolean {
+      if (this.membersEdit?.length) {
+        const editIDs = this.membersEdit.map(
+          (editMember: TProjectMemberEdit) => (editMember.editing ? editMember.user?.id : null),
+        );
+        if (editIDs.some((flag: boolean) => flag !== null)) {
+          return !editIDs.includes(member.user?.id);
         }
         return false;
-      });
-      if (member) {
-        this.$apollo.mutate({
-          mutation: CreateProjectMemberMutation,
-          variables: {
-            user: member.user?.id,
-            role: editMember.role,
-            id: this.project.id,
-          },
-        }).then(() => {
-          this.$emit('update');
-        });
       }
-    }
-  }
-
-  addMember(idx: number): void {
-    this.pendingMembers[idx].loading = true;
-    this.$apollo.mutate({
-      mutation: CreateProjectMemberMutation,
-      variables: {
-        user: this.pendingMembers[idx].user,
-        role: this.pendingMembers[idx].role,
-        id: this.project.id,
-      },
-    }).then(() => {
-      this.$emit('update');
-      Vue.delete(
-        this.pendingMembers,
-        idx,
-      );
-    });
-  }
-
-  removeMember(member: TProjectMember): void {
-    this.memberToDelete = member;
-    this.showDeleteDialog = true;
-  }
-
-  removePendingMember(idx: number): void {
-    Vue.delete(
-      this.pendingMembers,
-      idx,
-    );
-  }
-
+      return false;
+    },
+    updateMember(editMember: TProjectMemberEdit): void {
+      if (this.project?.members?.length) {
+        const member = this.project?.members?.find((projectMember: Maybe<TProjectMember>) => {
+          if (projectMember) {
+            return projectMember.user?.id === editMember.user?.id;
+          }
+          return false;
+        });
+        if (member) {
+          this.$apollo.mutate({
+            mutation: CreateProjectMemberMutation,
+            variables: {
+              user: member.user?.id,
+              role: editMember.role,
+              id: this.project.id,
+            },
+          }).then(() => {
+            this.$emit('update');
+          });
+        }
+      }
+    },
+    addMember(idx: number): void {
+      this.pendingMembers[idx].loading = true;
+      this.$apollo.mutate({
+        mutation: CreateProjectMemberMutation,
+        variables: {
+          user: this.pendingMembers[idx].user,
+          role: this.pendingMembers[idx].role,
+          id: this.project.id,
+        },
+      }).then(() => {
+        this.$emit('update');
+        delete this.pendingMembers[idx];
+      });
+    },
+    removeMember(member: TProjectMember): void {
+      this.memberToDelete = member;
+      this.showDeleteDialog = true;
+    },
+    removePendingMember(idx: number): void {
+      delete this.pendingMembers[idx];
+    },
+  },
+  computed: {
+    memberChoices(): Array<{value: string, text: string}> {
+      const result : Array<{value: string, text: string}> = [];
+      const members = this.organization?.members || [];
+      members?.forEach((member: Maybe<TOrganizationMember>) => {
+        if (!this.project?.members?.every(
+          (projectMember: Maybe<TProjectMember>) => projectMember?.user?.id !== member?.user?.id,
+        )) {
+          return;
+        }
+        if (member && member?.user) {
+          const name = member.user?.familyName || member.user?.givenName
+            ? `${member.user?.givenName} ${member.user?.familyName}` : member.user.id;
+          result.push({
+            value: member.user.id,
+            text: name,
+          });
+        }
+      });
+      return result;
+    },
+    projectMemberRoles(): Array<{value: string, text: TranslateResult}> {
+      return [
+        { value: TProjectMemberRoleEnum.Admin, text: this.$t('general.admin') },
+        { value: TProjectMemberRoleEnum.Member, text: this.$t('general.member') },
+      ];
+    },
+  },
   created(): void {
     this.translateMembers();
-  }
-
-  @Watch('project')
-  projectChanged(): void {
-    this.translateMembers();
-  }
-}
+  },
+  watch: {
+    project(): void {
+      this.translateMembers();
+    },
+  },
+});
 </script>
 
 <style lang="scss" scoped>
