@@ -132,7 +132,7 @@
 </template>
 
 <script lang="ts">
-import { email, required } from 'vuelidate/lib/validators';
+import { email, required } from '@vuelidate/validators';
 import {
   DeleteOrganizationMember,
   InviteToOrganization,
@@ -143,7 +143,7 @@ import {
 import UnikubeAvatar from '@/components/general/Avatar.vue';
 import Converter from '@/utils/converter';
 import DeleteOrganizationMemberComponent from '@/components/Settings/DeleteOrganizationMember.vue';
-import { defineComponent, PropType } from 'vue';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
   apollo: {
@@ -176,21 +176,6 @@ export default defineComponent({
       required,
     },
   },
-  props: {
-    dialog: {
-      type: Boolean,
-      default: false,
-    },
-    showDeleteDialog: {
-      type: Boolean,
-      default: false,
-    },
-    deleteMember: {
-      type: Object as PropType<TOrganizationMember>,
-      required: false,
-      default: () => undefined,
-    },
-  },
   data() {
     return {
       dataChanged: false,
@@ -199,6 +184,9 @@ export default defineComponent({
       memberErrors: [] as string[],
       organization: {} as TOrganizationNode,
       memberToAvatar: Converter.memberToAvatar,
+      dialog: false,
+      showDeleteDialog: false,
+      deleteMember: {} as TOrganizationMember,
     };
   },
   computed: {
