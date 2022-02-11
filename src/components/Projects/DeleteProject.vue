@@ -61,38 +61,47 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { defineComponent, PropType } from 'vue';
 import { DeleteProject, TProjectNode } from '@/generated/graphql';
 
-@Component({})
-export default class ProjectList extends Vue {
-  @Prop() readonly project!: TProjectNode
-
-  @Prop() readonly show: boolean | undefined
-
-  deleteTitle = ''
-
-  deleteAndHide():void {
-    this.$emit('hide');
-    this.deleteProject(this.project.id);
-  }
-
-  deleteProject(id: string): void {
-    this.$apollo.mutate({
-      mutation: DeleteProject,
-      variables: {
-        id,
-      },
-    })
-      .then((data) => {
-        if (data.data.deleteProject.ok) {
-          this.$emit('deleted');
-          this.$parent.$emit('deletion');
-        }
+export default defineComponent({
+  props: {
+    project: {
+      type: Object as PropType<TProjectNode>,
+      required: true,
+    },
+    show: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  data() {
+    return {
+      deleteTitle: '',
+    };
+  },
+  methods: {
+    deleteAndHide():void {
+      this.$emit('hide');
+      this.deleteProject(this.project.id);
+    },
+    deleteProject(id: string): void {
+      this.$apollo.mutate({
+        mutation: DeleteProject,
+        variables: {
+          id,
+        },
       })
-      .catch((err) => console.log(err));
-  }
-}
+        .then((data) => {
+          if (data.data.deleteProject.ok) {
+            this.$emit('deleted');
+            this.$parent?.$emit('deletion');
+          }
+        })
+        .catch((err) => console.log(err));
+    },
+  },
+});
 </script>
 
 <style lang="scss" scoped>
