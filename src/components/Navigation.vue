@@ -137,9 +137,8 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import { ApolloQueryResult } from '@apollo/client';
+import { defineComponent } from 'vue';
+import { FetchResult } from '@apollo/client';
 import {
   OrganizationMembersQuery,
   OrganizationsQuery,
@@ -147,26 +146,26 @@ import {
   TOrganizationNode, TOrganizationsQueryResult,
 } from '@/generated/graphql';
 import Strings from '@/utils/strings';
+import { useI18n } from 'vue-i18n';
 
-Component.registerHooks([
-  'beforeRouteEnter',
-  'beforeRouteUpdate',
-  'beforeRouteLeave',
-]);
-
-@Component({
+export default defineComponent({
+  name: 'NavigationSidebar',
   apollo: {
     allOrganizations: {
       query: OrganizationsQuery,
       fetchPolicy: 'no-cache',
-      result(result: ApolloQueryResult<TOrganizationsQueryResult>) {
+      result(result: FetchResult<TOrganizationsQueryResult>) {
         if (result?.data?.allOrganizations?.results?.length) {
           // If currently no organization is set - set the first from the result set.
           if (!this.$store.state.context.organization) {
-            this.initializeOrganization(result.data.allOrganizations.results);
+            this.initializeOrganization(
+              result.data?.allOrganizations.results as TOrganizationNode[],
+            );
           } else {
           // If currently an organization is set, check if it is still contained in the result set.
-            this.checkAndSetOrganization(result.data.allOrganizations.results);
+            this.checkAndSetOrganization(
+              result.data.allOrganizations.results as TOrganizationNode[],
+            );
           }
         } else if (this.$route.name !== 'create-organization') {
           this.$router.push({ name: 'create-organization' });
@@ -174,86 +173,89 @@ Component.registerHooks([
       },
     },
   },
-})
-export default class Navigation extends Vue {
-  items = [
-    { icon: '$vuetify.icons.overview', title: this.$t('views.projects'), to: '/overview' },
-    { icon: '$vuetify.icons.settings', title: this.$t('views.settingsLabel'), to: '/settings' },
-  ];
-
-  idToVerboseId = Strings.idToVerboseId
-
-  mobile = false;
-
-  toggleMini(): void {
-    this.$store.commit('context/setSidebarExpansion', !this.$store.state.context.sidebarExpanded);
-  }
-
-  get mini(): boolean {
-    return !this.$store.state.context.sidebarExpanded;
-  }
-
-  checkAndSetOrganization(organizations: TOrganizationNode[]): void {
-    /* Check if currently set organization is still valid. If not change context organization */
-    let contained = false;
-    organizations.forEach((organization: TOrganizationNode) => {
-      if (this.$store.state.context.organization.id === organization.id) {
-        contained = true;
+  setup() {
+    const { t } = useI18n({ useScope: 'global' });
+    return {
+      $t: t,
+    };
+  },
+  data() {
+    return {
+      items: [
+        { icon: '$vuetify.icons.overview', title: this.$t('views.projects'), to: '/overview' },
+        { icon: '$vuetify.icons.settings', title: this.$t('views.settingsLabel'), to: '/settings' },
+      ],
+      idToVerboseId: Strings.idToVerboseId,
+      mobile: false,
+    };
+  },
+  methods: {
+    toggleMini(): void {
+      this.$store.commit('context/setSidebarExpansion', !this.$store.state.context.sidebarExpanded);
+    },
+    checkAndSetOrganization(organizations: TOrganizationNode[]): void {
+      /* Check if currently set organization is still valid. If not change context organization */
+      let contained = false;
+      organizations.forEach((organization: TOrganizationNode) => {
+        if (this.$store.state.context.organization.id === organization.id) {
+          contained = true;
+        }
+      });
+      // If it is not contained within the result set - set the first.
+      if (!contained) {
+        this.$store.commit('context/setOrganization', organizations[0]);
+      } else if (!this.$store.state.context.organizationMember) {
+        this.setOrganizationMember(organizations[0]);
       }
-    });
-    // If it is not contained within the result set - set the first.
-    if (!contained) {
-      this.$store.commit('context/setOrganization', organizations[0]);
-    } else if (!this.$store.state.context.organizationMember) {
-      this.setOrganizationMember(organizations[0]);
-    }
-  }
-
-  initializeOrganization(organizations: TOrganizationNode[]): void {
-    /* Initialize organization context.
-     *
-     * Currently no organization is set. Initialize from localstorage or use first organization
-     * from query result.
-     */
-    const contextOrganizationId = JSON.parse(localStorage.getItem('contextOrganization') || 'null');
-    // If organization id was stored in localstorage, set it, when present in query result.
-    let organization = organizations[0];
-    if (contextOrganizationId) {
-      const organizationFiltered = organizations.filter(
-        (fOrganization: TOrganizationNode) => fOrganization.id === contextOrganizationId,
-      );
-      if (organizationFiltered.length) {
-        [organization] = organizationFiltered;
+    },
+    initializeOrganization(organizations: TOrganizationNode[]): void {
+      /* Initialize organization context.
+       *
+       * Currently no organization is set. Initialize from localstorage or use first organization
+       * from query result.
+       */
+      const contextOrganizationId = JSON.parse(localStorage.getItem('contextOrganization') || 'null');
+      // If organization id was stored in localstorage, set it, when present in query result.
+      let organization = organizations[0];
+      if (contextOrganizationId) {
+        const organizationFiltered = organizations.filter(
+          (fOrganization: TOrganizationNode) => fOrganization.id === contextOrganizationId,
+        );
+        if (organizationFiltered.length) {
+          [organization] = organizationFiltered;
+        }
       }
-    }
-    this.setOrganizationContext(organization, false);
-  }
-
-  setOrganizationContext(organization: TOrganizationNode, goToOverview = true): void {
-    this.$store.commit('context/setOrganization', organization);
-    this.setOrganizationMember(organization);
-    if (this.$route.name !== 'overview' && goToOverview) {
-      this.$router.push({ name: 'overview' });
-    }
-  }
-
-  setOrganizationMember(organization: TOrganizationNode): void {
-    this.$apollo.query({
-      query: OrganizationMembersQuery,
-      variables: {
-        id: organization.id,
-      },
-    }).then((res) => {
-      const currentMember = res.data.organization.members.filter(
-        (member: TOrganizationMember) => member?.user?.id === this.$store.state.auth.uuid,
-      )[0];
-      this.$store.commit(
-        'context/setOrganizationMember',
-        currentMember,
-      );
-    });
-  }
-
+      this.setOrganizationContext(organization, false);
+    },
+    setOrganizationContext(organization: TOrganizationNode, goToOverview = true): void {
+      this.$store.commit('context/setOrganization', organization);
+      this.setOrganizationMember(organization);
+      if (this.$route.name !== 'overview' && goToOverview) {
+        this.$router.push({ name: 'overview' });
+      }
+    },
+    setOrganizationMember(organization: TOrganizationNode): void {
+      this.$apollo.query({
+        query: OrganizationMembersQuery,
+        variables: {
+          id: organization.id,
+        },
+      }).then((res) => {
+        const currentMember = res.data.organization.members.filter(
+          (member: TOrganizationMember) => member?.user?.id === this.$store.state.auth.uuid,
+        )[0];
+        this.$store.commit(
+          'context/setOrganizationMember',
+          currentMember,
+        );
+      });
+    },
+  },
+  computed: {
+    mini(): boolean {
+      return !this.$store.state.context.sidebarExpanded;
+    },
+  },
   mounted(): void {
     this.$apollo.queries.allOrganizations.refetch();
     this.$store.subscribe((mutation: any) => {
@@ -261,8 +263,7 @@ export default class Navigation extends Vue {
         this.$apollo.queries.allOrganizations.refetch();
       }
     });
-
     this.$store.commit('context/setSidebarExpansion', window.outerWidth > 1180);
-  }
-}
+  },
+});
 </script>
