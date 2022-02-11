@@ -40,13 +40,18 @@
 </template>
 
 <script lang="ts">
-import { Component } from 'vue-property-decorator';
-import { mixins } from 'vue-class-component';
-import { Route } from 'vue-router';
+import {
+  computed,
+  defineComponent,
+  ref,
+} from 'vue';
 import ProjectBar from '@/components/Projects/ProjectBar.vue';
 import ProjectList from '@/components/Projects/ProjectList.vue';
-import { ProjectsQuery, TProjectNode } from '@/generated/graphql';
-import { paginationMixin } from '@/components/mixins';
+import { ProjectsQuery, TProjectNode, TProjectsQueryResult } from '@/generated/graphql';
+import { RouteLocationNormalized } from 'vue-router';
+import setupPagination from '@/utils/pagination';
+import { useQuery } from '@vue/apollo-composable';
+import { useStore } from 'vuex';
 
 const sortAscending = (a: TProjectNode, b: TProjectNode): number => {
   if (a.title.toUpperCase() < b.title.toUpperCase()) {
@@ -58,92 +63,100 @@ const sortAscending = (a: TProjectNode, b: TProjectNode): number => {
   return 0;
 };
 
-Component.registerHooks([
-  'beforeRouteUpdate',
-]);
-
-@Component({
+export default defineComponent({
+  name: 'ProjectTiles',
   components: {
     ProjectBar,
     ProjectList,
   },
-  apollo: {
-    allProjects: {
-      query: ProjectsQuery,
-      variables() {
-        return {
-          limit: this.limit,
-          offset: this.offset,
-        };
-      },
-      error(err) {
-        this.$store.commit({
-          type: 'errors/setError',
-          error: err,
-          code: 100,
-          location: 'Projects.vue',
-        });
-      },
-    },
+  setup() {
+    const limit = ref(10);
+    const offset = ref(0);
+    const variables = {
+      limit: limit.value,
+      offset: offset.value,
+    };
+    const { result, error } = useQuery(ProjectsQuery, variables);
+    if (error) {
+      const store = useStore();
+      store.commit({
+        type: 'errors/setError',
+        error,
+        code: 100,
+        location: 'Projects.vue',
+      });
+    }
+    const totalObjectCount = computed((): number => (result ? result.value.totalCount : 0));
+
+    const {
+      changeOffset,
+      listLength,
+      currentPage,
+    } = setupPagination(limit.value, offset.value, totalObjectCount.value);
+
+    return {
+      totalObjectCount,
+      changeOffset,
+      offset,
+      limit,
+      listLength,
+      currentPage,
+      allProject: result,
+    };
   },
-})
-export default class Overview extends mixins(paginationMixin) {
-  sorting = 'az';
+  data() {
+    return {
+      sorting: 'az',
+      search: '',
+      allProjects: {} as TProjectsQueryResult,
+    };
+  },
+  computed: {
+    organizationId(): string {
+      return this.$store.state.context.organization.id;
+    },
+    projectResults(): Array<TProjectNode> {
+      let result = this.allProjects.allProjects?.results as TProjectNode[];
+      if (result) {
+        if (this.sorting === 'az') {
+          result = result.slice().sort(sortAscending);
+        } else {
+          result = result.slice().sort(sortAscending).reverse();
+        }
 
-  search = '';
+        if (this.search) {
+          result = result.filter(
+            (project: TProjectNode) => project.title.toLocaleLowerCase()
+              .includes(this.search.toLocaleLowerCase()),
+          );
+        }
 
-  limit = 10;
-
-  get organizationId(): string {
-    return this.$store.state.context.organization.id;
-  }
-
-  get totalObjectCount(): number {
-    return this.$data.allProjects ? this.$data.allProjects.totalCount : 0;
-  }
-
-  get projectResults(): Array<TProjectNode> {
-    let result = this.$data.allProjects?.results;
-    if (result) {
-      if (this.sorting === 'az') {
-        result = result.slice().sort(sortAscending);
-      } else {
-        result = result.slice().sort(sortAscending).reverse();
-      }
-
-      if (this.search) {
-        result = result.filter(
-          (project: TProjectNode) => project.title.toLocaleLowerCase()
-            .includes(this.search.toLocaleLowerCase()),
+        return result.filter(
+          (project: TProjectNode) => project?.organization?.id === this.organizationId,
         );
       }
-
-      return result.filter(
-        (project: TProjectNode) => project?.organization?.id === this.organizationId,
-      );
-    }
-    return [{} as TProjectNode];
-  }
-
-  get loading(): boolean {
-    return this.$apollo.queries.allProjects.loading;
-  }
-
-  refetchProjects():void {
-    this.$store.commit('context/addSnackbarMessage', {
-      message: this.$t('projects.deleteSuccess'),
-      error: false,
-    });
-    this.$apollo.queries.allProjects.refetch();
-  }
-
-  // eslint-disable-next-line
-  beforeRouteEnter(to: Route, from: Route, next: (a: any) => void): void {
-    next((vm: this) => {
+      return [{} as TProjectNode];
+    },
+    loading(): boolean {
+      return this.$apollo.queries.allProjects.loading;
+    },
+  },
+  methods: {
+    refetchProjects(): void {
+      const message = this.$t('projects.deleteSuccess');
+      this.$store.commit('context/addSnackbarMessage', {
+        message,
+        error: false,
+      });
+      this.$apollo.queries.allProjects.refetch();
+    },
+  },
+  beforeRouteEnter(to: RouteLocationNormalized, from: RouteLocationNormalized, next) {
+    next((vm) => {
       vm.$apollo.queries.allProjects.refetch();
     });
-  }
-}
+  },
+});
 </script>
 
 <style scoped>

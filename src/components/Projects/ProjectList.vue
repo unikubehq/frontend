@@ -102,82 +102,88 @@
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-class-component';
-import { TProjectNode, UpdateProjectRepositoryMutation } from '@/generated/graphql';
+import { defineComponent, PropType } from 'vue';
+import { Maybe, TProjectNode, UpdateProjectRepositoryMutation } from '@/generated/graphql';
 import { CliHintMessage } from '@/typing/index';
 import CliHint from '@/components/general/CliHint.vue';
 import DeleteProject from '@/components/Projects/DeleteProject.vue';
 import ProjectMemberAvatars from '@/components/Projects/ProjectMemberAvatars.vue';
 import Converter from '@/utils/converter';
 
-@Component({
-  components: { CliHint, DeleteProject, ProjectMemberAvatars },
-})
-export default class ProjectList extends Vue {
-  @Prop() readonly project: TProjectNode | undefined
-
-  @Prop({ default: false }) readonly loading!: boolean
-
-  deleteProject: TProjectNode | null = null
-
-  showDeleteDialog = false
-
-  drawer = false;
-
-  projectCliHintMessage: CliHintMessage[] = [
-    {
-      command: 'unikube project up',
-      hint: this.$t('cli.project.up'),
+export default defineComponent({
+  components: {
+    CliHint,
+    DeleteProject,
+    ProjectMemberAvatars,
+  },
+  props: {
+    project: {
+      type: Object as PropType<TProjectNode>,
+      required: false,
     },
-    {
-      command: 'unikube project prune',
-      hint: this.$t('cli.project.prune'),
+    loading: {
+      type: Boolean,
+      default: false,
     },
-  ];
-
-  getReadableProjectStatus = Converter.getReadableProjectStatus
-
-  getProjectStatusLevel = Converter.getProjectStatusLevel
-
-  get modifiedDate(): string {
-    if (this.project?.currentCommitDateTime) {
-      return this.$d(new Date(this.project?.currentCommitDateTime), 'short');
-    }
-    return '-';
-  }
-
-  get editUrl(): string {
-    return this.loading ? '' : `/project/${this.project?.id}?edit=true`;
-  }
-
-  get projectUrl(): string {
-    return this.loading ? '' : `/project/${this.project?.id}`;
-  }
-
-  syncRepo(project: TProjectNode): void {
-    this.$apollo.mutate({
-      mutation: UpdateProjectRepositoryMutation,
-      variables: {
-        id: project.id,
-      },
-    }).then(() => {
-      this.$store.commit('context/addSnackbarMessage', {
-        message: this.$t('projects.sync').toString(),
-        error: false,
+  },
+  data() {
+    return {
+      deleteProject: null as Maybe<TProjectNode>,
+      showDeleteDialog: false,
+      drawer: false,
+      projectCliHintMessage: [
+        {
+          command: 'unikube project up',
+          hint: this.$t('cli.project.up'),
+        },
+        {
+          command: 'unikube project prune',
+          hint: this.$t('cli.project.prune'),
+        },
+      ] as CliHintMessage[],
+      getReadableProjectStatus: Converter.getReadableProjectStatus,
+      getProjectStatusLevel: Converter.getProjectStatusLevel,
+    };
+  },
+  computed: {
+    modifiedDate(): string {
+      if (this.project?.currentCommitDateTime) {
+        return this.$d(new Date(this.project?.currentCommitDateTime), 'short');
+      }
+      return '-';
+    },
+    editUrl(): string {
+      return this.loading ? '' : `/project/${this.project?.id}?edit=true`;
+    },
+    projectUrl(): string {
+      return this.loading ? '' : `/project/${this.project?.id}`;
+    },
+  },
+  methods: {
+    syncRepo(project: TProjectNode): void {
+      this.$apollo.mutate({
+        mutation: UpdateProjectRepositoryMutation,
+        variables: {
+          id: project.id,
+        },
+      }).then(() => {
+        this.$store.commit('context/addSnackbarMessage', {
+          message: this.$t('projects.sync').toString(),
+          error: false,
+        });
+      }).catch(() => {
+        this.$store.commit('context/addSnackbarMessage', {
+          message: this.$t('projects.syncFail').toString(),
+          error: true,
+        });
       });
-    }).catch(() => {
-      this.$store.commit('context/addSnackbarMessage', {
-        message: this.$t('projects.syncFail').toString(),
-        error: true,
-      });
-    });
-  }
-
-  deleteProjectDialog(project: TProjectNode): void {
-    this.deleteProject = project;
-    this.showDeleteDialog = true;
-  }
-}
+    },
+    deleteProjectDialog(project: TProjectNode): void {
+      this.deleteProject = project;
+      this.showDeleteDialog = true;
+    },
+  },
+});
 </script>
 
 <style lang="scss" scoped>
