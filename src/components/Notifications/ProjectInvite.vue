@@ -32,43 +32,42 @@
 </template>
 
 <script lang="ts">
-import Component from 'vue-class-component';
-import { Prop, Vue } from 'vue-property-decorator';
+import { defineComponent, PropType } from 'vue';
 import { AnswerInvitation } from '@/generated/graphql';
 
-@Component({})
-export default class ProjectInvite extends Vue {
-  @Prop() readonly invite: {id: string, organization: {title: string}} | undefined
-
-  loading: {[key: string]: boolean} = {}
-
-  answerInvite(id: string, accepted: boolean): void {
-    Vue.set(
-      this.loading,
-      id,
-      true,
-    );
-    this.$apollo.mutate({
-      mutation: AnswerInvitation,
-      variables: {
-        invitationId: id,
-        accepted,
-      },
-    }).then(() => {
-      Vue.set(
-        this.loading,
-        id,
-        false,
-      );
-      this.$emit('answer-invitation');
-    }).catch((err) => {
-      this.$store.commit('context/addSnackbarMessage', {
-        message: err,
-        error: true,
+export default defineComponent({
+  props: {
+    invite: {
+      type: Object as PropType<{id: string, organization: {title: string}}>,
+      required: false,
+    },
+  },
+  data() {
+    return {
+      loading: {} as {[key: string]: boolean},
+    };
+  },
+  methods: {
+    answerInvite(id: string, accepted: boolean): void {
+      this.loading.id = true;
+      this.$apollo.mutate({
+        mutation: AnswerInvitation,
+        variables: {
+          invitationId: id,
+          accepted,
+        },
+      }).then(() => {
+        this.loading.id = false;
+        this.$emit('answer-invitation');
+      }).catch((err) => {
+        this.$store.commit('context/addSnackbarMessage', {
+          message: err,
+          error: true,
+        });
       });
-    });
-  }
-}
+    },
+  },
+});
 </script>
 
 <style lang="scss" scoped>
