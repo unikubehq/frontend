@@ -30,30 +30,30 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { Component, Watch } from 'vue-property-decorator';
+import { defineComponent } from 'vue';
 import { UserDetailQuery } from '@/generated/graphql';
 import { SnackbarMessage } from '@/typing';
 
-@Component({})
-export default class App extends Vue {
-  get overlay(): boolean {
-    return this.$store.state.ui.overlay;
-  }
-
-  get rawRpt():string {
-    return this.$store.state.auth.rawRpt;
-  }
-
-  get messages(): SnackbarMessage[] {
-    return this.$store.state.context.messages.filter((message: SnackbarMessage) => message.show);
-  }
-
-  @Watch('rawRpt', { immediate: true })
-  rawRptChanged(): void {
-    this.$ability.update(this.$store.getters['auth/caslRules']);
-  }
-
+export default defineComponent({
+  computed: {
+    overlay(): boolean {
+      return this.$store.state.ui.overlay;
+    },
+    rawRpt():string {
+      return this.$store.state.auth.rawRpt;
+    },
+    messages(): SnackbarMessage[] {
+      return this.$store.state.context.messages.filter((message: SnackbarMessage) => message.show);
+    },
+  },
+  watch: {
+    rawRpt: {
+      immediate: true,
+      handler(): void {
+        this.$ability.update(this.$store.getters['auth/caslRules']);
+      },
+    },
+  },
   created(): void {
     this.$apollo.query({
       query: UserDetailQuery,
@@ -63,8 +63,8 @@ export default class App extends Vue {
     }).then((res) => {
       this.$store.commit('auth/setAvatar', res.data.user.avatarImage);
     });
-  }
-}
+  },
+});
 </script>
 
 <style lang="scss">
