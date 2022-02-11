@@ -17,31 +17,35 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import { Prop } from 'vue-property-decorator';
+import { defineComponent, PropType } from 'vue';
 import UnikubeAvatar from '@/components/general/Avatar.vue';
 import { Maybe, TProjectMember } from '@/generated/graphql';
 import Converter from '@/utils/converter';
 
-@Component({
+export default defineComponent({
   components: {
     UnikubeAvatar,
   },
-})
-export default class ProjectMemberAvatars extends Vue {
-  @Prop() readonly members!: TProjectMember[];
-
-  @Prop({ default: true }) readonly loading!: boolean;
-
-  get avatars(): Array<{ image: string | null, key: string, initials: string | null }> {
-    const result: Array<{ image: string | null, key: string, initials: string | null }> = [];
-    this.members?.forEach((member: Maybe<TProjectMember>) => {
-      if (member) {
-        result.push(Converter.memberToAvatar(member));
-      }
-    });
-    return result;
-  }
-}
+  props: {
+    members: {
+      type: Object as PropType<TProjectMember[]>,
+      required: true,
+    },
+    loading: {
+      type: Boolean,
+      default: true
+    },
+  },
+  computed: {
+    avatars(): Array<{ image: string | null, key: string, initials: string | null }> {
+      const result: Array<{ image: string | null, key: string, initials: string | null }> = [];
+      this.members?.forEach((member: Maybe<TProjectMember>) => {
+        if (member) {
+          result.push(Converter.memberToAvatar(member));
+        }
+      });
+      return result;
+    },
+  },
+});
 </script>

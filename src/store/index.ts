@@ -11,7 +11,7 @@ export type RootState = {
   auth: AuthState;
 };
 
-const store: Store = createStore({
+const store = createStore({
   modules: {
     auth,
     context,
