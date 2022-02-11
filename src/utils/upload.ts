@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/prefer-default-export
-import { AxiosError, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 import { ref } from 'vue';
 import { useStore } from 'vuex';
 
@@ -17,7 +17,7 @@ export default function setupUpload(
       previewUrl.value = URL.createObjectURL(file);
       const formData = new FormData();
       formData.append('avatar_image', file);
-      this.axios.post(uploadUrl, formData, {
+      axios.post(uploadUrl, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${store.state.auth.rawRpt}`,

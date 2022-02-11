@@ -12,11 +12,11 @@ export default function setupErrorHandler() {
     const errors: TranslateResult[] = [];
 
     validatorMapping.forEach((value) => {
-      if (!v[fieldName][value] && value in v[fieldName]) {
+      if (!v.value[fieldName][value] && value in v.value[fieldName]) {
         errors.push(t(`errors.${value}Error`));
       }
     });
-    return v[fieldName].$dirty ? errors : [];
+    return v.value[fieldName].$dirty ? errors : [];
   };
   return {
     v, handleErrors,
