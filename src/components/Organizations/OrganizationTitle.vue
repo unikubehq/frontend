@@ -36,57 +36,65 @@
 
 </template>
 <script lang="ts">
-import { Component } from 'vue-property-decorator';
-import { required } from 'vuelidate/lib/validators';
+import { defineComponent } from 'vue';
+import { required } from '@vuelidate/validators';
 import VueI18n from 'vue-i18n';
 import { CreateOrganizationMutation } from '@/generated/graphql';
-import { validationMixin } from '@/components/mixins';
+import setupErrorHandler from '@/utils/validations';
 import TranslateResult = VueI18n.TranslateResult;
 
-@Component({
+export default defineComponent({
   validations: {
     title: {
       required,
     },
   },
-})
-export default class OrganizationTitle extends validationMixin {
-  loading = false
-
-  title = '';
-
-  errors: TranslateResult[] = [];
-
-  get enableButton(): boolean {
-    return this.$v.title.$invalid;
-  }
-
-  get titleErrors(): TranslateResult[] {
-    return this.handleErrors('title');
-  }
-
-  handleCreateOrganization(): void {
-    this.loading = true;
-    this.$apollo.mutate({
-      mutation: CreateOrganizationMutation,
-      variables: {
-        title: this.title,
-      },
-    }).then(({ data }) => {
-      this.loading = false;
-      this.$store.dispatch('auth/refresh', -1).then((refreshed: boolean) => {
-        if (refreshed) {
-          this.$emit(
-            'success',
-            data.createUpdateOrganization?.organization,
-          );
-        } else {
-          console.log('Something went wrong creating a new organization.');
-        }
+  setup() {
+    const { handleErrors, v } = setupErrorHandler();
+    return {
+      $v: v,
+      handleErrors,
+    };
+  },
+  data() {
+    return {
+      loading: false,
+      title: '',
+      errors: [] as TranslateResult[],
+    };
+  },
+  computed: {
+    enableButton(): boolean {
+      return this.$v.title.$invalid;
+    },
+    titleErrors(): TranslateResult[] {
+      return this.handleErrors('title');
+    },
+  },
+  methods: {
+    handleCreateOrganization(): void {
+      this.loading = true;
+      this.$apollo.mutate({
+        mutation: CreateOrganizationMutation,
+        variables: {
+          title: this.title,
+        },
+      }).then(({ data }) => {
+        this.loading = false;
+        this.$store.dispatch('auth/refresh', -1).then((refreshed: boolean) => {
+          if (refreshed) {
+            this.$emit(
+              'success',
+              data.createUpdateOrganization?.organization,
+            );
+          } else {
+            console.log('Something went wrong creating a new organization.');
+          }
+        });
       });
-    });
-  }
-}
+    },
+  },
+});
 </script>
 
 <style lang="scss" scoped>
