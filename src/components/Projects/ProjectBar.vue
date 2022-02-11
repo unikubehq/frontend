@@ -33,10 +33,16 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
-import VueI18n from 'vue-i18n';
+import VueI18n, { useI18n } from 'vue-i18n';
 import TranslateResult = VueI18n.TranslateResult;
 
 export default defineComponent({
+  setup() {
+    const { t } = useI18n({ useScope: 'global' });
+    return {
+      $t: t,
+    };
+  },
   data() {
     return {
       orderChoice: 'az',
