@@ -133,41 +133,49 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import ProjectBar from '@/components/Projects/ProjectBar.vue';
+import { defineComponent } from 'vue';
 import ProjectForm from '@/views/Projects/ProjectForm.vue';
 import DeleteProject from '@/components/Projects/DeleteProject.vue';
 import AddTeamMember from '@/views/Projects/AddTeamMember.vue';
-import EditDeck from '@/components/Projects/EditDeck.vue';
-import UnikubeAvatar from '@/components/general/Avatar.vue';
 import {
+  Maybe,
   ProjectDetailQuery,
   TDeckNode, TProjectDetailQueryResult,
   TProjectNode,
 } from '@/generated/graphql';
+import { ApolloQueryResult } from '@apollo/client';
 
-@Component({
+export default defineComponent({
   components: {
-    ProjectBar,
     ProjectForm,
     AddTeamMember,
-    EditDeck,
-    UnikubeAvatar,
     DeleteProject,
   },
+  data() {
+    return {
+      tab: 0,
+      showDeleteDialog: false,
+      innerTab: 0,
+      deckEdit: false,
+      deckToBeEdited: null as Maybe<TDeckNode>,
+      memberDrawer: false,
+      project: null as Maybe<TProjectNode>,
+      projectNotFound: false,
+    };
+  },
   apollo: {
-    project: {
+    projectQuery: {
       query: ProjectDetailQuery,
       manual: true,
       variables() {
         return {
-          id: this.projectSlug,
+          id: this.$route.params.slug as string,
         };
       },
-      result({ data, loading }: { data: TProjectDetailQueryResult, loading: boolean }) {
-        if (!loading) {
-          if (this.$store.state.context.organization.id === data?.project?.organization?.id) {
-            this.project = data.project;
+      result(res: ApolloQueryResult<TProjectNode>) {
+        if (!res.loading) {
+          if (this.$store.state.context.organization.id === res.data?.organization?.id) {
+            this.project = res.data;
           } else {
             this.project = null;
             this.projectNotFound = true;
@@ -177,55 +185,36 @@ import {
     },
   },
   beforeRouteUpdate(to, from, next) {
-    this.$apollo.queries.project.refresh();
+    this.$apollo.queries.projectQuery.refresh();
     next();
   },
-})
-export default class ProjectDetail extends Vue {
-  get projectSlug(): string {
-    return this.$route.params.slug;
-  }
-
-  tab = 0;
-
-  showDeleteDialog = false;
-
-  innerTab = 0;
-
-  deckEdit = false;
-
-  deckToBeEdited: TDeckNode | undefined;
-
-  memberDrawer = false;
-
-  project: TProjectNode | null = null;
-
-  projectNotFound = false;
-
-  verboseDate(date: Date): string {
-    if (date) {
-      return this.$d(new Date(date), 'short');
-    }
-    return '';
-  }
-
-  setEdit(): void {
-    this.$router.push({ query: { edit: 'true' } });
-  }
-
-  setDeckEdit(pkg: TDeckNode): void {
-    this.deckToBeEdited = pkg;
-    this.deckEdit = true;
-  }
-
-  handleSopsCreated(): void {
-    this.updateProject();
-  }
-
-  updateProject(): void {
-    this.$apollo.queries.project.refetch();
-  }
-}
+  computed: {
+    projectSlug(): string {
+      return this.$route.params.slug as string;
+    },
+  },
+  methods: {
+    verboseDate(date: Date): string {
+      if (date) {
+        return this.$d(new Date(date), 'short');
+      }
+      return '';
+    },
+    setEdit(): void {
+      this.$router.push({ query: { edit: 'true' } });
+    },
+    setDeckEdit(pkg: TDeckNode): void {
+      this.deckToBeEdited = pkg;
+      this.deckEdit = true;
+    },
+    updateProject(): void {
+      this.$apollo.queries.projectQuery.refetch();
+    },
+    handleSopsCreated(): void {
+      this.updateProject();
+    },
+  },
+});
 </script>
 
 <style lang="scss" scoped>
