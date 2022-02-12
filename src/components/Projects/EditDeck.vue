@@ -86,6 +86,7 @@
                   :label="$t('deck.edit.environments.namespace')"
                   name="namespace"
                   filled
+                  :error-messages="namespaceErrors"
                   outlined
                   type="text"
                   :placeholder="$t('deck.edit.environments.enterNamespace')"
@@ -154,7 +155,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import {
+  computed,
+  defineComponent,
+  PropType,
+  ref,
+} from 'vue';
 import { required } from '@vuelidate/validators';
 import VueI18n from 'vue-i18n';
 import {
@@ -166,7 +172,8 @@ import {
   TSopsProviderNode, TCreateUpdateEnvironmentMutationVariables, Maybe,
 } from '@/generated/graphql';
 import HelmOverrides from '@/views/Projects/ProjectDetail/HelmOverrides.vue';
-import setupErrorHandler from '@/utils/validations';
+import useVuelidate from '@vuelidate/core';
+import getErrorMessage from '@/utils/validations';
 import TranslateResult = VueI18n.TranslateResult;
 
 type sopsCredential = {
@@ -176,18 +183,25 @@ type sopsCredential = {
 
 export default defineComponent({
   setup() {
-    const { handleErrors } = setupErrorHandler();
+    const title = ref('');
+    const namespace = ref('');
+    const rules = computed(() => ({
+      title: {
+        required,
+      },
+      namespace: {
+        required,
+      },
+    }));
+    const v = useVuelidate(rules, {
+      title,
+      namespace,
+    });
     return {
-      handleErrors,
+      $v: v,
+      title,
+      namespace,
     };
-  },
-  validations: {
-    title: {
-      required,
-    },
-    namespace: {
-      required,
-    },
   },
   components: {
     HelmOverrides,
@@ -208,9 +222,7 @@ export default defineComponent({
   },
   data() {
     return {
-      title: '',
       description: '',
-      namespace: '',
       sopsCredentials: { text: '', value: '' } as sopsCredential,
       environmentTypeChoices: [{ text: 'Local', value: TEnvironmentType.Local }, { text: 'Remote', value: TEnvironmentType.Remote }],
       environmentType: TEnvironmentType.Local,
@@ -273,7 +285,10 @@ export default defineComponent({
       return choices;
     },
     titleErrors(): TranslateResult[] {
-      return this.handleErrors('title');
+      return getErrorMessage(this.$v.title.$errors);
+    },
+    namespaceErrors(): TranslateResult[] {
+      return getErrorMessage(this.$v.namespace.$errors);
     },
   },
   watch: {

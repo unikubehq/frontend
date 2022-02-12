@@ -25,7 +25,6 @@ const project = {
 };
 
 describe('Overview.vue', () => {
-
   it('renders correctly', async () => {
     const wrapper = shallowMount(ProjectList);
     expect(wrapper.get('h3').text()).toContain('No Projects Found');

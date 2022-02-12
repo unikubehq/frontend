@@ -154,7 +154,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import {
+  computed,
+  defineComponent,
+  PropType,
+  ref,
+} from 'vue';
 import { required, url } from '@vuelidate/validators';
 import VueI18n from 'vue-i18n';
 import { ApolloError, FetchResult } from '@apollo/client';
@@ -167,32 +172,48 @@ import {
   TUpdateProjectMutationVariables,
   UpdateProject,
 } from '@/generated/graphql';
-import setupErrorHandler from '@/utils/validations';
+import useVuelidate from '@vuelidate/core';
+import getErrorMessage from '@/utils/validations';
 import TranslateResult = VueI18n.TranslateResult;
 
 export default defineComponent({
   setup() {
-    const { handleErrors, v } = setupErrorHandler();
+    const title = ref('');
+    const specRepository = ref('');
+    const specRepositoryBranch = ref('');
+    const accessUsername = ref('');
+    const accessToken = ref('');
+    const rules = computed(() => ({
+      title: {
+        required,
+      },
+      specRepository: {
+        required,
+        url,
+      },
+      specRepositoryBranch: {
+        required,
+      },
+      accessUsername: {
+      },
+      accessToken: {
+      },
+    }));
+    const v = useVuelidate(rules, {
+      title,
+      specRepository,
+      specRepositoryBranch,
+      accessUsername,
+      accessToken,
+    });
     return {
-      handleErrors,
       $v: v,
+      title,
+      specRepository,
+      specRepositoryBranch,
+      accessUsername,
+      accessToken,
     };
-  },
-  validations: {
-    title: {
-      required,
-    },
-    specRepository: {
-      required,
-      url,
-    },
-    specRepositoryBranch: {
-      required,
-    },
-    accessUsername: {
-    },
-    accessToken: {
-    },
   },
   props: {
     editMode: {
@@ -206,14 +227,9 @@ export default defineComponent({
   },
   data() {
     return {
-      title: '',
       description: '',
-      specRepository: '',
       submissionError: '',
-      specRepositoryBranch: 'main',
       specType: TSpecicifactionTypeEnum.Helm,
-      accessUsername: '',
-      accessToken: '',
       repoDir: '',
       id: '',
       specTypeChoices: [TSpecicifactionTypeEnum.Helm],
@@ -222,19 +238,19 @@ export default defineComponent({
   },
   computed: {
     titleErrors(): TranslateResult[] {
-      return this.handleErrors('title');
+      return getErrorMessage(this.$v.title.$errors);
     },
     specRepositoryErrors(): TranslateResult[] {
-      return this.handleErrors('specRepository');
+      return getErrorMessage(this.$v.specRepository.$errors);
     },
     specRepositoryBranchErrors(): TranslateResult[] {
-      return this.handleErrors('specRepositoryBranch');
+      return getErrorMessage(this.$v.specRepositoryBranch.$errors);
     },
     accessUsernameErrors(): TranslateResult[] {
-      return this.handleErrors('accessUsername');
+      return getErrorMessage(this.$v.accessUsername.$errors);
     },
     accessTokenErrors(): TranslateResult[] {
-      return this.handleErrors('accessToken');
+      return getErrorMessage(this.$v.accessToken.$errors);
     },
     disableButton(): boolean {
       return this.$v.$invalid;

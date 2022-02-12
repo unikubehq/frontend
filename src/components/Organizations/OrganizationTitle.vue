@@ -36,30 +36,33 @@
 
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
 import { required } from '@vuelidate/validators';
 import VueI18n from 'vue-i18n';
 import { CreateOrganizationMutation } from '@/generated/graphql';
-import setupErrorHandler from '@/utils/validations';
+import getErrorMessage from '@/utils/validations';
+import useVuelidate from '@vuelidate/core';
 import TranslateResult = VueI18n.TranslateResult;
 
 export default defineComponent({
-  validations: {
-    title: {
-      required,
-    },
-  },
   setup() {
-    const { handleErrors, v } = setupErrorHandler();
+    const title = ref('');
+    const rules = computed(() => ({
+      title: {
+        required,
+      },
+    }));
+    const v = useVuelidate(rules, {
+      title,
+    });
     return {
       $v: v,
-      handleErrors,
+      title,
     };
   },
   data() {
     return {
       loading: false,
-      title: '',
       errors: [] as TranslateResult[],
     };
   },
@@ -68,7 +71,7 @@ export default defineComponent({
       return this.$v.title.$invalid;
     },
     titleErrors(): TranslateResult[] {
-      return this.handleErrors('title');
+      return getErrorMessage(this.$v.title.$errors);
     },
   },
   methods: {

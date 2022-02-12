@@ -173,7 +173,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import {
+  computed,
+  defineComponent,
+  PropType,
+  ref,
+} from 'vue';
 import VueI18n from 'vue-i18n';
 import {
   required, requiredIf,
@@ -186,16 +191,39 @@ import {
   TSopsTypeEnum,
 } from '@/generated/graphql';
 import DeleteSops from '@/components/Projects/DeleteSops.vue';
-import setupErrorHandler from '@/utils/validations';
+import useVuelidate from '@vuelidate/core';
+import getErrorMessage from '@/utils/validations';
 import TranslateResult = VueI18n.TranslateResult;
 
 export default defineComponent({
   name: 'SopsForm',
   setup() {
-    const { handleErrors, v } = setupErrorHandler();
+    const title = ref('');
+    const secret1 = ref('');
+    const secret2 = ref('');
+    const sopsType = ref(null as Maybe<TSopsTypeEnum>);
+    const rules = computed(() => ({
+      title: {
+        required,
+      },
+      secret1: {
+        required,
+      },
+      secret2: {
+        required: requiredIf((): boolean => sopsType.value === TSopsTypeEnum.Aws),
+      },
+    }));
+    const v = useVuelidate(rules, {
+      title,
+      secret1,
+      secret2,
+    });
     return {
       $v: v,
-      handleErrors,
+      title,
+      secret1,
+      secret2,
+      sopsType,
     };
   },
   components: {
@@ -213,14 +241,10 @@ export default defineComponent({
   },
   data() {
     return {
-      title: '',
       edit: false,
       description: '' as Maybe<string>,
       projectId: null as Maybe<Scalars['UUID']>,
-      secret1: '',
-      secret2: '',
       secret3: '',
-      sopsType: null as Maybe<TSopsTypeEnum>,
       currentSops: null as Maybe<TSopsProviderNode>,
       sopsTypeChoices: [
         { text: 'AWS KMS', value: TSopsTypeEnum.Aws },
@@ -230,19 +254,6 @@ export default defineComponent({
       pgpHover: false,
       deleteDialog: false,
       deleteSops: null as TSopsProviderNode | null,
-    };
-  },
-  validations() {
-    return {
-      title: {
-        required,
-      },
-      secret1: {
-        required,
-      },
-      secret2: {
-        required: requiredIf((): boolean => this.sopsType === TSopsTypeEnum.Aws),
-      },
     };
   },
   computed: {
@@ -272,13 +283,13 @@ export default defineComponent({
       return map.get(this.sopsType);
     },
     titleErrors(): TranslateResult[] {
-      return this.handleErrors('title');
+      return getErrorMessage(this.$v.title.$errors);
     },
     secret1Errors(): TranslateResult[] {
-      return this.handleErrors('secret1');
+      return getErrorMessage(this.$v.secret1.$errors);
     },
     secret2Errors(): TranslateResult[] {
-      return this.handleErrors('secret2');
+      return getErrorMessage(this.$v.secret2.$errors);
     },
   },
   methods: {

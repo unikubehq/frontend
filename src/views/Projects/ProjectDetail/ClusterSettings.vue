@@ -40,7 +40,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import {
+  computed,
+  defineComponent,
+  PropType,
+  ref,
+} from 'vue';
 import {
   required, minValue, maxValue,
 } from '@vuelidate/validators';
@@ -49,18 +54,12 @@ import {
   TProjectNode,
   TUpdateClusterSettingsInput, TUpdateClusterSettingsPayload, UpdateClusterSettings,
 } from '@/generated/graphql';
-import setupErrorHandler from '@/utils/validations';
 import { FetchResult } from '@apollo/client';
+import useVuelidate from '@vuelidate/core';
+import getErrorMessage from '@/utils/validations';
 import TranslateResult = VueI18n.TranslateResult;
 
 export default defineComponent({
-  validations: {
-    port: {
-      required,
-      minValue: minValue(1024),
-      maxValue: maxValue(65535),
-    },
-  },
   props: {
     project: {
       type: Object as PropType<TProjectNode>,
@@ -68,21 +67,28 @@ export default defineComponent({
     },
   },
   setup() {
-    const { handleErrors, v } = setupErrorHandler();
+    const port = ref('');
+    const rules = computed(() => ({
+      port: {
+        required,
+        minValue: minValue(1024),
+        maxValue: maxValue(65535),
+      },
+    }));
+    const v = useVuelidate(rules, { port });
     return {
       $v: v,
-      handleErrors,
+      port,
     };
   },
   data() {
     return {
-      port: '',
       loading: false,
     };
   },
   computed: {
     portErrors(): TranslateResult[] {
-      return this.handleErrors('port');
+      return getErrorMessage(this.$v.port.$errors);
     },
   },
   methods: {
