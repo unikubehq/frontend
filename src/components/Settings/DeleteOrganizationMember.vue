@@ -1,10 +1,10 @@
 <template>
   <v-dialog
-      v-model="show"
+      v-model="dialog"
       persistent
       width="550"
     >
-      <v-card v-if="show" class="py-8 px-7">
+      <v-card v-if="dialog" class="py-8 px-7">
         <v-card-title class="headline">
           Remove {{ memberName }}
         </v-card-title>
@@ -54,9 +54,19 @@ export default defineComponent({
       required: true,
     },
   },
+  data() {
+    return {
+      dialog: false,
+    };
+  },
   methods: {
     deleteMember(): void {
       this.$emit('delete');
+    },
+  },
+  watch: {
+    show(newVal) {
+      this.dialog = newVal;
     },
   },
 });

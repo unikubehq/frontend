@@ -1,11 +1,11 @@
 <template>
   <v-dialog
-      v-model="show"
+      v-model="dialog"
       persistent
       width="550"
       class="project-delete__modal"
     >
-      <v-card v-if="show" class="py-8 px-7">
+      <v-card v-if="dialog" class="py-8 px-7">
         <v-card-title class="headline">
           {{ $t('projects.deleteModal.title', { title: project.title }) }}
         </v-card-title>
@@ -78,6 +78,7 @@ export default defineComponent({
   data() {
     return {
       deleteTitle: '',
+      dialog: false,
     };
   },
   methods: {
@@ -99,6 +100,11 @@ export default defineComponent({
           }
         })
         .catch((err) => console.log(err));
+    },
+  },
+  watch: {
+    show(newVal) {
+      this.dialog = newVal;
     },
   },
 });
