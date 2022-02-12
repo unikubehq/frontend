@@ -88,23 +88,14 @@
 </template>
 
 <script lang="ts">
-import Component from 'vue-class-component';
-import Navigation from '@/components/Navigation.vue';
-import { AvatarMixin } from '@/components/mixins';
+import { defineComponent, ref } from 'vue';
 import ProjectInvite from '@/components/Notifications/ProjectInvite.vue';
 import { Avatar } from '@/typing';
 import Converter from '@/utils/converter';
-import { UserInvitationsQuery } from '@/generated/graphql';
+import { TOrganizationInvitationNode, TUserInvitationsQueryResult, UserInvitationsQuery } from '@/generated/graphql';
 
-Component.registerHooks([
-  'beforeRouteEnter',
-  'beforeRouteUpdate',
-  'beforeRouteLeave',
-]);
-
-@Component({
+export default defineComponent({
   components: {
-    AppNavigation: Navigation,
     ProjectInvite,
   },
   apollo: {
@@ -112,46 +103,49 @@ Component.registerHooks([
       query: UserInvitationsQuery,
     },
   },
-})
-export default class Layout extends AvatarMixin {
-  notificationsMenu = false;
-
-  menu = false;
-
-  handleAnswerInvitation(): void {
-    this.$apollo.queries.userInvitations.refetch();
-  }
-
-  get userInvitationsResults(): Record<string, unknown> {
-    return this.$data.userInvitations?.results;
-  }
-
-  get hasInvitations(): boolean {
-    return this.$data.userInvitations?.results?.length;
-  }
-
-  get notificationCount(): number {
-    return this.$data.userInvitations?.results.length;
-  }
-
-  get avatar(): Avatar {
-    return Converter.memberToAvatar(this.$store.state.context.organizationMember);
-  }
-
+  setup() {
+    const userInvitations = ref({} as TUserInvitationsQueryResult['userInvitations']);
+    return {
+      userInvitations,
+    };
+  },
+  data() {
+    return {
+      notificationsMenu: false,
+      menu: false,
+    };
+  },
+  methods: {
+    handleAnswerInvitation(): void {
+      this.$apollo.queries.userInvitations.refetch();
+    },
+  },
+  computed: {
+    userInvitationsResults(): TOrganizationInvitationNode[] {
+      return this.userInvitations?.results as TOrganizationInvitationNode[] || [];
+    },
+    hasInvitations(): boolean {
+      return !!this.userInvitations?.results?.length;
+    },
+    notificationCount(): number {
+      return this.userInvitations?.results?.length || 0;
+    },
+    avatar(): Avatar {
+      return Converter.memberToAvatar(this.$store.state.context.organizationMember);
+    },
+    username(): string {
+      return this.$store.state.auth.username;
+    },
+    currentRoute(): string {
+      return this.$route?.meta?.label as string;
+    },
+  },
   mounted(): void {
     if (this.$route.path === '/') {
       this.$router.push({ name: 'overview' });
     }
-  }
-
-  get username(): string {
-    return this.$store.state.auth.username;
-  }
-
-  get currentRoute(): string | null | undefined {
-    return this.$route?.meta?.label;
-  }
-}
+  },
+});
 </script>
 
 <style>

@@ -29,6 +29,7 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
+  name: 'SideDrawer',
   props: {
     title: {
       type: String,
@@ -43,5 +44,5 @@ export default defineComponent({
       required: false,
     },
   },
-})
+});
 </script>

@@ -33,7 +33,7 @@ export default defineComponent({
     },
     loading: {
       type: Boolean,
-      default: true
+      default: true,
     },
   },
   computed: {

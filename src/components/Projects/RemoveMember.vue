@@ -1,10 +1,10 @@
 <template>
   <v-dialog
-      v-model="show"
+      v-model="dialog"
       persistent
       width="550"
     >
-      <v-card v-if="show" class="py-8 px-7">
+      <v-card v-if="dialog" class="py-8 px-7">
         <v-card-title class="headline">
           Remove {{ member.user.givenName }} {{ member.user.familyName }} from {{ project.title }}?
         </v-card-title>
@@ -46,6 +46,11 @@ import { defineComponent, PropType } from 'vue';
 import { DeleteProjectMemberMutation, TProjectMember, TProjectNode } from '@/generated/graphql';
 
 export default defineComponent({
+  data() {
+    return {
+      dialog: false,
+    };
+  },
   props: {
     project: {
       type: Object as PropType<TProjectNode>,
@@ -74,6 +79,11 @@ export default defineComponent({
           this.$emit('hide');
         });
       }
+    },
+  },
+  watch: {
+    show(newVal) {
+      this.dialog = newVal;
     },
   },
 });

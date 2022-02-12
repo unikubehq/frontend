@@ -54,6 +54,7 @@ type AvatarColor = {
 }
 
 export default defineComponent({
+  name: 'UserAvatar',
   props: {
     avatarProp: {
       type: Object as PropType<Avatar>,
