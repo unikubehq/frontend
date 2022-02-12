@@ -137,7 +137,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { FetchResult } from '@apollo/client';
 import {
   OrganizationMembersQuery,
@@ -175,16 +175,17 @@ export default defineComponent({
   },
   setup() {
     const { t } = useI18n({ useScope: 'global' });
+    const items = ref([
+      { icon: '$vuetify.icons.overview', title: t('views.projects'), to: '/overview' },
+      { icon: '$vuetify.icons.settings', title: t('views.settingsLabel'), to: '/settings' },
+    ]);
     return {
       $t: t,
+      items,
     };
   },
   data() {
     return {
-      items: [
-        { icon: '$vuetify.icons.overview', title: this.$t('views.projects'), to: '/overview' },
-        { icon: '$vuetify.icons.settings', title: this.$t('views.settingsLabel'), to: '/settings' },
-      ],
       idToVerboseId: Strings.idToVerboseId,
       mobile: false,
     };
