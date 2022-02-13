@@ -103,22 +103,29 @@ import {
   TProjectMemberRoleEnum,
   TProjectNode,
 } from '@/generated/graphql';
+import useContextStore from '@/stores/context';
 import TranslateResult = VueI18n.TranslateResult;
 
 export default defineComponent({
   validations: {
     email,
   },
+  setup() {
+    const context = useContextStore();
+    return {
+      context,
+    };
+  },
   apollo: {
     organization: {
       query: OrganizationMembersQuery,
       variables() {
         return {
-          id: this.$store.state.context.organization.id,
+          id: this.context.organization.id,
         };
       },
       skip() {
-        return !this.$store.state.context.organization;
+        return !this.context.organization;
       },
     },
     graphqlProject: {

@@ -27,6 +27,7 @@ import OrganizationLogo from '@/components/Organizations/OrganizationLogo.vue';
 import OrganizationMembers from '@/components/Organizations/OrganizationMembers.vue';
 import OrgaDone from '@/components/Organizations/OrgaDone.vue';
 import { TOrganizationNode } from '@/generated/graphql';
+import useContextStore from '@/stores/context';
 
 export default defineComponent({
   components: {
@@ -35,6 +36,12 @@ export default defineComponent({
     OrganizationLogo,
     OrganizationMembers,
     OrgaDone,
+  },
+  setup() {
+    const context = useContextStore();
+    return {
+      context,
+    };
   },
   data() {
     return {
@@ -50,7 +57,7 @@ export default defineComponent({
     orgaCreation(organization: TOrganizationNode): void {
       this.organizationId = organization.id;
       this.organizationTitle = organization.title;
-      this.$store.commit('context/setOrganization', organization);
+      this.context.organization = organization;
       this.step = 2;
     },
     logoCreation(): void {

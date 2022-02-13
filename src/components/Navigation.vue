@@ -147,6 +147,7 @@ import {
 } from '@/generated/graphql';
 import Strings from '@/utils/strings';
 import { useI18n } from 'vue-i18n';
+import useAuthStore from '@/stores/auth';
 
 export default defineComponent({
   name: 'NavigationSidebar',
@@ -175,11 +176,13 @@ export default defineComponent({
   },
   setup() {
     const { t } = useI18n({ useScope: 'global' });
+    const auth = useAuthStore();
     const items = ref([
       { icon: '$vuetify.icons.overview', title: t('views.projects'), to: '/overview' },
       { icon: '$vuetify.icons.settings', title: t('views.settingsLabel'), to: '/settings' },
     ]);
     return {
+      auth,
       $t: t,
       items,
     };
@@ -243,7 +246,7 @@ export default defineComponent({
         },
       }).then((res) => {
         const currentMember = res.data.organization.members.filter(
-          (member: TOrganizationMember) => member?.user?.id === this.$store.state.auth.uuid,
+          (member: TOrganizationMember) => member?.user?.id === this.auth.uuid,
         )[0];
         this.$store.commit(
           'context/setOrganizationMember',

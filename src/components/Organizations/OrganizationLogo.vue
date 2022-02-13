@@ -80,6 +80,7 @@ import { OrganizationQuery } from '@/generated/graphql';
 import { Dropzone } from '@/typing/';
 import 'vue2-dropzone/dist/vue2Dropzone.min.css';
 import TranslateResult = VueI18n.TranslateResult;
+import useAuthStore from '@/stores/auth';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const vue2Dropzone = require('vue2-dropzone');
 
@@ -97,6 +98,12 @@ export default defineComponent({
       type: String,
       required: true,
     },
+  },
+  setup() {
+    const auth = useAuthStore();
+    return {
+      auth,
+    };
   },
   data() {
     return {
@@ -123,7 +130,7 @@ export default defineComponent({
       this.axios.post(`/orgas-http/upload-avatar/${this.organizationId}/`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${this.$store.state.auth.rawRpt}`,
+          Authorization: `Bearer ${this.auth.rawRpt}`,
         },
       }).then(() => {
         this.loading = false;

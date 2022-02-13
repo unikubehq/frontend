@@ -1,5 +1,4 @@
 import { createApp } from 'vue';
-import VueApollo from 'vue-apollo';
 import * as Sentry from '@sentry/vue';
 import Keycloak from 'keycloak-js';
 import KeycloakAuthorization from 'keycloak-js/dist/keycloak-authz';
@@ -10,7 +9,8 @@ import { Ability, AbilityBuilder } from '@casl/ability';
 import { createVuetify } from 'vuetify';
 import router from '@/router';
 import App from '@/App.vue';
-import store from '@/store';
+// import store from '@/store';
+import pinia from '@/stores';
 import apolloProvider from '@/vue-apollo';
 import { UnikubeAbility } from '@/typing';
 import i18n from '@/i18n';
@@ -22,7 +22,7 @@ const keycloak = Keycloak({
   realm: process.env.VUE_APP_KEYCLOAK_REALM,
   clientId: process.env.VUE_APP_KEYCLOAK_CLIENT_ID,
 });
-
+const app = createApp(App);
 function initializeUnikubeApp(mode: string) {
   const spinner = document.getElementById('loading-spinner');
   if (spinner) {
@@ -43,6 +43,7 @@ function initializeUnikubeApp(mode: string) {
   app.use(apolloProvider);
   app.use(store);
   app.use(router);
+  app.use(pinia);
   app.use(i18n);
   app.use(abilitiesPlugin, ability, { useGlobalProperties: true });
   app.component('CaslCan', Can);
@@ -53,19 +54,18 @@ function initializeUnikubeApp(mode: string) {
     store.dispatch('auth/scheduleRefresh');
   }
   function vueInit() {
-    const apolloProvider = setupApolloProvider();
-    new Vue({
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      // eslint-disable-next-line no-underscore-dangle
-      store: mode !== 'e2e' ? store : window.__store__,
-      vuetify,
-      apolloProvider,
-      beforeCreate() {
-        this.$store.commit('context/initContext');
-      },
-      render: (h) => h(App),
-    }).$mount('#app');
+    app.mount('#app');
+    // new Vue({
+    //   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //   // @ts-ignore
+    //   // eslint-disable-next-line no-underscore-dangle
+    //   store: mode !== 'e2e' ? store : window.__store__,
+    //   vuetify,
+    //   beforeCreate() {
+    //     this.$store.commit('context/initContext');
+    //   },
+    //   render: (h) => h(App),
+    // }).$mount('#app');
   }
   if (mode === 'e2e') {
     vueInit();
@@ -93,7 +93,7 @@ if (process.env.NODE_ENV === 'e2e') {
     if (authenticated) {
       if (process.env.NODE_ENV === 'production') {
         Sentry.init({
-          Vue,
+          app,
           dsn: process.env.VUE_APP_SENTRY_DSN,
         });
       }

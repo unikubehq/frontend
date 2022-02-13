@@ -21,7 +21,7 @@
             <h3>{{ $t('projects.notFound') }}</h3>
             <p>
               <router-link to="/create-project"
-                  v-if="$can('projects:add', $store.state.context.organization)">
+                  v-if="$can('projects:add', context.organization)">
                 {{ $t('general.clickHere') }}
               </router-link>
               {{ $t('projects.createFirst') }}
@@ -53,6 +53,7 @@ import setupPagination from '@/utils/pagination';
 import { useQuery } from '@vue/apollo-composable';
 import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
+import useContextStore from '@/stores/context';
 
 const sortAscending = (a: TProjectNode, b: TProjectNode): number => {
   if (a.title.toUpperCase() < b.title.toUpperCase()) {
@@ -97,7 +98,10 @@ export default defineComponent({
 
     const { t } = useI18n({ useScope: 'global' });
 
+    const context = useContextStore();
+
     return {
+      context,
       $t: t,
       totalObjectCount,
       changeOffset,
@@ -117,7 +121,7 @@ export default defineComponent({
   },
   computed: {
     organizationId(): string {
-      return this.$store.state.context.organization.id;
+      return this.context.organization.id;
     },
     projectResults(): Array<TProjectNode> {
       let result = this.allProjects.allProjects?.results as TProjectNode[];
@@ -148,7 +152,7 @@ export default defineComponent({
   methods: {
     refetchProjects(): void {
       const message = this.$t('projects.deleteSuccess');
-      this.$store.commit('context/addSnackbarMessage', {
+      this.context.addSnackbarMessage({
         message,
         error: false,
       });

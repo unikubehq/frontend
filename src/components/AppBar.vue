@@ -44,7 +44,7 @@
                 size="46"
                 class="avatar__unikube mr-3"
                 :style="avatarStyles">
-                <img v-if="$store.state.auth.avatarImage" :src="$store.state.auth.avatarImage"
+                <img v-if="auth.avatarImage" :src="auth.avatarImage"
                   alt="User Avatar">
                 <span v-else-if="$store.state.context.organizationMember">
                   {{ avatar.initials }}
@@ -52,7 +52,7 @@
                 <img v-else src="@/assets/img/avatar.svg" alt="Default Avatar">
               </v-avatar>
               <div class="d-flex flex-column text-left">
-                <h3 class="mb-0">{{ username }}</h3>
+                <h3 class="mb-0">{{ auth.username }}</h3>
                 <p class="mb-0 text-capitalize" v-if="$store.state.context.organizationMember"
                     v-text="$store.state.context.organizationMember.role" />
               </div>
@@ -70,7 +70,7 @@
                       <v-list-item-title v-text="$t('navigation.accountSettings')" />
                     </v-list-item-content>
                   </v-list-item>
-                  <v-list-item :ripple="false" @click="$store.dispatch('auth/logout')">
+                  <v-list-item :ripple="false" @click="auth.logout()">
                     <v-list-item-icon>
                       <v-icon>$vuetify.icons.logout</v-icon>
                     </v-list-item-icon>
@@ -93,6 +93,7 @@ import ProjectInvite from '@/components/Notifications/ProjectInvite.vue';
 import { Avatar } from '@/typing';
 import Converter from '@/utils/converter';
 import { TOrganizationInvitationNode, TUserInvitationsQueryResult, UserInvitationsQuery } from '@/generated/graphql';
+import useAuthStore from '@/stores/auth';
 
 export default defineComponent({
   components: {
@@ -105,7 +106,9 @@ export default defineComponent({
   },
   setup() {
     const userInvitations = ref({} as TUserInvitationsQueryResult['userInvitations']);
+    const auth = useAuthStore();
     return {
+      auth,
       userInvitations,
     };
   },
@@ -132,9 +135,6 @@ export default defineComponent({
     },
     avatar(): Avatar {
       return Converter.memberToAvatar(this.$store.state.context.organizationMember);
-    },
-    username(): string {
-      return this.$store.state.auth.username;
     },
     currentRoute(): string {
       return this.$route?.meta?.label as string;

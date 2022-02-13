@@ -30,27 +30,38 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { computed, defineComponent } from 'vue';
 import { UserDetailQuery } from '@/generated/graphql';
 import { SnackbarMessage } from '@/typing';
+import useAuthStore from '@/stores/auth';
+import useContextStore from '@/stores/context';
+import useUIStore from '@/stores/ui';
 
 export default defineComponent({
+  setup() {
+    const auth = useAuthStore();
+    const context = useContextStore();
+    const ui = useUIStore();
+    const overlay = computed((): boolean => ui.overlay);
+    return {
+      auth,
+      context,
+      overlay,
+    };
+  },
   computed: {
-    overlay(): boolean {
-      return this.$store.state.ui.overlay;
-    },
     rawRpt():string {
-      return this.$store.state.auth.rawRpt;
+      return this.auth.rawRpt;
     },
     messages(): SnackbarMessage[] {
-      return this.$store.state.context.messages.filter((message: SnackbarMessage) => message.show);
+      return this.context.messages.filter((message: SnackbarMessage) => message.show);
     },
   },
   watch: {
     rawRpt: {
       immediate: true,
       handler(): void {
-        this.$ability.update(this.$store.getters['auth/caslRules']);
+        this.$ability.update(this.auth.caslRules);
       },
     },
   },
@@ -58,10 +69,10 @@ export default defineComponent({
     this.$apollo.query({
       query: UserDetailQuery,
       variables: {
-        id: this.$store.state.auth.uuid,
+        id: this.auth.uuid,
       },
     }).then((res) => {
-      this.$store.commit('auth/setAvatar', res.data.user.avatarImage);
+      this.auth.avatarImage = res.data.user.avatarImage;
     });
   },
 });

@@ -20,7 +20,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import { useStore } from 'vuex';
+import useAuthStore from '@/stores/auth';
 
 export default defineComponent({
   props: {
@@ -35,18 +35,20 @@ export default defineComponent({
   },
 
   setup() {
-    const store = useStore();
+    const auth = useAuthStore();
     const rptRefreshed = ref(false);
     const snackbar = ref(false);
-
-    store.dispatch('auth/refresh', -1).then(() => {
-      rptRefreshed.value = true;
-    });
 
     return {
       rptRefreshed,
       snackbar,
+      auth,
     };
+  },
+  created() {
+    this.auth.refresh(-1).then(() => {
+      this.rptRefreshed = true;
+    });
   },
 });
 </script>

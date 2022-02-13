@@ -43,10 +43,12 @@ import { CreateOrganizationMutation } from '@/generated/graphql';
 import getErrorMessage from '@/utils/validations';
 import useVuelidate from '@vuelidate/core';
 import TranslateResult = VueI18n.TranslateResult;
+import useAuthStore from '@/stores/auth';
 
 export default defineComponent({
   setup() {
     const title = ref('');
+    const auth = useAuthStore();
     const rules = computed(() => ({
       title: {
         required,
@@ -58,6 +60,7 @@ export default defineComponent({
     return {
       $v: v,
       title,
+      auth,
     };
   },
   data() {
@@ -84,7 +87,7 @@ export default defineComponent({
         },
       }).then(({ data }) => {
         this.loading = false;
-        this.$store.dispatch('auth/refresh', -1).then((refreshed: boolean) => {
+        this.auth.refresh(-1).then((refreshed: boolean) => {
           if (refreshed) {
             this.$emit(
               'success',

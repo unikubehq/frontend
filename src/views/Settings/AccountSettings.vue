@@ -110,27 +110,27 @@ import { AxiosError, AxiosResponse } from 'axios';
 import { DeleteAvatarMutation, TDeleteAvatarMutationResult } from '@/generated/graphql';
 import DangerZone from '@/components/Settings/DangerZone.vue';
 import setupUpload from '@/utils/upload';
-import { useStore } from 'vuex';
+import useAuthStore from '@/stores/auth';
 
 export default defineComponent({
   components: {
     DangerZone,
   },
   setup() {
-    const store = useStore();
-
+    const auth = useAuthStore();
     const uploadCallback = (res: AxiosResponse): void => {
-      store.commit('auth/setAvatar', res.data.url);
+      auth.avatarImage = res.data.url;
     };
     const uploadError = (err: AxiosError) => {
       console.log(err);
     };
     const { previewUrl } = setupUpload(
-      `/users-http/upload-avatar/${store.state.auth.uuid}/`,
+      `/users-http/upload-avatar/${auth.uuid}/`,
       uploadCallback,
       uploadError,
     );
     return {
+      auth,
       previewUrl,
     };
   },
@@ -148,26 +148,26 @@ export default defineComponent({
       this.$apollo.mutate({
         mutation: DeleteAvatarMutation,
         variables: {
-          id: this.$store.state.auth.uuid,
+          id: this.auth.uuid,
         },
       }).then((data) => {
         const res: TDeleteAvatarMutationResult = data.data;
         if (res?.deleteAvatar?.ok) {
           this.previewUrl = '';
-          this.$store.commit('auth/setAvatar', '');
+          this.auth.avatarImage = '';
         }
       });
     },
   },
   computed: {
     fullName(): string {
-      return this.$store.state.auth.username;
+      return this.auth.username;
     },
     email(): string {
-      return this.$store.state.auth.email;
+      return this.auth.email;
     },
     avatarImage(): string {
-      return this.previewUrl || this.$store.state.auth.avatarImage || 'https://cdn.zeplin.io/5f84546964e43c2749571f59/assets/2192D830-FF56-4E41-8DBA-F504CEFA64FC.svg';
+      return this.previewUrl || this.auth.avatarImage || 'https://cdn.zeplin.io/5f84546964e43c2749571f59/assets/2192D830-FF56-4E41-8DBA-F504CEFA64FC.svg';
     },
   },
 });

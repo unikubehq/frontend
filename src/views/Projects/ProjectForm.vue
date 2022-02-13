@@ -174,6 +174,7 @@ import {
 } from '@/generated/graphql';
 import useVuelidate from '@vuelidate/core';
 import getErrorMessage from '@/utils/validations';
+import useAuthStore from '@/stores/auth';
 import TranslateResult = VueI18n.TranslateResult;
 
 export default defineComponent({
@@ -206,7 +207,9 @@ export default defineComponent({
       accessUsername,
       accessToken,
     });
+    const auth = useAuthStore();
     return {
+      auth,
       $v: v,
       title,
       specRepository,
@@ -274,7 +277,7 @@ export default defineComponent({
     },
     success(data: FetchResult<TCreateProjectMutationResult>): void {
       this.saveLoading = false;
-      this.$store.dispatch('auth/refresh', -1).then((refreshed: boolean) => {
+      this.auth.refresh(-1).then((refreshed: boolean) => {
         if (data.data?.createUpdateProject?.project && refreshed) {
           if (this.editMode) {
             this.$router.go(-1);

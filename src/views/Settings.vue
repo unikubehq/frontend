@@ -18,8 +18,8 @@
               }}
             </v-icon>{{ $t('settings.account.title') }}</v-tab>
         <v-tab :ripple="false" class="vertical-tabs"
-            v-if="$store.state.context.organization &&
-            $can('edit', $store.state.context.organization)"
+            v-if="context.organization &&
+            $can('edit', context.organization)"
         :to="{name: 'settings.organization'}">
             <v-icon left>
               {{
@@ -30,8 +30,8 @@
             </v-icon>{{ $t('settings.organization.title') }}</v-tab>
         <v-tab :ripple="false" class="vertical-tabs"
         :to="{name: 'settings.roles'}"
-        v-if="$store.state.context.organization &&
-        $can('edit', $store.state.context.organization)"
+        v-if="context.organization &&
+        $can('edit', context.organization)"
         >
             <v-icon left>
               {{
@@ -51,8 +51,8 @@
             </v-icon>{{ $t('settings.notifications.title') }}</v-tab>
         <v-tab :ripple="false" class="vertical-tabs"
         :to="{name: 'settings.payment'}"
-          v-if="$store.state.context.organization &&
-          $can('edit', $store.state.context.organization)">
+          v-if="context.organization &&
+          $can('edit', context.organization)">
             <v-icon left>
               {{
                 $route.name === 'settings.payment' ?
@@ -76,9 +76,16 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import useContextStore from '@/stores/context';
 
 export default defineComponent({
   name: 'SettingsView',
+  setup() {
+    const context = useContextStore();
+    return {
+      context,
+    };
+  },
 });
 </script>
 
