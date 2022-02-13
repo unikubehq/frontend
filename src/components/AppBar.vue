@@ -13,9 +13,7 @@
               color="#ff5e5b"
               overlap
             >
-              <v-icon width="40" height="40">
-                $vuetify.icons.notificationBlue
-              </v-icon>
+              <v-icon width="40" height="40">$notificationBlue</v-icon>
             </v-badge>
           </v-btn>
         </template>
@@ -46,17 +44,17 @@
                 :style="avatarStyles">
                 <img v-if="auth.avatarImage" :src="auth.avatarImage"
                   alt="User Avatar">
-                <span v-else-if="$store.state.context.organizationMember">
+                <span v-else-if="context.organizationMember">
                   {{ avatar.initials }}
                 </span>
                 <img v-else src="@/assets/img/avatar.svg" alt="Default Avatar">
               </v-avatar>
               <div class="d-flex flex-column text-left">
                 <h3 class="mb-0">{{ auth.username }}</h3>
-                <p class="mb-0 text-capitalize" v-if="$store.state.context.organizationMember"
-                    v-text="$store.state.context.organizationMember.role" />
+                <p class="mb-0 text-capitalize" v-if="context.organizationMember"
+                    v-text="context.organizationMember.role" />
               </div>
-              <v-icon class="ml-4" small>$vuetify.icons.dropdown</v-icon>
+              <v-icon class="ml-4" small>$dropdown</v-icon>
             </v-btn>
           </template>
             <v-card>
@@ -64,7 +62,7 @@
                 <v-list-item-group>
                   <v-list-item :ripple="false" @click="$router.push({name: 'settings.account'})">
                     <v-list-item-icon>
-                      <v-icon>$vuetify.icons.accountBlue</v-icon>
+                      <v-icon>$accountBlue</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                       <v-list-item-title v-text="$t('navigation.accountSettings')" />
@@ -72,7 +70,7 @@
                   </v-list-item>
                   <v-list-item :ripple="false" @click="auth.logout()">
                     <v-list-item-icon>
-                      <v-icon>$vuetify.icons.logout</v-icon>
+                      <v-icon>$logout</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                       <v-list-item-title v-text="$t('navigation.logout')" />
@@ -92,8 +90,14 @@ import { defineComponent, ref } from 'vue';
 import ProjectInvite from '@/components/Notifications/ProjectInvite.vue';
 import { Avatar } from '@/typing';
 import Converter from '@/utils/converter';
-import { TOrganizationInvitationNode, TUserInvitationsQueryResult, UserInvitationsQuery } from '@/generated/graphql';
+import {
+  Maybe,
+  TOrganizationInvitationNode,
+  TUserInvitationsQueryResult,
+  UserInvitationsQuery,
+} from '@/generated/graphql';
 import useAuthStore from '@/stores/auth';
+import useContextStore from '@/stores/context';
 
 export default defineComponent({
   components: {
@@ -107,8 +111,10 @@ export default defineComponent({
   setup() {
     const userInvitations = ref({} as TUserInvitationsQueryResult['userInvitations']);
     const auth = useAuthStore();
+    const context = useContextStore();
     return {
       auth,
+      context,
       userInvitations,
     };
   },
@@ -133,8 +139,9 @@ export default defineComponent({
     notificationCount(): number {
       return this.userInvitations?.results?.length || 0;
     },
-    avatar(): Avatar {
-      return Converter.memberToAvatar(this.$store.state.context.organizationMember);
+    avatar(): Maybe<Avatar> {
+      const member = this.context.organizationMember;
+      return member ? Converter.memberToAvatar(member) : null;
     },
     currentRoute(): string {
       return this.$route?.meta?.label as string;

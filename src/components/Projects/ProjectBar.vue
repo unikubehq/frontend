@@ -4,7 +4,7 @@
       <h2 style="font-weight: 500;">{{ $t('projects.projectList') }}</h2>
     </v-col>
     <v-col cols="12" lg="10" class="d-flex align-center mt-n12 mt-lg-0">
-      <v-text-field outlined filled prepend-inner-icon="$vuetify.icons.search" v-model="search"
+      <v-text-field outlined filled prepend-inner-icon="$search" v-model="search"
           placeholder="Search" @input="$emit('search-change', search)" class="search__input"/>
       <v-select
         prefix="Sort:"
@@ -26,7 +26,7 @@
         to="/create-project"
       >
         <v-icon class="ml-n2 mr-2">
-          $vuetify.icons.addProject
+          $addProject
         </v-icon>{{ $t('projects.addNewProject') }}</v-btn>
     </v-col>
   </v-row>

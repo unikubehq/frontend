@@ -1,4 +1,4 @@
-import { createApp } from 'vue';
+import { createApp, h, provide } from 'vue';
 import * as Sentry from '@sentry/vue';
 import Keycloak from 'keycloak-js';
 import KeycloakAuthorization from 'keycloak-js/dist/keycloak-authz';
@@ -15,6 +15,7 @@ import { UnikubeAbility } from '@/typing';
 import i18n from '@/i18n';
 import vuetifyOptions from '@/plugins/vuetify';
 import useAuthStore from '@/stores/auth';
+import { DefaultApolloClient } from '@vue/apollo-composable';
 
 console.log(`Running unikube frontend version ${process.env.VUE_APP_VERSION}`);
 
@@ -23,7 +24,12 @@ const keycloak = Keycloak({
   realm: process.env.VUE_APP_KEYCLOAK_REALM,
   clientId: process.env.VUE_APP_KEYCLOAK_CLIENT_ID,
 });
-const app = createApp(App);
+const app = createApp({
+  setup() {
+    provide(DefaultApolloClient, apolloProvider);
+  },
+  render: () => h(App),
+});
 function initializeUnikubeApp(mode: string) {
   const spinner = document.getElementById('loading-spinner');
   if (spinner) {
@@ -39,12 +45,12 @@ function initializeUnikubeApp(mode: string) {
   const vuetify = createVuetify(vuetifyOptions);
 
   app.use(VueAxios, axios);
+  app.use(vuetify);
   app.use(apolloProvider);
   app.use(router);
   app.use(pinia);
   app.use(i18n);
   app.use(abilitiesPlugin, ability, { useGlobalProperties: true });
-  app.use(vuetify);
   app.component('CaslCan', Can);
   app.axios.defaults.baseURL = process.env.VUE_APP_UPLOAD_URL;
   const auth = useAuthStore();

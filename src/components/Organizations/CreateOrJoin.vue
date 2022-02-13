@@ -74,9 +74,7 @@
               style="transform: rotate(180deg)"
               class="mr-1"
               small
-          >
-            $vuetify.icons.arrowRightGrey
-          </v-icon>
+          >$arrowRightGrey</v-icon>
          {{ $t('organization.backToOverview') }}
        </router-link>
      </v-col>

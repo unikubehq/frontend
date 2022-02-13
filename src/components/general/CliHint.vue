@@ -5,7 +5,7 @@
                 v-bind="attrs"
                 v-on="on"
             >
-                $vuetify.icons.cli
+                $cli
             </v-icon>
         </template>
           <table>
@@ -38,7 +38,7 @@
                         v-on="on"
                         class="ml-auto mr-2 tooltip-icon"
                       >
-                        $vuetify.icons.smallBulb
+                        $smallBulb
                       </v-icon>
                     </template>
                     <span>
@@ -50,7 +50,7 @@
                   class="tooltip-icon"
                   @click="copyToClipboard(command.command)"
                   >
-                    $vuetify.icons.copy
+                    $copy
                 </v-icon>
               </td>
             </tr>

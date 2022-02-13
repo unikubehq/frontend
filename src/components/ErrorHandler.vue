@@ -15,7 +15,7 @@
           <div>
             <p>
               <v-icon x-large>
-                $vuetify.icons.bigSorry
+                $bigSorry
               </v-icon>
               {{ $t(error.message) }}
             </p>

@@ -6,7 +6,7 @@
             :is="loading ? 'span' : 'router-link'"
             :to="projectUrl"
             class="mr-6 d-inline-block">
-          <v-icon size="48">$vuetify.icons.project</v-icon>
+          <v-icon size="48">$project</v-icon>
         </component>
         <component
             :is="loading ? 'span' : 'router-link'"
@@ -44,15 +44,15 @@
               class="project-card__edit"
               :to="editUrl"
           >
-            <v-icon size="24">$vuetify.icons.edit</v-icon>
+            <v-icon size="24">$edit</v-icon>
           </component>
           <v-divider style="height: 24px" class="mx-4 mb-n1" vertical></v-divider>
           <v-icon class="project-card__sync" @click="syncRepo(project)" size="24">
-            $vuetify.icons.sync
+            $sync
           </v-icon>
           <v-divider style="height: 24px" class="mx-4 mb-n1" vertical></v-divider>
           <v-icon @click="deleteProjectDialog(project)" size="24" class="project-card__delete">
-            $vuetify.icons.delete
+            $delete
           </v-icon>
         </div>
       </v-col>
@@ -62,7 +62,7 @@
       <component
           :is="loading ? 'span' : 'router-link'"
           :to="projectUrl">
-        <v-icon class="project-card__detail" size="24">$vuetify.icons.dropdown</v-icon>
+        <v-icon class="project-card__detail" size="24">$dropdown</v-icon>
       </component>
     </v-row>
     <v-row justify="space-around" class="white pl-5 pt-3 pb-3 pr-10">

@@ -74,7 +74,7 @@
                   >
                   <template v-slot:item="data">
                     <v-icon class="mr-2" v-if="data.item.encrypted">
-                      $vuetify.icons.accessToken
+                      $accessToken
                     </v-icon>
                     <span v-else class="mr-8"></span>
                     {{ data.item.text }}
@@ -107,7 +107,7 @@
                       class="mr-2"
                       small
                   >
-                    $vuetify.icons.arrowRightGrey
+                    $arrowRightGrey
                   </v-icon>{{ $t('general.cancel') }}
                </a>
               </v-col>
@@ -122,7 +122,7 @@
                 v-if="environment.valueSchema"
               >
                   <v-icon size="24" class="mr-2">
-                    $vuetify.icons.helm
+                    $helm
                   </v-icon>
                   Override helm values
                 </v-btn>

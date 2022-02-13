@@ -13,7 +13,7 @@
           placeholder="Enter Organization Name"
           v-model="title"
           :error-messages="titleErrors"
-          prepend-inner-icon="$vuetify.icons.organization"
+          prepend-inner-icon="$organization"
           @blur="$v.title.$touch()"
           persistent-placeholder
       >

@@ -13,7 +13,7 @@
         <v-list style="position:absolute; bottom: 10px; left: 0; width: 100%;">
           <v-list-item link :ripple="false" href="https://unikube.io/help/" target="_blank">
             <v-list-item-icon>
-              <v-icon>$vuetify.icons.help</v-icon>
+              <v-icon>$help</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
               <v-list-item-title>{{ $t('navigation.help') }}</v-list-item-title>
@@ -32,9 +32,7 @@
                       max-height="45" max-width="164" contain v-if="!mini"/>
                 </router-link>
                 <v-btn  icon @click="toggleMini" :ripple="false">
-                  <v-icon medium class="d-block mt-2">
-                    $vuetify.icons.burger
-                  </v-icon>
+                  <v-icon medium class="d-block mt-2">$burger</v-icon>
                 </v-btn>
               </div>
             </v-list-item-title>
@@ -57,29 +55,25 @@
                 :ripple="false"
                 :class="{'flex-wrap': mini}">
               <v-list-item-avatar>
-                <v-img v-if="$store.state.context.organization &&
-                  $store.state.context.organization.avatarImage"
-                  :src="$store.state.context.organization.avatarImage"
+                <v-img v-if="context.organization &&
+                  context.organization.avatarImage"
+                  :src="context.organization.avatarImage"
                   alt="Organization Avatar"/>
-                <v-icon v-else>$vuetify.icons.defaultOrganization</v-icon>
+                <v-icon v-else>$defaultOrganization</v-icon>
               </v-list-item-avatar>
 
-              <v-list-item-content v-if="$store.state.context.organization">
+              <v-list-item-content v-if="context.organization">
                 <v-list-item-title
                     class="font-weight-bold"
-                    v-if="$store.state.context.organization">
-                  {{ $store.state.context.organization.title }}
+                    v-if="context.organization">
+                  {{ context.organization.title }}
                 </v-list-item-title>
                 <v-list-item-subtitle>
-                  Organization ID: {{ idToVerboseId($store.state.context.organization.id) }}
+                  Organization ID: {{ idToVerboseId(context.organization.id) }}
                 </v-list-item-subtitle>
               </v-list-item-content>
-              <v-icon small class="float-right organization-dropdown--arrow" v-if="!mini">
-                $vuetify.icons.arrowDownWhite
-              </v-icon>
-              <v-icon small class="organization-dropdown--arrow" v-if="mini">
-                $vuetify.icons.arrowDownWhite
-              </v-icon>
+<v-icon small class="float-right organization-dropdown--arrow" v-if="!mini">$arrowDownWhite</v-icon>
+            <v-icon small class="organization-dropdown--arrow" v-if="mini">$arrowDownWhite</v-icon>
             </v-list-item>
           </template>
           <div class="organization-dropdown--notch"></div>
@@ -95,7 +89,7 @@
               <v-list-item-avatar class="organization-dropdown--icon">
                 <v-img :src="organization.avatarImage" max-width="35" contain
                 alt="Organization Avatar" v-if="organization.avatarImage"/>
-                <v-icon v-else>$vuetify.icons.defaultOrganization</v-icon>
+                <v-icon v-else>$defaultOrganization</v-icon>
               </v-list-item-avatar>
               <v-list-item-content>
                 <v-list-item-title v-text="organization.title"></v-list-item-title>
@@ -105,7 +99,7 @@
             <v-divider />
             <v-list-item link :to="{name: 'create-organization'}">
                 <v-list-item-icon class="organization-dropdown--icon">
-                  <v-icon>$vuetify.icons.createOrganization</v-icon>
+                  <v-icon>$createOrganization</v-icon>
                 </v-list-item-icon>
               <v-list-item-title class="text--secondary">
                 {{ $t('navigation.createOrganization') }}
@@ -148,6 +142,7 @@ import {
 import Strings from '@/utils/strings';
 import { useI18n } from 'vue-i18n';
 import useAuthStore from '@/stores/auth';
+import useContextStore from '@/stores/context';
 
 export default defineComponent({
   name: 'NavigationSidebar',
@@ -158,7 +153,7 @@ export default defineComponent({
       result(result: FetchResult<TOrganizationsQueryResult>) {
         if (result?.data?.allOrganizations?.results?.length) {
           // If currently no organization is set - set the first from the result set.
-          if (!this.$store.state.context.organization) {
+          if (!this.context.organization) {
             this.initializeOrganization(
               result.data?.allOrganizations.results as TOrganizationNode[],
             );
@@ -177,12 +172,14 @@ export default defineComponent({
   setup() {
     const { t } = useI18n({ useScope: 'global' });
     const auth = useAuthStore();
+    const context = useContextStore();
     const items = ref([
-      { icon: '$vuetify.icons.overview', title: t('views.projects'), to: '/overview' },
-      { icon: '$vuetify.icons.settings', title: t('views.settingsLabel'), to: '/settings' },
+      { icon: '$overview', title: t('views.projects'), to: '/overview' },
+      { icon: '$settings', title: t('views.settingsLabel'), to: '/settings' },
     ]);
     return {
       auth,
+      context,
       $t: t,
       items,
     };
@@ -195,20 +192,20 @@ export default defineComponent({
   },
   methods: {
     toggleMini(): void {
-      this.$store.commit('context/setSidebarExpansion', !this.$store.state.context.sidebarExpanded);
+      this.context.setSidebarExpansion(!this.context.sidebarExpanded);
     },
     checkAndSetOrganization(organizations: TOrganizationNode[]): void {
       /* Check if currently set organization is still valid. If not change context organization */
       let contained = false;
       organizations.forEach((organization: TOrganizationNode) => {
-        if (this.$store.state.context.organization.id === organization.id) {
+        if (this.context.organization?.id === organization.id) {
           contained = true;
         }
       });
       // If it is not contained within the result set - set the first.
       if (!contained) {
-        this.$store.commit('context/setOrganization', organizations[0]);
-      } else if (!this.$store.state.context.organizationMember) {
+        this.context.setOrganization(organizations[0]);
+      } else if (!this.context.organizationMember) {
         this.setOrganizationMember(organizations[0]);
       }
     },
@@ -232,7 +229,7 @@ export default defineComponent({
       this.setOrganizationContext(organization, false);
     },
     setOrganizationContext(organization: TOrganizationNode, goToOverview = true): void {
-      this.$store.commit('context/setOrganization', organization);
+      this.context.setOrganization(organization);
       this.setOrganizationMember(organization);
       if (this.$route.name !== 'overview' && goToOverview) {
         this.$router.push({ name: 'overview' });
@@ -248,26 +245,25 @@ export default defineComponent({
         const currentMember = res.data.organization.members.filter(
           (member: TOrganizationMember) => member?.user?.id === this.auth.uuid,
         )[0];
-        this.$store.commit(
-          'context/setOrganizationMember',
-          currentMember,
-        );
+        this.context.setOrganizationMember(currentMember);
       });
     },
   },
   computed: {
     mini(): boolean {
-      return !this.$store.state.context.sidebarExpanded;
+      return !this.context.sidebarExpanded;
     },
   },
   mounted(): void {
     this.$apollo.queries.allOrganizations.refetch();
-    this.$store.subscribe((mutation: any) => {
-      if (mutation.type === 'auth/setRpt') {
-        this.$apollo.queries.allOrganizations.refetch();
+    this.auth.$onAction(({ name, after }) => {
+      if (name === 'setRpt') {
+        after(() => {
+          this.$apollo.queries.allOrganizations.refetch();
+        });
       }
     });
-    this.$store.commit('context/setSidebarExpansion', window.outerWidth > 1180);
+    this.context.setSidebarExpansion(window.outerWidth > 1180);
   },
 });
 </script>

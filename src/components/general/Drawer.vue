@@ -10,7 +10,7 @@
         dark
     >
       <v-card-title>
-        <v-icon class="mr-2" @click="$emit('hide')">$vuetify.icons.cross</v-icon>
+        <v-icon class="mr-2" @click="$emit('hide')">$cross</v-icon>
         {{ title }}
       </v-card-title>
     </v-img>

@@ -4,10 +4,8 @@ import {
   createWebHistory,
   RouteRecordRaw,
 } from 'vue-router';
-import { useI18n } from 'vue-i18n';
+import i18n from '@/i18n';
 import CreateOrganization from '@/views/Organizations/CreateOrganization.vue';
-
-const { t } = useI18n({ useScope: 'global' });
 
 const routes: RouteRecordRaw[] = [
   {
@@ -28,7 +26,7 @@ const routes: RouteRecordRaw[] = [
         name: 'overview',
         component: () => import(/* webpackChunkName: "about" */ '../views/Projects.vue'),
         meta: {
-          label: t('views.projects'),
+          label: i18n.global.t('views.projects'),
         },
       },
       {
@@ -36,7 +34,7 @@ const routes: RouteRecordRaw[] = [
         name: 'settings',
         component: () => import(/* webpackChunkName: "settings" */ '../views/Settings.vue'),
         meta: {
-          label: t('views.settingsLabel'),
+          label: i18n.global.t('views.settingsLabel'),
         },
         redirect: { name: 'settings.account' },
         children: [
@@ -45,7 +43,7 @@ const routes: RouteRecordRaw[] = [
             name: 'settings.account',
             component: () => import(/* webpackChunkName: "settings" */ '../views/Settings/AccountSettings.vue'),
             meta: {
-              label: t('views.settings.account'),
+              label: i18n.global.t('views.settings.account'),
             },
           },
           {
@@ -53,7 +51,7 @@ const routes: RouteRecordRaw[] = [
             name: 'settings.notifications',
             component: () => import(/* webpackChunkName: "settings" */ '../views/Settings/NotificationSettings.vue'),
             meta: {
-              label: t('views.settings.notifications'),
+              label: i18n.global.t('views.settings.notifications'),
             },
           },
           {
@@ -61,7 +59,7 @@ const routes: RouteRecordRaw[] = [
             name: 'settings.roles',
             component: () => import(/* webpackChunkName: "settings" */ '../views/Settings/OrganizationRoles.vue'),
             meta: {
-              label: t('views.settings.roles'),
+              label: i18n.global.t('views.settings.roles'),
             },
           },
           {
@@ -69,7 +67,7 @@ const routes: RouteRecordRaw[] = [
             name: 'settings.organization',
             component: () => import(/* webpackChunkName: "settings" */ '../views/Settings/OrganizationSettings.vue'),
             meta: {
-              label: t('views.settings.organization'),
+              label: i18n.global.t('views.settings.organization'),
             },
           },
           {
@@ -77,7 +75,7 @@ const routes: RouteRecordRaw[] = [
             name: 'settings.payment',
             component: () => import(/* webpackChunkName: "settings" */ '../views/Settings/Payment.vue'),
             meta: {
-              label: t('views.settings.payment'),
+              label: i18n.global.t('views.settings.payment'),
             },
           },
         ],
@@ -87,7 +85,7 @@ const routes: RouteRecordRaw[] = [
         name: 'create New Project',
         component: () => import(/* webpackChunkName: "about" */ '../views/Projects/CreateProject.vue'),
         meta: {
-          label: t('views.createProject'),
+          label: i18n.global.t('views.createProject'),
         },
       },
       {
@@ -95,7 +93,7 @@ const routes: RouteRecordRaw[] = [
         name: 'project.addMembers',
         component: () => import('../views/Projects/AddTeamMember.vue'),
         meta: {
-          label: t('views.addMembers'),
+          label: i18n.global.t('views.addMembers'),
         },
       },
       {
@@ -103,7 +101,7 @@ const routes: RouteRecordRaw[] = [
         name: 'project.detail',
         component: () => import('../views/Projects/ProjectDetail.vue'),
         meta: {
-          label: t('views.project.detail'),
+          label: i18n.global.t('views.project.detail'),
         },
         redirect: { name: 'project.detail.decks' },
         children: [
@@ -112,7 +110,7 @@ const routes: RouteRecordRaw[] = [
             name: 'project.detail.decks',
             component: () => import('../views/Projects/ProjectDetail/ProjectDecks.vue'),
             meta: {
-              label: t('views.project.decks'),
+              label: i18n.global.t('views.project.decks'),
             },
           },
           {
@@ -120,7 +118,7 @@ const routes: RouteRecordRaw[] = [
             name: 'project.detail.members',
             component: () => import('../views/Projects/ProjectDetail/ProjectMembers.vue'),
             meta: {
-              label: t('views.project.members'),
+              label: i18n.global.t('views.project.members'),
             },
           },
           {
@@ -128,7 +126,7 @@ const routes: RouteRecordRaw[] = [
             name: 'project.detail.sops',
             component: () => import('../views/Projects/ProjectDetail/Sops.vue'),
             meta: {
-              label: t('views.project.sops'),
+              label: i18n.global.t('views.project.sops'),
             },
           },
           {
@@ -136,7 +134,7 @@ const routes: RouteRecordRaw[] = [
             name: 'project.detail.clusterSettings',
             component: () => import('../views/Projects/ProjectDetail/ClusterSettings.vue'),
             meta: {
-              label: t('views.project.clusterSettings'),
+              label: i18n.global.t('views.project.clusterSettings'),
             },
           },
         ],

@@ -14,7 +14,7 @@
           <v-alert
             dense
             outlined
-            icon="$vuetify.icons.warning"
+            icon="$warning"
             type="error">{{ $t('projects.deleteSopsModal.warning') }}</v-alert>
           <v-text-field
             name="sopsName"
@@ -22,7 +22,7 @@
             outlined
             type="text"
             v-model="deleteTitle"
-            prepend-inner-icon="$vuetify.icons.accessToken"
+            prepend-inner-icon="$accessToken"
               persistent-placeholder
           />
         </v-card-text>

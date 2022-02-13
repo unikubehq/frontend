@@ -13,15 +13,15 @@
             placeholder="Enter Email Address"
             v-model="v.email.$model"
             :error-messages="emailErrors(v.email)"
-            prepend-inner-icon="$vuetify.icons.email"
-            :append-inner-icon="v.invited ? $vuetify.icons.email : ''"
+            prepend-inner-icon="$email"
+            :append-inner-icon="v.invited ? $email : ''"
             @blur="v.email.$touch"
             persistent-placeholder
         ></v-text-field>
         </div>
       <v-btn :ripple="false" elevation="0" @click="addMember">
         <v-icon size="24" class="mr-2">
-          $vuetify.icons.addRound
+          $addRound
         </v-icon>{{ $t('organization.addAnother') }}</v-btn>
       <v-btn
         class="mt-3"

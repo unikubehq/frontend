@@ -1,7 +1,7 @@
 <template>
   <v-col cols="12" sm="8" md="3" class="text-center">
     <div v-if="rptRefreshed">
-      <v-icon size="60">$vuetify.icons.done</v-icon>
+      <v-icon size="60">$done</v-icon>
       <h1>{{ $t('organization.wereDone') }}</h1>
       <p class="text--secondary">
         {{ $t('organization.tada', { orgaTitle: this.orgaTitle }) }}
