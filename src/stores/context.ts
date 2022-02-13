@@ -17,7 +17,7 @@ const useContextStore = defineStore('context', {
     messages: [],
   }),
   actions: {
-    addSnackbarMessage({ message, error }) {
+    addSnackbarMessage({ message, error }: { message: string, error: boolean}) {
       this.messages.push({
         message, show: true, error, id: new Date().getTime(),
       });

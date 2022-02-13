@@ -193,6 +193,8 @@ import {
 import DeleteSops from '@/components/Projects/DeleteSops.vue';
 import useVuelidate from '@vuelidate/core';
 import getErrorMessage from '@/utils/validations';
+import { ApolloError } from '@apollo/client';
+import useErrorStore from '@/stores/errors';
 import TranslateResult = VueI18n.TranslateResult;
 
 export default defineComponent({
@@ -218,8 +220,12 @@ export default defineComponent({
       secret1,
       secret2,
     });
+
+    const errorStore = useErrorStore();
+
     return {
       $v: v,
+      errorStore,
       title,
       secret1,
       secret2,
@@ -327,11 +333,10 @@ export default defineComponent({
           }
           this.$emit('update');
         })
-        .catch((err) => {
-          this.$store.commit({
-            type: 'errors/setError',
+        .catch((err: ApolloError) => {
+          this.errorStore.setError({
             error: err,
-            message: 'Something went wrong.',
+            code: 200,
             location: 'SopsEdit',
           });
         });

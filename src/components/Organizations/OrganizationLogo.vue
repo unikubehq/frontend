@@ -79,8 +79,8 @@ import { required } from '@vuelidate/validators';
 import { OrganizationQuery } from '@/generated/graphql';
 import { Dropzone } from '@/typing/';
 import 'vue2-dropzone/dist/vue2Dropzone.min.css';
-import TranslateResult = VueI18n.TranslateResult;
 import useAuthStore from '@/stores/auth';
+import TranslateResult = VueI18n.TranslateResult;
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const vue2Dropzone = require('vue2-dropzone');
 

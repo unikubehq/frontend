@@ -57,6 +57,7 @@ import {
 import { FetchResult } from '@apollo/client';
 import useVuelidate from '@vuelidate/core';
 import getErrorMessage from '@/utils/validations';
+import useErrorStore from '@/stores/errors';
 import TranslateResult = VueI18n.TranslateResult;
 
 export default defineComponent({
@@ -76,7 +77,9 @@ export default defineComponent({
       },
     }));
     const v = useVuelidate(rules, { port });
+    const errorStore = useErrorStore();
     return {
+      errorStore,
       $v: v,
       port,
     };
@@ -118,10 +121,9 @@ export default defineComponent({
         })
         .catch((err) => {
           this.loading = false;
-          this.$store.commit({
-            type: 'errors/setError',
+          this.errorStore.setError({
             error: err,
-            message: 'Something went wrong.',
+            code: 300,
             location: 'ClusterSettings',
           });
         });

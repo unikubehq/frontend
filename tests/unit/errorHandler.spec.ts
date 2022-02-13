@@ -1,19 +1,14 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { mount } from '@vue/test-utils';
-import Vuex, { Store } from 'vuex';
 import ErrorHandler from '@/components/ErrorHandler.vue';
-import Errors from '@/store/modules/errors';
+import useErrorStore from '@/stores/errors';
 
 describe('ErrorHandler.vue', () => {
-  let store: Store<any>;
+  const store = useErrorStore();
   const errorCode = 100;
 
   beforeEach(() => {
-    store = new Vuex.Store({
-      modules: {
-        errors: Errors,
-      },
-    });
+    store.$reset();
   });
 
   it('renders errors correctly', async () => {
@@ -25,9 +20,11 @@ describe('ErrorHandler.vue', () => {
       },
     });
     expect(wrapper.html()).not.toContain(errorCode);
-    store.commit({
-      type: 'errors/setError',
-      error: null,
+    store.setError({
+      error: {
+        name: 'test',
+        message: 'test',
+      },
       code: errorCode,
       location: 'Projects.vue',
     });

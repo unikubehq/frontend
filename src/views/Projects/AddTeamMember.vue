@@ -89,7 +89,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, PropType, ref } from 'vue';
 import { email } from '@vuelidate/validators';
 import VueI18n from 'vue-i18n';
 import {
@@ -97,13 +97,15 @@ import {
   Maybe,
   OrganizationMembersQuery,
   ProjectDetailQuery,
-  TOrganizationMember, TOrganizationNode,
+  TOrganizationMember,
   TProjectDetailQueryResult,
   TProjectMember,
   TProjectMemberRoleEnum,
   TProjectNode,
 } from '@/generated/graphql';
 import useContextStore from '@/stores/context';
+import { useRoute } from 'vue-router';
+import { useQuery, useResult } from '@vue/apollo-composable';
 import TranslateResult = VueI18n.TranslateResult;
 
 export default defineComponent({
@@ -111,34 +113,34 @@ export default defineComponent({
     email,
   },
   setup() {
+    const project = ref(null as Maybe<TProjectNode>);
     const context = useContextStore();
+    const orgaVariables = {
+      id: context.organization?.id,
+    };
+    const orgaQuery = useQuery(OrganizationMembersQuery, {
+      variables: orgaVariables,
+      skip: !context?.organization,
+    });
+
+    const route = useRoute();
+    const projectVariables = {
+      id: route.params.slug,
+    };
+    const { result } = useQuery(ProjectDetailQuery, {
+      variables: projectVariables,
+    });
+    const graphqlProject = useResult(
+      result,
+      null,
+      (data: TProjectDetailQueryResult) => data.project,
+    );
     return {
       context,
+      project,
+      organization: orgaQuery.result,
+      graphqlProject,
     };
-  },
-  apollo: {
-    organization: {
-      query: OrganizationMembersQuery,
-      variables() {
-        return {
-          id: this.context.organization.id,
-        };
-      },
-      skip() {
-        return !this.context.organization;
-      },
-    },
-    graphqlProject: {
-      query: ProjectDetailQuery,
-      variables() {
-        return {
-          id: this.$route.params.slug,
-        };
-      },
-      update(data: TProjectDetailQueryResult) {
-        this.project = data.project as TProjectNode;
-      },
-    },
   },
   props: {
     projectProp: {
@@ -153,9 +155,7 @@ export default defineComponent({
   data() {
     return {
       email: '',
-      project: null as Maybe<TProjectNode>,
       members: [] as { user: null, role: TProjectMemberRoleEnum.Member }[],
-      organization: null as Maybe<TOrganizationNode>,
     };
   },
   computed: {

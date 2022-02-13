@@ -47,19 +47,26 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { UnikubeError } from '@/typing';
+import useErrorStore from '@/stores/errors';
 
 export default defineComponent({
+  setup() {
+    const errorStore = useErrorStore();
+    return {
+      errorStore,
+    };
+  },
   computed: {
-    errors(): UnikubeError {
-      return this.$store.state.errors.errors;
+    errors(): UnikubeError[] {
+      return this.errorStore.errors;
     },
     showErrorDialog(): boolean {
-      return this.$store.state.errors.errors.length > 0;
+      return this.errorStore.errors.length > 0;
     },
   },
   methods: {
     handleAcknowledge(): void {
-      this.$store.commit('errors/clearError');
+      this.errorStore.clearError();
     },
   },
 });

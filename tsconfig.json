@@ -20,7 +20,7 @@
       "chai",
       "vuetify",
       "vue-apollo",
-      "jest"
+      "jest",
     ],
     "paths": {
       "@/*": [

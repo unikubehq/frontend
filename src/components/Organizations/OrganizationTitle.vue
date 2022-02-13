@@ -42,8 +42,8 @@ import VueI18n from 'vue-i18n';
 import { CreateOrganizationMutation } from '@/generated/graphql';
 import getErrorMessage from '@/utils/validations';
 import useVuelidate from '@vuelidate/core';
-import TranslateResult = VueI18n.TranslateResult;
 import useAuthStore from '@/stores/auth';
+import TranslateResult = VueI18n.TranslateResult;
 
 export default defineComponent({
   setup() {

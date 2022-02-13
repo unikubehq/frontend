@@ -40,6 +40,13 @@ module.exports = {
   configureWebpack: {
     plugins,
   },
+  css: {
+    loaderOptions: {
+      sass: {
+        additionalData: '@import "@/styles/_ci.scss";',
+      },
+    },
+  },
   chainWebpack: (config) => {
     config.module
       .rule('i18n')

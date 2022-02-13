@@ -51,9 +51,9 @@ import { ProjectsQuery, TProjectNode, TProjectsQueryResult } from '@/generated/g
 import { RouteLocationNormalized } from 'vue-router';
 import setupPagination from '@/utils/pagination';
 import { useQuery } from '@vue/apollo-composable';
-import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
 import useContextStore from '@/stores/context';
+import useErrorStore from '@/stores/errors';
 
 const sortAscending = (a: TProjectNode, b: TProjectNode): number => {
   if (a.title.toUpperCase() < b.title.toUpperCase()) {
@@ -79,11 +79,10 @@ export default defineComponent({
       offset: offset.value,
     };
     const { result, error } = useQuery(ProjectsQuery, variables);
-    if (error) {
-      const store = useStore();
-      store.commit({
-        type: 'errors/setError',
-        error,
+    const errorStore = useErrorStore();
+    if (error.value) {
+      errorStore.setError({
+        error: error.value,
         code: 100,
         location: 'Projects.vue',
       });
@@ -120,9 +119,6 @@ export default defineComponent({
     };
   },
   computed: {
-    organizationId(): string {
-      return this.context.organization.id;
-    },
     projectResults(): Array<TProjectNode> {
       let result = this.allProjects.allProjects?.results as TProjectNode[];
       if (result) {
@@ -140,7 +136,7 @@ export default defineComponent({
         }
 
         return result.filter(
-          (project: TProjectNode) => project?.organization?.id === this.organizationId,
+          (project: TProjectNode) => project?.organization?.id === this.context?.organization?.id,
         );
       }
       return [{} as TProjectNode];

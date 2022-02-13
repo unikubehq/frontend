@@ -19,34 +19,23 @@
         </v-btn>
       </template>
     </v-snackbar>
-    <v-overlay :value="overlay">
-      <v-progress-circular
-        indeterminate
-        size="64"
-        color="#CEFFE9"
-      ></v-progress-circular>
-    </v-overlay>
   </v-app>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue';
+import { defineComponent } from 'vue';
 import { UserDetailQuery } from '@/generated/graphql';
 import { SnackbarMessage } from '@/typing';
 import useAuthStore from '@/stores/auth';
 import useContextStore from '@/stores/context';
-import useUIStore from '@/stores/ui';
 
 export default defineComponent({
   setup() {
     const auth = useAuthStore();
     const context = useContextStore();
-    const ui = useUIStore();
-    const overlay = computed((): boolean => ui.overlay);
     return {
       auth,
       context,
-      overlay,
     };
   },
   computed: {

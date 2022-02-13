@@ -9,11 +9,12 @@ import { Ability, AbilityBuilder } from '@casl/ability';
 import { createVuetify } from 'vuetify';
 import router from '@/router';
 import App from '@/App.vue';
-// import store from '@/store';
 import pinia from '@/stores';
 import apolloProvider from '@/vue-apollo';
 import { UnikubeAbility } from '@/typing';
 import i18n from '@/i18n';
+import vuetifyOptions from '@/plugins/vuetify';
+import useAuthStore from '@/stores/auth';
 
 console.log(`Running unikube frontend version ${process.env.VUE_APP_VERSION}`);
 
@@ -35,23 +36,21 @@ function initializeUnikubeApp(mode: string) {
     // eslint-disable-next-line no-underscore-dangle
     detectSubjectType: (object) => object.__typename,
   }) as UnikubeAbility;
-
-  const app = createApp(App);
-  const vuetify = createVuetify();
+  const vuetify = createVuetify(vuetifyOptions);
 
   app.use(VueAxios, axios);
   app.use(apolloProvider);
-  app.use(store);
   app.use(router);
   app.use(pinia);
   app.use(i18n);
   app.use(abilitiesPlugin, ability, { useGlobalProperties: true });
+  app.use(vuetify);
   app.component('CaslCan', Can);
   app.axios.defaults.baseURL = process.env.VUE_APP_UPLOAD_URL;
-  let auth;
+  const auth = useAuthStore();
   if (mode !== 'e2e') {
-    store.commit('auth/setKeycloakClient', keycloak);
-    store.dispatch('auth/scheduleRefresh');
+    auth.setKeycloakClient(keycloak);
+    auth.scheduleRefresh();
   }
   function vueInit() {
     app.mount('#app');
@@ -75,7 +74,7 @@ function initializeUnikubeApp(mode: string) {
     const authorization = new KeycloakAuthorization(keycloak);
     authorization.ready.then(() => {
       authorization.entitlement('gateway').then((rpt: string) => {
-        store.commit('auth/setRpt', rpt);
+        auth.setRpt(rpt);
         vueInit();
       });
     });
