@@ -15,9 +15,7 @@
         <v-row justify="center" align="center" class="pt-16">
           <v-col></v-col>
           <v-col justify="center" align-self="center" class="text-center">
-            <v-icon size="120">
-              $vuetify.icons.noProjectsFound
-            </v-icon>
+            <v-icon size="120">$noProjectsFound</v-icon>
             <h3>{{ $t('projects.notFound') }}</h3>
             <p>
               <router-link to="/create-project"
@@ -31,8 +29,8 @@
         </v-row>
       </div>
     <v-pagination
-      next-icon="$vuetify.icons.dropdown"
-      prev-icon="$vuetify.icons.dropdown"
+      next-icon="$dropdown"
+      prev-icon="$dropdown"
       :length="listLength"
       v-model="currentPage"
       v-on:input="changeOffset($event)" />
@@ -47,10 +45,14 @@ import {
 } from 'vue';
 import ProjectBar from '@/components/Projects/ProjectBar.vue';
 import ProjectList from '@/components/Projects/ProjectList.vue';
-import { ProjectsQuery, TProjectNode, TProjectsQueryResult } from '@/generated/graphql';
-import { RouteLocationNormalized } from 'vue-router';
+import {
+  ProjectsQuery,
+  TProjectNode,
+  TProjectsQueryResult,
+  TProjectsQueryVariables,
+} from '@/generated/graphql';
 import setupPagination from '@/utils/pagination';
-import { useQuery } from '@vue/apollo-composable';
+import { useQuery, UseQueryReturn } from '@vue/apollo-composable';
 import { useI18n } from 'vue-i18n';
 import useContextStore from '@/stores/context';
 import useErrorStore from '@/stores/errors';
@@ -78,7 +80,18 @@ export default defineComponent({
       limit: limit.value,
       offset: offset.value,
     };
-    const { result, error } = useQuery(ProjectsQuery, variables);
+    const {
+      result,
+      error,
+      refetch,
+      loading,
+    } = useQuery(
+      ProjectsQuery,
+      variables,
+      {
+        fetchPolicy: 'no-cache',
+      },
+    ) as UseQueryReturn<TProjectsQueryResult, TProjectsQueryVariables>;
     const errorStore = useErrorStore();
     if (error.value) {
       errorStore.setError({
@@ -87,7 +100,7 @@ export default defineComponent({
         location: 'Projects.vue',
       });
     }
-    const totalObjectCount = computed((): number => (result ? result.value.totalCount : 0));
+    const totalObjectCount = computed((): number => (result.value?.allProjects?.totalCount || 0));
 
     const {
       changeOffset,
@@ -108,19 +121,20 @@ export default defineComponent({
       limit,
       listLength,
       currentPage,
-      allProject: result,
+      allProjects: result,
+      refetchProjectsQuery: refetch,
+      loading,
     };
   },
   data() {
     return {
       sorting: 'az',
       search: '',
-      allProjects: {} as TProjectsQueryResult,
     };
   },
   computed: {
     projectResults(): Array<TProjectNode> {
-      let result = this.allProjects.allProjects?.results as TProjectNode[];
+      let result = this.allProjects?.allProjects?.results as TProjectNode[];
       if (result) {
         if (this.sorting === 'az') {
           result = result.slice().sort(sortAscending);
@@ -134,15 +148,12 @@ export default defineComponent({
               .includes(this.search.toLocaleLowerCase()),
           );
         }
-
+        console.log(result);
         return result.filter(
           (project: TProjectNode) => project?.organization?.id === this.context?.organization?.id,
         );
       }
       return [{} as TProjectNode];
-    },
-    loading(): boolean {
-      return this.$apollo.queries.allProjects.loading;
     },
   },
   methods: {
@@ -152,13 +163,8 @@ export default defineComponent({
         message,
         error: false,
       });
-      this.$apollo.queries.allProjects.refetch();
+      this.refetchProjectsQuery();
     },
-  },
-  beforeRouteEnter(to: RouteLocationNormalized, from: RouteLocationNormalized, next) {
-    next((vm) => {
-      vm.$apollo.queries.allProjects.refetch();
-    });
   },
 });
 </script>

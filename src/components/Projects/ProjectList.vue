@@ -47,13 +47,12 @@
             <v-icon size="24">$edit</v-icon>
           </component>
           <v-divider style="height: 24px" class="mx-4 mb-n1" vertical></v-divider>
-          <v-icon class="project-card__sync" @click="syncRepo(project)" size="24">
-            $sync
-          </v-icon>
+          <v-icon class="project-card__sync" @click="syncRepo(project)" size="24">$sync</v-icon>
           <v-divider style="height: 24px" class="mx-4 mb-n1" vertical></v-divider>
-          <v-icon @click="deleteProjectDialog(project)" size="24" class="project-card__delete">
-            $delete
-          </v-icon>
+          <v-icon
+            @click="deleteProjectDialog(project)"
+            size="24"
+            class="project-card__delete">$delete</v-icon>
         </div>
       </v-col>
     </v-row>

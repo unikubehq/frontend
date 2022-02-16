@@ -12,18 +12,15 @@
         <v-img src="@/assets/img/navigation_background.svg" alt="Navigation Background"/>
         <v-list style="position:absolute; bottom: 10px; left: 0; width: 100%;">
           <v-list-item link :ripple="false" href="https://unikube.io/help/" target="_blank">
-            <v-list-item-icon>
+            <v-list-item-avatar>
               <v-icon>$help</v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title>{{ $t('navigation.help') }}</v-list-item-title>
-            </v-list-item-content>
+            </v-list-item-avatar>
+            <v-list-item-title>{{ t('navigation.help') }}</v-list-item-title>
           </v-list-item>
         </v-list>
       </template>
       <template slot="prepend">
         <v-list-item class="mt-2" :ripple="false">
-          <v-list-item-content>
             <v-list-item-title class="title">
               <div class="d-flex"
                   :class="{'justify-space-between': !mini, 'justify-center': mini}">
@@ -36,14 +33,11 @@
                 </v-btn>
               </div>
             </v-list-item-title>
-          </v-list-item-content>
         </v-list-item>
         <v-list-item class="mt-5">
-          <v-list-item-content>
-            <v-list-item-title class="subtitle-2 text-uppercase" v-if="!mini">
-              {{ $t('navigation.organization') }}
-            </v-list-item-title>
-          </v-list-item-content>
+          <v-list-item-title class="subtitle-2 text-uppercase" v-if="!mini">
+            {{ t('navigation.organization') }}
+          </v-list-item-title>
         </v-list-item>
         <v-menu
             offset-y
@@ -62,7 +56,7 @@
                 <v-icon v-else>$defaultOrganization</v-icon>
               </v-list-item-avatar>
 
-              <v-list-item-content v-if="context.organization">
+              <div v-if="context.organization">
                 <v-list-item-title
                     class="font-weight-bold"
                     v-if="context.organization">
@@ -71,7 +65,7 @@
                 <v-list-item-subtitle>
                   Organization ID: {{ idToVerboseId(context.organization.id) }}
                 </v-list-item-subtitle>
-              </v-list-item-content>
+              </div>
 <v-icon small class="float-right organization-dropdown--arrow" v-if="!mini">$arrowDownWhite</v-icon>
             <v-icon small class="organization-dropdown--arrow" v-if="mini">$arrowDownWhite</v-icon>
             </v-list-item>
@@ -91,18 +85,16 @@
                 alt="Organization Avatar" v-if="organization.avatarImage"/>
                 <v-icon v-else>$defaultOrganization</v-icon>
               </v-list-item-avatar>
-              <v-list-item-content>
-                <v-list-item-title v-text="organization.title"></v-list-item-title>
-                <v-list-item-subtitle v-text="'ID: ' + idToVerboseId(organization.id)"/>
-              </v-list-item-content>
+              <v-list-item-title v-text="organization.title"></v-list-item-title>
+              <v-list-item-subtitle v-text="'ID: ' + idToVerboseId(organization.id)"/>
             </v-list-item>
             <v-divider />
             <v-list-item link :to="{name: 'create-organization'}">
-                <v-list-item-icon class="organization-dropdown--icon">
+                <v-list-item-avatar class="organization-dropdown--icon">
                   <v-icon>$createOrganization</v-icon>
-                </v-list-item-icon>
+                </v-list-item-avatar>
               <v-list-item-title class="text--secondary">
-                {{ $t('navigation.createOrganization') }}
+                {{ t('navigation.createOrganization') }}
               </v-list-item-title>
             </v-list-item>
           </v-list>
@@ -118,98 +110,92 @@
             class="navigation-item"
             active-class="navigation-item--is-active"
         >
-          <v-list-item-icon>
+          <v-list-item-avatar>
             <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-icon>
+          </v-list-item-avatar>
 
-          <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item-content>
+          <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
-import { FetchResult } from '@apollo/client';
+import { defineComponent, ref, watch } from 'vue';
 import {
   OrganizationMembersQuery,
   OrganizationsQuery,
-  TOrganizationMember,
-  TOrganizationNode, TOrganizationsQueryResult,
+  TOrganizationMember, TOrganizationMembersQueryResult, TOrganizationMembersQueryVariables,
+  TOrganizationNode, TOrganizationsQueryResult, TOrganizationsQueryVariables,
 } from '@/generated/graphql';
 import Strings from '@/utils/strings';
 import { useI18n } from 'vue-i18n';
 import useAuthStore from '@/stores/auth';
 import useContextStore from '@/stores/context';
+import { useQuery, UseQueryReturn } from '@vue/apollo-composable';
+import { useRoute, useRouter } from 'vue-router';
+import { ApolloQueryResult } from '@apollo/client';
 
 export default defineComponent({
   name: 'NavigationSidebar',
-  apollo: {
-    allOrganizations: {
-      query: OrganizationsQuery,
-      fetchPolicy: 'no-cache',
-      result(result: FetchResult<TOrganizationsQueryResult>) {
-        if (result?.data?.allOrganizations?.results?.length) {
-          // If currently no organization is set - set the first from the result set.
-          if (!this.context.organization) {
-            this.initializeOrganization(
-              result.data?.allOrganizations.results as TOrganizationNode[],
-            );
-          } else {
-          // If currently an organization is set, check if it is still contained in the result set.
-            this.checkAndSetOrganization(
-              result.data.allOrganizations.results as TOrganizationNode[],
-            );
-          }
-        } else if (this.$route.name !== 'create-organization') {
-          this.$router.push({ name: 'create-organization' });
-        }
-      },
-    },
-  },
   setup() {
     const { t } = useI18n({ useScope: 'global' });
     const auth = useAuthStore();
     const context = useContextStore();
+    const route = useRoute();
+    const router = useRouter();
     const items = ref([
       { icon: '$overview', title: t('views.projects'), to: '/overview' },
       { icon: '$settings', title: t('views.settingsLabel'), to: '/settings' },
     ]);
-    return {
-      auth,
-      context,
-      $t: t,
-      items,
+
+    const { result, refetch, onResult } = useQuery(
+      OrganizationsQuery,
+      {},
+      {
+        fetchPolicy: 'no-cache',
+      },
+    ) as UseQueryReturn<TOrganizationsQueryResult, TOrganizationsQueryVariables>;
+
+    const r = useQuery(
+      OrganizationMembersQuery,
+      {
+        id: context?.organization?.id,
+      },
+    ) as UseQueryReturn<TOrganizationMembersQueryResult, TOrganizationMembersQueryVariables>;
+    r.onResult((userResult) => {
+      const members = userResult?.data?.organization?.members as TOrganizationMember[];
+      if (members?.length) {
+        const currentMember = members.filter(
+          (member: TOrganizationMember) => member?.user?.id === auth.uuid,
+        )[0];
+        if (currentMember) {
+          context.setOrganizationMember(currentMember as TOrganizationMember);
+        }
+      }
+    });
+
+    const setOrganizationContext = (organization: TOrganizationNode, goToOverview = true): void => {
+      context.organization = organization;
+      if (route.name !== 'overview' && goToOverview) {
+        router.push({ name: 'overview' });
+      }
     };
-  },
-  data() {
-    return {
-      idToVerboseId: Strings.idToVerboseId,
-      mobile: false,
-    };
-  },
-  methods: {
-    toggleMini(): void {
-      this.context.setSidebarExpansion(!this.context.sidebarExpanded);
-    },
-    checkAndSetOrganization(organizations: TOrganizationNode[]): void {
+
+    const checkAndSetOrganization = (organizations: TOrganizationNode[]): void => {
       /* Check if currently set organization is still valid. If not change context organization */
       let contained = false;
       organizations.forEach((organization: TOrganizationNode) => {
-        if (this.context.organization?.id === organization.id) {
+        if (context.organization?.id === organization.id) {
           contained = true;
         }
       });
       // If it is not contained within the result set - set the first.
-      if (!contained) {
-        this.context.setOrganization(organizations[0]);
-      } else if (!this.context.organizationMember) {
-        this.setOrganizationMember(organizations[0]);
+      if (!contained && organizations.length) {
+        [context.organization] = organizations;
       }
-    },
-    initializeOrganization(organizations: TOrganizationNode[]): void {
+    };
+    const initializeOrganization = (organizations: TOrganizationNode[]): void => {
       /* Initialize organization context.
        *
        * Currently no organization is set. Initialize from localstorage or use first organization
@@ -226,27 +212,44 @@ export default defineComponent({
           [organization] = organizationFiltered;
         }
       }
-      this.setOrganizationContext(organization, false);
-    },
-    setOrganizationContext(organization: TOrganizationNode, goToOverview = true): void {
-      this.context.setOrganization(organization);
-      this.setOrganizationMember(organization);
-      if (this.$route.name !== 'overview' && goToOverview) {
-        this.$router.push({ name: 'overview' });
+      setOrganizationContext(organization, false);
+    };
+    onResult((queryResult: ApolloQueryResult<TOrganizationsQueryResult>) => {
+      if (!queryResult?.data?.allOrganizations?.results?.length) {
+        router.push({ name: 'create-organization' });
       }
-    },
-    setOrganizationMember(organization: TOrganizationNode): void {
-      this.$apollo.query({
-        query: OrganizationMembersQuery,
-        variables: {
-          id: organization.id,
-        },
-      }).then((res) => {
-        const currentMember = res.data.organization.members.filter(
-          (member: TOrganizationMember) => member?.user?.id === this.auth.uuid,
-        )[0];
-        this.context.setOrganizationMember(currentMember);
-      });
+      // If currently no organization is set - set the first from the result set.
+      if (!context.organization) {
+        initializeOrganization(
+          queryResult?.data?.allOrganizations?.results as TOrganizationNode[],
+        );
+      } else {
+      // If currently an organization is set, check if it is still contained in the result set.
+        checkAndSetOrganization(
+          queryResult?.data?.allOrganizations?.results as TOrganizationNode[],
+        );
+      }
+    });
+
+    return {
+      auth,
+      checkAndSetOrganization,
+      initializeOrganization,
+      context,
+      t,
+      items,
+      refetchOrgas: refetch,
+    };
+  },
+  data() {
+    return {
+      idToVerboseId: Strings.idToVerboseId,
+      mobile: false,
+    };
+  },
+  methods: {
+    toggleMini(): void {
+      this.context.setSidebarExpansion(!this.context.sidebarExpanded);
     },
   },
   computed: {
@@ -255,11 +258,11 @@ export default defineComponent({
     },
   },
   mounted(): void {
-    this.$apollo.queries.allOrganizations.refetch();
+    this.refetchOrgas();
     this.auth.$onAction(({ name, after }) => {
       if (name === 'setRpt') {
         after(() => {
-          this.$apollo.queries.allOrganizations.refetch();
+          this.refetchOrgas();
         });
       }
     });

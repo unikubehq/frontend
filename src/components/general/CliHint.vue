@@ -4,9 +4,7 @@
             <v-icon size="24"
                 v-bind="attrs"
                 v-on="on"
-            >
-                $cli
-            </v-icon>
+            >$cli</v-icon>
         </template>
           <table>
             <caption class="d-none">{{ $t('cli.hint.caption') }}</caption>
@@ -37,9 +35,7 @@
                         v-bind="attrs"
                         v-on="on"
                         class="ml-auto mr-2 tooltip-icon"
-                      >
-                        $smallBulb
-                      </v-icon>
+                      >$smallBulb</v-icon>
                     </template>
                     <span>
                       {{ command.hint }}
@@ -49,9 +45,7 @@
                   size=28
                   class="tooltip-icon"
                   @click="copyToClipboard(command.command)"
-                  >
-                    $copy
-                </v-icon>
+                  >$copy</v-icon>
               </td>
             </tr>
             </tbody>

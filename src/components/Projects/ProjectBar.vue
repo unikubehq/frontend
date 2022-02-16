@@ -25,9 +25,9 @@
         :ripple="false"
         to="/create-project"
       >
-        <v-icon class="ml-n2 mr-2">
-          $addProject
-        </v-icon>{{ $t('projects.addNewProject') }}</v-btn>
+        <v-icon class="ml-n2 mr-2">$addProject</v-icon>
+        {{ $t('projects.addNewProject') }}
+      </v-btn>
     </v-col>
   </v-row>
 </template>

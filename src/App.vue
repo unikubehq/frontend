@@ -24,15 +24,31 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { UserDetailQuery } from '@/generated/graphql';
+import { TUserDetailQueryResult, TUserDetailQueryVariables, UserDetailQuery } from '@/generated/graphql';
 import { SnackbarMessage } from '@/typing';
 import useAuthStore from '@/stores/auth';
 import useContextStore from '@/stores/context';
+import { useQuery, UseQueryReturn } from '@vue/apollo-composable';
 
 export default defineComponent({
   setup() {
     const auth = useAuthStore();
     const context = useContextStore();
+    const variables = {
+      id: auth.uuid,
+    };
+    const { result, error } = useQuery(
+      UserDetailQuery,
+      variables,
+    ) as UseQueryReturn<TUserDetailQueryResult, TUserDetailQueryVariables>;
+
+    if (result) {
+      auth.avatarImage = result?.value?.user?.avatarImage || '';
+    }
+    if (error) {
+      console.warn('Could not fetch user avatar');
+    }
+
     return {
       auth,
       context,
@@ -53,16 +69,6 @@ export default defineComponent({
         this.$ability.update(this.auth.caslRules);
       },
     },
-  },
-  created(): void {
-    this.$apollo.query({
-      query: UserDetailQuery,
-      variables: {
-        id: this.auth.uuid,
-      },
-    }).then((res) => {
-      this.auth.avatarImage = res.data.user.avatarImage;
-    });
   },
 });
 </script>

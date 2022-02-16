@@ -10,7 +10,7 @@ import { createVuetify } from 'vuetify';
 import router from '@/router';
 import App from '@/App.vue';
 import pinia from '@/stores';
-import apolloProvider from '@/vue-apollo';
+import apolloClient from '@/vue-apollo';
 import { UnikubeAbility } from '@/typing';
 import i18n from '@/i18n';
 import vuetifyOptions from '@/plugins/vuetify';
@@ -26,7 +26,7 @@ const keycloak = Keycloak({
 });
 const app = createApp({
   setup() {
-    provide(DefaultApolloClient, apolloProvider);
+    provide(DefaultApolloClient, apolloClient);
   },
   render: () => h(App),
 });
@@ -46,7 +46,6 @@ function initializeUnikubeApp(mode: string) {
 
   app.use(VueAxios, axios);
   app.use(vuetify);
-  app.use(apolloProvider);
   app.use(router);
   app.use(pinia);
   app.use(i18n);

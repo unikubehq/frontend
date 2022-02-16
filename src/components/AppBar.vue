@@ -1,8 +1,8 @@
 <template>
   <v-app-bar app color="white" elevation="5" height="75">
-    <v-toolbar-title class="font-weight-medium text-capitalize">
+    <v-app-bar-title class="font-weight-medium text-capitalize">
       {{ currentRoute }}
-    </v-toolbar-title>
+    </v-app-bar-title>
     <div class="d-flex flex-row justify-space-around align-center" style="width: 350px;">
       <v-menu v-model="notificationsMenu" offset-y nudge-bottom="5" nudge-left="290">
         <template v-slot:activator="{ on, attrs }">
