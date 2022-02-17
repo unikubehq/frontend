@@ -133,17 +133,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import ProjectForm from '@/views/Projects/ProjectForm.vue';
 import DeleteProject from '@/components/Projects/DeleteProject.vue';
 import AddTeamMember from '@/views/Projects/AddTeamMember.vue';
 import {
   Maybe,
   ProjectDetailQuery,
-  TDeckNode, TProjectDetailQueryResult,
+  TDeckNode, TProjectDetailQueryResult, TProjectDetailQueryVariables,
   TProjectNode,
 } from '@/generated/graphql';
 import { ApolloQueryResult } from '@apollo/client';
+import { useQuery, UseQueryReturn } from '@vue/apollo-composable';
+import { useRoute } from 'vue-router';
+import useContextStore from '@/stores/context';
 
 export default defineComponent({
   components: {
@@ -159,33 +162,39 @@ export default defineComponent({
       deckEdit: false,
       deckToBeEdited: null as Maybe<TDeckNode>,
       memberDrawer: false,
-      project: null as Maybe<TProjectNode>,
       projectNotFound: false,
     };
   },
-  apollo: {
-    projectQuery: {
-      query: ProjectDetailQuery,
-      manual: true,
-      variables() {
-        return {
-          id: this.$route.params.slug as string,
-        };
+  setup() {
+    const route = useRoute();
+    const project = ref(null as Maybe<TProjectNode>);
+    const projectNotFound = ref(false);
+    const context = useContextStore();
+    const { result, onResult, refetch } = useQuery(
+      ProjectDetailQuery,
+      {
+        id: route.params.slug,
       },
-      result(res: ApolloQueryResult<TProjectNode>) {
-        if (!res.loading) {
-          if (this.$store.state.context.organization.id === res.data?.organization?.id) {
-            this.project = res.data;
-          } else {
-            this.project = null;
-            this.projectNotFound = true;
-          }
+    ) as UseQueryReturn<TProjectDetailQueryResult, TProjectDetailQueryVariables>;
+
+    onResult((res: ApolloQueryResult<TProjectDetailQueryResult>) => {
+      if (!res.loading) {
+        if (context?.organization?.id === res.data?.project?.organization?.id) {
+          project.value = res.data.project as TProjectNode;
+        } else {
+          project.value = null;
+          projectNotFound.value = true;
         }
-      },
-    },
+      }
+    });
+
+    return {
+      projectQuery: result,
+      refetchProjects: refetch,
+    };
   },
   beforeRouteUpdate(to, from, next) {
-    this.$apollo.queries.projectQuery.refresh();
+    this.refetchProjects();
     next();
   },
   computed: {
@@ -208,7 +217,7 @@ export default defineComponent({
       this.deckEdit = true;
     },
     updateProject(): void {
-      this.$apollo.queries.projectQuery.refetch();
+      this.refetchProjects();
     },
     handleSopsCreated(): void {
       this.updateProject();

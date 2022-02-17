@@ -118,14 +118,22 @@ import { defineComponent, PropType } from 'vue';
 import VueI18n from 'vue-i18n';
 import {
   CreateProjectMemberMutation,
-  Maybe, OrganizationMembersQuery,
-  TOrganizationMember, TOrganizationNode, TProjectMember, TProjectMemberRoleEnum,
+  Maybe,
+  OrganizationMembersQuery,
+  TOrganizationMember,
+  TOrganizationMembersQueryResult,
+  TOrganizationMembersQueryVariables,
+  TOrganizationNode,
+  TProjectMember,
+  TProjectMemberRoleEnum,
   TProjectNode,
 } from '@/generated/graphql';
 import { TProjectMemberEdit } from '@/typing';
 import UnikubeAvatar from '@/components/general/Avatar.vue';
 import RemoveMember from '@/components/Projects/RemoveMember.vue';
 import Converter from '@/utils/converter';
+import { useQuery, UseQueryReturn } from '@vue/apollo-composable';
+import useContextStore from '@/stores/context';
 import TranslateResult = VueI18n.TranslateResult;
 
 export default defineComponent({
@@ -133,16 +141,17 @@ export default defineComponent({
     UnikubeAvatar,
     RemoveMember,
   },
-  apollo: {
-    organization: {
-      query: OrganizationMembersQuery,
-      variables() {
-        return {
-          id: this.$store.state.context.organization.id,
-        };
+  setup() {
+    const context = useContextStore();
+    const { result } = useQuery(
+      OrganizationMembersQuery,
+      {
+        id: context?.organization?.id,
       },
-      deep: true,
-    },
+    ) as UseQueryReturn<TOrganizationMembersQueryResult, TOrganizationMembersQueryVariables>;
+    return {
+      organization: result?.value?.organization as Maybe<TOrganizationNode>,
+    };
   },
   props: {
     project: {
@@ -152,7 +161,6 @@ export default defineComponent({
   },
   data() {
     return {
-      organization: null as Maybe<TOrganizationNode>,
       memberToAvatar: Converter.memberToAvatar,
       memberToDelete: null as Maybe<TProjectMember>,
       membersEdit: [] as Maybe<TProjectMemberEdit[]>,

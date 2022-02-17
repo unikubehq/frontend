@@ -138,37 +138,60 @@ import {
   InviteToOrganization,
   OrganizationMembersQuery,
   TOrganizationMember,
-  OrganizationInvites, RevokeOrganizationInvite, TOrganizationNode, Maybe,
+  OrganizationInvites,
+  RevokeOrganizationInvite,
+  TOrganizationNode,
+  Maybe,
+  TOrganizationMembersQueryResult,
+  TOrganizationMembersQueryVariables,
+  TOrganizationInvitesQueryResult,
+  TOrganizationInvitesQueryVariables,
+  TOrganizationInvitationNode,
 } from '@/generated/graphql';
 import UnikubeAvatar from '@/components/general/Avatar.vue';
 import Converter from '@/utils/converter';
 import DeleteOrganizationMemberComponent from '@/components/Settings/DeleteOrganizationMember.vue';
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
+import { useQuery, UseQueryReturn } from '@vue/apollo-composable';
+import useContextStore from '@/stores/context';
+import { ApolloQueryResult } from '@apollo/client';
 
 export default defineComponent({
-  apollo: {
-    organization: {
-      query: OrganizationMembersQuery,
-      variables() {
-        return {
-          id: this.$store.state.context.organization.id,
-        };
+  setup() {
+    const context = useContextStore();
+    const organization = ref(null as Maybe<TOrganizationNode>);
+    const organizationQuery = useQuery(
+      OrganizationMembersQuery,
+      {
+        id: context?.organization?.id,
       },
-      skip(): boolean {
-        return !this.organizationSet;
+      {
+        enabled: !!context?.organization,
       },
-    },
-    allOrganizationInvitations: {
-      query: OrganizationInvites,
-      variables() {
-        return {
-          id: this.$store.state.context.organization.id,
-        };
+    ) as UseQueryReturn<TOrganizationMembersQueryResult, TOrganizationMembersQueryVariables>;
+    organizationQuery.onResult((res: ApolloQueryResult<TOrganizationMembersQueryResult>) => {
+      organization.value = res?.data?.organization as TOrganizationNode;
+    });
+
+    const organizationInvites = ref(null as Maybe<TOrganizationInvitationNode[]>);
+
+    const organizationInviteQuery = useQuery(
+      OrganizationInvites,
+      {
+        id: context?.organization?.id,
       },
-      skip(): boolean {
-        return !this.organizationSet;
+      {
+        enabled: !!context?.organization,
       },
-    },
+    ) as UseQueryReturn<TOrganizationInvitesQueryResult, TOrganizationInvitesQueryVariables>;
+    organizationInviteQuery.onResult((res: ApolloQueryResult<TOrganizationInvitesQueryResult>) => {
+      // eslint-disable-next-line max-len
+      organizationInvites.value = res?.data?.allOrganizationInvitations?.results as TOrganizationInvitationNode[];
+    });
+    return {
+      organization,
+      allOrganizationInvitations: organizationInvites,
+    };
   },
   validations: {
     email: {
@@ -182,7 +205,6 @@ export default defineComponent({
       email: '',
       inviteLoading: false,
       memberErrors: [] as string[],
-      organization: {} as TOrganizationNode,
       memberToAvatar: Converter.memberToAvatar,
       dialog: false,
       showDeleteDialog: false,

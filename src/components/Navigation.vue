@@ -1,7 +1,7 @@
 <template>
     <v-navigation-drawer
         app
-        dark
+        theme="dark"
         width="300"
         :mini-variant="mini"
         mini-variant-width="96"
