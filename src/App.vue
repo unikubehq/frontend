@@ -74,6 +74,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+@import "vuetify/dist/vuetify.min.css";
 @import "styles/main";
 
 </style>

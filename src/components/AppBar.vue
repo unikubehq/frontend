@@ -3,7 +3,8 @@
     <v-app-bar-title class="font-weight-medium text-capitalize">
       {{ currentRoute }}
     </v-app-bar-title>
-    <div class="d-flex flex-row justify-space-around align-center" style="width: 350px;">
+    <div
+    class="d-flex flex-row justify-space-around align-center align-self-end" style="width: 350px;">
       <v-menu v-model="notificationsMenu" offset-y nudge-bottom="5" nudge-left="290">
         <template v-slot:activator="{ on, attrs }">
           <v-btn v-bind="attrs" v-on="on" text>

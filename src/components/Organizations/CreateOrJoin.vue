@@ -15,7 +15,6 @@
             color="primary"
             block
             large
-           :ripple="false"
             @click="$emit('success')"
            >{{ $t('organization.createButton') }}</v-btn>
          </v-card-text>

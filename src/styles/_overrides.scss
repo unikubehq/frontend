@@ -95,3 +95,12 @@ select:-webkit-autofill:focus {
 .v-input--switch__thumb.theme--light.primary--text {
   color: white !important;
 }
+
+.v-theme--light {
+  --v-medium-emphasis-opacity: 1 !important;
+  --v-theme-on-primary: 255,255,255 !important;
+}
+
+.v-app-bar__content {
+  justify-content: inherit;
+}

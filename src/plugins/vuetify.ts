@@ -1,5 +1,3 @@
-import 'vuetify/dist/vuetify.min.css';
-
 import { VuetifyOptions } from 'vuetify';
 
 import Account from '@/components/icons/Account.vue';
@@ -163,6 +161,12 @@ const vuetifyOptions: VuetifyOptions = {
     aliases,
     sets: {
       custom,
+    },
+  },
+  defaults: {
+    global: {
+      ripple: false,
+      elevation: 0,
     },
   },
 };
