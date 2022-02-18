@@ -8,10 +8,10 @@
         mobile-breakpoint="0"
         :disable-resize-watcher="true"
     >
-      <template slot="append">
+      <template v-slot:append>
         <v-img src="@/assets/img/navigation_background.svg" alt="Navigation Background"/>
         <v-list style="position:absolute; bottom: 10px; left: 0; width: 100%;">
-          <v-list-item link :ripple="false" href="https://unikube.io/help/" target="_blank">
+          <v-list-item link href="https://unikube.io/help/" target="_blank">
             <v-list-item-avatar>
               <v-icon>$help</v-icon>
             </v-list-item-avatar>
@@ -19,16 +19,16 @@
           </v-list-item>
         </v-list>
       </template>
-      <template slot="prepend">
-        <v-list-item class="mt-2" :ripple="false">
+      <template v-slot:prepend>
+        <v-list-item class="mt-2">
             <v-list-item-title class="title">
               <div class="d-flex"
                   :class="{'justify-space-between': !mini, 'justify-center': mini}">
                 <router-link :to="{name: 'overview'}">
                   <v-img src="@/assets/img/Unikube-Logo-H-NoShadow_light.svg" alt="Unikube Logo"
-                      max-height="45" max-width="164" contain v-if="!mini"/>
+                      height="45" width="164" v-if="!mini"/>
                 </router-link>
-                <v-btn  icon @click="toggleMini" :ripple="false">
+                <v-btn @click="toggleMini" color="transparent">
                   <v-icon medium class="d-block mt-2">$burger</v-icon>
                 </v-btn>
               </div>
@@ -46,7 +46,6 @@
         >
           <template v-slot:activator="{ attrs, on }">
             <v-list-item class="mt-2 organization-dropdown--item" two-line v-bind="attrs" v-on="on"
-                :ripple="false"
                 :class="{'flex-wrap': mini}">
               <v-list-item-avatar>
                 <v-img v-if="context.organization &&
@@ -76,7 +75,6 @@
                 v-for="organization in allOrganizations.results"
                 :key="organization.id"
                 link
-                :ripple="false"
                 two-line
                 @click="setOrganizationContext(organization)"
             >
@@ -102,11 +100,12 @@
       </template>
 
       <v-list>
-        <v-list-item :ripple="false"
+        <v-list-item
             v-for="item in items"
             :key="item.title"
             :to="item.to"
             link
+            :rounded="0"
             class="navigation-item"
             active-class="navigation-item--is-active"
         >
@@ -270,3 +269,44 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="scss">
+@import "@/styles/_ci";
+.v-navigation-drawer__headline {
+  background-color: $unikube-blue;
+}
+
+.v-navigation-drawer {
+   background-image: linear-gradient(18deg, #0e132e -13%, #252e65 64%);
+}
+.v-navigation-drawer {
+  .v-list-item {
+    padding-left: 20px;
+    width: 100%;
+    .v-list-item-title {
+      width: 100%;
+    }
+  }
+}
+.v-navigation-drawer--mini-variant {
+  .v-list-item.navigation-item {
+    padding-left: 16px;
+  }
+  .v-list-item.navigation-item--is-active {
+    padding-left: 12px;
+  }
+  .v-list-item > .organization-dropdown--arrow:not(:first-child) {
+    float: none !important;
+    width: 100% !important;
+    clip: unset !important;
+    position: relative !important;
+    height: 0;
+    text-align: center;
+  }
+  .organization-dropdown--item {
+    &:after {
+      margin-top: -48px;
+    }
+  }
+}
+</style>

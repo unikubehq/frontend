@@ -1,3 +1,4 @@
+import '@/styles/main.scss';
 import { createApp, h, provide } from 'vue';
 import * as Sentry from '@sentry/vue';
 import Keycloak from 'keycloak-js';

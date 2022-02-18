@@ -1,4 +1,116 @@
-
+@use 'vuetify/styles' with (
+  $color-pack: false,
+  $body-font-family: (DM Sans, sans-serif),
+  $rounded: (
+    0: 0,
+  ),
+  $typography: (
+    'h1': (
+      'weight': 500,
+      'size': 30px,
+      'line-height': 39px
+    ),
+    'h2': (
+      'weight': 500,
+      'size': 24px,
+      'line-height': 31px
+    ),
+    'h3': (
+      'weight': 500,
+      'size': 22px,
+      'line-height': 29px
+    ),
+    'h4': (
+      'weight': 500,
+    ),
+    'h5': (
+      'weight': 500
+    ),
+    'h6': (
+      'weight': 500
+    ),
+  ),
+);
+  //$material-light: (
+  //  'background': #FCFCFD,
+  //  'text-fields': (
+  //        'filled': #fff,
+  //        'filled-hover': #fff,
+  //        'outlined': $grey-2,
+  //        'outlined-hover': $grey-1,
+  //        'outlined-disabled': $grey-2,
+  //  ),
+  //  'text': (
+  //    'primary': $unikube-blue,
+  //    'secondary': $grey-1,
+  //    'link': $unikube-green,
+  //    'link-hover': $green-dark-1,
+  //  ),
+  //  'input': (
+  //    'solo-inverted-focused-label': #ff0000,
+  //  )
+  //),
+  /* v-text-field adaptions */
+  //$text-field-border-radius: 4px,
+  //$text-field-outlined-fieldset-border: '1px solid $unikube-green !default',
+  //$text-field-outlined-fieldset-top: 0,
+  //$text-field-filled-full-width-outlined-slot-min-height: 48px,
+  //$text-field-filled-margin-top: 0,
+  //$text-field-outlined-label-position-y: -37px,
+  //$text-field-enclosed-prepend-append-margin-top: 12px,
+  //$text-field-append-prepend-margin: 8px,
+  //
+  ///* v-btn adaption */
+  //$btn-text-transform: none,
+  //$btn-letter-spacing: -0.2px,
+  //
+  ///* elevation adaptions */
+  //$shadow-key-umbra-opacity: 'rgba(183, 183, 183, 0.15) !default',
+  //$shadow-key-penumbra-opacity: 'rgba(183, 183, 183, 0.15) !default',
+  //$shadow-key-ambient-opacity: 'rgba(183, 183, 183, 0.15) !default',
+  //
+  //// Only 5 is overwritten atm
+  //$shadow-key-umbra: (
+  //    0: (0px 0px 0px 0px $shadow-key-umbra-opacity),
+  //    1: (0px 2px 1px -1px $shadow-key-umbra-opacity),
+  //    2: (0px 3px 1px -2px $shadow-key-umbra-opacity),
+  //    3: (0px 3px 3px -2px $shadow-key-umbra-opacity),
+  //    4: (0px 2px 4px -1px $shadow-key-umbra-opacity),
+  //    5: (0px 2px 40px 0px $shadow-key-umbra-opacity),
+  //    6: (0px 3px 5px -1px $shadow-key-umbra-opacity),
+  //    7: (0px 4px 5px -2px $shadow-key-umbra-opacity),
+  //    8: (0px 5px 5px -3px $shadow-key-umbra-opacity),
+  //    9: (0px 5px 6px -3px $shadow-key-umbra-opacity),
+  //    10: (0px 6px 6px -3px $shadow-key-umbra-opacity),
+  //    11: (0px 6px 7px -4px $shadow-key-umbra-opacity),
+  //    12: (0px 7px 8px -4px $shadow-key-umbra-opacity),
+  //    13: (0px 7px 8px -4px $shadow-key-umbra-opacity),
+  //    14: (0px 7px 9px -4px $shadow-key-umbra-opacity),
+  //    15: (0px 8px 9px -5px $shadow-key-umbra-opacity),
+  //    16: (0px 8px 10px -5px $shadow-key-umbra-opacity),
+  //    17: (0px 8px 11px -5px $shadow-key-umbra-opacity),
+  //    18: (0px 9px 11px -5px $shadow-key-umbra-opacity),
+  //    19: (0px 9px 12px -6px $shadow-key-umbra-opacity),
+  //    20: (0px 10px 13px -6px $shadow-key-umbra-opacity),
+  //    21: (0px 10px 13px -6px $shadow-key-umbra-opacity),
+  //    22: (0px 10px 14px -6px $shadow-key-umbra-opacity),
+  //    23: (0px 11px 14px -7px $shadow-key-umbra-opacity),
+  //    24: (0px 11px 15px -7px $shadow-key-umbra-opacity)
+  //),
+  //
+  ///* v-dialog adaption */
+  //$dialog-border-radius: 16px,
+  //
+  ///* v-switch */
+  //$switch-dirty-offset-x: 15px,
+  //
+  //$switch-track-border-radius: 12px,
+  //$switch-track-height: 24px,
+  //$switch-track-width: 44px,
+  //
+  //$switch-thumb-top: 7.3px,
+  //
+  //$card-border-radius: 6px,
 @import "ci";
 @import "modal-card";
 @import "overrides";

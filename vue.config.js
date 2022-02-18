@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires,import/no-extraneous-dependencies
+const { VuetifyLoaderPlugin } = require('vuetify-loader');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 // eslint-disable-next-line @typescript-eslint/no-var-requires,import/no-extraneous-dependencies
@@ -33,6 +35,8 @@ plugins.push(new MonacoWebpackPlugin({
   }],
 }));
 
+// plugins.push(new VuetifyLoaderPlugin({ styles: 'expose' }));
+
 module.exports = {
   transpileDependencies: true,
   pluginOptions: {
@@ -40,13 +44,6 @@ module.exports = {
   },
   configureWebpack: {
     plugins,
-  },
-  css: {
-    loaderOptions: {
-      sass: {
-        additionalData: '@import "@/styles/_ci.scss";',
-      },
-    },
   },
   chainWebpack: (config) => {
     config.module

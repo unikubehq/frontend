@@ -186,6 +186,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import "@/styles/_ci";
 .project-card{
   &__wrapper {
     box-shadow: 0 2px 40px 0 rgba(183, 183, 183, 0.15);

@@ -427,6 +427,7 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+@import "@/styles/_ci";
 .sops-list-item {
   border-bottom: solid 1px rgb(161, 169, 178);
 }

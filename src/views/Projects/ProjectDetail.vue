@@ -227,6 +227,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import "@/styles/_ci";
 .v-tabs--vertical > .v-tabs-bar .v-tab {
   height: 130px !important;
 }
