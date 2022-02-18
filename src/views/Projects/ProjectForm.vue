@@ -213,7 +213,7 @@ export default class ProjectForm extends validationMixin {
 
   id = '';
 
-  specTypeChoices = [TSpecicifactionTypeEnum.Helm]
+ specTypeChoices = Object.values(TSpecicifactionTypeEnum);
 
   saveLoading = false
 
