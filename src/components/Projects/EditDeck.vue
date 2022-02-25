@@ -125,12 +125,12 @@
                 outlined
                 :ripple="false"
                 @click="helm = !helm"
-                v-if="environment.valueSchema"
+                v-if="environment.valueSchema && specType === 'HELM'"
               >
                   <v-icon size="24" class="mr-2">
                     $vuetify.icons.helm
                   </v-icon>
-                  Override {{ specType }} values
+                  Override helm values
                 </v-btn>
               </v-col>
               <v-col cols="3">
@@ -159,7 +159,6 @@
         :show="helm"
         :environment="environment"
         @hide="helm = false;"
-        :specType="specType"
       />
     </v-navigation-drawer>
   </v-container>

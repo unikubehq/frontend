@@ -1,6 +1,6 @@
 <template>
   <drawer
-      :title="`Override ${specType} Values`"
+      :title="`Override Helm Values`"
       :intro="`Override helm values for ${environment.title}.`"
       @hide="$emit('hide')"
   >
@@ -51,8 +51,6 @@ import {
 })
 export default class HelmOverrides extends Vue {
   @Prop() readonly environment!: TEnvironmentNode;
-
-  @Prop() readonly specType!: string;
 
   editorContent = '';
 
