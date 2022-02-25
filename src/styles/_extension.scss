@@ -160,4 +160,7 @@
 }
 .navigation-toggle {
   background-color: transparent !important;
+  .v-btn__overlay {
+    display: none !important;
+  }
 }

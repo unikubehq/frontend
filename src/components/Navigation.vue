@@ -19,18 +19,18 @@
       </template>
       <template v-slot:prepend>
         <v-list-item class="mt-2">
+          <v-list-item-header>
             <v-list-item-title class="title">
-              <div class="d-flex"
-                  :class="{'justify-space-between': !mini, 'justify-center': mini}">
-                <router-link :to="{name: 'overview'}">
-                  <v-img src="@/assets/img/Unikube-Logo-H-NoShadow_light.svg" alt="Unikube Logo"
-                      height="45" width="164" v-if="!mini"/>
-                </router-link>
-                <v-btn @click="toggleMini" class="navigation-toggle" width="21">
-                  <v-icon medium class="d-block mt-2">$burger</v-icon>
-                </v-btn>
-              </div>
+              <router-link :to="{name: 'overview'}">
+                <v-img src="@/assets/img/Unikube-Logo-H-NoShadow_light.svg" alt="Unikube Logo"
+                    height="45" width="164" v-if="!mini"/>
+              </router-link>
             </v-list-item-title>
+          </v-list-item-header>
+          <template v-slot:append>
+            <v-btn @click="toggleMini"
+                class="navigation-toggle" width="21" variant="text" icon="$burger"/>
+          </template>
         </v-list-item>
         <v-list-item class="mt-5">
           <v-list-item-title class="text-uppercase" v-if="!mini">
@@ -42,7 +42,7 @@
             content-class="organization-dropdown"
             rounded="0"
             transition="fab"
-            :close-on-click="true"
+            :close-on-content-click="true"
         >
           <template v-slot:activator="{ props }">
             <v-list-item class="mt-2 organization-dropdown--item" two-line
