@@ -20,7 +20,7 @@
     }],
     "sops": [],
     "members": [],
-    "specType": "helm",
+    "specType": "HELM",
     "specRepository": "http://github.com/example/testrepo",
     "specRepositoryBranch": "main",
     "accessUser": "TestUser",
