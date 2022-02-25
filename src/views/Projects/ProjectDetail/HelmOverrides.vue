@@ -1,6 +1,6 @@
 <template>
   <drawer
-      :title="`Override ${specType} Values`"
+      :title="`Override Helm Values`"
       :intro="`Override helm values for ${environment.title}.`"
       @hide="$emit('hide')"
   >
@@ -53,10 +53,6 @@ export default defineComponent({
       type: Object as PropType<TEnvironmentNode>,
       required: true,
     },
-    specType: {
-      type: String,
-      required: true,
-    }
   },
   data() {
     return {
