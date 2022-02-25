@@ -233,7 +233,7 @@ export default defineComponent({
     specType: {
       type: String,
       required: true,
-    }
+    },
   },
   data() {
     return {
