@@ -1,6 +1,6 @@
 <template>
   <drawer
-      title="Override Helm Values"
+      :title="`Override Helm Values`"
       :intro="`Override helm values for ${environment.title}.`"
       @hide="$emit('hide')"
   >

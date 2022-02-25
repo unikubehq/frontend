@@ -110,6 +110,7 @@ export type TDeckNode = {
   project: TProjectNode;
   title: Scalars['String'];
   type: Scalars['String'];
+  disabled: Scalars['Boolean'];
 };
 
 
@@ -569,7 +570,9 @@ export enum TSopsTypeEnum {
 }
 
 export enum TSpecicifactionTypeEnum {
-  Helm = 'helm'
+  Helm = 'helm',
+  Kustomize = 'kustomize',
+  Plain = 'plain'
 }
 
 export type TUpdateClusterSettingsInput = {
