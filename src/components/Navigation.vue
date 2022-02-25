@@ -3,18 +3,16 @@
         app
         theme="dark"
         width="300"
-        :mini-variant="mini"
+        :rail="mini"
         mini-variant-width="96"
         mobile-breakpoint="0"
         :disable-resize-watcher="true"
     >
       <template v-slot:append>
         <v-img src="@/assets/img/navigation_background.svg" alt="Navigation Background"/>
-        <v-list style="position:absolute; bottom: 10px; left: 0; width: 100%;">
-          <v-list-item link href="https://unikube.io/help/" target="_blank">
-            <v-list-item-avatar>
-              <v-icon>$help</v-icon>
-            </v-list-item-avatar>
+        <v-list style="position:absolute; bottom: 10px; left: 0; width: 100%;"
+            class="navigation-list">
+          <v-list-item href="https://unikube.io/help/" target="_blank" prepend-icon="$help">
             <v-list-item-title>{{ t('navigation.help') }}</v-list-item-title>
           </v-list-item>
         </v-list>
@@ -28,14 +26,14 @@
                   <v-img src="@/assets/img/Unikube-Logo-H-NoShadow_light.svg" alt="Unikube Logo"
                       height="45" width="164" v-if="!mini"/>
                 </router-link>
-                <v-btn @click="toggleMini" color="transparent">
+                <v-btn @click="toggleMini" class="navigation-toggle" width="21">
                   <v-icon medium class="d-block mt-2">$burger</v-icon>
                 </v-btn>
               </div>
             </v-list-item-title>
         </v-list-item>
         <v-list-item class="mt-5">
-          <v-list-item-title class="subtitle-2 text-uppercase" v-if="!mini">
+          <v-list-item-title class="text-uppercase" v-if="!mini">
             {{ t('navigation.organization') }}
           </v-list-item-title>
         </v-list-item>
@@ -43,54 +41,48 @@
             offset-y
             content-class="organization-dropdown"
             rounded="0"
+            transition="fab"
+            :close-on-click="true"
         >
-          <template v-slot:activator="{ attrs, on }">
-            <v-list-item class="mt-2 organization-dropdown--item" two-line v-bind="attrs" v-on="on"
-                :class="{'flex-wrap': mini}">
-              <v-list-item-avatar>
-                <v-img v-if="context.organization &&
-                  context.organization.avatarImage"
-                  :src="context.organization.avatarImage"
-                  alt="Organization Avatar"/>
-                <v-icon v-else>$defaultOrganization</v-icon>
-              </v-list-item-avatar>
+          <template v-slot:activator="{ props }">
+            <v-list-item class="mt-2 organization-dropdown--item" two-line
+                v-bind="getDropdownAttributes(context.organisation, props)"
+                :class="{'flex-wrap': mini, 'justify-center': mini}">
 
-              <div v-if="context.organization">
+              <v-list-item-header v-if="context.organization && !mini">
                 <v-list-item-title
                     class="font-weight-bold"
                     v-if="context.organization">
                   {{ context.organization.title }}
                 </v-list-item-title>
                 <v-list-item-subtitle>
-                  Organization ID: {{ idToVerboseId(context.organization.id) }}
+                  ID: {{ idToVerboseId(context.organization.id) }}
                 </v-list-item-subtitle>
-              </div>
-<v-icon small class="float-right organization-dropdown--arrow" v-if="!mini">$arrowDownWhite</v-icon>
+              </v-list-item-header>
+              <template v-slot:append>
+                <v-list-item-avatar right v-if="!mini">
+                  <v-btn variant="text" icon="$arrowDownWhite"></v-btn>
+                </v-list-item-avatar>
+              </template>
             <v-icon small class="organization-dropdown--arrow" v-if="mini">$arrowDownWhite</v-icon>
             </v-list-item>
           </template>
           <div class="organization-dropdown--notch"></div>
-          <v-list v-if="allOrganizations">
+          <v-list theme="light" rounded>
             <v-list-item
-                v-for="organization in allOrganizations.results"
+                v-for="organization in allOrganizations"
                 :key="organization.id"
-                link
                 two-line
                 @click="setOrganizationContext(organization)"
+                v-bind="getDropdownAttributes(organization, {})"
             >
-              <v-list-item-avatar class="organization-dropdown--icon">
-                <v-img :src="organization.avatarImage" max-width="35" contain
-                alt="Organization Avatar" v-if="organization.avatarImage"/>
-                <v-icon v-else>$defaultOrganization</v-icon>
-              </v-list-item-avatar>
-              <v-list-item-title v-text="organization.title"></v-list-item-title>
-              <v-list-item-subtitle v-text="'ID: ' + idToVerboseId(organization.id)"/>
+              <v-list-item-header>
+                <v-list-item-title v-text="organization.title"></v-list-item-title>
+                <v-list-item-subtitle v-text="'ID: ' + idToVerboseId(organization.id)"/>
+              </v-list-item-header>
             </v-list-item>
             <v-divider />
-            <v-list-item link :to="{name: 'create-organization'}">
-                <v-list-item-avatar class="organization-dropdown--icon">
-                  <v-icon>$createOrganization</v-icon>
-                </v-list-item-avatar>
+            <v-list-item :to="{name: 'create-organization'}" prepend-icon="$createOrganization">
               <v-list-item-title class="text--secondary">
                 {{ t('navigation.createOrganization') }}
               </v-list-item-title>
@@ -99,20 +91,16 @@
         </v-menu>
       </template>
 
-      <v-list>
+      <v-list class="navigation-list">
         <v-list-item
             v-for="item in items"
             :key="item.title"
             :to="item.to"
-            link
+            :prepend-icon="item.icon"
             :rounded="0"
             class="navigation-item"
             active-class="navigation-item--is-active"
         >
-          <v-list-item-avatar>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-avatar>
-
           <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item>
       </v-list>
@@ -147,6 +135,7 @@ export default defineComponent({
       { icon: '$overview', title: t('views.projects'), to: '/overview' },
       { icon: '$settings', title: t('views.settingsLabel'), to: '/settings' },
     ]);
+    const allOrganizations = ref([] as TOrganizationNode[]);
 
     const { result, refetch, onResult } = useQuery(
       OrganizationsQuery,
@@ -217,6 +206,10 @@ export default defineComponent({
       if (!queryResult?.data?.allOrganizations?.results?.length) {
         router.push({ name: 'create-organization' });
       }
+      allOrganizations.value = (
+          queryResult?.data?.allOrganizations?.results || []
+      ) as TOrganizationNode[];
+      console.log(allOrganizations);
       // If currently no organization is set - set the first from the result set.
       if (!context.organization) {
         initializeOrganization(
@@ -232,8 +225,10 @@ export default defineComponent({
 
     return {
       auth,
+      allOrganizations,
       checkAndSetOrganization,
       initializeOrganization,
+      setOrganizationContext,
       context,
       t,
       items,
@@ -249,6 +244,18 @@ export default defineComponent({
   methods: {
     toggleMini(): void {
       this.context.setSidebarExpansion(!this.context.sidebarExpanded);
+    },
+    getDropdownAttributes(organization: TOrganizationNode, attrs: any) {
+      const result = {} as any;
+      if (organization?.avatarImage) {
+        result['prepend-avatar'] = organization.avatarImage;
+      } else {
+        result['prepend-icon'] = '$defaultOrganization';
+      }
+      return {
+        ...attrs,
+        ...result,
+      };
     },
   },
   computed: {

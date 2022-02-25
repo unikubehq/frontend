@@ -99,8 +99,13 @@ select:-webkit-autofill:focus {
 .v-theme--light {
   --v-medium-emphasis-opacity: 1 !important;
   --v-theme-on-primary: 255,255,255 !important;
+  --v-theme-surface: 252, 252, 253 !important;
 }
 
 .v-app-bar__content {
   justify-content: inherit;
+}
+
+.v-overlay {
+  z-index: 1007 !important;
 }
