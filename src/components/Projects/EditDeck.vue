@@ -94,6 +94,13 @@
                   persistent-placeholder
                 />
               </v-col>
+              <v-col>
+                  <v-checkbox
+                    v-model="disabled"
+                    :label="$t('deck.edit.environments.disabled')"
+                  >
+                </v-checkbox>
+              </v-col>
           </v-row>
           <v-row>
               <v-col cols="5" class="mt-2">
@@ -124,7 +131,7 @@
                   <v-icon size="24" class="mr-2">
                     $helm
                   </v-icon>
-                  Override helm values
+                  Override {{ specType }} values
                 </v-btn>
               </v-col>
               <v-col cols="3">
@@ -149,7 +156,12 @@
           class="no-bg-drawer"
           v-model="helm"
         >
-      <helm-overrides :show="helm" :environment="environment" @hide="helm = false;"/>
+      <helm-overrides
+        :show="helm"
+        :environment="environment"
+        @hide="helm = false;"
+        :specType="specType"
+      />
     </v-navigation-drawer>
   </v-container>
 </template>
@@ -219,6 +231,10 @@ export default defineComponent({
       type: Object as PropType<TDeckNode>,
       required: true,
     },
+    specType: {
+      type: String,
+      required: true,
+    }
   },
   data() {
     return {

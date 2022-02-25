@@ -235,7 +235,7 @@ export default defineComponent({
       specType: TSpecicifactionTypeEnum.Helm,
       repoDir: '',
       id: '',
-      specTypeChoices: [TSpecicifactionTypeEnum.Helm],
+      specTypeChoices: Object.values(TSpecicifactionTypeEnum),
       saveLoading: false,
     };
   },
