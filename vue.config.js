@@ -30,7 +30,7 @@ plugins.push(new MonacoWebpackPlugin({
     entry: undefined,
     worker: {
       id: 'yaml-worker',
-      entry: path.resolve(__dirname, 'node_modules/monaco-yaml/lib/esm/yaml.worker'),
+      entry: path.resolve(__dirname, 'node_modules/monaco-yaml/yaml.worker'),
     },
   }],
 }));
