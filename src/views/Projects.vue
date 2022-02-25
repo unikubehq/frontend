@@ -58,6 +58,16 @@ const sortAscending = (a: TProjectNode, b: TProjectNode): number => {
   return 0;
 };
 
+// eslint-disable-next-line arrow-body-style
+const sortModifiedAscending = (a: TProjectNode, b: TProjectNode): number => {
+  return new Date(a.currentCommitDateTime).valueOf() - new Date(b.currentCommitDateTime).valueOf();
+};
+
+// eslint-disable-next-line arrow-body-style
+const sortModifiedDescending = (a: TProjectNode, b: TProjectNode): number => {
+  return new Date(b.currentCommitDateTime).valueOf() - new Date(a.currentCommitDateTime).valueOf();
+};
+
 Component.registerHooks([
   'beforeRouteUpdate',
 ]);
@@ -107,6 +117,10 @@ export default class Overview extends mixins(paginationMixin) {
     if (result) {
       if (this.sorting === 'az') {
         result = result.slice().sort(sortAscending);
+      } else if (this.sorting === 'modificationAscending') {
+        result = result.slice().sort(sortModifiedAscending);
+      } else if (this.sorting === 'modificationDescending') {
+        result = result.slice().sort(sortModifiedDescending);
       } else {
         result = result.slice().sort(sortAscending).reverse();
       }
