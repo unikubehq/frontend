@@ -48,6 +48,8 @@ export default class ProjectBar extends Vue {
     return [
       { value: 'az', text: this.$t('A-Z ascending') },
       { value: 'za', text: this.$t('A-Z descending') },
+      { value: 'modificationAscending', text: this.$t('Last Update ascending') },
+      { value: 'modificationDescending', text: this.$t('Last Update descending') },
     ];
   }
 }
