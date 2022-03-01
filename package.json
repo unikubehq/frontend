@@ -86,7 +86,7 @@
     "keycloak-js": "^16.1.1",
     "lint-staged": "^12.3.4",
     "nyc": "^15.1.0",
-    "release-it": "^14.12.4",
+    "release-it": "^14.12.5",
     "sass": "^1.49.8",
     "sass-loader": "^12.6.0",
     "ts-loader": "^9.2.6",
