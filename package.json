@@ -42,7 +42,7 @@
     "webpack": "^5.69.1"
   },
   "devDependencies": {
-    "@babel/runtime": "^7.16.7",
+    "@babel/runtime": "^7.17.2",
     "@cypress/code-coverage": "^3.9.12",
     "@cypress/webpack-preprocessor": "^5.11.1",
     "@graphql-codegen/add": "^3.1.1",
@@ -65,7 +65,7 @@
     "@vue/cli-plugin-e2e-cypress": "^5.0.1",
     "@vue/cli-plugin-eslint": "^5.0.0-rc.1",
     "@vue/cli-plugin-router": "^5.0.1",
-    "@vue/cli-plugin-typescript": "^5.0.0-rc.2",
+    "@vue/cli-plugin-typescript": "^5.0.1",
     "@vue/cli-plugin-unit-jest": "^5.0.1",
     "@vue/cli-plugin-vuex": "^5.0.0-rc.2",
     "@vue/cli-service": "^5.0.1",
