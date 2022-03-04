@@ -11,7 +11,7 @@
                   :label="$t('deck.edit.environments.formTitle')"
                   name="environmentName"
                   filled
-                  outlined
+                  variant="outlined"
                   type="text"
                   :placeholder="$t('deck.edit.environments.enterTitle')"
                   v-model="title"
@@ -25,7 +25,7 @@
                 :label="$t('deck.edit.environments.description')"
                 name="description"
                 filled
-                outlined
+                variant="outlined"
                 type="text"
                 :placeholder="$t('deck.edit.environments.enterDescription')"
                 v-model="description"
@@ -37,7 +37,7 @@
                 :label="$t('deck.edit.environments.sops')"
                 name="sops"
                 filled
-                outlined
+                variant="outlined"
                 type="text"
                 :placeholder="$t('deck.edit.environments.chooseSops')"
                 v-model="sopsCredentials"
@@ -51,7 +51,7 @@
                     :label="$t('deck.edit.environments.type')"
                     name="type"
                     filled
-                    outlined
+                    variant="outlined"
                     type="text"
                     :placeholder="$t('deck.edit.environments.enterType')"
                     v-model="environmentType"
@@ -64,7 +64,7 @@
                     :label="$t('deck.edit.environments.valuesPath')"
                     name="valuesPath"
                     filled
-                    outlined
+                    variant="outlined"
                     type="text"
                     :placeholder="$t('deck.edit.environments.enterValuesPath')"
                     v-model="valuesPath"
@@ -87,7 +87,7 @@
                   name="namespace"
                   filled
                   :error-messages="namespaceErrors"
-                  outlined
+                  variant="outlined"
                   type="text"
                   :placeholder="$t('deck.edit.environments.enterNamespace')"
                   v-model="namespace"
@@ -121,9 +121,9 @@
               <v-col cols="3" offset="1">
                 <v-btn
                 class="helmOverridesButton"
-                large
+                size="large"
                 block
-                outlined
+                variant="outlined"
                 :ripple="false"
                 @click="helm = !helm"
                 v-if="environment.valueSchema && specType === 'HELM'"
@@ -136,7 +136,7 @@
               </v-col>
               <v-col cols="3">
                 <v-btn
-                large
+                size="large"
                 :loading="loading"
                 block
                 :ripple="false"

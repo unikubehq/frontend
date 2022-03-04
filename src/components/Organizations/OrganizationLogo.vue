@@ -49,7 +49,7 @@
                 <v-card-actions class="justify-center">
                   <v-btn
                     color="primary"
-                    large
+                    size="large"
                     elevation="0"
                     :ripple="false"
                     @click="handleUpload"
@@ -61,7 +61,7 @@
             <v-btn
               block
               color="primary"
-              large
+              size="large"
               elevation="0"
               :ripple="false"
               @click="next"

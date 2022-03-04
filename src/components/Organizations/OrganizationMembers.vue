@@ -9,7 +9,7 @@
             label="Email Address"
             name="email"
             filled
-            outlined
+            variant="outlined"
             placeholder="Enter Email Address"
             v-model="v.email.$model"
             :error-messages="emailErrors(v.email)"
@@ -27,7 +27,7 @@
         class="mt-3"
         color="primary"
         block
-        large
+        size="large"
         @click="inviteEmails"
       >{{ $t('general.finish') }}</v-btn>
     </v-form>

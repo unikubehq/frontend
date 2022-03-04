@@ -19,7 +19,7 @@
           <v-container fluid class="py-0">
             <v-row>
           <v-col class="py-0"><v-btn
-            large
+            size="large"
             block
             :ripple="false"
             text
@@ -27,7 +27,7 @@
           >{{ $t('general.disagree') }}</v-btn>
             </v-col>
           <v-col class="py-0"><v-btn
-            large
+            size="large"
             block
             :ripple="false"
             color="error"

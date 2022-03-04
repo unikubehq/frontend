@@ -15,7 +15,7 @@
         <v-row>
           <v-col cols="6" class="py-0">
             <v-btn
-              outlined
+              variant="outlined"
               block
               :ripple="false"
               @click="$emit('hide')"

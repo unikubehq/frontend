@@ -14,7 +14,7 @@
         <v-card-text>
           <div>
             <p>
-              <v-icon x-large>
+              <v-icon x-size="large">
                 $bigSorry
               </v-icon>
               {{ $t(error.message) }}
@@ -27,7 +27,7 @@
             <v-row>
           <v-col class="py-0">
             <v-btn
-              large
+              size="large"
               block
               :ripple="false"
               text

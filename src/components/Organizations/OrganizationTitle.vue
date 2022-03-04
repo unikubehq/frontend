@@ -9,7 +9,7 @@
           label="Organization Name"
           name="organizationName"
           filled
-          outlined
+          variant="outlined"
           placeholder="Enter Organization Name"
           v-model="title"
           :error-messages="titleErrors"
@@ -21,7 +21,7 @@
       <v-btn
           block
           color="primary"
-          large
+          size="large"
           elevation="0"
           :ripple="false"
           @click="handleCreateOrganization"

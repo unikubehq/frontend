@@ -1,4 +1,5 @@
 import { VuetifyOptions } from 'vuetify';
+import { aliases as maliases, mdi } from 'vuetify/lib/iconsets/mdi';
 
 import Account from '@/components/icons/Account.vue';
 import AddMember from '@/components/icons/AddMember.vue';
@@ -66,6 +67,7 @@ import { IconProps, IconSet } from 'vuetify/dist/vuetify';
 import { h } from 'vue';
 
 const aliases = {
+  ...maliases,
   account: Account,
   accountBlue: AccountBlue,
   addMember: AddMember,
@@ -140,7 +142,11 @@ const vuetifyOptions: VuetifyOptions = {
     themes: {
       light: {
         dark: false,
-        variables: {},
+        variables: {
+          'input-control-height': '42px',
+          'input-padding-top': '11px',
+          'field-padding-bottom': '11px',
+        },
         colors: {
           primary: '#45D093',
           secondary: '#F8FFFC',
@@ -150,17 +156,18 @@ const vuetifyOptions: VuetifyOptions = {
           info: '#2196F3',
           success: '#4CAF50',
           warning: '#FB8C00',
-          background: '#FFFFFF',
-          surface: '#FFFFFF',
+          background: '#FCFCFD',
+          surface: '#FCFCFD',
         },
       },
     },
   },
   icons: {
-    defaultSet: 'custom',
+    defaultSet: 'mdi',
     aliases,
     sets: {
       custom,
+      mdi,
     },
   },
   defaults: {

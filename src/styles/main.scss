@@ -11,8 +11,8 @@
       'line-height': 39px
     ),
     'h2': (
-      'weight': 500,
-      'size': 24px,
+      'weight': 800,
+      'size': 0,
       'line-height': 31px
     ),
     'h3': (
@@ -29,16 +29,24 @@
     'h6': (
       'weight': 500
     ),
+    'button': (
+      'text-transform': none,
+      'letter-spacing': -.2px,
+    )
   ),
+  $shadow-key-umbra-opacity: rgba(183, 183, 183, 0.15),
+  $shadow-key-penumbra-opacity: rgba(183, 183, 183, 0.15),
+  $shadow-key-ambient-opacity: rgba(183, 183, 183, 0.15),
+  $input-control-height: 40px,
 );
   //$material-light: (
   //  'background': #FCFCFD,
   //  'text-fields': (
   //        'filled': #fff,
   //        'filled-hover': #fff,
-  //        'outlined': $grey-2,
-  //        'outlined-hover': $grey-1,
-  //        'outlined-disabled': $grey-2,
+  //        'variant="outlined"': $grey-2,
+  //        'variant="outlined"-hover': $grey-1,
+  //        'variant="outlined"-disabled': $grey-2,
   //  ),
   //  'text': (
   //    'primary': $unikube-blue,
@@ -52,11 +60,11 @@
   //),
   /* v-text-field adaptions */
   //$text-field-border-radius: 4px,
-  //$text-field-outlined-fieldset-border: '1px solid $unikube-green !default',
-  //$text-field-outlined-fieldset-top: 0,
-  //$text-field-filled-full-width-outlined-slot-min-height: 48px,
+  //$text-field-variant="outlined"-fieldset-border: '1px solid $unikube-green !default',
+  //$text-field-variant="outlined"-fieldset-top: 0,
+  //$text-field-filled-full-width-variant="outlined"-slot-min-height: 48px,
   //$text-field-filled-margin-top: 0,
-  //$text-field-outlined-label-position-y: -37px,
+  //$text-field-variant="outlined"-label-position-y: -37px,
   //$text-field-enclosed-prepend-append-margin-top: 12px,
   //$text-field-append-prepend-margin: 8px,
   //

@@ -20,7 +20,7 @@
             <div class="float-right">
               <div>
                 <v-btn
-                  outlined
+                  variant="outlined"
                   width="144"
                   @click="setEdit"
                   :ripple="false"
@@ -34,7 +34,7 @@
               <div>
                 <v-btn
                   class="mt-5 "
-                  outlined
+                  variant="outlined"
                   width="144"
                   :ripple="false"
                   @click="showDeleteDialog = true;"

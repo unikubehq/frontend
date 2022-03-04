@@ -7,7 +7,7 @@
             :label="$t('projects.name')"
             name="projectName"
             filled
-            outlined
+            variant="outlined"
             type="text"
             :error-messages="titleErrors"
             :placeholder="$t('projects.enterName')"
@@ -22,7 +22,7 @@
             :label="$t('projects.description')"
             name="description"
             filled
-            outlined
+            variant="outlined"
             type="text"
             :placeholder="$t('projects.enterDescription')"
             v-model="description"
@@ -35,7 +35,7 @@
             :label="$t('projects.specificationRepository')"
             name="specRepo"
             filled
-            outlined
+            variant="outlined"
             type="text"
             :placeholder="$t('projects.enterSpecificationRepository')"
             v-model="specRepository"
@@ -50,7 +50,7 @@
             :label="$t('projects.specificationRepositoryBranch')"
             name="specRepoBranch"
             filled
-            outlined
+            variant="outlined"
             type="text"
             :placeholder="$t('projects.enterSpecificationRepositoryBranch')"
             v-model="specRepositoryBranch"
@@ -67,7 +67,7 @@
             :hint="$t('projects.accessUsernameHint')"
             autocomplete="off"
             filled
-            outlined
+            variant="outlined"
             type="text"
             :placeholder="$t('projects.enterAccessUsername')"
             v-model="accessUsername"
@@ -82,7 +82,7 @@
             :label="$t('projects.accessToken')"
             name="accessToken"
             filled
-            outlined
+            variant="outlined"
             type="password"
             :placeholder="$t('projects.enterAccessToken')"
             v-model="accessToken"
@@ -97,7 +97,7 @@
             :label="$t('projects.specificationType')"
             name="specType"
             filled
-            outlined
+            variant="outlined"
             type="text"
             :placeholder="$t('projects.enterSpecificationType')"
             v-model="specType"
@@ -110,7 +110,7 @@
         <v-col cols="12">
           <v-alert
             dense
-            outlined
+            variant="outlined"
             icon="$vuetify.icons.warning"
             type="error"
             v-if="submissionError">
@@ -137,7 +137,7 @@
         <v-col cols="3">
           <v-btn
           block
-          large
+          size="large"
           color="primary"
           :loading="saveLoading"
           @click="submit"

@@ -26,14 +26,19 @@ $headings: (
     'weight': 500
   ),
 );
+$typography: (
+  'button': (
+    'text-transform': none,
+  )
+);
 $material-light: (
   'background': #FCFCFD,
   'text-fields': (
         'filled': #fff,
         'filled-hover': #fff,
-        'outlined': $grey-2,
-        'outlined-hover': $grey-1,
-        'outlined-disabled': $grey-2,
+        'variant="outlined"': $grey-2,
+        'variant="outlined"-hover': $grey-1,
+        'variant="outlined"-disabled': $grey-2,
   ),
   'text': (
     'primary': $unikube-blue,
@@ -45,13 +50,15 @@ $material-light: (
     'solo-inverted-focused-label': #ff0000,
   )
 );
+
+
 /* v-text-field adaptions */
 $text-field-border-radius: 4px;
-$text-field-outlined-fieldset-border: 1px solid $unikube-green !default;
-$text-field-outlined-fieldset-top: 0;
-$text-field-filled-full-width-outlined-slot-min-height: 48px;
+$text-field-variant="outlined"-fieldset-border: 1px solid $unikube-green !default;
+$text-field-variant="outlined"-fieldset-top: 0;
+$text-field-filled-full-width-variant="outlined"-slot-min-height: 48px;
 $text-field-filled-margin-top: 0;
-$text-field-outlined-label-position-y: -37px;
+$text-field-variant="outlined"-label-position-y: -37px;
 $text-field-enclosed-prepend-append-margin-top: 12px;
 $text-field-append-prepend-margin: 8px;
 

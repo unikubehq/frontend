@@ -45,7 +45,7 @@
         </v-simple-table>
         <v-alert
             dense
-            outlined
+            variant="outlined"
             class="mt-5"
             icon="$vuetify.icons.warning"
             v-for="error in memberErrors"
@@ -64,7 +64,7 @@
                 :label="$t('general.email')"
                 name="email"
                 filled
-                outlined
+                variant="outlined"
                 type="text"
                 :placeholder="$t('settings.account.enterEmail')"
                 v-model="email"
@@ -81,7 +81,7 @@
               settings and add new roles.
             </small>
           </div>
-          <v-btn color="primary" :disabled="$v.$invalid" large elevation="0"
+          <v-btn color="primary" :disabled="$v.$invalid" size="large" elevation="0"
               :ripple="false" @click="inviteEmail" :loading="inviteLoading">
             Invite new member
           </v-btn>

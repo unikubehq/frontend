@@ -1,6 +1,6 @@
 <template>
     <v-alert
-    outlined
+    variant="outlined"
     color="error"
     >
     <h2>{{ $t('settings.dangerZone') }}</h2>

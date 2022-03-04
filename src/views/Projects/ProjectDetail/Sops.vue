@@ -3,7 +3,7 @@
     <div v-if="project.sops && project.sops.length">
       <v-row>
       <v-col cols="6" v-for="sops in project.sops" :key="sops.id">
-        <v-card outlined>
+        <v-card variant="outlined">
           <v-card-title>
             <v-row>
               <v-col cols="9">
@@ -12,7 +12,7 @@
               </v-col>
               <v-col cols="3" class="text-right">
                 <v-btn
-                  outlined
+                  variant="outlined"
                   width="50"
                   :ripple="false"
                   @click="handleSetEditSops(sops)"
@@ -22,7 +22,7 @@
                   </v-icon>
                 </v-btn>
                 <v-btn
-                  outlined
+                  variant="outlined"
                   width="50"
                   :ripple="false"
                   class="mt-3"
@@ -45,7 +45,7 @@
     </div>
     <v-btn
       v-if="!showForm"
-      large
+      size="large"
       color="primary"
       class="mt-5"
       @click="handleShowForm(true)"
@@ -61,7 +61,7 @@
                 :label="$t('sops.type')"
                 name="specType"
                 filled
-                outlined
+                variant="outlined"
                 type="text"
                 :placeholder="$t('sops.enterType')"
                 v-model="sopsType"
@@ -72,7 +72,7 @@
                 :label="$t('sops.title')"
                 name="sopsName"
                 filled
-                outlined
+                variant="outlined"
                 type="text"
                 :placeholder="$t('sops.enterTitle')"
                 v-model="title"
@@ -85,7 +85,7 @@
                 :label="$t('sops.description')"
                 name="description"
                 filled
-                outlined
+                variant="outlined"
                 type="text"
                 :placeholder="$t('sops.enterDescription')"
                 v-model="description"
@@ -97,7 +97,7 @@
                 :label="secret1Label"
                 name="secret1"
                 filled
-                outlined
+                variant="outlined"
                 type="password"
                 no-resize
                 :placeholder="secret1Placeholder"
@@ -117,7 +117,7 @@
                 :label="secret1Label"
                 name="secret1"
                 filled
-                outlined
+                variant="outlined"
                 type="password"
                 :placeholder="secret1Placeholder"
                 @blur="$v.secret1.$touch()"
@@ -131,7 +131,7 @@
                 :label="secret2Label"
                 name="secret2"
                 filled
-                outlined
+                variant="outlined"
                 type="password"
                 :placeholder="secret2Placeholder"
                 v-model="secret2"
@@ -155,7 +155,7 @@
             </v-col>
             <v-col cols="4">
               <v-btn
-              large
+              size="large"
               block
               :ripple="false"
               color="primary"

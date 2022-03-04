@@ -20,7 +20,7 @@
         <v-col :cols="overlay ? 12 : 7">
           <v-alert
             dense
-            outlined
+            variant="outlined"
             icon="$vuetify.icons.warning"
             type="error"
             v-if="memberChoices.length === 0">
@@ -39,7 +39,7 @@
                 label="Member"
                 :items="memberChoices"
                 v-model="member.user"
-                outlined
+                variant="outlined"
                 prepend-inner-icon="$vuetify.icons.organization"
                 :placeholder="$t('project.chooseMember')"
                   persistent-placeholder
@@ -50,7 +50,7 @@
                 :label="$t('project.role')"
                 v-model="member.role"
                 :items="projectMemberRoles"
-                outlined
+                variant="outlined"
                 prepend-inner-icon="$vuetify.icons.organization"
                 :placeholder="$t('projects.selectRole')"
                   persistent-placeholder
@@ -58,7 +58,7 @@
             </v-col>
             <v-col :cols="overlay ? 3 : 2"
                 :class="overlay ? 'mt-n10 mb-6' : 'mt-7'" v-if="idx !== 0">
-              <v-btn color="error" large @click="removeMemberForm(idx)">Remove</v-btn>
+              <v-btn color="error" size="large" @click="removeMemberForm(idx)">Remove</v-btn>
             </v-col>
           </v-row>
         </v-form>
@@ -75,7 +75,7 @@
             <v-btn
               color="primary"
               block
-              large
+              size="large"
               @click="submit"
               :disabled="!allMembersValid"
             >{{ $tc('project.addMember', members.length) }}</v-btn>

@@ -14,13 +14,13 @@
           </div>
           <v-alert
             dense
-            outlined
+            variant="outlined"
             icon="$warning"
             type="error">{{ $t('projects.deleteModal.warning') }}</v-alert>
           <v-text-field
             name="projectName"
             filled
-            outlined
+            variant="outlined"
             type="text"
             v-model="deleteTitle"
             prepend-inner-icon="$projectInput"
@@ -32,9 +32,9 @@
           <v-container fluid class="py-0">
             <v-row>
           <v-col class="py-0"><v-btn
-            large
+            size="large"
             color="#a1a9b2"
-            outlined
+            variant="outlined"
             elevation="0"
             block
             :ripple="false"
@@ -43,7 +43,7 @@
           >{{ $t('general.disagree') }}</v-btn>
             </v-col>
           <v-col class="py-0"><v-btn
-            large
+            size="large"
             block
             elevation="0"
             :ripple="false"

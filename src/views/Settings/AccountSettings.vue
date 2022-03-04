@@ -32,7 +32,7 @@
       </v-col>
       <v-col cols="8" class="mt-8">
         <v-row>
-          <v-icon large>$vuetify.icons.personalInfo</v-icon>
+          <v-icon size="large">$vuetify.icons.personalInfo</v-icon>
           <h2 class="d-inline ml-2">{{ $t('settings.account.personalnformation') }}</h2>
         </v-row>
         <v-form>
@@ -40,7 +40,7 @@
               :label="$t('settings.account.fullName')"
               name="fullname"
               filled
-              outlined
+              variant="outlined"
               disabled
               type="text"
               :placeholder="$t('settings.account.enterName')"
@@ -53,7 +53,7 @@
               :label="$t('settings.account.email')"
               name="login"
               filled
-              outlined
+              variant="outlined"
               disabled
               type="text"
               :placeholder="$t('settings.account.enterEmail')"

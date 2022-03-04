@@ -32,7 +32,7 @@
             <v-select
               v-model="member.role"
               :items="projectMemberRoles"
-              outlined
+              variant="outlined"
               :placeholder="$t('projects.selectRole')"
                 style="width: 200px;"
               class="v-select__small"
@@ -63,7 +63,7 @@
             <v-select
                 :items="memberChoices"
                 v-model="pendingMember.user"
-                outlined
+                variant="outlined"
                 :placeholder="$t('project.chooseMember')"
                 class="v-select__small"
                 style="width: 300px;"
@@ -74,7 +74,7 @@
             <v-select
               v-model="pendingMember.role"
               :items="projectMemberRoles"
-              outlined
+              variant="outlined"
               :placeholder="$t('projects.selectRole')"
                 style="width: 200px;"
               class="v-select__small"

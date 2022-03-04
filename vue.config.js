@@ -35,7 +35,7 @@ plugins.push(new MonacoWebpackPlugin({
   }],
 }));
 
-// plugins.push(new VuetifyLoaderPlugin({ styles: 'expose' }));
+plugins.push(new VuetifyLoaderPlugin({ styles: 'expose' }));
 
 module.exports = {
   transpileDependencies: true,

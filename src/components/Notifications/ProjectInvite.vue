@@ -18,7 +18,7 @@
   >{{ $t('organization.joinButton') }}</v-btn>
   <v-btn
     color="#a1a9b2"
-    outlined
+    variant="outlined"
     :ripple="false"
     @click="answerInvite(invite.id, false)"
     :loading="loading[invite.id]"

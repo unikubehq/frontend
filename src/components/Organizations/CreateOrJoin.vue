@@ -2,7 +2,7 @@
   <v-col cols="12" sm="8" md="6">
    <v-row>
      <v-col cols="6">
-       <v-card elevation="0" outlined class="pa-6">
+       <v-card elevation="0" variant="outlined" class="pa-6">
          <v-card-title>
            <create-organization-big />
            <v-spacer />
@@ -14,14 +14,14 @@
             class="mt-7 text-lg-body-1"
             color="primary"
             block
-            large
+            size="large"
             @click="$emit('success')"
            >{{ $t('organization.createButton') }}</v-btn>
          </v-card-text>
        </v-card>
      </v-col>
      <v-col cols="6">
-       <v-card elevation="0" outlined class="pa-6 fill-height">
+       <v-card elevation="0" variant="outlined" class="pa-6 fill-height">
          <v-card-title>
            <join-organization-big />
            <v-spacer />

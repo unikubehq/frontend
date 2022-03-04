@@ -9,7 +9,7 @@
                 label="Port"
                 name="port"
                 filled
-                outlined
+                variant="outlined"
                 type="number"
                 placeholder="Enter Port"
                 v-model="port"
@@ -23,7 +23,7 @@
         <v-row>
           <v-col cols="4">
             <v-btn
-              large
+              size="large"
               block
               :ripple="false"
               color="primary"

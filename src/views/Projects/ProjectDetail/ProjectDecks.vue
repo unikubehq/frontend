@@ -2,7 +2,8 @@
   <div>
     <v-row v-if="!deckEdit">
       <v-col cols="6" v-for="pkg in project.decks" :key="pkg.id">
-        <v-card outlined class="projectDeck" v-if="!pkg.disabled || $can('edit', project)">
+        <v-card variant="outlined" class="projectDeck"
+          v-if="!pkg.disabled || $can('edit', project)">
           <v-card-title>
             <v-row>
               <v-col cols="8">

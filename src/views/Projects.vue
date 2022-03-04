@@ -16,13 +16,13 @@
           <v-col></v-col>
           <v-col justify="center" align-self="center" class="text-center">
             <v-icon size="120">$noProjectsFound</v-icon>
-            <h3>{{ $t('projects.notFound') }}</h3>
+            <h3>{{ t('projects.notFound') }}</h3>
             <p>
               <router-link to="/create-project"
                   v-if="$can('projects:add', context.organization)">
-                {{ $t('general.clickHere') }}
+                {{ t('general.clickHere') }}
               </router-link>
-              {{ $t('projects.createFirst') }}
+              {{ t('projects.createFirst') }}
             </p>
           </v-col>
           <v-col></v-col>
@@ -114,7 +114,7 @@ export default defineComponent({
 
     return {
       context,
-      $t: t,
+      t,
       totalObjectCount,
       changeOffset,
       offset,
@@ -158,7 +158,7 @@ export default defineComponent({
   },
   methods: {
     refetchProjects(): void {
-      const message = this.$t('projects.deleteSuccess');
+      const message = this.t('projects.deleteSuccess');
       this.context.addSnackbarMessage({
         message,
         error: false,

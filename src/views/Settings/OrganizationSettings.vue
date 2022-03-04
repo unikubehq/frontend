@@ -34,7 +34,7 @@
             :label="$t('settings.organization.name')"
             name="fullname"
             filled
-            outlined
+            variant="outlined"
             type="text"
             :placeholder="$t('settings.organization.enterName')"
             v-model="organizationName"
@@ -43,7 +43,7 @@
             @change="setDataChanged"
               persistent-placeholder
           />
-          <v-btn color="primary" :disabled="!dataChanged" large elevation="0" :ripple="false">
+          <v-btn color="primary" :disabled="!dataChanged" size="large" elevation="0">
             {{ $t('general.saveChanges') }}
           </v-btn>
         </v-form>
