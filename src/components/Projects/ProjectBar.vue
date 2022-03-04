@@ -58,6 +58,8 @@ export default defineComponent({
       return [
         { value: 'az', title: this.t('A-Z ascending') },
         { value: 'za', title: this.t('A-Z descending') },
+        { value: 'modificationAscending', title: this.t('Last Update ascending') },
+        { value: 'modificationDescending', title: this.t('Last Update descending') },
       ];
     },
   },
