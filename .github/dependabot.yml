@@ -10,3 +10,15 @@ updates:
       - dependabot
     assignees:
       - "SteinRobert"
+
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "08:00"
+    target-branch: "vue3"
+    open-pull-requests-limit: 20
+    labels:
+      - dependabot
+    assignees:
+      - "SteinRobert"
