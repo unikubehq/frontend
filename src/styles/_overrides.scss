@@ -119,3 +119,12 @@ select:-webkit-autofill:focus {
 .v-text-field__prefix {
   margin-left: 10px;
 }
+.v-select__selections,
+.v-text-field__prefix,
+.v-text-field__suffix {
+  color: $unikube-blue;
+  opacity: 1;
+}
+.v-menu .v-list {
+  color: $unikube-blue;
+}

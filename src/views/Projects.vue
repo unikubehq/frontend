@@ -29,6 +29,9 @@
         </v-row>
       </div>
     <v-pagination
+      class="mt-3"
+      density="comfortable"
+      elevation="2"
       next-icon="$dropdown"
       prev-icon="$dropdown"
       :length="listLength"

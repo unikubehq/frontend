@@ -27,7 +27,7 @@
                    v-if="$can('edit', project)"
                 >
                   <v-icon size="24" class="mr-2" v-if="$can('edit', project)">
-                    $vuetify.icons.edit
+                    $edit
                   </v-icon>{{ $t('projects.editProject') }}
                 </v-btn>
               </div>
@@ -40,7 +40,7 @@
                   @click="showDeleteDialog = true;"
                 >
                   <v-icon size="24" class="mr-2">
-                    $vuetify.icons.delete
+                    $delete
                   </v-icon>{{ $t('projects.deleteProject') }}
                 </v-btn>
               </div>
@@ -120,7 +120,7 @@
     <div v-else>
       <div v-if="projectNotFound" class="text-center mt-10">
         <v-icon size="120">
-          $vuetify.icons.noProjectsFound
+          $noProjectsFound
         </v-icon>
         <h3>{{ $t('project.notFound') }}</h3>
         <p>

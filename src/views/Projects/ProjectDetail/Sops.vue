@@ -7,7 +7,7 @@
           <v-card-title>
             <v-row>
               <v-col cols="9">
-                <v-icon>$vuetify.icons.accessToken</v-icon>
+                <v-icon>$accessToken</v-icon>
                 {{ sops.title }}
               </v-col>
               <v-col cols="3" class="text-right">
@@ -18,7 +18,7 @@
                   @click="handleSetEditSops(sops)"
                 >
                   <v-icon size="24">
-                    $vuetify.icons.edit
+                    $edit
                   </v-icon>
                 </v-btn>
                 <v-btn
@@ -29,7 +29,7 @@
                   @click="deleteSopsDialog(sops)"
                 >
                   <v-icon size="24">
-                    $vuetify.icons.delete
+                    $delete
                   </v-icon>
                 </v-btn>
               </v-col>
@@ -78,7 +78,7 @@
                 v-model="title"
                 :error-messages="titleErrors"
                 @blur="$v.title.$touch()"
-                prepend-inner-icon="$vuetify.icons.projectInput"
+                prepend-inner-icon="$projectInput"
               persistent-placeholder
               />
           <v-text-field
@@ -89,7 +89,7 @@
                 type="text"
                 :placeholder="$t('sops.enterDescription')"
                 v-model="description"
-                prepend-inner-icon="$vuetify.icons.description"
+                prepend-inner-icon="$description"
               persistent-placeholder
               />
             <v-textarea
@@ -109,7 +109,7 @@
                 @dragover="dragover"
                 @dragleave="dragleave"
                 @drop="drop"
-                prepend-inner-icon="$vuetify.icons.accessToken"
+                prepend-inner-icon="$accessToken"
                 persistent-placeholder
             ></v-textarea>
           <v-text-field
@@ -123,7 +123,7 @@
                 @blur="$v.secret1.$touch()"
                 :error-messages="secret1Errors"
                 v-model="secret1"
-                prepend-inner-icon="$vuetify.icons.accessToken"
+                prepend-inner-icon="$accessToken"
               persistent-placeholder
               />
             <v-text-field
@@ -137,7 +137,7 @@
                 v-model="secret2"
                 :error-messages="secret2Errors"
                 @blur="$v.secret2.$touch()"
-                prepend-inner-icon="$vuetify.icons.accessToken"
+                prepend-inner-icon="$accessToken"
                 persistent-placeholder
               />
             </v-col>

@@ -32,7 +32,7 @@
       </v-col>
       <v-col cols="8" class="mt-8">
         <v-row>
-          <v-icon size="large">$vuetify.icons.personalInfo</v-icon>
+          <v-icon size="large">$personalInfo</v-icon>
           <h2 class="d-inline ml-2">{{ $t('settings.account.personalnformation') }}</h2>
         </v-row>
         <v-form>
@@ -45,7 +45,7 @@
               type="text"
               :placeholder="$t('settings.account.enterName')"
               v-model="fullName"
-              prepend-inner-icon="$vuetify.icons.user"
+              prepend-inner-icon="$user"
               @blur="$v.fullName.$touch()"
               persistent-placeholder
           />
@@ -59,7 +59,7 @@
               :placeholder="$t('settings.account.enterEmail')"
               v-model="email"
               @keyup.enter="register"
-              prepend-inner-icon="$vuetify.icons.email"
+              prepend-inner-icon="$email"
               @blur="$v.email.$touch()"
               persistent-placeholder
           />

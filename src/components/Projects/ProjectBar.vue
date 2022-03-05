@@ -14,6 +14,7 @@
          filled
         :items="orderChoices"
         item-text="text"
+        transition="fab"
         item-value="value"
         v-model="orderChoice"
         @change="$emit('sort-change', orderChoice)"

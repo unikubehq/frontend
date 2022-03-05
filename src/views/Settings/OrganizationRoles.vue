@@ -6,7 +6,7 @@
     <v-row>
       <v-col cols="10" class="mt-8">
         <h3 class="font-weight-medium mb-5">
-          <v-icon size="40" class="mr-3">$vuetify.icons.existingMembers</v-icon>
+          <v-icon size="40" class="mr-3">$existingMembers</v-icon>
           {{ $t('settings.roles.existing') }}
         </h3>
         <v-simple-table class="table__unikube">
@@ -36,7 +36,7 @@
                 <td class="text-capitalize">{{ member.role }}</td>
                 <td v-if="isOrganizationAdmin">
                   <v-icon size="24" @click="deleteMember = member; showDeleteDialog = true;">
-                    $vuetify.icons.delete
+                    $delete
                   </v-icon>
                 </td>
               </tr>
@@ -47,14 +47,14 @@
             dense
             variant="outlined"
             class="mt-5"
-            icon="$vuetify.icons.warning"
+            icon="$warning"
             v-for="error in memberErrors"
             :key="error"
             type="error">{{ error }}</v-alert>
       </v-col>
       <v-col cols="8" class="mt-1">
         <h3 class="font-weight-medium mb-5">
-          <v-icon size="40" class="mr-3">$vuetify.icons.addMember</v-icon>
+          <v-icon size="40" class="mr-3">$addMember</v-icon>
           {{ $t('settings.roles.invite') }}
         </h3>
         <v-form>
@@ -69,7 +69,7 @@
                 :placeholder="$t('settings.account.enterEmail')"
                 v-model="email"
                 @blur="$v.email.$touch()"
-                prepend-inner-icon="$vuetify.icons.email"
+                prepend-inner-icon="$email"
                 persistent-placeholder
               />
             </v-col>
@@ -109,7 +109,7 @@
                   {{ invite.email }}
                 </td>
                 <td>
-                  <v-icon size="24" @click="revokeInvite(invite.id)">$vuetify.icons.delete</v-icon>
+                  <v-icon size="24" @click="revokeInvite(invite.id)">$delete</v-icon>
                 </td>
               </tr>
             </tbody>

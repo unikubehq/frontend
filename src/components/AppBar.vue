@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app color="white" elevation="5" height="75">
+  <v-app-bar app density="compact" color="white" elevation="5" height="90">
     <v-app-bar-title class="font-weight-medium text-capitalize">
       {{ currentRoute }}
     </v-app-bar-title>

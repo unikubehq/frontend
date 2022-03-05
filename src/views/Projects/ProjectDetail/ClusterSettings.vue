@@ -15,7 +15,7 @@
                 v-model="port"
                 :error-messages="portErrors"
                 @blur="$v.port.$touch()"
-                prepend-inner-icon="$vuetify.icons.projectInput"
+                prepend-inner-icon="$projectInput"
                 persistent-placeholder
               />
             </v-col>

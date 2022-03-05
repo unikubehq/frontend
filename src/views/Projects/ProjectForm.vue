@@ -13,7 +13,7 @@
             :placeholder="$t('projects.enterName')"
             v-model="title"
             @blur="$v.title.$touch()"
-            prepend-inner-icon="$vuetify.icons.projectInput"
+            prepend-inner-icon="$projectInput"
             persistent-placeholder
           />
         </v-col>
@@ -26,7 +26,7 @@
             type="text"
             :placeholder="$t('projects.enterDescription')"
             v-model="description"
-            prepend-inner-icon="$vuetify.icons.description"
+            prepend-inner-icon="$description"
             persistent-placeholder
           />
         </v-col>
@@ -40,7 +40,7 @@
             :placeholder="$t('projects.enterSpecificationRepository')"
             v-model="specRepository"
             :error-messages="specRepositoryErrors"
-            prepend-inner-icon="$vuetify.icons.repository"
+            prepend-inner-icon="$repository"
             @blur="$v.specRepository.$touch()"
             persistent-placeholder
           />
@@ -55,7 +55,7 @@
             :placeholder="$t('projects.enterSpecificationRepositoryBranch')"
             v-model="specRepositoryBranch"
             :error-messages="specRepositoryBranchErrors"
-            prepend-inner-icon="$vuetify.icons.branch"
+            prepend-inner-icon="$branch"
             @blur="$v.specRepositoryBranch.$touch()"
             persistent-placeholder
           />
@@ -72,7 +72,7 @@
             :placeholder="$t('projects.enterAccessUsername')"
             v-model="accessUsername"
             :error-messages="accessUsernameErrors"
-            prepend-inner-icon="$vuetify.icons.accessUser"
+            prepend-inner-icon="$accessUser"
             @change="$v.accessUsername.$touch()"
             persistent-placeholder
           />
@@ -87,7 +87,7 @@
             :placeholder="$t('projects.enterAccessToken')"
             v-model="accessToken"
             :error-messages="accessTokenErrors"
-            prepend-inner-icon="$vuetify.icons.accessToken"
+            prepend-inner-icon="$accessToken"
             @change="$v.accessToken.$touch()"
             persistent-placeholder
           />
@@ -111,7 +111,7 @@
           <v-alert
             dense
             variant="outlined"
-            icon="$vuetify.icons.warning"
+            icon="$warning"
             type="error"
             v-if="submissionError">
             {{ submissionError }}
@@ -131,7 +131,7 @@
                 class="mr-1"
                 small
             >
-              $vuetify.icons.arrowRightGrey
+              $arrowRightGrey
             </v-icon>{{ $t('general.goBack') }}</a>
         </v-col>
         <v-col cols="3">

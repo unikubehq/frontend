@@ -56,12 +56,12 @@
         </div>
       </v-col>
     </v-row>
-    <v-row class="white px-7">
-      <v-divider class="mr-7"></v-divider>
+    <v-row class="px-9 d-flex align-center">
+      <v-divider class="project-card__divider"></v-divider>
       <component
           :is="loading ? 'span' : 'router-link'"
           :to="projectUrl">
-        <v-icon class="project-card__detail" size="24">$dropdown</v-icon>
+        <v-icon class="project-card__detail" size="24px">$dropdown</v-icon>
       </component>
     </v-row>
     <v-row justify="space-around" class="white pl-5 pt-3 pb-3 pr-10">
@@ -185,7 +185,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "@/styles/_ci";
 .project-card{
   &__wrapper {
@@ -216,5 +216,15 @@ export default defineComponent({
 hr {
   height: 42px;
   align-self: center;
+}
+.project-card__divider {
+  flex-basis: auto;
+  margin-right: 15px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.project-card__detail svg {
+  height: 24px;
+  width: 24px;
 }
 </style>

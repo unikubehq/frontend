@@ -13,8 +13,8 @@
             <v-icon left>
               {{
                 $route.name === 'settings.account' ?
-                '$vuetify.icons.accountBlue' :
-                '$vuetify.icons.account'
+                '$accountBlue' :
+                '$account'
               }}
             </v-icon>{{ $t('settings.account.title') }}</v-tab>
         <v-tab :ripple="false" class="vertical-tabs"
@@ -24,8 +24,8 @@
             <v-icon left>
               {{
                 $route.name === 'settings.organization' ?
-                '$vuetify.icons.organizationSettingsBlue' :
-                '$vuetify.icons.organizationSettings'
+                '$organizationSettingsBlue' :
+                '$organizationSettings'
               }}
             </v-icon>{{ $t('settings.organization.title') }}</v-tab>
         <v-tab :ripple="false" class="vertical-tabs"
@@ -36,8 +36,8 @@
             <v-icon left>
               {{
                 $route.name === 'settings.roles' ?
-                '$vuetify.icons.organizationRolesBlue' :
-                '$vuetify.icons.organizationRoles'
+                '$organizationRolesBlue' :
+                '$organizationRoles'
               }}
             </v-icon>{{ $t('settings.organizationRoles.title') }}</v-tab>
         <v-tab :ripple="false" class="vertical-tabs"
@@ -45,8 +45,8 @@
             <v-icon left>
               {{
                 $route.name === 'settings.notifications' ?
-                '$vuetify.icons.notificationBlue' :
-                '$vuetify.icons.notification'
+                '$notificationBlue' :
+                '$notification'
               }}
             </v-icon>{{ $t('settings.notifications.title') }}</v-tab>
         <v-tab :ripple="false" class="vertical-tabs"
@@ -56,8 +56,8 @@
             <v-icon left>
               {{
                 $route.name === 'settings.payment' ?
-                '$vuetify.icons.paymentBlue' :
-                '$vuetify.icons.payment'
+                '$paymentBlue' :
+                '$payment'
               }}
             </v-icon>
             Payment

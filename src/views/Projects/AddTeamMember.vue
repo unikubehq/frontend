@@ -21,7 +21,7 @@
           <v-alert
             dense
             variant="outlined"
-            icon="$vuetify.icons.warning"
+            icon="$warning"
             type="error"
             v-if="memberChoices.length === 0">
             Looks like all your organization members are already part of this project!
@@ -40,7 +40,7 @@
                 :items="memberChoices"
                 v-model="member.user"
                 variant="outlined"
-                prepend-inner-icon="$vuetify.icons.organization"
+                prepend-inner-icon="$organization"
                 :placeholder="$t('project.chooseMember')"
                   persistent-placeholder
               ></v-select>
@@ -51,7 +51,7 @@
                 v-model="member.role"
                 :items="projectMemberRoles"
                 variant="outlined"
-                prepend-inner-icon="$vuetify.icons.organization"
+                prepend-inner-icon="$organization"
                 :placeholder="$t('projects.selectRole')"
                   persistent-placeholder
               ></v-select>
@@ -67,7 +67,7 @@
             <v-btn :ripple="false" color="transparent" elevation="0" @click="addMemberForm" text
                 :class="overlay ? 'mt-5' : 'mt-n5'" v-if="memberChoices.length">
               <v-icon size="24" class="mr-2">
-              $vuetify.icons.addRound
+              $addRound
               </v-icon>{{ $t('user.addAnother') }}
             </v-btn>
           </v-col>

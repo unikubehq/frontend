@@ -38,7 +38,7 @@
             type="text"
             :placeholder="$t('settings.organization.enterName')"
             v-model="organizationName"
-            prepend-inner-icon="$vuetify.icons.user"
+            prepend-inner-icon="$user"
             @blur="$v.fullName.$touch()"
             @change="setDataChanged"
               persistent-placeholder

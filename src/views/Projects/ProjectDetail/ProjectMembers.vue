@@ -42,13 +42,13 @@
           <td v-if="!member.editing">{{ member.user.lastLogin }}</td>
           <td v-if="$can('edit', project)">
             <div v-if="!member.editing">
-              <v-icon size="24" @click="member.editing = true;">$vuetify.icons.edit</v-icon>
+              <v-icon size="24" @click="member.editing = true;">$edit</v-icon>
               <v-divider style="height: 24px; min-height: auto;" class="mx-4 mb-n1" vertical />
-              <v-icon size="24" @click="removeMember(member)">$vuetify.icons.delete</v-icon>
+              <v-icon size="24" @click="removeMember(member)">$delete</v-icon>
             </div>
             <div v-else>
               <v-icon size="24" @click="member.editing = false;" class="mr-5">
-                $vuetify.icons.cross
+                $cross
               </v-icon>
               <v-btn color="primary" dark @click="updateMember(member)" :ripple="false"
                   elevation="0" :loading="member.loading">
@@ -84,7 +84,7 @@
           <td>
             <v-btn color="transparent" class="pa-0" elevation="0"
                 @click="removePendingMember(idx)" :ripple="false">
-              <v-icon size="24">$vuetify.icons.cross</v-icon>
+              <v-icon size="24">$cross</v-icon>
             </v-btn>
             <v-btn color="primary" dark @click="addMember(idx)" :ripple="false" elevation="0"
                 :loading="pendingMember.loading">
@@ -98,7 +98,7 @@
                 @click="pendingMembers.push({user: null, role: null, loading: false})"
                 class="mt-2 pa-0">
               <v-icon size="24" class="mr-2">
-                $vuetify.icons.addRound
+                $addRound
               </v-icon>{{ $t('user.addAnother') }}
             </v-btn>
           </td>

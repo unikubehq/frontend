@@ -15,7 +15,7 @@
                 <v-icon size="24"
                   class="mr-2 projectDeck-edit"
                   @click="setDeckEdit(pkg)">
-                  $vuetify.icons.edit
+                  $edit
                 </v-icon>
               </v-col>
               <v-divider></v-divider>
@@ -24,7 +24,7 @@
           <v-card-text>
             <v-divider class="mb-2"></v-divider>
             <v-col cols="12">
-              <v-icon>$vuetify.icons.deployments</v-icon>
+              <v-icon>$deployments</v-icon>
               {{ $tc('deployment.Deployment', pkg.deployments.length) }}
             </v-col>
             <v-col cols="12" class="d-flex flex-wrap">
