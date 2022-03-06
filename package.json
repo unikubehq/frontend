@@ -43,7 +43,7 @@
     "vue2-dropzone": "^3.6.0",
     "vuetify": "^3.0.0-alpha.13",
     "vuex": "^4.0.2",
-    "webpack": "^5.65.0"
+    "webpack": "^5.70.0"
   },
   "devDependencies": {
     "@babel/runtime": "^7.16.5",
