@@ -44,6 +44,13 @@ module.exports = {
   },
   configureWebpack: {
     plugins,
+    resolve: {
+      fallback: {
+        http: false,
+        https: false,
+        zlib: false,
+      },
+    },
   },
   chainWebpack: (config) => {
     config.module

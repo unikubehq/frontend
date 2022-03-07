@@ -2,7 +2,7 @@
   <v-menu open-on-hover top offset-y :close-on-content-click="false">
     <template v-slot:activator="{ on }">
       <v-avatar v-on="on" size="46"
-          class="initials-avatar avatar-list-item avatar__unikube" color="primary"
+          class="initials-avatar avatar-list-item avatar__unikube"
           :style="avatarStyles">
             <img v-if="avatar.image" :src="avatar.image" alt="User Avatar">
             <span v-else class="avatar-initials">{{ avatar.initials }}</span>
