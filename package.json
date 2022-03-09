@@ -54,7 +54,7 @@
     "@graphql-codegen/schema-ast": "^2.4.0",
     "@graphql-codegen/typescript": "2.4.5",
     "@graphql-codegen/typescript-document-nodes": "2.2.5",
-    "@graphql-codegen/typescript-operations": "2.3.2",
+    "@graphql-codegen/typescript-operations": "2.3.3",
     "@istanbuljs/nyc-config-typescript": "^1.0.2",
     "@sentry/webpack-plugin": "^1.18.8",
     "@types/chai": "^4.3.0",
