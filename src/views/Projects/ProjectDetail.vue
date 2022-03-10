@@ -131,7 +131,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue';
+import { computed, defineComponent } from 'vue';
 import ProjectForm from '@/views/Projects/ProjectForm.vue';
 import DeleteProject from '@/components/Projects/DeleteProject.vue';
 import AddTeamMember from '@/views/Projects/AddTeamMember.vue';
@@ -140,7 +140,6 @@ import {
   ProjectDetailQuery,
   TDeckNode, TProjectDetailQueryResult, TProjectDetailQueryVariables, TProjectNode,
 } from '@/generated/graphql';
-import { ApolloQueryResult } from '@apollo/client';
 import { useQuery, UseQueryReturn } from '@vue/apollo-composable';
 import { useRoute } from 'vue-router';
 import useContextStore from '@/stores/context';
