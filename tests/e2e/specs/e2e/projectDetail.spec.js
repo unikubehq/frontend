@@ -40,7 +40,7 @@ describe('ProjectDetail', () => {
     cy.location().then((loc) => {
       cy.get('.project-detail__title').should('contain', project.project.title);
       cy.get('.organization-dropdown--item').click();
-      cy.get('.v-menu__content > .v-list > :nth-child(2)').click();
+      cy.get('.organization-dropdown > .v-list > :nth-child(2)').click();
       cy.location('pathname').should('eq', '/overview');
       cy.visit(loc.pathname);
       cy.get('.project-detail h3').should('contain', 'not found');

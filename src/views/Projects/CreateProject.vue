@@ -1,7 +1,7 @@
 <template>
   <div class="py-9">
     <h2 class="text--semi-bold">{{ $t('projects.enterDetailsBelow') }}</h2>
-    <v-card class="pa-5">
+    <v-card class="pa-5" elevation="2">
       <project-form :project="project" :edit-mode="false"></project-form>
     </v-card>
   </div>

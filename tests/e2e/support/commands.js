@@ -1,9 +1,11 @@
+import { createPinia, setActivePinia } from 'pinia';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import store from '@/store/index.ts';
 import organization from '../fixtures/organizations/organization.json';
 import organizationBlueshoe from '../fixtures/organizations/organization_blueshoe.json';
 import allProjects from '../fixtures/projects/allProjectsQuery.json';
 import rptMember from '../fixtures/organizations/rpt_member.json';
+import useAuthStore from '../../../src/stores/auth.ts';
+import useContextStore from '../../../src/stores/context.ts';
 
 Cypress.Commands.add('setupInterceptors', () => {
   cy.intercept('POST', '/graphql', (req) => {
@@ -28,12 +30,12 @@ Cypress.Commands.add('setupInterceptors', () => {
 
 Cypress.Commands.add('login', (multipleOrganizations, noOrganization, emptyStore, organizationContext) => {
   // Setup store
+  const pinia = createPinia();
+  setActivePinia(pinia);
+  const auth = useAuthStore();
   cy.fixture('tokens/rpt.json').then((token) => {
     Cypress.log({ name: 'Login', message: 'Loaded rpt fixture.' });
-    store.commit(
-      'auth/setRpt',
-      token.rpt,
-    );
+    auth.setRpt(token.rpt);
   });
   Cypress.log({ name: 'Login', message: 'Loaded organization fixture.' });
   cy.intercept('POST', '/graphql', (req) => {
@@ -57,30 +59,23 @@ Cypress.Commands.add('login', (multipleOrganizations, noOrganization, emptyStore
       });
     }
   });
+  const context = useContextStore();
   if (!emptyStore) {
     if (organizationContext) {
       Cypress.log({ name: 'Login', message: 'Setting specified organization in store.' });
-      store.commit(
-        'context/setOrganization',
-        organizationContext,
-      );
+      context.setOrganization(organizationContext);
     } else {
       Cypress.log({ name: 'Login', message: 'Setting organization in store.' });
-      store.commit(
-        'context/setOrganization',
-        organization,
-      );
+      context.setOrganization(organization);
     }
   } else {
     Cypress.log({ name: 'Login', message: 'Resetting organization in store.' });
-    store.commit(
-      'context/setOrganization',
-      null,
-    );
+    context.setOrganization(null);
   }
-  cy.stub(store, 'dispatch').withArgs('auth/refresh').resolves(true).as('updateToken');
-  // Attach store to window before load.
+  cy.stub(auth, 'refresh').resolves(true).as('updateToken');
+
   cy.on('window:before:load', (window) => {
-    window.__store__ = store;
+    // eslint-disable-next-line no-param-reassign,no-underscore-dangle
+    window.__pinia_store__ = pinia;
   });
 });

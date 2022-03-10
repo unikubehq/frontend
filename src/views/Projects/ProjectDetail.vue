@@ -20,28 +20,27 @@
             <div class="float-right">
               <div>
                 <v-btn
+                  block
                   variant="outlined"
-                  width="144"
                   @click="setEdit"
                   :ripple="false"
                    v-if="$can('edit', project)"
                 >
-                  <v-icon size="24" class="mr-2" v-if="$can('edit', project)">
-                    $edit
-                  </v-icon>{{ $t('projects.editProject') }}
+                  <v-icon size="24" class="mr-2" v-if="$can('edit', project)">$edit</v-icon>
+                  {{ $t('projects.editProject') }}
                 </v-btn>
               </div>
               <div>
                 <v-btn
-                  class="mt-5 "
+                  block
+                  class="mt-5"
                   variant="outlined"
-                  width="144"
                   :ripple="false"
+                  v-if="$can('edit', project)"
                   @click="showDeleteDialog = true;"
                 >
-                  <v-icon size="24" class="mr-2">
-                    $delete
-                  </v-icon>{{ $t('projects.deleteProject') }}
+                  <v-icon size="24" class="mr-2">$delete</v-icon>
+                   {{ $t('projects.deleteProject') }}
                 </v-btn>
               </div>
             </div>
@@ -56,27 +55,29 @@
           </v-col>
         </v-row>
         <v-divider></v-divider>
-        <v-tabs v-model="innerTab" height="67px" class="project-detail__tabs" slider-size="3">
-          <v-tab :ripple="false" :to="{name: 'project.detail.decks'}">
+        <v-tabs v-model="innerTab" height="67px" class="project-detail__tabs" slider-size="3"
+            :density="null">
+          <v-tab height="67px" :ripple="false" :to="{name: 'project.detail.decks'}">
             {{ $tc('deck.Deck', 2) }}
             <span class="tab-count-badge">
               {{ project.decks.length.toString().padStart(2, '0') }}
             </span>
           </v-tab>
-          <v-tab v-if="project.sops" :ripple="false"
+          <v-tab height="67px" v-if="project.sops" :ripple="false"
               :to="{name: 'project.detail.sops'}">
             {{ $t('projects.sops') }}
             <span class="tab-count-badge">
               {{ project.sops.length.toString().padStart(2, '0') }}
             </span>
           </v-tab>
-          <v-tab v-if="project.members" :ripple="false" :to="{name: 'project.detail.members'}">
+          <v-tab height="67px" v-if="project.members" :ripple="false"
+              :to="{name: 'project.detail.members'}">
             {{ $t('projects.members') }}
             <span class="tab-count-badge">
               {{ project.members.length.toString().padStart(2, '0') }}
             </span>
           </v-tab>
-          <v-tab v-if="project.clusterSettings" :ripple="false"
+          <v-tab height="67px" v-if="project.clusterSettings" :ripple="false"
               :to="{name: 'project.detail.clusterSettings'}">
             {{ $t('projects.clusterSettings') }}
           </v-tab>
@@ -98,13 +99,12 @@
         ></project-form>
       </div>
       <v-navigation-drawer
-        temporary
-        right
-        absolute
+        v-model="memberDrawer"
+        position="right"
         width="650"
         light
         class="no-bg-drawer"
-        v-model="memberDrawer"
+        :temporary="true"
       >
         <add-team-member
           v-if="project"
@@ -119,9 +119,7 @@
     </div>
     <div v-else>
       <div v-if="projectNotFound" class="text-center mt-10">
-        <v-icon size="120">
-          $noProjectsFound
-        </v-icon>
+        <v-icon size="120">$noProjectsFound</v-icon>
         <h3>{{ $t('project.notFound') }}</h3>
         <p>
           <router-link to="/overview">
@@ -162,7 +160,6 @@ export default defineComponent({
       deckEdit: false,
       deckToBeEdited: null as Maybe<TDeckNode>,
       memberDrawer: false,
-      projectNotFound: false,
     };
   },
   setup() {
@@ -178,9 +175,14 @@ export default defineComponent({
     ) as UseQueryReturn<TProjectDetailQueryResult, TProjectDetailQueryVariables>;
 
     onResult((res: ApolloQueryResult<TProjectDetailQueryResult>) => {
+      console.log(res);
       if (!res.loading) {
+        console.log('here');
         if (context?.organization?.id === res.data?.project?.organization?.id) {
+          console.log('here2');
+          console.log(res.data);
           project.value = res.data.project as TProjectNode;
+          projectNotFound.value = false;
         } else {
           project.value = null;
           projectNotFound.value = true;
@@ -189,7 +191,9 @@ export default defineComponent({
     });
 
     return {
+      project,
       projectQuery: result,
+      projectNotFound,
       refetchProjects: refetch,
     };
   },

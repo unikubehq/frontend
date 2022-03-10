@@ -12,7 +12,7 @@
             :error-messages="titleErrors"
             :placeholder="$t('projects.enterName')"
             v-model="title"
-            @blur="$v.title.$touch()"
+            @blur="v$.title.$touch()"
             prepend-inner-icon="$projectInput"
             persistent-placeholder
           />
@@ -41,7 +41,7 @@
             v-model="specRepository"
             :error-messages="specRepositoryErrors"
             prepend-inner-icon="$repository"
-            @blur="$v.specRepository.$touch()"
+            @blur="v$.specRepository.$touch()"
             persistent-placeholder
           />
         </v-col>
@@ -56,7 +56,7 @@
             v-model="specRepositoryBranch"
             :error-messages="specRepositoryBranchErrors"
             prepend-inner-icon="$branch"
-            @blur="$v.specRepositoryBranch.$touch()"
+            @blur="v$.specRepositoryBranch.$touch()"
             persistent-placeholder
           />
         </v-col>
@@ -73,7 +73,7 @@
             v-model="accessUsername"
             :error-messages="accessUsernameErrors"
             prepend-inner-icon="$accessUser"
-            @change="$v.accessUsername.$touch()"
+            @change="v$.accessUsername.$touch()"
             persistent-placeholder
           />
         </v-col>
@@ -88,7 +88,7 @@
             v-model="accessToken"
             :error-messages="accessTokenErrors"
             prepend-inner-icon="$accessToken"
-            @change="$v.accessToken.$touch()"
+            @change="v$.accessToken.$touch()"
             persistent-placeholder
           />
         </v-col>
@@ -210,7 +210,7 @@ export default defineComponent({
     const auth = useAuthStore();
     return {
       auth,
-      $v: v,
+      v$: v,
       title,
       specRepository,
       specRepositoryBranch,
@@ -241,22 +241,23 @@ export default defineComponent({
   },
   computed: {
     titleErrors(): TranslateResult[] {
-      return getErrorMessage(this.$v.title.$errors);
+      console.log(this.v$.title.$errors);
+      return getErrorMessage(this.v$.title.$errors);
     },
     specRepositoryErrors(): TranslateResult[] {
-      return getErrorMessage(this.$v.specRepository.$errors);
+      return getErrorMessage(this.v$.specRepository.$errors);
     },
     specRepositoryBranchErrors(): TranslateResult[] {
-      return getErrorMessage(this.$v.specRepositoryBranch.$errors);
+      return getErrorMessage(this.v$.specRepositoryBranch.$errors);
     },
     accessUsernameErrors(): TranslateResult[] {
-      return getErrorMessage(this.$v.accessUsername.$errors);
+      return getErrorMessage(this.v$.accessUsername.$errors);
     },
     accessTokenErrors(): TranslateResult[] {
-      return getErrorMessage(this.$v.accessToken.$errors);
+      return getErrorMessage(this.v$.accessToken.$errors);
     },
     disableButton(): boolean {
-      return this.$v.$invalid;
+      return this.v$.$invalid;
     },
     submitButtonText(): TranslateResult {
       return this.editMode ? this.$t('general.save').toString() : this.$t('general.next').toString();
@@ -305,12 +306,12 @@ export default defineComponent({
         accessToken: null,
         accessUsername: null,
       };
-      if (this.$v.accessUsername.$dirty) {
+      if (this.v$.accessUsername.$dirty) {
         projectVariables.accessUsername = this.accessUsername;
       } else if (!projectVariables.accessToken) {
         delete projectVariables.accessToken;
       }
-      if (this.$v.accessToken.$dirty) {
+      if (this.v$.accessToken.$dirty) {
         projectVariables.accessToken = this.accessToken;
       } else if (!projectVariables.accessUsername) {
         delete projectVariables.accessUsername;

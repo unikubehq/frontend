@@ -14,7 +14,7 @@
                 placeholder="Enter Port"
                 v-model="port"
                 :error-messages="portErrors"
-                @blur="$v.port.$touch()"
+                @blur="v$.port.$touch()"
                 prepend-inner-icon="$projectInput"
                 persistent-placeholder
               />
@@ -29,7 +29,7 @@
               color="primary"
               @click="submit"
               :loading="loading"
-              :disabled="$v.$invalid"
+              :disabled="v$.$invalid"
             >{{ $t('general.save') }}</v-btn>
             </v-col>
           </v-row>
@@ -80,7 +80,7 @@ export default defineComponent({
     const errorStore = useErrorStore();
     return {
       errorStore,
-      $v: v,
+      v$: v,
       port,
     };
   },
@@ -91,7 +91,7 @@ export default defineComponent({
   },
   computed: {
     portErrors(): TranslateResult[] {
-      return getErrorMessage(this.$v.port.$errors);
+      return getErrorMessage(this.v$.port.$errors);
     },
   },
   methods: {

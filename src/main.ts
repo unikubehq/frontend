@@ -47,6 +47,7 @@ function initializeUnikubeApp(mode: string) {
 
   app.use(VueAxios, axios);
   app.use(vuetify);
+  console.log(vuetify);
   app.use(router);
   app.use(pinia);
   app.use(i18n);

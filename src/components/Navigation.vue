@@ -1,6 +1,7 @@
 <template>
     <v-navigation-drawer
         app
+        class="unikube-navigation"
         theme="dark"
         width="300"
         :rail="mini"
@@ -41,7 +42,7 @@
             offset-y
             content-class="organization-dropdown"
             rounded="0"
-            transition="fab"
+            :transition="null"
             :close-on-content-click="true"
         >
           <template v-slot:activator="{ props }">
@@ -164,7 +165,7 @@ export default defineComponent({
     });
 
     const setOrganizationContext = (organization: TOrganizationNode, goToOverview = true): void => {
-      context.organization = organization;
+      context.setOrganization(organization);
       if (route.name !== 'overview' && goToOverview) {
         router.push({ name: 'overview' });
       }
@@ -180,7 +181,7 @@ export default defineComponent({
       });
       // If it is not contained within the result set - set the first.
       if (!contained && organizations.length) {
-        [context.organization] = organizations;
+        context.setOrganization(organizations[0]);
       }
     };
     const initializeOrganization = (organizations: TOrganizationNode[]): void => {
@@ -279,14 +280,13 @@ export default defineComponent({
 
 <style lang="scss">
 @import "@/styles/_ci";
-.v-navigation-drawer__headline {
-  background-color: $unikube-blue;
-}
 
-.v-navigation-drawer {
+.v-navigation-drawer.unikube-navigation {
    background-image: linear-gradient(18deg, #0e132e -13%, #252e65 64%);
-}
-.v-navigation-drawer {
+
+  .v-navigation-drawer__headline {
+    background-color: $unikube-blue;
+  }
   .v-list-item {
     padding-left: 20px;
     width: 100%;

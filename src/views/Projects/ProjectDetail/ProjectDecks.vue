@@ -14,11 +14,8 @@
                 <v-divider style="height: 24px" class="mx-4 mb-n1" vertical></v-divider>
                 <v-icon size="24"
                   class="mr-2 projectDeck-edit"
-                  @click="setDeckEdit(pkg)">
-                  $edit
-                </v-icon>
+                  @click="setDeckEdit(pkg)">$edit</v-icon>
               </v-col>
-              <v-divider></v-divider>
             </v-row>
           </v-card-title>
           <v-card-text>

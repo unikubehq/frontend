@@ -1,4 +1,6 @@
 import { VuetifyOptions } from 'vuetify';
+import * as components from 'vuetify/components';
+
 import { aliases as maliases, mdi } from 'vuetify/lib/iconsets/mdi';
 
 import Account from '@/components/icons/Account.vue';
@@ -146,6 +148,10 @@ const vuetifyOptions: VuetifyOptions = {
           'input-control-height': '42px',
           'input-padding-top': '11px',
           'field-padding-bottom': '11px',
+          'field-color': '#343D6F',
+          'theme-on-background': '52, 61, 111',
+          'theme-on-surface': '52, 61, 111',
+          'theme-secondary-border': '196, 204, 212',
         },
         colors: {
           primary: '#45D093',
@@ -176,6 +182,7 @@ const vuetifyOptions: VuetifyOptions = {
       elevation: 0,
     },
   },
+  components,
 };
 
 export default vuetifyOptions;

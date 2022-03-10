@@ -129,13 +129,14 @@
 
 
 .project-detail__tabs {
-  .v-tabs-bar:after {
+  .v-slide-group__container:after {
     display: block;
     content: '';
     border-bottom: 1px solid rgba(0, 0, 0, 0.12);
     width: 100%;
     position: absolute;
     bottom: 1px;
+    z-index: -1;
   }
 }
 .v-slide-group__wrapper {

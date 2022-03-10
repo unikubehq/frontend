@@ -17,9 +17,7 @@
                   :ripple="false"
                   @click="handleSetEditSops(sops)"
                 >
-                  <v-icon size="24">
-                    $edit
-                  </v-icon>
+                  <v-icon size="24">$edit</v-icon>
                 </v-btn>
                 <v-btn
                   variant="outlined"
@@ -28,9 +26,7 @@
                   class="mt-3"
                   @click="deleteSopsDialog(sops)"
                 >
-                  <v-icon size="24">
-                    $delete
-                  </v-icon>
+                  <v-icon size="24">$delete</v-icon>
                 </v-btn>
               </v-col>
             </v-row>

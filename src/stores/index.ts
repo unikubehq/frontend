@@ -22,8 +22,18 @@
 //
 // export default store;
 
-import { createPinia } from 'pinia';
+import { createPinia, Pinia, setActivePinia } from 'pinia';
 
-const pinia = createPinia();
+let piniaStore;
+if (process.env.NODE_ENV === 'e2e') {
+  // eslint-disable-next-line no-underscore-dangle, @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  // eslint-disable-next-line no-underscore-dangle
+  piniaStore = window.__pinia_store__ as Pinia;
+  setActivePinia(piniaStore);
+} else {
+  piniaStore = createPinia();
+}
+const pinia = piniaStore;
 
-export default pinia;
+export default pinia as Pinia;
