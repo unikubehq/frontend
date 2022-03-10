@@ -2,7 +2,7 @@
   <v-container class="project-detail" fluid>
     <div v-if="project">
       <v-container fluid v-if="!$route.query.edit"
-          class="py-5 px-8 white">
+          class="py-5 px-8 bg-white">
         <v-row>
           <v-col cols="6">
             <h2 class="mb-1 project-detail__title">{{ project.title }}</h2>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-simple-table class="table__unikube">
+    <v-table class="table__unikube">
       <template v-slot:default>
         <thead>
         <tr>
@@ -105,7 +105,7 @@
         </tr>
         </tbody>
       </template>
-    </v-simple-table>
+    </v-table>
     <remove-member :show="showDeleteDialog" :project="project"
         @hide="showDeleteDialog = false; memberToDelete = undefined;"
         :member="memberToDelete"

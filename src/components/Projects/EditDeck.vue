@@ -15,9 +15,9 @@
                   type="text"
                   :placeholder="$t('deck.edit.environments.enterTitle')"
                   v-model="title"
-                  @blur="$v.title.$touch()"
+                  @blur="v$.title.$touch()"
                   :error-messages="titleErrors"
-                    persistent-placeholder
+                  persistent-placeholder
                 />
             </v-col>
             <v-col cols="6" class="py-0">
@@ -73,9 +73,7 @@
                       persistent-placeholder
                   >
                   <template v-slot:item="data">
-                    <v-icon class="mr-2" v-if="data.item.encrypted">
-                      $accessToken
-                    </v-icon>
+                    <v-icon class="mr-2" v-if="data.item.encrypted">$accessToken</v-icon>
                     <span v-else class="mr-8"></span>
                     {{ data.item.text }}
                   </template>
@@ -113,9 +111,7 @@
                       style="transform: rotate(180deg)"
                       class="mr-2"
                       small
-                  >
-                    $arrowRightGrey
-                  </v-icon>{{ $t('general.cancel') }}
+                  >$arrowRightGrey</v-icon>{{ $t('general.cancel') }}
                </a>
               </v-col>
               <v-col cols="3" offset="1">
@@ -128,9 +124,7 @@
                 @click="helm = !helm"
                 v-if="environment.valueSchema && specType === 'HELM'"
               >
-                  <v-icon size="24" class="mr-2">
-                    $helm
-                  </v-icon>
+                  <v-icon size="24" class="mr-2">$helm</v-icon>
                   Override helm values
                 </v-btn>
               </v-col>
@@ -142,7 +136,7 @@
                 :ripple="false"
                 color="primary"
                 @click="submit"
-                :disabled="$v.$invalid"
+                :disabled="v$.$invalid"
               >{{ $t('general.save') }}</v-btn>
               </v-col>
             </v-row>
@@ -209,7 +203,7 @@ export default defineComponent({
       namespace,
     });
     return {
-      $v: v,
+      v$: v,
       title,
       namespace,
     };
@@ -300,10 +294,10 @@ export default defineComponent({
       return choices;
     },
     titleErrors(): TranslateResult[] {
-      return getErrorMessage(this.$v.title.$errors);
+      return getErrorMessage(this.v$.title.$errors);
     },
     namespaceErrors(): TranslateResult[] {
-      return getErrorMessage(this.$v.namespace.$errors);
+      return getErrorMessage(this.v$.namespace.$errors);
     },
   },
   watch: {

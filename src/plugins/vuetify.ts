@@ -164,6 +164,7 @@ const vuetifyOptions: VuetifyOptions = {
           warning: '#FB8C00',
           background: '#FCFCFD',
           surface: '#FCFCFD',
+          white: '#FFFFFF',
         },
       },
     },

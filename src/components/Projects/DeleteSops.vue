@@ -2,7 +2,6 @@
   <v-dialog
       v-model="dialog"
       persistent
-      width="550"
     >
       <v-card v-if="dialog" class="py-8 px-7">
         <v-card-title class="headline">

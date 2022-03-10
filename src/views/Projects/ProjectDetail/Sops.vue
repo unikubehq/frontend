@@ -62,6 +62,8 @@
                 :placeholder="$t('sops.enterType')"
                 v-model="sopsType"
                 :items="sopsTypeChoices"
+                item-value="value"
+                item-text="title"
                 persistent-placeholder
               />
           <v-text-field
@@ -73,7 +75,7 @@
                 :placeholder="$t('sops.enterTitle')"
                 v-model="title"
                 :error-messages="titleErrors"
-                @blur="$v.title.$touch()"
+                @blur="v$.title.$touch()"
                 prepend-inner-icon="$projectInput"
               persistent-placeholder
               />
@@ -99,7 +101,7 @@
                 :placeholder="secret1Placeholder"
                 v-model="secret1"
                 :error-messages="secret1Errors"
-                @blur="$v.secret1.$touch()"
+                @blur="v$.secret1.$touch()"
                 class="textarea-password"
                 :class="{'textarea__hover-active': pgpHover}"
                 @dragover="dragover"
@@ -116,7 +118,7 @@
                 variant="outlined"
                 type="password"
                 :placeholder="secret1Placeholder"
-                @blur="$v.secret1.$touch()"
+                @blur="v$.secret1.$touch()"
                 :error-messages="secret1Errors"
                 v-model="secret1"
                 prepend-inner-icon="$accessToken"
@@ -132,7 +134,7 @@
                 :placeholder="secret2Placeholder"
                 v-model="secret2"
                 :error-messages="secret2Errors"
-                @blur="$v.secret2.$touch()"
+                @blur="v$.secret2.$touch()"
                 prepend-inner-icon="$accessToken"
                 persistent-placeholder
               />
@@ -156,7 +158,7 @@
               :ripple="false"
               color="primary"
               @click="submit"
-              :disabled="$v.$invalid"
+              :disabled="v$.$invalid"
             >{{ $t('general.save') }}</v-btn>
             </v-col>
           </v-row>
@@ -220,7 +222,7 @@ export default defineComponent({
     const errorStore = useErrorStore();
 
     return {
-      $v: v,
+      v$: v,
       errorStore,
       title,
       secret1,
@@ -249,8 +251,8 @@ export default defineComponent({
       secret3: '',
       currentSops: null as Maybe<TSopsProviderNode>,
       sopsTypeChoices: [
-        { text: 'AWS KMS', value: TSopsTypeEnum.Aws },
-        { text: 'PGP', value: TSopsTypeEnum.Pgp },
+        { title: 'AWS KMS', value: TSopsTypeEnum.Aws },
+        { title: 'PGP', value: TSopsTypeEnum.Pgp },
       ],
       showForm: false,
       pgpHover: false,
@@ -285,13 +287,13 @@ export default defineComponent({
       return map.get(this.sopsType);
     },
     titleErrors(): TranslateResult[] {
-      return getErrorMessage(this.$v.title.$errors);
+      return getErrorMessage(this.v$.title.$errors);
     },
     secret1Errors(): TranslateResult[] {
-      return getErrorMessage(this.$v.secret1.$errors);
+      return getErrorMessage(this.v$.secret1.$errors);
     },
     secret2Errors(): TranslateResult[] {
-      return getErrorMessage(this.$v.secret2.$errors);
+      return getErrorMessage(this.v$.secret2.$errors);
     },
   },
   methods: {
