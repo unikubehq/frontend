@@ -131,15 +131,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
 import ProjectForm from '@/views/Projects/ProjectForm.vue';
 import DeleteProject from '@/components/Projects/DeleteProject.vue';
 import AddTeamMember from '@/views/Projects/AddTeamMember.vue';
 import {
   Maybe,
   ProjectDetailQuery,
-  TDeckNode, TProjectDetailQueryResult, TProjectDetailQueryVariables,
-  TProjectNode,
+  TDeckNode, TProjectDetailQueryResult, TProjectDetailQueryVariables, TProjectNode,
 } from '@/generated/graphql';
 import { ApolloQueryResult } from '@apollo/client';
 import { useQuery, UseQueryReturn } from '@vue/apollo-composable';
@@ -164,35 +163,20 @@ export default defineComponent({
   },
   setup() {
     const route = useRoute();
-    const project = ref(null as Maybe<TProjectNode>);
-    const projectNotFound = ref(false);
     const context = useContextStore();
-    const { result, onResult, refetch } = useQuery(
+    const { result, refetch } = useQuery(
       ProjectDetailQuery,
       {
         id: route.params.slug,
       },
     ) as UseQueryReturn<TProjectDetailQueryResult, TProjectDetailQueryVariables>;
 
-    onResult((res: ApolloQueryResult<TProjectDetailQueryResult>) => {
-      console.log(res);
-      if (!res.loading) {
-        console.log('here');
-        if (context?.organization?.id === res.data?.project?.organization?.id) {
-          console.log('here2');
-          console.log(res.data);
-          project.value = res.data.project as TProjectNode;
-          projectNotFound.value = false;
-        } else {
-          project.value = null;
-          projectNotFound.value = true;
-        }
-      }
-    });
+    const projectNotFound = computed(
+      () => context?.organization?.id !== result?.value?.project?.organization?.id,
+    );
 
     return {
-      project,
-      projectQuery: result,
+      project: result?.value?.project as TProjectNode,
       projectNotFound,
       refetchProjects: refetch,
     };
