@@ -23,12 +23,16 @@
           <v-col cols="1">
             <v-switch
               v-model="switch1"
+              inset
+              color="primary"
               :ripple="false"
             ></v-switch>
           </v-col>
           <v-col cols="1">
             <v-switch
               v-model="switch2"
+              inset
+              color="primary"
               :ripple="false"
             ></v-switch>
           </v-col>
@@ -41,12 +45,16 @@
             <v-switch
               v-model="switch3"
               :ripple="false"
+              color="primary"
+              inset
             ></v-switch>
           </v-col>
           <v-col cols="1">
             <v-switch
               v-model="switch4"
               :ripple="false"
+              color="primary"
+              inset
             ></v-switch>
           </v-col>
         </v-row>

@@ -103,12 +103,15 @@ select:-webkit-autofill:focus {
   justify-content: space-between;
 }
 
-.v-input--switch__thumb.theme--light {
-  left: 5px !important;
+/* Switch */
+.v-selection-control__wrapper {
+  color: $grey-1;
 }
-.v-input--switch__thumb.theme--light.primary--text {
-  color: white !important;
+.v-switch--inset .v-switch__thumb {
+  color: rgb(var(--v-theme-surface)) !important;
 }
+/* Switch End*/
+
 
 .v-theme--light {
   --v-medium-emphasis-opacity: 1 !important;

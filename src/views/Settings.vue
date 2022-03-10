@@ -1,12 +1,11 @@
 <template>
-  <div class="white my-8">
+  <div class="bg-white my-8">
   <v-row>
     <v-col cols="3">
       <v-tabs
-        vertical
+        direction="vertical"
         class="fill-height"
-        style="min-height: 500px;"
-        background-color="#F7F7F7"
+        style="min-height: 500px; background-color: #F7F7F7;"
       >
         <v-tab :ripple="false" class="vertical-tabs"
             :to="{name: 'settings.account'}">

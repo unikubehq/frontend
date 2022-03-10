@@ -9,7 +9,7 @@
           <v-icon size="40" class="mr-3">$existingMembers</v-icon>
           {{ $t('settings.roles.existing') }}
         </h3>
-        <v-simple-table class="table__unikube">
+        <v-table class="table__unikube">
           <template v-slot:default>
             <thead>
             <tr>
@@ -35,14 +35,13 @@
                 </td>
                 <td class="text-capitalize">{{ member.role }}</td>
                 <td v-if="isOrganizationAdmin">
-                  <v-icon size="24" @click="deleteMember = member; showDeleteDialog = true;">
-                    $delete
-                  </v-icon>
+                  <v-icon size="24"
+                      @click="deleteMember = member; showDeleteDialog = true;">$delete</v-icon>
                 </td>
               </tr>
             </tbody>
           </template>
-        </v-simple-table>
+        </v-table>
         <v-alert
             dense
             variant="outlined"
@@ -91,7 +90,7 @@
         <h4 class="font-weight-medium mb-5">
           {{ $t('settings.roles.pendingInvites') }}
         </h4>
-        <v-simple-table class="table__unikube"
+        <v-table class="table__unikube"
             v-if="allOrganizationInvitations &&
             allOrganizationInvitations.results.length && isOrganizationAdmin">
           <template v-slot:default>
@@ -114,7 +113,7 @@
               </tr>
             </tbody>
           </template>
-        </v-simple-table>
+        </v-table>
         <div v-else-if="allOrganizationInvitations &&
           !allOrganizationInvitations.results.length">
           No pending invitations.
@@ -190,6 +189,7 @@ export default defineComponent({
     });
     return {
       organization,
+      context,
       allOrganizationInvitations: organizationInvites,
     };
   },
@@ -213,11 +213,11 @@ export default defineComponent({
   },
   computed: {
     isOrganizationAdmin(): boolean {
-      return this.$store.state.context.organization && this.$can('edit', this.$store.state.context.organization);
+      return !!this.context?.organization && this.$can('edit', this.context?.organization);
     },
 
     organizationSet(): boolean {
-      return !!this.$store.state.context.organization;
+      return !!this.context?.organization;
     },
 
     members(): TOrganizationMember[] {
@@ -261,7 +261,7 @@ export default defineComponent({
         mutation: InviteToOrganization,
         variables: {
           email: this.email,
-          organization: this.$store.state.context.organization.id,
+          organization: this.context?.organization?.id,
         },
       }).then(() => {
         this.email = '';

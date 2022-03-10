@@ -22,7 +22,7 @@
                   id="orga-avatar-file"
                   @change="handleUpload">
               <v-img width="96" contain  ref="preview" alt="Organization Logo"
-                  :src="this.previewUrl || this.$store.state.context.organization.avatarImage || 'https://cdn.zeplin.io/5f84546964e43c2749571f59/assets/2192D830-FF56-4E41-8DBA-F504CEFA64FC.svg'"/>
+                  :src="this.previewUrl || context?.organization?.avatarImage || 'https://cdn.zeplin.io/5f84546964e43c2749571f59/assets/2192D830-FF56-4E41-8DBA-F504CEFA64FC.svg'"/>
             </label>
           </v-avatar>
         </v-badge>
@@ -78,7 +78,7 @@ import DangerZone from '@/components/Settings/DangerZone.vue';
 import setupUpload from '@/utils/upload';
 import { AxiosError } from 'axios';
 import { useQuery } from '@vue/apollo-composable';
-import { useStore } from 'vuex';
+import useContextStore from '@/stores/context';
 
 export default defineComponent({
   components: {
@@ -87,14 +87,14 @@ export default defineComponent({
   setup() {
     const dataChanged = ref(false);
     const uploadUrl = '/orgas-http/upload-avatar/';
-    const store = useStore();
+    const context = useContextStore();
     const variables = reactive({
-      id: store.state.context.organization.id,
+      id: context?.organization?.id,
     });
     const uploadCallback = (): void => {
       const { result, error } = useQuery(OrganizationQuery, variables);
       if (result && !error) {
-        store.commit('context/setOrganization', result.value.organization);
+        context.setOrganization(result.value.organization);
       }
     };
 
@@ -107,11 +107,12 @@ export default defineComponent({
     };
 
     const { previewUrl, handleUpload } = setupUpload(
-      `${uploadUrl + store.state.context.organization.id}/`,
+      `${uploadUrl}${context?.organization?.id}/`,
       uploadCallback,
       uploadError,
     );
     return {
+      context,
       previewUrl,
       handleUpload,
       setDataChanged,
@@ -125,7 +126,7 @@ export default defineComponent({
 
   computed: {
     organizationName(): string {
-      return this.$store.state.context.organization.title;
+      return this.context?.organization?.title || '';
     },
   },
 });

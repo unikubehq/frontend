@@ -151,6 +151,7 @@ const vuetifyOptions: VuetifyOptions = {
           'field-color': '#343D6F',
           'theme-on-background': '52, 61, 111',
           'theme-on-surface': '52, 61, 111',
+          'theme-on-white': '52, 61, 111',
           'theme-secondary-border': '196, 204, 212',
         },
         colors: {

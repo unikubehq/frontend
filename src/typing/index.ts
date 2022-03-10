@@ -1,6 +1,6 @@
 import { Ability, InferSubjects } from '@casl/ability';
 import { TranslateResult } from 'vue-i18n';
-import { TProjectMember, TProjectNode } from '@/generated/graphql';
+import { TOrganizationNode, TProjectMember, TProjectNode } from '@/generated/graphql';
 
 export interface IPermission {
   rsid: string
@@ -27,7 +27,7 @@ export interface TProjectMemberEdit extends TProjectMember {
 }
 
 export type Action = 'edit' | 'view' | 'projects:add' | 'projects:view' | 'members:delete' | 'members:add';
-export type Subject = InferSubjects<TProjectNode>;
+export type Subject = InferSubjects<TProjectNode> | InferSubjects<TOrganizationNode>;
 export type UnikubeAbility = Ability<[Action, Subject]>;
 
 export type UnikubeError = {
