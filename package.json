@@ -1,6 +1,6 @@
 {
   "name": "unikube-frontend",
-  "version": "1.4.4",
+  "version": "1.5.4",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -46,9 +46,9 @@
     "webpack": "^5.70.0"
   },
   "devDependencies": {
-    "@babel/runtime": "^7.16.5",
+    "@babel/runtime": "^7.17.2",
     "@cypress/code-coverage": "^3.9.12",
-    "@cypress/webpack-preprocessor": "^5.11.0",
+    "@cypress/webpack-preprocessor": "^5.11.1",
     "@graphql-codegen/add": "^3.1.1",
     "@graphql-codegen/cli": "2.6.2",
     "@graphql-codegen/schema-ast": "^2.4.0",
@@ -60,8 +60,8 @@
     "@sentry/webpack-plugin": "^1.18.8",
     "@types/chai": "^4.3.0",
     "@types/dropzone": "^5.7.4",
-    "@types/jest": "^27.0.3",
-    "@types/mocha": "^9.0.0",
+    "@types/jest": "^27.4.1",
+    "@types/mocha": "^9.1.0",
     "@types/vuelidate": "^0.7.15",
     "@typescript-eslint/eslint-plugin": "^5.13.0",
     "@typescript-eslint/parser": "^5.13.0",

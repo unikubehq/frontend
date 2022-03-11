@@ -3,6 +3,8 @@ const { VuetifyLoaderPlugin } = require('vuetify-loader');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 // eslint-disable-next-line @typescript-eslint/no-var-requires,import/no-extraneous-dependencies
+const CopyPlugin = require('copy-webpack-plugin');
+// eslint-disable-next-line @typescript-eslint/no-var-requires,import/no-extraneous-dependencies
 const SentryCliPlugin = require('@sentry/webpack-plugin');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fs = require('fs');
@@ -53,7 +55,13 @@ module.exports = {
     },
   },
   chainWebpack: (config) => {
-    config.module
+    config
+      .externals(process.env.NODE_ENV === 'production' ? {
+        'keycloak-js': 'Keycloak',
+        'keycloak-js/dist/keycloak-authz': 'KeycloakAuthorization',
+      } : {});
+    config
+      .module
       .rule('i18n')
       .resourceQuery(/blockType=i18n/)
       .type('javascript/auto')

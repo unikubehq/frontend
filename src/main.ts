@@ -1,7 +1,9 @@
 import '@/styles/main.scss';
 import { createApp, h, provide } from 'vue';
 import * as Sentry from '@sentry/vue';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import Keycloak from 'keycloak-js';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import KeycloakAuthorization from 'keycloak-js/dist/keycloak-authz';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
