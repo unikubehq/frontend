@@ -2,7 +2,7 @@
   <v-col cols="12" sm="8" md="3">
     <h1 class="text-h1">{{ $t('organization.addTeamMember') }}</h1>
           <p class="text--secondary">{{ $t('orginzation.memberAdd') }}</p>
-    <v-form>
+    <v-form @submit.prevent="">
       <div v-for="(v, index) in $v.members.$each.$iter" :key="index">
         <v-text-field
             id="emailAddress"
@@ -16,6 +16,7 @@
             prepend-inner-icon="$vuetify.icons.email"
             :append-inner-icon="v.invited ? $vuetify.icons.email : ''"
             @blur="v.email.$touch"
+            @keydown.enter="addMember"
             persistent-placeholder
         ></v-text-field>
         </div>
