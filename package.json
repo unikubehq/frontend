@@ -56,7 +56,7 @@
     "@graphql-codegen/typescript-document-nodes": "2.2.5",
     "@graphql-codegen/typescript-operations": "2.3.2",
     "@istanbuljs/nyc-config-typescript": "^1.0.2",
-    "@pinia/testing": "^0.0.9",
+    "@pinia/testing": "^0.0.10",
     "@sentry/webpack-plugin": "^1.18.8",
     "@types/chai": "^4.3.0",
     "@types/dropzone": "^5.7.4",
