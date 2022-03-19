@@ -32,7 +32,6 @@ const project: TProjectNode = {
 };
 
 describe('Projects.vue', () => {
-
   it('renders correctly', async () => {
     const wrapper = shallowMount(Projects, {
       global: {

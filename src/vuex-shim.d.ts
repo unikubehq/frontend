@@ -1,9 +1,9 @@
 // vuex-shim.d.ts
+import type { DollarApollo } from 'vue-apollo/types/vue-apollo';
+import type { UnikubeAbility } from '@/typing';
 import { Store } from 'vuex';
-import { State as AuthState } from '@/store/auth/state';
-import { State as ContextState } from '@/store/context/state';
-import { DollarApollo } from 'vue-apollo/types/vue-apollo';
-import { UnikubeAbility } from '@/typing';
+import type { State as AuthState } from '@/store/auth/state';
+import type { State as ContextState } from '@/store/context/state';
 
 declare module 'vue/types/options' {
   interface ComponentOptions<V extends Vue> {
