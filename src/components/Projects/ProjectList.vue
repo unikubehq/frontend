@@ -117,7 +117,7 @@ export default defineComponent({
     ProjectMemberAvatars,
   },
   setup() {
-    const { t } = useI18n({ useScope: 'global' });
+    const { t, d } = useI18n({ useScope: 'global' });
     const projectCliHintMessage = ref([
       {
         command: 'unikube project up',
@@ -131,6 +131,7 @@ export default defineComponent({
     return {
       projectCliHintMessage,
       t,
+      d,
     };
   },
   props: {
@@ -155,7 +156,7 @@ export default defineComponent({
   computed: {
     modifiedDate(): string {
       if (this.project?.currentCommitDateTime) {
-        return this.$d(new Date(this.project?.currentCommitDateTime), 'short');
+        return this.d(new Date(this.project?.currentCommitDateTime), 'short');
       }
       return '-';
     },
