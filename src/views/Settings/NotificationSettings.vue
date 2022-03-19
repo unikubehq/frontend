@@ -1,24 +1,24 @@
 <template>
   <div class="py-5">
-      <h2>{{ $t('settings.notifications.title') }}</h2>
-      <p>{{ $t('settings.notifications.intro') }}</p>
+      <h2>{{ t('settings.notifications.title') }}</h2>
+      <p>{{ t('settings.notifications.intro') }}</p>
       <v-divider></v-divider>
     <v-row>
       <v-col cols="10">
         <v-row>
           <v-col cols="5">
-            <h3>{{ $t('settings.notifications.projects') }}</h3>
+            <h3>{{ t('settings.notifications.projects') }}</h3>
           </v-col>
           <v-col cols="1">
-            <span>{{ $t('settings.notifications.inApp') }}</span>
+            <span>{{ t('settings.notifications.inApp') }}</span>
           </v-col>
           <v-col cols="1">
-            <span>{{ $t('settings.notifications.email') }}</span>
+            <span>{{ t('settings.notifications.email') }}</span>
           </v-col>
         </v-row>
         <v-row>
           <v-col cols="5" class="d-flex flex-column justify-center">
-            {{ $t('settings.notifications.newProject') }}
+            {{ t('settings.notifications.newProject') }}
           </v-col>
           <v-col cols="1">
             <v-switch
@@ -39,7 +39,7 @@
         </v-row>
         <v-row>
           <v-col cols="5" class="d-flex flex-column justify-center">
-            {{ $t('settings.notifications.projectEdit') }}
+            {{ t('settings.notifications.projectEdit') }}
           </v-col>
           <v-col cols="1">
             <v-switch
@@ -65,9 +65,16 @@
 </template>
 
 <script lang="ts">
+import { useI18n } from 'vue-i18n';
+
 export default {
   name: 'NotificationSettings.vue',
-
+  setup() {
+    const { t } = useI18n({ useScope: 'global' });
+    return {
+      t,
+    };
+  },
   data(): {
     switch1: boolean
     switch2: boolean

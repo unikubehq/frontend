@@ -3,7 +3,7 @@
     <v-skeleton-loader type="heading" tile height="50" class="mb-2 mt-5"
       v-if="!graphqlProject || !organization"/>
     <h1 class="text-h1 mt-5" :class="overlay ? 'ml-3' : ''" v-else>
-      {{ $t('projects.addMembers') }} - {{ project.title }}
+      {{ t('projects.addMembers') }} - {{ project.title }}
     </h1>
     <v-card>
     <v-row>
@@ -41,18 +41,18 @@
                 v-model="member.user"
                 variant="outlined"
                 prepend-inner-icon="$organization"
-                :placeholder="$t('project.chooseMember')"
+                :placeholder="t('project.chooseMember')"
                   persistent-placeholder
               ></v-select>
             </v-col>
             <v-col :cols="overlay ? 6 : 5">
               <v-select
-                :label="$t('project.role')"
+                :label="t('project.role')"
                 v-model="member.role"
                 :items="projectMemberRoles"
                 variant="outlined"
                 prepend-inner-icon="$organization"
-                :placeholder="$t('projects.selectRole')"
+                :placeholder="t('projects.selectRole')"
                   persistent-placeholder
               ></v-select>
             </v-col>
@@ -66,9 +66,8 @@
           <v-col cols="12">
             <v-btn :ripple="false" color="transparent" elevation="0" @click="addMemberForm" text
                 :class="overlay ? 'mt-5' : 'mt-n5'" v-if="memberChoices.length">
-              <v-icon size="24" class="mr-2">
-              $addRound
-              </v-icon>{{ $t('user.addAnother') }}
+              <v-icon size="24" class="mr-2">$addRound</v-icon>
+              {{ t('user.addAnother') }}
             </v-btn>
           </v-col>
           <v-col :cols="overlay ? 5 : 2">
@@ -78,7 +77,7 @@
               size="large"
               @click="submit"
               :disabled="!allMembersValid"
-            >{{ $tc('project.addMember', members.length) }}</v-btn>
+            >{{ t('project.addMember', members.length) }}</v-btn>
           </v-col>
         </v-row>
       </v-col>
@@ -91,7 +90,7 @@
 <script lang="ts">
 import { defineComponent, PropType, ref } from 'vue';
 import { email } from '@vuelidate/validators';
-import VueI18n from 'vue-i18n';
+import VueI18n, { useI18n } from 'vue-i18n';
 import {
   CreateProjectMemberMutation,
   Maybe,
@@ -115,6 +114,7 @@ export default defineComponent({
   setup() {
     const project = ref(null as Maybe<TProjectNode>);
     const context = useContextStore();
+    const { t } = useI18n({ useScope: 'global' });
     const orgaVariables = {
       id: context.organization?.id,
     };
@@ -140,6 +140,7 @@ export default defineComponent({
       project,
       organization: orgaQuery.result,
       graphqlProject,
+      t,
     };
   },
   props: {
@@ -180,8 +181,8 @@ export default defineComponent({
     },
     projectMemberRoles(): Array<{ value: string, text: TranslateResult }> {
       return [
-        { value: TProjectMemberRoleEnum.Admin, text: this.$t('general.admin') },
-        { value: TProjectMemberRoleEnum.Member, text: this.$t('general.member') },
+        { value: TProjectMemberRoleEnum.Admin, text: this.t('general.admin') },
+        { value: TProjectMemberRoleEnum.Member, text: this.t('general.member') },
       ];
     },
     allMembersValid(): boolean {

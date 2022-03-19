@@ -163,7 +163,7 @@
 import {
   computed,
   defineComponent,
-  PropType,
+  PropType, Ref,
   ref,
 } from 'vue';
 import { required } from '@vuelidate/validators';
@@ -177,7 +177,7 @@ import {
   TSopsProviderNode, TCreateUpdateEnvironmentMutationVariables, Maybe,
 } from '@/generated/graphql';
 import HelmOverrides from '@/views/Projects/ProjectDetail/HelmOverrides.vue';
-import useVuelidate from '@vuelidate/core';
+import useVuelidate, { ValidationArgs } from '@vuelidate/core';
 import getErrorMessage from '@/utils/validations';
 import TranslateResult = VueI18n.TranslateResult;
 
@@ -197,7 +197,10 @@ export default defineComponent({
       namespace: {
         required,
       },
-    }));
+    })) as unknown as ValidationArgs<{ // TODO change casting when vuelidate is updated
+      title: Ref<string>,
+      namespace: Ref<string>,
+    }>;
     const v = useVuelidate(rules, {
       title,
       namespace,

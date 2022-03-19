@@ -1,7 +1,7 @@
 <template>
   <div class="py-5">
-    <h2>{{ $t('settings.organization.title') }}</h2>
-    <p>{{ $t('settings.organization.intro') }}</p>
+    <h2>{{ t('settings.organization.title') }}</h2>
+    <p>{{ t('settings.organization.intro') }}</p>
     <v-divider></v-divider>
     <v-row class="pt-3">
       <v-col cols="12">
@@ -28,15 +28,15 @@
         </v-badge>
       </v-col>
       <v-col cols="8" class="mt-8">
-        <h2>{{ $t('settings.organization.info') }}</h2>
+        <h2>{{ t('settings.organization.info') }}</h2>
         <v-form>
           <v-text-field
-            :label="$t('settings.organization.name')"
+            :label="t('settings.organization.name')"
             name="fullname"
             filled
             variant="outlined"
             type="text"
-            :placeholder="$t('settings.organization.enterName')"
+            :placeholder="t('settings.organization.enterName')"
             v-model="organizationName"
             prepend-inner-icon="$user"
             @blur="$v.fullName.$touch()"
@@ -44,7 +44,7 @@
               persistent-placeholder
           />
           <v-btn color="primary" :disabled="!dataChanged" size="large" elevation="0">
-            {{ $t('general.saveChanges') }}
+            {{ t('general.saveChanges') }}
           </v-btn>
         </v-form>
       </v-col>
@@ -53,17 +53,17 @@
       </v-col>
       <v-col cols="8" class="mt-8">
       <danger-zone
-        :explanation="$t('settings.account.disableExplanation')"
+        :explanation="t('settings.account.disableExplanation')"
       >
-        <h3>{{ $t('settings.organization.disable') }}</h3>
-        <p>{{ $t('settings.organization.disableWarning') }}
-          <a href="#">{{ $t('settings.organization.delete') }}</a>
+        <h3>{{ t('settings.organization.disable') }}</h3>
+        <p>{{ t('settings.organization.disableWarning') }}
+          <a href="#">{{ t('settings.organization.delete') }}</a>
         </p>
         <v-btn
           solid
           color="error"
           class="white--text"
-        >{{ $t('settings.organization.delete') }}</v-btn>
+        >{{ t('settings.organization.delete') }}</v-btn>
       </danger-zone>
       </v-col>
       </v-row>
@@ -79,6 +79,7 @@ import setupUpload from '@/utils/upload';
 import { AxiosError } from 'axios';
 import { useQuery } from '@vue/apollo-composable';
 import useContextStore from '@/stores/context';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   components: {
@@ -88,6 +89,7 @@ export default defineComponent({
     const dataChanged = ref(false);
     const uploadUrl = '/orgas-http/upload-avatar/';
     const context = useContextStore();
+    const { t } = useI18n({ useScope: 'global' });
     const variables = reactive({
       id: context?.organization?.id,
     });
@@ -116,6 +118,7 @@ export default defineComponent({
       previewUrl,
       handleUpload,
       setDataChanged,
+      t,
     };
   },
   data() {

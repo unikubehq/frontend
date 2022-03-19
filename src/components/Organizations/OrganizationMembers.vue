@@ -1,7 +1,7 @@
 <template>
   <v-col cols="12" sm="8" md="3">
-    <h1 class="text-h1">{{ $t('organization.addTeamMember') }}</h1>
-          <p class="text--secondary">{{ $t('orginzation.memberAdd') }}</p>
+    <h1 class="text-h1">{{ t('organization.addTeamMember') }}</h1>
+          <p class="text--secondary">{{ t('orginzation.memberAdd') }}</p>
     <v-form @submit.prevent="">
       <div v-for="(v, index) in $v.members.$each.$iter" :key="index">
         <v-text-field
@@ -23,14 +23,14 @@
       <v-btn :ripple="false" elevation="0" @click="addMember">
         <v-icon size="24" class="mr-2">
           $addRound
-        </v-icon>{{ $t('organization.addAnother') }}</v-btn>
+        </v-icon>{{ t('organization.addAnother') }}</v-btn>
       <v-btn
         class="mt-3"
         color="primary"
         block
         size="large"
         @click="inviteEmails"
-      >{{ $t('general.finish') }}</v-btn>
+      >{{ t('general.finish') }}</v-btn>
     </v-form>
   </v-col>
 </template>
@@ -56,7 +56,7 @@ export default defineComponent({
   setup() {
     const { t } = useI18n({ useScope: 'global' });
     return {
-      $t: t,
+      t,
     };
   },
   data() {
@@ -94,10 +94,10 @@ export default defineComponent({
         const result = [];
         if (x.$invalid && x.$dirty) {
           if (!x.email) {
-            result.push(this.$t('errors.emailError'));
+            result.push(this.t('errors.emailError'));
           }
           if (!x.required) {
-            result.push(this.$t('errors.requiredError'));
+            result.push(this.t('errors.requiredError'));
           }
         }
         return result;

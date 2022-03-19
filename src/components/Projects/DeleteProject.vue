@@ -7,16 +7,16 @@
     >
       <v-card v-if="dialog" class="py-8 px-7">
         <v-card-title class="headline">
-          {{ $t('projects.deleteModal.title', { title: project.title }) }}
+          {{ t('projects.deleteModal.title', { title: project.title }) }}
         </v-card-title>
         <v-card-text>
-          <div>{{ $t('projects.deleteModal.intro', { title: project.title }) }}<br><br>
+          <div>{{ t('projects.deleteModal.intro', { title: project.title }) }}<br><br>
           </div>
           <v-alert
             dense
             variant="outlined"
             icon="$warning"
-            type="error">{{ $t('projects.deleteModal.warning') }}</v-alert>
+            type="error">{{ t('projects.deleteModal.warning') }}</v-alert>
           <v-text-field
             name="projectName"
             filled
@@ -40,7 +40,7 @@
             :ripple="false"
             text
             @click="$emit('hide')"
-          >{{ $t('general.disagree') }}</v-btn>
+          >{{ t('general.disagree') }}</v-btn>
             </v-col>
           <v-col class="py-0"><v-btn
             size="large"
@@ -51,7 +51,7 @@
             class="project-delete__submit"
             @click="deleteAndHide"
             :disabled="deleteTitle !== project.title"
-          >{{ $t('projects.deleteModal.agree') }}</v-btn>
+          >{{ t('projects.deleteModal.agree') }}</v-btn>
             </v-col>
           </v-row>
           </v-container>
@@ -63,6 +63,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import { DeleteProject, TProjectNode } from '@/generated/graphql';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   props: {
@@ -74,6 +75,12 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+  },
+  setup() {
+    const { t } = useI18n({ useScope: 'global' });
+    return {
+      t,
+    };
   },
   data() {
     return {

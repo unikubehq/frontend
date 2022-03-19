@@ -1,7 +1,7 @@
 <template>
 <div class="notification">
 <v-card-text class="notification__text">
-  {{ $t('organization.inviteNotification') }} <strong>{{ invite.organization.title }}</strong>
+  {{ t('organization.inviteNotification') }} <strong>{{ invite.organization.title }}</strong>
 </v-card-text>
 <v-card-actions
   class="notification__actions"
@@ -15,7 +15,7 @@
     elevation="0"
     height="24"
     width="72"
-  >{{ $t('organization.joinButton') }}</v-btn>
+  >{{ t('organization.joinButton') }}</v-btn>
   <v-btn
     color="#a1a9b2"
     variant="outlined"
@@ -25,7 +25,7 @@
     elevation="0"
     height="24"
     width="72"
-   >{{ $t('organization.declineButton') }}</v-btn>
+   >{{ t('organization.declineButton') }}</v-btn>
 </v-card-actions>
 <v-divider class="notification__divider"></v-divider>
 </div>
@@ -34,6 +34,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import { AnswerInvitation } from '@/generated/graphql';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   props: {
@@ -41,6 +42,12 @@ export default defineComponent({
       type: Object as PropType<{id: string, organization: {title: string}}>,
       required: false,
     },
+  },
+  setup() {
+    const { t } = useI18n({ useScope: 'global' });
+    return {
+      t,
+    };
   },
   data() {
     return {

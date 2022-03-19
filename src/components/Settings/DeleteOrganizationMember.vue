@@ -23,7 +23,7 @@
             :ripple="false"
             text
             @click="$emit('hide')"
-          >{{ $t('general.disagree') }}</v-btn>
+          >{{ t('general.disagree') }}</v-btn>
             </v-col>
           <v-col class="py-0"><v-btn
             size="large"
@@ -31,7 +31,7 @@
             :ripple="false"
             color="error"
             @click="deleteMember"
-          >{{ $t('settings.roles.remove') }}</v-btn>
+          >{{ t('settings.roles.remove') }}</v-btn>
             </v-col>
           </v-row>
           </v-container>
@@ -43,8 +43,15 @@
 <script lang="ts">
 
 import { defineComponent } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
+  setup() {
+    const { t } = useI18n({ useScope: 'global' });
+    return {
+      t,
+    };
+  },
   props: {
     show: {
       type: Boolean,

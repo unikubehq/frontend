@@ -30,7 +30,7 @@
               @click="submit"
               :loading="loading"
               :disabled="v$.$invalid"
-            >{{ $t('general.save') }}</v-btn>
+            >{{ t('general.save') }}</v-btn>
             </v-col>
           </v-row>
         </v-form>
@@ -43,19 +43,19 @@
 import {
   computed,
   defineComponent,
-  PropType,
+  PropType, Ref,
   ref,
 } from 'vue';
 import {
   required, minValue, maxValue,
 } from '@vuelidate/validators';
-import VueI18n from 'vue-i18n';
+import VueI18n, { useI18n } from 'vue-i18n';
 import {
   TProjectNode,
   TUpdateClusterSettingsInput, TUpdateClusterSettingsPayload, UpdateClusterSettings,
 } from '@/generated/graphql';
 import { FetchResult } from '@apollo/client';
-import useVuelidate from '@vuelidate/core';
+import useVuelidate, { ValidationArgs } from '@vuelidate/core';
 import getErrorMessage from '@/utils/validations';
 import useErrorStore from '@/stores/errors';
 import TranslateResult = VueI18n.TranslateResult;
@@ -69,19 +69,23 @@ export default defineComponent({
   },
   setup() {
     const port = ref('');
+    const { t } = useI18n({ useScope: 'global' });
     const rules = computed(() => ({
       port: {
         required,
         minValue: minValue(1024),
         maxValue: maxValue(65535),
       },
-    }));
+    })) as unknown as ValidationArgs<{ // TODO change casting when vuelidate is updated
+      port: Ref<string>,
+    }>;
     const v = useVuelidate(rules, { port });
     const errorStore = useErrorStore();
     return {
       errorStore,
       v$: v,
       port,
+      t,
     };
   },
   data() {

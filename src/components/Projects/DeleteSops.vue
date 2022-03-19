@@ -5,16 +5,16 @@
     >
       <v-card v-if="dialog" class="py-8 px-7">
         <v-card-title class="headline">
-          {{ $t('projects.deleteSopsModal.title', { title: sops.title }) }}
+          {{ t('projects.deleteSopsModal.title', { title: sops.title }) }}
         </v-card-title>
         <v-card-text>
-          <div>{{ $t('projects.deleteSopsModal.intro', { title: sops.title }) }}<br><br>
+          <div>{{ t('projects.deleteSopsModal.intro', { title: sops.title }) }}<br><br>
           </div>
           <v-alert
             dense
             variant="outlined"
             icon="$warning"
-            type="error">{{ $t('projects.deleteSopsModal.warning') }}</v-alert>
+            type="error">{{ t('projects.deleteSopsModal.warning') }}</v-alert>
           <v-text-field
             name="sopsName"
             filled
@@ -34,7 +34,7 @@
             :ripple="false"
             text
             @click="$emit('hide')"
-          >{{ $t('general.disagree') }}</v-btn>
+          >{{ t('general.disagree') }}</v-btn>
             </v-col>
           <v-col class="py-0"><v-btn
             size="large"
@@ -43,7 +43,7 @@
             color="error"
             @click="deleteAndHide"
             :disabled="deleteTitle !== sops.title"
-          >{{ $t('projects.deleteSopsModal.agree') }}</v-btn>
+          >{{ t('projects.deleteSopsModal.agree') }}</v-btn>
             </v-col>
           </v-row>
           </v-container>
@@ -55,8 +55,15 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import { DeleteSops, TSopsProviderNode } from '@/generated/graphql';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
+  setup() {
+    const { t } = useI18n({ useScope: 'global' });
+    return {
+      t,
+    };
+  },
   props: {
     sops: {
       type: Object as PropType<TSopsProviderNode>,

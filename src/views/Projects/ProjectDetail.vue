@@ -8,13 +8,13 @@
             <h2 class="mb-1 project-detail__title">{{ project.title }}</h2>
             <small class="d-block">{{ project.description }}</small>
             <small class="mt-3">
-              <b class="mr-3">{{ $t('projects.lastUpdate') }}</b>
+              <b class="mr-3">{{ t('projects.lastUpdate') }}</b>
               {{ verboseDate(project.currentCommitDateTime) }}
             </small>
           </v-col>
           <v-col cols="4">
             <h4 class="mb-1">{{ verboseDate(project.created) }}</h4>
-            <small class="d-block">{{ $t('projects.dateAdded') }}</small>
+            <small class="d-block">{{ t('projects.dateAdded') }}</small>
           </v-col>
           <v-col cols="2">
             <div class="float-right">
@@ -27,7 +27,7 @@
                    v-if="$can('edit', project)"
                 >
                   <v-icon size="24" class="mr-2" v-if="$can('edit', project)">$edit</v-icon>
-                  {{ $t('projects.editProject') }}
+                  {{ t('projects.editProject') }}
                 </v-btn>
               </div>
               <div>
@@ -40,7 +40,7 @@
                   @click="showDeleteDialog = true;"
                 >
                   <v-icon size="24" class="mr-2">$delete</v-icon>
-                   {{ $t('projects.deleteProject') }}
+                   {{ t('projects.deleteProject') }}
                 </v-btn>
               </div>
             </div>
@@ -51,35 +51,35 @@
           </v-col>
           <v-col cols="3" v-if="project.creator">
             <h4>{{ project.creator.firstName }} {{ project.creator.lastName }}</h4>
-            <small class="d-block">{{ $t('projects.createdBy') }}</small>
+            <small class="d-block">{{ t('projects.createdBy') }}</small>
           </v-col>
         </v-row>
         <v-divider></v-divider>
         <v-tabs v-model="innerTab" height="67px" class="project-detail__tabs" slider-size="3"
             :density="null">
           <v-tab height="67px" :ripple="false" :to="{name: 'project.detail.decks'}">
-            {{ $tc('deck.Deck', 2) }}
+            {{ t('deck.Deck', 2) }}
             <span class="tab-count-badge">
               {{ project.decks.length.toString().padStart(2, '0') }}
             </span>
           </v-tab>
           <v-tab height="67px" v-if="project.sops" :ripple="false"
               :to="{name: 'project.detail.sops'}">
-            {{ $t('projects.sops') }}
+            {{ t('projects.sops') }}
             <span class="tab-count-badge">
               {{ project.sops.length.toString().padStart(2, '0') }}
             </span>
           </v-tab>
           <v-tab height="67px" v-if="project.members" :ripple="false"
               :to="{name: 'project.detail.members'}">
-            {{ $t('projects.members') }}
+            {{ t('projects.members') }}
             <span class="tab-count-badge">
               {{ project.members.length.toString().padStart(2, '0') }}
             </span>
           </v-tab>
           <v-tab height="67px" v-if="project.clusterSettings" :ripple="false"
               :to="{name: 'project.detail.clusterSettings'}">
-            {{ $t('projects.clusterSettings') }}
+            {{ t('projects.clusterSettings') }}
           </v-tab>
         </v-tabs>
         <div class="py-8">
@@ -89,7 +89,7 @@
       <div class="white py-5 px-8" v-else>
         <div class="px-3">
           <span class="text--disabled" v-if="project">{{ project.title }}</span>
-          <h2 class="text--semi-bold">{{ $t('projects.editProject')}}</h2>
+          <h2 class="text--semi-bold">{{ t('projects.editProject')}}</h2>
           <v-divider class="mb-5"></v-divider>
         </div>
         <project-form
@@ -120,11 +120,11 @@
     <div v-else>
       <div v-if="projectNotFound" class="text-center mt-10">
         <v-icon size="120">$noProjectsFound</v-icon>
-        <h3>{{ $t('project.notFound') }}</h3>
+        <h3>{{ t('project.notFound') }}</h3>
         <p>
           <router-link to="/overview">
-            {{ $t('general.clickHere') }}
-          </router-link>{{ $t('general.returnOverview') }}</p>
+            {{ t('general.clickHere') }}
+          </router-link>{{ t('general.returnOverview') }}</p>
       </div>
     </div>
   </v-container>
@@ -143,6 +143,7 @@ import {
 import { useQuery, UseQueryReturn } from '@vue/apollo-composable';
 import { useRoute } from 'vue-router';
 import useContextStore from '@/stores/context';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   components: {
@@ -163,6 +164,7 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const context = useContextStore();
+    const { t, d } = useI18n({ useScope: 'global' });
     const { result, refetch } = useQuery(
       ProjectDetailQuery,
       {
@@ -178,6 +180,8 @@ export default defineComponent({
       project: result?.value?.project as TProjectNode,
       projectNotFound,
       refetchProjects: refetch,
+      t,
+      d,
     };
   },
   beforeRouteUpdate(to, from, next) {
@@ -192,7 +196,7 @@ export default defineComponent({
   methods: {
     verboseDate(date: Date): string {
       if (date) {
-        return this.$d(new Date(date), 'short');
+        return this.d(new Date(date), 'short');
       }
       return '';
     },

@@ -35,7 +35,7 @@
               {{ avatar.role }}
             </v-list-item-title>
             <v-list-item-subtitle>
-              {{ $t('user.role') }}
+              {{ t('user.role') }}
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
@@ -47,6 +47,7 @@
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue';
 import { Avatar } from '@/typing';
+import { useI18n } from 'vue-i18n';
 
 type AvatarColor = {
   color: string,
@@ -62,6 +63,7 @@ export default defineComponent({
     },
   },
   setup(props) {
+    const { t } = useI18n({ useScope: 'global' });
     const randomHSL = (name: string, lum: string): string => {
       const number = name.length;
       const firstLetter = name[0].charCodeAt(0);
@@ -79,6 +81,7 @@ export default defineComponent({
     return {
       avatarStyles,
       avatar: computed(() => props.avatarProp),
+      t,
     };
   },
 });

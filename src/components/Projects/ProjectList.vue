@@ -17,7 +17,7 @@
             <span v-else>
               {{ project.title}}
               <span class="project-card__role">
-                {{ $can('edit', project) ? $t('general.admin') : $t('general.member') }}
+                {{ $can('edit', project) ? t('general.admin') : t('general.member') }}
               </span>
             </span>
           </h3>
@@ -28,7 +28,7 @@
         <v-tooltip top>
           <template v-slot:activator="{ on, attrs }">
             <div v-on="on" v-bind="attrs" class="d-inline-block">
-              <small>{{ $t('projects.projectStatus') }}:</small>
+              <small>{{ t('projects.projectStatus') }}:</small>
               <v-avatar size="9" class="ml-2"
                 :color="getProjectStatusLevel(project.repositoryStatus)" />
             </div>
@@ -80,7 +80,7 @@
           <span v-if="loading"><v-skeleton-loader type="heading" tile width="70"/></span>
           <span v-else>{{ project.decks.length }}</span>
         </h4>
-        <small>{{ $t('projects.numberDecks') }}</small>
+        <small>{{ t('projects.numberDecks') }}</small>
       </v-col>
       <v-divider vertical></v-divider>
       <v-col>
@@ -88,7 +88,7 @@
           <span v-if="loading"><v-skeleton-loader type="heading" tile width="70"/></span>
           <span v-else>{{ modifiedDate }}</span>
         </h4>
-        <small>{{ $t('projects.lastUpdate') }}</small>
+        <small>{{ t('projects.lastUpdate') }}</small>
       </v-col>
       <v-divider vertical></v-divider>
       <v-col class="text-right pr-10">
@@ -101,19 +101,37 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, PropType, ref } from 'vue';
 import { Maybe, TProjectNode, UpdateProjectRepositoryMutation } from '@/generated/graphql';
 import { CliHintMessage } from '@/typing/index';
 import CliHint from '@/components/general/CliHint.vue';
 import DeleteProject from '@/components/Projects/DeleteProject.vue';
 import ProjectMemberAvatars from '@/components/Projects/ProjectMemberAvatars.vue';
 import Converter from '@/utils/converter';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   components: {
     CliHint,
     DeleteProject,
     ProjectMemberAvatars,
+  },
+  setup() {
+    const { t } = useI18n({ useScope: 'global' });
+    const projectCliHintMessage = ref([
+      {
+        command: 'unikube project up',
+        hint: t('cli.project.up'),
+      },
+      {
+        command: 'unikube project prune',
+        hint: t('cli.project.prune'),
+      },
+    ] as CliHintMessage[]);
+    return {
+      projectCliHintMessage,
+      t,
+    };
   },
   props: {
     project: {
@@ -130,16 +148,6 @@ export default defineComponent({
       deleteProject: null as Maybe<TProjectNode>,
       showDeleteDialog: false,
       drawer: false,
-      projectCliHintMessage: [
-        {
-          command: 'unikube project up',
-          hint: this.$t('cli.project.up'),
-        },
-        {
-          command: 'unikube project prune',
-          hint: this.$t('cli.project.prune'),
-        },
-      ] as CliHintMessage[],
       getReadableProjectStatus: Converter.getReadableProjectStatus,
       getProjectStatusLevel: Converter.getProjectStatusLevel,
     };
@@ -167,12 +175,12 @@ export default defineComponent({
         },
       }).then(() => {
         this.$store.commit('context/addSnackbarMessage', {
-          message: this.$t('projects.sync').toString(),
+          message: this.t('projects.sync').toString(),
           error: false,
         });
       }).catch(() => {
         this.$store.commit('context/addSnackbarMessage', {
-          message: this.$t('projects.syncFail').toString(),
+          message: this.t('projects.syncFail').toString(),
           error: true,
         });
       });

@@ -37,12 +37,17 @@
 
 </template>
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue';
+import {
+  computed,
+  defineComponent,
+  Ref,
+  ref,
+} from 'vue';
 import { required } from '@vuelidate/validators';
 import VueI18n from 'vue-i18n';
 import { CreateOrganizationMutation } from '@/generated/graphql';
 import getErrorMessage from '@/utils/validations';
-import useVuelidate from '@vuelidate/core';
+import useVuelidate, { ValidationArgs } from '@vuelidate/core';
 import useAuthStore from '@/stores/auth';
 import TranslateResult = VueI18n.TranslateResult;
 
@@ -55,7 +60,8 @@ export default defineComponent({
         required,
       },
     }));
-    const v = useVuelidate(rules, {
+    // TODO change this casting when vuelidate is updated
+    const v = useVuelidate(rules as unknown as ValidationArgs<{title: Ref<string>}>, {
       title,
     });
     return {

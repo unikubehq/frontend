@@ -7,6 +7,7 @@ type EnglishSchema = typeof en;
 
 export default createI18n<[GermanSchema, EnglishSchema], 'de' | 'en'>({
   locale: 'de',
+  legacy: false,
   fallbackLocale: 'en',
   messages: {
     de,

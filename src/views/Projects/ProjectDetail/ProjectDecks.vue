@@ -22,7 +22,7 @@
             <v-divider class="mb-2"></v-divider>
             <v-col cols="12">
               <v-icon>$deployments</v-icon>
-              {{ $tc('deployment.Deployment', pkg.deployments.length) }}
+              {{ t('deployment.Deployment', pkg.deployments.length) }}
             </v-col>
             <v-col cols="12" class="d-flex flex-wrap">
               <span
@@ -52,7 +52,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, PropType, ref } from 'vue';
 import {
   TDeckNode,
   TProjectNode,
@@ -60,6 +60,7 @@ import {
 import EditDeck from '@/components/Projects/EditDeck.vue';
 import { CliHintMessage } from '@/typing';
 import CliHint from '@/components/general/CliHint.vue';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   components: {
@@ -71,21 +72,28 @@ export default defineComponent({
       type: Object as PropType<TProjectNode>,
     },
   },
+  setup() {
+    const { t } = useI18n({ useScope: 'global' });
+    const deckCliHintMessage = ref([
+      {
+        command: 'unikube deck install',
+        hint: t('cli.deck.install').toString(),
+      },
+      {
+        command: 'unikube deck ingress',
+        hint: t('cli.deck.ingress').toString(),
+      },
+    ] as CliHintMessage[]);
+    return {
+      t,
+      deckCliHintMessage,
+    };
+  },
   data() {
     return {
       deckEdit: false,
       deckToBeEdited: undefined as TDeckNode | undefined,
       memberDrawer: false,
-      deckCliHintMessage: [
-        {
-          command: 'unikube deck install',
-          hint: this.$t('cli.deck.install').toString(),
-        },
-        {
-          command: 'unikube deck ingress',
-          hint: this.$t('cli.deck.ingress').toString(),
-        },
-      ] as CliHintMessage[],
     };
   },
   methods: {

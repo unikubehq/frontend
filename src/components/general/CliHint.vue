@@ -7,12 +7,12 @@
             >$cli</v-icon>
         </template>
           <table>
-            <caption class="d-none">{{ $t('cli.hint.caption') }}</caption>
+            <caption class="d-none">{{ t('cli.hint.caption') }}</caption>
             <thead class="d-none">
               <tr>
                 <th scope="col"></th>
-                <th scope="col">{{ $t('cli.table.command') }}</th>
-                <th scope="col">{{ $t('cli.table.actions') }}</th>
+                <th scope="col">{{ t('cli.table.command') }}</th>
+                <th scope="col">{{ t('cli.table.actions') }}</th>
               </tr>
             </thead>
             <tbody>
@@ -56,8 +56,15 @@
 <script lang="ts">
 import { CliHintMessage } from '@/typing/index';
 import { defineComponent, PropType } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
+  setup() {
+    const { t } = useI18n({ useScope: 'global' });
+    return {
+      t,
+    };
+  },
   props: {
     commands: {
       type: Array as PropType<CliHintMessage[]>,
@@ -67,7 +74,7 @@ export default defineComponent({
   copyToClipboard(command: string): void {
     navigator.clipboard.writeText(command).then(() => {
       this.$store.commit('context/addSnackbarMessage', {
-        message: this.$t('cli.util.copySuccessful').toString(),
+        message: this.t('cli.util.copySuccessful').toString(),
         error: false,
       });
     });

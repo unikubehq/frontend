@@ -14,10 +14,8 @@
         <v-card-text>
           <div>
             <p>
-              <v-icon x-size="large">
-                $bigSorry
-              </v-icon>
-              {{ $t(error.message) }}
+              <v-icon x-size="large">$bigSorry</v-icon>
+              {{ t(error.message) }}
             </p>
             {{ error.error }}
           </div>
@@ -48,12 +46,15 @@
 import { defineComponent } from 'vue';
 import { UnikubeError } from '@/typing';
 import useErrorStore from '@/stores/errors';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   setup() {
     const errorStore = useErrorStore();
+    const { t } = useI18n({ useScope: 'global' });
     return {
       errorStore,
+      t,
     };
   },
   computed: {

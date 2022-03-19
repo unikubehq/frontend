@@ -8,15 +8,15 @@
            <v-spacer />
          </v-card-title>
          <v-card-text>
-           <h1 class="text-h1 text--primary">{{ $t('organization.createOrganization') }}</h1>
-           <p class="text-lg-body-1">{{ $t('organization.createIntro') }}</p>
+           <h1 class="text-h1 text--primary">{{ t('organization.createOrganization') }}</h1>
+           <p class="text-lg-body-1">{{ t('organization.createIntro') }}</p>
            <v-btn
             class="mt-7 text-lg-body-1"
             color="primary"
             block
             size="large"
             @click="$emit('success')"
-           >{{ $t('organization.createButton') }}</v-btn>
+           >{{ t('organization.createButton') }}</v-btn>
          </v-card-text>
        </v-card>
      </v-col>
@@ -27,7 +27,7 @@
            <v-spacer />
          </v-card-title>
          <v-card-text>
-           <h1 class="text-h1 text--primary">{{ $t('organization.joinOrganization') }}</h1>
+           <h1 class="text-h1 text--primary">{{ t('organization.joinOrganization') }}</h1>
            <p v-if="userInvitations && userInvitations.results"
                class="text-lg-body-1">
              {{ $tc('organization.joinIntro', userInvitations.results.length) }}
@@ -47,14 +47,14 @@
                  :loading="loading[invite.id]"
                    class="mr-3"
                    elevation="0"
-                 >{{ $t('organization.joinButton') }}</v-btn>
+                 >{{ t('organization.joinButton') }}</v-btn>
                  <v-btn
                   color="error"
                  :ripple="false"
                   @click="declineInvite(invite.id)"
                  :loading="loading[invite.id]"
                    elevation="0"
-                 >{{ $t('organization.declineButton') }}</v-btn>
+                 >{{ t('organization.declineButton') }}</v-btn>
                  </v-list-item-action>
              </v-list-item>
            </v-list>
@@ -74,7 +74,7 @@
               class="mr-1"
               small
           >$arrowRightGrey</v-icon>
-         {{ $t('organization.backToOverview') }}
+         {{ t('organization.backToOverview') }}
        </router-link>
      </v-col>
    </v-row>
@@ -85,6 +85,7 @@ import { defineComponent } from 'vue';
 import { AnswerInvitation, UserInvitationsQuery } from '@/generated/graphql';
 import CreateOrganizationBig from '@/components/icons/CreateOrganizationBig.vue';
 import JoinOrganizationBig from '@/components/icons/JoinOrganizationBig.vue';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   components: { CreateOrganizationBig, JoinOrganizationBig },
@@ -92,6 +93,12 @@ export default defineComponent({
     userInvitations: {
       query: UserInvitationsQuery,
     },
+  },
+  setup() {
+    const { t } = useI18n({ useScope: 'global' });
+    return {
+      t,
+    };
   },
   data() {
     return {

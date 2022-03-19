@@ -1,22 +1,22 @@
 <template>
   <div class="py-5">
-      <h2>{{ $t('settings.roles.title') }}</h2>
-      <p class="text--secondary">{{ $t('settings.roles.intro') }}</p>
+      <h2>{{ t('settings.roles.title') }}</h2>
+      <p class="text--secondary">{{ t('settings.roles.intro') }}</p>
       <v-divider></v-divider>
     <v-row>
       <v-col cols="10" class="mt-8">
         <h3 class="font-weight-medium mb-5">
           <v-icon size="40" class="mr-3">$existingMembers</v-icon>
-          {{ $t('settings.roles.existing') }}
+          {{ t('settings.roles.existing') }}
         </h3>
         <v-table class="table__unikube">
           <template v-slot:default>
             <thead>
             <tr>
-              <th class="text-left" colspan="2" scope="col">{{ $t('settings.roles.name') }}</th>
-              <th class="text-left" scope="col">{{ $t('settings.roles.role') }}</th>
+              <th class="text-left" colspan="2" scope="col">{{ t('settings.roles.name') }}</th>
+              <th class="text-left" scope="col">{{ t('settings.roles.role') }}</th>
               <th class="text-left" colspan="2" v-if="isOrganizationAdmin" scope="col">
-                {{ $t('settings.roles.actions') }}
+                {{ t('settings.roles.actions') }}
               </th>
             </tr>
             </thead>
@@ -54,20 +54,20 @@
       <v-col cols="8" class="mt-1">
         <h3 class="font-weight-medium mb-5">
           <v-icon size="40" class="mr-3">$addMember</v-icon>
-          {{ $t('settings.roles.invite') }}
+          {{ t('settings.roles.invite') }}
         </h3>
         <v-form>
           <v-row no-gutters>
             <v-col cols="8">
               <v-text-field
-                :label="$t('general.email')"
+                :label="t('general.email')"
                 name="email"
                 filled
                 variant="outlined"
                 type="text"
-                :placeholder="$t('settings.account.enterEmail')"
+                :placeholder="t('settings.account.enterEmail')"
                 v-model="email"
-                @blur="$v.email.$touch()"
+                @blur="v$.email.$touch()"
                 prepend-inner-icon="$email"
                 persistent-placeholder
               />
@@ -80,7 +80,7 @@
               settings and add new roles.
             </small>
           </div>
-          <v-btn color="primary" :disabled="$v.$invalid" size="large" elevation="0"
+          <v-btn color="primary" :disabled="v$.$invalid" size="large" elevation="0"
               :ripple="false" @click="inviteEmail" :loading="inviteLoading">
             Invite new member
           </v-btn>
@@ -88,7 +88,7 @@
       </v-col>
       <v-col cols="6">
         <h4 class="font-weight-medium mb-5">
-          {{ $t('settings.roles.pendingInvites') }}
+          {{ t('settings.roles.pendingInvites') }}
         </h4>
         <v-table class="table__unikube"
             v-if="allOrganizationInvitations &&
@@ -131,7 +131,7 @@
 </template>
 
 <script lang="ts">
-import { email, required } from '@vuelidate/validators';
+import { email, required, url } from '@vuelidate/validators';
 import {
   DeleteOrganizationMember,
   InviteToOrganization,
@@ -150,15 +150,37 @@ import {
 import UnikubeAvatar from '@/components/general/Avatar.vue';
 import Converter from '@/utils/converter';
 import DeleteOrganizationMemberComponent from '@/components/Settings/DeleteOrganizationMember.vue';
-import { defineComponent, ref } from 'vue';
+import {
+  computed,
+  defineComponent,
+  Ref,
+  ref,
+} from 'vue';
 import { useQuery, UseQueryReturn } from '@vue/apollo-composable';
 import useContextStore from '@/stores/context';
 import { ApolloQueryResult } from '@apollo/client';
+import { useI18n } from 'vue-i18n';
+import useVuelidate, { ValidationArgs } from '@vuelidate/core';
 
 export default defineComponent({
   setup() {
     const context = useContextStore();
+    const { t } = useI18n({ useScope: 'global' });
     const organization = ref(null as Maybe<TOrganizationNode>);
+    const emailInput = ref('');
+
+    const rules = computed(() => ({
+      email: {
+        required,
+        email,
+      },
+    })) as unknown as ValidationArgs<{ // TODO change this casting when vuelidate is updated
+      email: Ref<string>,
+    }>;
+    const v = useVuelidate(rules, {
+      email: emailInput,
+    });
+
     const organizationQuery = useQuery(
       OrganizationMembersQuery,
       {
@@ -188,21 +210,17 @@ export default defineComponent({
       organizationInvites.value = res?.data?.allOrganizationInvitations?.results as TOrganizationInvitationNode[];
     });
     return {
+      email: emailInput,
+      v$: v,
       organization,
       context,
       allOrganizationInvitations: organizationInvites,
+      t,
     };
-  },
-  validations: {
-    email: {
-      email,
-      required,
-    },
   },
   data() {
     return {
       dataChanged: false,
-      email: '',
       inviteLoading: false,
       memberErrors: [] as string[],
       memberToAvatar: Converter.memberToAvatar,

@@ -4,11 +4,11 @@
       <template v-slot:default>
         <thead>
         <tr>
-          <th scope="col" class="text-left" colspan="2">{{ $t('user.name') }}</th>
-          <th scope="col" class="text-left">{{ $t('user.role') }}</th>
-          <th scope="col" class="text-left">{{ $t('user.lastOnline') }}</th>
+          <th scope="col" class="text-left" colspan="2">{{ t('user.name') }}</th>
+          <th scope="col" class="text-left">{{ t('user.role') }}</th>
+          <th scope="col" class="text-left">{{ t('user.lastOnline') }}</th>
           <th scope="col" class="text-left" colspan="2" v-if="$can('edit', project)">
-            {{ $t('user.actions') }}
+            {{ t('user.actions') }}
           </th>
           <th scope="col" class="text-left" colspan="2" v-else></th>
         </tr>
@@ -33,7 +33,7 @@
               v-model="member.role"
               :items="projectMemberRoles"
               variant="outlined"
-              :placeholder="$t('projects.selectRole')"
+              :placeholder="t('projects.selectRole')"
                 style="width: 200px;"
               class="v-select__small"
                 persistent-placeholder
@@ -52,7 +52,7 @@
               </v-icon>
               <v-btn color="primary" dark @click="updateMember(member)" :ripple="false"
                   elevation="0" :loading="member.loading">
-                {{ $t('general.save') }}
+                {{ t('general.save') }}
               </v-btn>
             </div>
           </td>
@@ -64,7 +64,7 @@
                 :items="memberChoices"
                 v-model="pendingMember.user"
                 variant="outlined"
-                :placeholder="$t('project.chooseMember')"
+                :placeholder="t('project.chooseMember')"
                 class="v-select__small"
                 style="width: 300px;"
                 persistent-placeholder
@@ -75,7 +75,7 @@
               v-model="pendingMember.role"
               :items="projectMemberRoles"
               variant="outlined"
-              :placeholder="$t('projects.selectRole')"
+              :placeholder="t('projects.selectRole')"
                 style="width: 200px;"
               class="v-select__small"
                 persistent-placeholder
@@ -88,7 +88,7 @@
             </v-btn>
             <v-btn color="primary" dark @click="addMember(idx)" :ripple="false" elevation="0"
                 :loading="pendingMember.loading">
-              {{ $t('general.save') }}
+              {{ t('general.save') }}
             </v-btn>
           </td>
         </tr>
@@ -97,9 +97,8 @@
             <v-btn :ripple="false" color="transparent" elevation="0"
                 @click="pendingMembers.push({user: null, role: null, loading: false})"
                 class="mt-2 pa-0">
-              <v-icon size="24" class="mr-2">
-                $addRound
-              </v-icon>{{ $t('user.addAnother') }}
+              <v-icon size="24" class="mr-2">$addRound</v-icon>
+              {{ t('user.addAnother') }}
             </v-btn>
           </td>
         </tr>
@@ -115,7 +114,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import VueI18n from 'vue-i18n';
+import VueI18n, { useI18n } from 'vue-i18n';
 import {
   CreateProjectMemberMutation,
   Maybe,
@@ -143,6 +142,7 @@ export default defineComponent({
   },
   setup() {
     const context = useContextStore();
+    const { t } = useI18n({ useScope: 'global' });
     const { result } = useQuery(
       OrganizationMembersQuery,
       {
@@ -151,6 +151,7 @@ export default defineComponent({
     ) as UseQueryReturn<TOrganizationMembersQueryResult, TOrganizationMembersQueryVariables>;
     return {
       organization: result?.value?.organization as Maybe<TOrganizationNode>,
+      t,
     };
   },
   props: {
@@ -262,8 +263,8 @@ export default defineComponent({
     },
     projectMemberRoles(): Array<{value: string, text: TranslateResult}> {
       return [
-        { value: TProjectMemberRoleEnum.Admin, text: this.$t('general.admin') },
-        { value: TProjectMemberRoleEnum.Member, text: this.$t('general.member') },
+        { value: TProjectMemberRoleEnum.Admin, text: this.t('general.admin') },
+        { value: TProjectMemberRoleEnum.Member, text: this.t('general.member') },
       ];
     },
   },

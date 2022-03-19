@@ -4,13 +4,13 @@
       <v-row>
         <v-col cols="6" class="py-0">
           <v-text-field
-            :label="$t('projects.name')"
+            :label="t('projects.name')"
             name="projectName"
             filled
             variant="outlined"
             type="text"
             :error-messages="titleErrors"
-            :placeholder="$t('projects.enterName')"
+            :placeholder="t('projects.enterName')"
             v-model="title"
             @blur="v$.title.$touch()"
             prepend-inner-icon="$projectInput"
@@ -19,12 +19,12 @@
         </v-col>
         <v-col cols="6" class="py-0">
           <v-text-field
-            :label="$t('projects.description')"
+            :label="t('projects.description')"
             name="description"
             filled
             variant="outlined"
             type="text"
-            :placeholder="$t('projects.enterDescription')"
+            :placeholder="t('projects.enterDescription')"
             v-model="description"
             prepend-inner-icon="$description"
             persistent-placeholder
@@ -32,12 +32,12 @@
         </v-col>
         <v-col cols="6" class="py-0">
           <v-text-field
-            :label="$t('projects.specificationRepository')"
+            :label="t('projects.specificationRepository')"
             name="specRepo"
             filled
             variant="outlined"
             type="text"
-            :placeholder="$t('projects.enterSpecificationRepository')"
+            :placeholder="t('projects.enterSpecificationRepository')"
             v-model="specRepository"
             :error-messages="specRepositoryErrors"
             prepend-inner-icon="$repository"
@@ -47,12 +47,12 @@
         </v-col>
         <v-col cols="6" class="py-0">
           <v-text-field
-            :label="$t('projects.specificationRepositoryBranch')"
+            :label="t('projects.specificationRepositoryBranch')"
             name="specRepoBranch"
             filled
             variant="outlined"
             type="text"
-            :placeholder="$t('projects.enterSpecificationRepositoryBranch')"
+            :placeholder="t('projects.enterSpecificationRepositoryBranch')"
             v-model="specRepositoryBranch"
             :error-messages="specRepositoryBranchErrors"
             prepend-inner-icon="$branch"
@@ -62,14 +62,14 @@
         </v-col>
         <v-col cols="6" class="py-0">
           <v-text-field
-            :label="$t('projects.accessUsername')"
+            :label="t('projects.accessUsername')"
             name="accessUsername"
-            :hint="$t('projects.accessUsernameHint')"
+            :hint="t('projects.accessUsernameHint')"
             autocomplete="off"
             filled
             variant="outlined"
             type="text"
-            :placeholder="$t('projects.enterAccessUsername')"
+            :placeholder="t('projects.enterAccessUsername')"
             v-model="accessUsername"
             :error-messages="accessUsernameErrors"
             prepend-inner-icon="$accessUser"
@@ -79,12 +79,12 @@
         </v-col>
         <v-col cols="6" class="py-0">
           <v-text-field
-            :label="$t('projects.accessToken')"
+            :label="t('projects.accessToken')"
             name="accessToken"
             filled
             variant="outlined"
             type="password"
-            :placeholder="$t('projects.enterAccessToken')"
+            :placeholder="t('projects.enterAccessToken')"
             v-model="accessToken"
             :error-messages="accessTokenErrors"
             prepend-inner-icon="$accessToken"
@@ -94,12 +94,12 @@
         </v-col>
         <v-col cols="6" class="py-0">
           <v-select
-            :label="$t('projects.specificationType')"
+            :label="t('projects.specificationType')"
             name="specType"
             filled
             variant="outlined"
             type="text"
-            :placeholder="$t('projects.enterSpecificationType')"
+            :placeholder="t('projects.enterSpecificationType')"
             v-model="specType"
             :items="specTypeChoices"
             persistent-placeholder
@@ -130,9 +130,8 @@
                 style="transform: rotate(180deg)"
                 class="mr-1"
                 small
-            >
-              $arrowRightGrey
-            </v-icon>{{ $t('general.goBack') }}</a>
+            >$arrowRightGrey</v-icon>
+            {{ t('general.goBack') }}</a>
         </v-col>
         <v-col cols="3">
           <v-btn
@@ -157,11 +156,11 @@
 import {
   computed,
   defineComponent,
-  PropType,
+  PropType, Ref,
   ref,
 } from 'vue';
 import { required, url } from '@vuelidate/validators';
-import VueI18n from 'vue-i18n';
+import VueI18n, { useI18n } from 'vue-i18n';
 import { ApolloError, FetchResult } from '@apollo/client';
 import {
   CreateProject,
@@ -172,7 +171,7 @@ import {
   TUpdateProjectMutationVariables,
   UpdateProject,
 } from '@/generated/graphql';
-import useVuelidate from '@vuelidate/core';
+import useVuelidate, { ValidationArgs } from '@vuelidate/core';
 import getErrorMessage from '@/utils/validations';
 import useAuthStore from '@/stores/auth';
 import TranslateResult = VueI18n.TranslateResult;
@@ -184,6 +183,7 @@ export default defineComponent({
     const specRepositoryBranch = ref('');
     const accessUsername = ref('');
     const accessToken = ref('');
+    const { t } = useI18n({ useScope: 'global' });
     const rules = computed(() => ({
       title: {
         required,
@@ -199,7 +199,13 @@ export default defineComponent({
       },
       accessToken: {
       },
-    }));
+    })) as unknown as ValidationArgs<{ // TODO change this casting when vuelidate is updated
+      title: Ref<string>,
+      specRepository: Ref<string>,
+      specRepositoryBranch: Ref<string>,
+      accessUsername: Ref<string>,
+      accessToken: Ref<string>,
+    }>;
     const v = useVuelidate(rules, {
       title,
       specRepository,
@@ -216,6 +222,7 @@ export default defineComponent({
       specRepositoryBranch,
       accessUsername,
       accessToken,
+      t,
     };
   },
   props: {
@@ -260,7 +267,7 @@ export default defineComponent({
       return this.v$.$invalid;
     },
     submitButtonText(): TranslateResult {
-      return this.editMode ? this.$t('general.save').toString() : this.$t('general.next').toString();
+      return this.editMode ? this.t('general.save').toString() : this.t('general.next').toString();
     },
   },
   methods: {

@@ -45,7 +45,7 @@
       color="primary"
       class="mt-5"
       @click="handleShowForm(true)"
-    >{{ $t('sops.addSops') }}</v-btn>
+    >{{ t('sops.addSops') }}</v-btn>
     <v-row>
       <v-col cols="6">
         <v-form class="py-4 white create-form" v-if="showForm">
@@ -54,12 +54,12 @@
             <h3>{{ headlinePrefix }} SOPS: {{ title }}</h3>
             <v-divider class="mb-6"></v-divider>
               <v-select
-                :label="$t('sops.type')"
+                :label="t('sops.type')"
                 name="specType"
                 filled
                 variant="outlined"
                 type="text"
-                :placeholder="$t('sops.enterType')"
+                :placeholder="t('sops.enterType')"
                 v-model="sopsType"
                 :items="sopsTypeChoices"
                 item-value="value"
@@ -67,12 +67,12 @@
                 persistent-placeholder
               />
           <v-text-field
-                :label="$t('sops.title')"
+                :label="t('sops.title')"
                 name="sopsName"
                 filled
                 variant="outlined"
                 type="text"
-                :placeholder="$t('sops.enterTitle')"
+                :placeholder="t('sops.enterTitle')"
                 v-model="title"
                 :error-messages="titleErrors"
                 @blur="v$.title.$touch()"
@@ -80,12 +80,12 @@
               persistent-placeholder
               />
           <v-text-field
-                :label="$t('sops.description')"
+                :label="t('sops.description')"
                 name="description"
                 filled
                 variant="outlined"
                 type="text"
-                :placeholder="$t('sops.enterDescription')"
+                :placeholder="t('sops.enterDescription')"
                 v-model="description"
                 prepend-inner-icon="$description"
               persistent-placeholder
@@ -149,7 +149,7 @@
                 :ripple="false"
                 elevation="0"
                 @click="handleShowForm(false)"
-              >{{ $t('general.cancel') }}</v-btn>
+              >{{ t('general.cancel') }}</v-btn>
             </v-col>
             <v-col cols="4">
               <v-btn
@@ -159,7 +159,7 @@
               color="primary"
               @click="submit"
               :disabled="v$.$invalid"
-            >{{ $t('general.save') }}</v-btn>
+            >{{ t('general.save') }}</v-btn>
             </v-col>
           </v-row>
         </v-form>
@@ -174,10 +174,10 @@
 import {
   computed,
   defineComponent,
-  PropType,
+  PropType, Ref,
   ref,
 } from 'vue';
-import VueI18n from 'vue-i18n';
+import VueI18n, { useI18n } from 'vue-i18n';
 import {
   required, requiredIf,
 } from '@vuelidate/validators';
@@ -189,7 +189,7 @@ import {
   TSopsTypeEnum,
 } from '@/generated/graphql';
 import DeleteSops from '@/components/Projects/DeleteSops.vue';
-import useVuelidate from '@vuelidate/core';
+import useVuelidate, { ValidationArgs } from '@vuelidate/core';
 import getErrorMessage from '@/utils/validations';
 import { ApolloError } from '@apollo/client';
 import useErrorStore from '@/stores/errors';
@@ -202,6 +202,7 @@ export default defineComponent({
     const secret1 = ref('');
     const secret2 = ref('');
     const sopsType = ref(null as Maybe<TSopsTypeEnum>);
+    const { t } = useI18n({ useScope: 'global' });
     const rules = computed(() => ({
       title: {
         required,
@@ -212,7 +213,11 @@ export default defineComponent({
       secret2: {
         required: requiredIf((): boolean => sopsType.value === TSopsTypeEnum.Aws),
       },
-    }));
+    })) as unknown as ValidationArgs<{ // TODO change casting when vuelidate is updated
+      title: Ref<string>,
+      secret1: Ref<string>,
+      secret2: Ref<string>,
+    }>;
     const v = useVuelidate(rules, {
       title,
       secret1,
@@ -228,6 +233,7 @@ export default defineComponent({
       secret1,
       secret2,
       sopsType,
+      t,
     };
   },
   components: {
@@ -262,28 +268,28 @@ export default defineComponent({
   },
   computed: {
     headlinePrefix(): TranslateResult {
-      return this.edit ? this.$t('general.edit').toString() : this.$t('general.add').toString();
+      return this.edit ? this.t('general.edit').toString() : this.t('general.add').toString();
     },
     secret1Label(): string {
       const map = new Map();
-      map.set('aws', this.$t('sops.accessKey').toString());
-      map.set('pgp', this.$t('sops.pgpKey').toString());
+      map.set('aws', this.t('sops.accessKey').toString());
+      map.set('pgp', this.t('sops.pgpKey').toString());
       return map.get(this.sopsType);
     },
     secret1Placeholder(): string {
       const map = new Map();
-      map.set('aws', this.$t('sops.enterAccessKey').toString());
-      map.set('pgp', this.$t('sops.enterPgpKey').toString());
+      map.set('aws', this.t('sops.enterAccessKey').toString());
+      map.set('pgp', this.t('sops.enterPgpKey').toString());
       return map.get(this.sopsType);
     },
     secret2Label(): string {
       const map = new Map();
-      map.set('aws', this.$t('sops.secretAccessKey').toString());
+      map.set('aws', this.t('sops.secretAccessKey').toString());
       return map.get(this.sopsType);
     },
     secret2Placeholder(): string {
       const map = new Map();
-      map.set('aws', this.$t('sops.enterSecretAccessKey').toString());
+      map.set('aws', this.t('sops.enterSecretAccessKey').toString());
       return map.get(this.sopsType);
     },
     titleErrors(): TranslateResult[] {

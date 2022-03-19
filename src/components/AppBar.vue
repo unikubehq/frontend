@@ -19,7 +19,7 @@
           </v-btn>
         </template>
         <v-card width="340">
-          <v-card-title>{{ $t('navigation.notifications') }}</v-card-title>
+          <v-card-title>{{ t('navigation.notifications') }}</v-card-title>
           <v-divider class="notification__divider"></v-divider>
           <div v-if="hasInvitations">
             <project-invite
@@ -30,7 +30,7 @@
             >
             </project-invite>
           </div>
-          <v-card-text v-else>{{ $t('navigation.noNotifications') }}</v-card-text>
+          <v-card-text v-else>{{ t('navigation.noNotifications') }}</v-card-text>
         </v-card>
       </v-menu>
 
@@ -66,7 +66,7 @@
                       <v-icon>$accountBlue</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
-                      <v-list-item-title v-text="$t('navigation.accountSettings')" />
+                      <v-list-item-title v-text="t('navigation.accountSettings')" />
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item :ripple="false" @click="auth.logout()">
@@ -74,7 +74,7 @@
                       <v-icon>$logout</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
-                      <v-list-item-title v-text="$t('navigation.logout')" />
+                      <v-list-item-title v-text="t('navigation.logout')" />
                     </v-list-item-content>
                   </v-list-item>
                 </v-list-item-group>
@@ -99,6 +99,7 @@ import {
 } from '@/generated/graphql';
 import useAuthStore from '@/stores/auth';
 import useContextStore from '@/stores/context';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   components: {
@@ -110,6 +111,7 @@ export default defineComponent({
     },
   },
   setup() {
+    const { t } = useI18n({ useScope: 'global' });
     const userInvitations = ref({} as TUserInvitationsQueryResult['userInvitations']);
     const auth = useAuthStore();
     const context = useContextStore();
@@ -117,6 +119,7 @@ export default defineComponent({
       auth,
       context,
       userInvitations,
+      t,
     };
   },
   data() {

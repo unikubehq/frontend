@@ -1,7 +1,7 @@
 <template>
   <div class="py-5">
-    <h2>{{ $t('settings.account.title') }}</h2>
-    <p>{{ $t('settings.account.intro') }}</p>
+    <h2>{{ t('settings.account.title') }}</h2>
+    <p>{{ t('settings.account.intro') }}</p>
     <v-divider></v-divider>
     <v-row class="pt-3">
       <v-col cols="12">
@@ -27,36 +27,36 @@
           </v-avatar>
         </v-badge>
         <a href="#" class="text--secondary d-block mt-2" @click="deleteAvatar">
-          {{ $t('settings.account.removeAvatar') }}
+          {{ t('settings.account.removeAvatar') }}
         </a>
       </v-col>
       <v-col cols="8" class="mt-8">
         <v-row>
           <v-icon size="large">$personalInfo</v-icon>
-          <h2 class="d-inline ml-2">{{ $t('settings.account.personalnformation') }}</h2>
+          <h2 class="d-inline ml-2">{{ t('settings.account.personalnformation') }}</h2>
         </v-row>
         <v-form>
           <v-text-field
-              :label="$t('settings.account.fullName')"
+              :label="t('settings.account.fullName')"
               name="fullname"
               filled
               variant="outlined"
               disabled
               type="text"
-              :placeholder="$t('settings.account.enterName')"
+              :placeholder="t('settings.account.enterName')"
               v-model="fullName"
               prepend-inner-icon="$user"
               @blur="$v.fullName.$touch()"
               persistent-placeholder
           />
           <v-text-field
-              :label="$t('settings.account.email')"
+              :label="t('settings.account.email')"
               name="login"
               filled
               variant="outlined"
               disabled
               type="text"
-              :placeholder="$t('settings.account.enterEmail')"
+              :placeholder="t('settings.account.enterEmail')"
               v-model="email"
               @keyup.enter="register"
               prepend-inner-icon="$email"
@@ -64,12 +64,12 @@
               persistent-placeholder
           />
           <div class="mb-3">
-            {{ $t('settings.account.updateProfileInformation') }}
+            {{ t('settings.account.updateProfileInformation') }}
             <a
               href="#"
               class="link--secondary"
               @click="changeGeneralInformation">
-              {{ $t('settings.account.generalInformation') }}
+              {{ t('settings.account.generalInformation') }}
             </a>
           </div>
         </v-form>
@@ -78,23 +78,23 @@
         <v-divider></v-divider>
       </v-col>
       <v-col cols="8" class="mt-8">
-        <h2>{{ $t('settings.account.changePassword') }}</h2>
+        <h2>{{ t('settings.account.changePassword') }}</h2>
         <div class="mb-3">
-          {{ $t('settings.account.updatePassword') }}
+          {{ t('settings.account.updatePassword') }}
         <a
           class="link--secondary"
           href="#"
           @click="updatePassword">
-          {{ $t('settings.account.setNewPassword') }}
+          {{ t('settings.account.setNewPassword') }}
         </a>
         </div>
       </v-col>
       <v-col cols="8" class="mt-8">
         <danger-zone
-          :explanation="$t('settings.account.disableExplanation')"
+          :explanation="t('settings.account.disableExplanation')"
         >
-          <h3>{{ $t('settings.account.disableAccount') }}</h3>
-          <p>{{ $t('settings.account.disableExplanation') }}</p>
+          <h3>{{ t('settings.account.disableAccount') }}</h3>
+          <p>{{ t('settings.account.disableExplanation') }}</p>
           <v-btn color="error" elevation="0" :ripple="false" @click="deleteAccount">
             Delete Account
           </v-btn>
@@ -111,6 +111,7 @@ import { DeleteAvatarMutation, TDeleteAvatarMutationResult } from '@/generated/g
 import DangerZone from '@/components/Settings/DangerZone.vue';
 import setupUpload from '@/utils/upload';
 import useAuthStore from '@/stores/auth';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   components: {
@@ -118,6 +119,7 @@ export default defineComponent({
   },
   setup() {
     const auth = useAuthStore();
+    const { t } = useI18n({ useScope: 'global' });
     const uploadCallback = (res: AxiosResponse): void => {
       auth.avatarImage = res.data.url;
     };
@@ -132,6 +134,7 @@ export default defineComponent({
     return {
       auth,
       previewUrl,
+      t,
     };
   },
   data() {

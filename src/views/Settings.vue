@@ -15,7 +15,7 @@
                 '$accountBlue' :
                 '$account'
               }}
-            </v-icon>{{ $t('settings.account.title') }}</v-tab>
+            </v-icon>{{ t('settings.account.title') }}</v-tab>
         <v-tab :ripple="false" class="vertical-tabs"
             v-if="context.organization &&
             $can('edit', context.organization)"
@@ -26,7 +26,7 @@
                 '$organizationSettingsBlue' :
                 '$organizationSettings'
               }}
-            </v-icon>{{ $t('settings.organization.title') }}</v-tab>
+            </v-icon>{{ t('settings.organization.title') }}</v-tab>
         <v-tab :ripple="false" class="vertical-tabs"
         :to="{name: 'settings.roles'}"
         v-if="context.organization &&
@@ -38,7 +38,7 @@
                 '$organizationRolesBlue' :
                 '$organizationRoles'
               }}
-            </v-icon>{{ $t('settings.organizationRoles.title') }}</v-tab>
+            </v-icon>{{ t('settings.organizationRoles.title') }}</v-tab>
         <v-tab :ripple="false" class="vertical-tabs"
         :to="{name: 'settings.notifications'}">
             <v-icon left>
@@ -47,7 +47,7 @@
                 '$notificationBlue' :
                 '$notification'
               }}
-            </v-icon>{{ $t('settings.notifications.title') }}</v-tab>
+            </v-icon>{{ t('settings.notifications.title') }}</v-tab>
         <v-tab :ripple="false" class="vertical-tabs"
         :to="{name: 'settings.payment'}"
           v-if="context.organization &&
@@ -76,13 +76,16 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import useContextStore from '@/stores/context';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'SettingsView',
   setup() {
     const context = useContextStore();
+    const { t } = useI18n({ useScope: 'global' });
     return {
       context,
+      t,
     };
   },
 });

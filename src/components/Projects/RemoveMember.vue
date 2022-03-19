@@ -24,7 +24,7 @@
             :ripple="false"
             text
             @click="$emit('hide')"
-          >{{ $t('general.disagree') }}</v-btn>
+          >{{ t('general.disagree') }}</v-btn>
             </v-col>
           <v-col class="py-0"><v-btn
             size="large"
@@ -44,8 +44,15 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import { DeleteProjectMemberMutation, TProjectMember, TProjectNode } from '@/generated/graphql';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
+  setup() {
+    const { t } = useI18n({ useScope: 'global' });
+    return {
+      t,
+    };
+  },
   data() {
     return {
       dialog: false,
