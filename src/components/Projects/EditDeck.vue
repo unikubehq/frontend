@@ -143,8 +143,7 @@
           </v-form>
       <v-navigation-drawer
           temporary
-          right
-          fixed
+          position="right"
           width="650"
           light
           class="no-bg-drawer"

@@ -63,7 +63,7 @@ export default defineComponent({
     });
 
     this.editor = monaco.editor.create(this.$refs.editor as HTMLElement, {
-      value: '',
+      value: this.value,
       language: 'yaml',
       theme: 'unikube',
       formatOnPaste: true,
@@ -79,8 +79,6 @@ export default defineComponent({
         enabled: false,
       },
     });
-
-    this.editor.setValue(this.value);
 
     this.editor.onDidChangeModelDecorations(() => {
       this.updateErrorCount();
