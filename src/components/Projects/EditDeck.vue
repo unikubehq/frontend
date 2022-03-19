@@ -1,19 +1,19 @@
 <template>
   <v-container>
-    <h2>{{ $t('deck.edit.title', { deck: deck.title }) }}</h2>
-    <h3>{{ $t('deck.edit.environments.title') }}</h3>
+    <h2>{{ t('deck.edit.title', { deck: deck.title }) }}</h2>
+    <h3>{{ t('deck.edit.environments.title') }}</h3>
     <v-divider class="mb-5"></v-divider>
-      <h4>{{ $t('deck.edit.environments.edit', { environment: environment.title}) }}</h4>
+      <h4>{{ t('deck.edit.environments.edit', { environment: environment.title}) }}</h4>
           <v-form class="white create-form mt-5">
             <v-row>
             <v-col cols="6" class="py-0">
                 <v-text-field
-                  :label="$t('deck.edit.environments.formTitle')"
+                  :label="t('deck.edit.environments.formTitle')"
                   name="environmentName"
                   filled
                   variant="outlined"
                   type="text"
-                  :placeholder="$t('deck.edit.environments.enterTitle')"
+                  :placeholder="t('deck.edit.environments.enterTitle')"
                   v-model="title"
                   @blur="v$.title.$touch()"
                   :error-messages="titleErrors"
@@ -22,24 +22,24 @@
             </v-col>
             <v-col cols="6" class="py-0">
               <v-text-field
-                :label="$t('deck.edit.environments.description')"
+                :label="t('deck.edit.environments.description')"
                 name="description"
                 filled
                 variant="outlined"
                 type="text"
-                :placeholder="$t('deck.edit.environments.enterDescription')"
+                :placeholder="t('deck.edit.environments.enterDescription')"
                 v-model="description"
                   persistent-placeholder
               />
             </v-col>
             <v-col cols="6" class="py-0">
               <v-select
-                :label="$t('deck.edit.environments.sops')"
+                :label="t('deck.edit.environments.sops')"
                 name="sops"
                 filled
                 variant="outlined"
                 type="text"
-                :placeholder="$t('deck.edit.environments.chooseSops')"
+                :placeholder="t('deck.edit.environments.chooseSops')"
                 v-model="sopsCredentials"
                 :items="sopsProviderChoices"
                 return-object
@@ -48,12 +48,12 @@
               </v-col>
               <v-col cols="6" class="py-0">
                 <v-select
-                    :label="$t('deck.edit.environments.type')"
+                    :label="t('deck.edit.environments.type')"
                     name="type"
                     filled
                     variant="outlined"
                     type="text"
-                    :placeholder="$t('deck.edit.environments.enterType')"
+                    :placeholder="t('deck.edit.environments.enterType')"
                     v-model="environmentType"
                     :items="environmentTypeChoices"
                     persistent-placeholder
@@ -61,12 +61,12 @@
                 </v-col>
                 <v-col cols="6" class="py-0">
                   <v-select
-                    :label="$t('deck.edit.environments.valuesPath')"
+                    :label="t('deck.edit.environments.valuesPath')"
                     name="valuesPath"
                     filled
                     variant="outlined"
                     type="text"
-                    :placeholder="$t('deck.edit.environments.enterValuesPath')"
+                    :placeholder="t('deck.edit.environments.enterValuesPath')"
                     v-model="valuesPath"
                     :items="valuesPathChoices"
                     return-object
@@ -81,13 +81,13 @@
               </v-col>
                 <v-col cols="6" class="py-0">
                 <v-text-field
-                  :label="$t('deck.edit.environments.namespace')"
+                  :label="t('deck.edit.environments.namespace')"
                   name="namespace"
                   filled
                   :error-messages="namespaceErrors"
                   variant="outlined"
                   type="text"
-                  :placeholder="$t('deck.edit.environments.enterNamespace')"
+                  :placeholder="t('deck.edit.environments.enterNamespace')"
                   v-model="namespace"
                   persistent-placeholder
                 />
@@ -95,7 +95,7 @@
               <v-col>
                   <v-checkbox
                     v-model="disabled"
-                    :label="$t('deck.edit.environments.disabled')"
+                    :label="t('deck.edit.environments.disabled')"
                   >
                 </v-checkbox>
               </v-col>
@@ -111,7 +111,7 @@
                       style="transform: rotate(180deg)"
                       class="mr-2"
                       small
-                  >$arrowRightGrey</v-icon>{{ $t('general.cancel') }}
+                  >$arrowRightGrey</v-icon>{{ t('general.cancel') }}
                </a>
               </v-col>
               <v-col cols="3" offset="1">
@@ -137,7 +137,7 @@
                 color="primary"
                 @click="submit"
                 :disabled="v$.$invalid"
-              >{{ $t('general.save') }}</v-btn>
+              >{{ t('general.save') }}</v-btn>
               </v-col>
             </v-row>
           </v-form>
@@ -167,7 +167,7 @@ import {
   ref,
 } from 'vue';
 import { required } from '@vuelidate/validators';
-import VueI18n from 'vue-i18n';
+import VueI18n, { useI18n } from 'vue-i18n';
 import {
   CreateUpdateEnvironment,
   TEnvironmentNode,
@@ -190,6 +190,7 @@ export default defineComponent({
   setup() {
     const title = ref('');
     const namespace = ref('');
+    const { t } = useI18n({ useScope: 'global' });
     const rules = computed(() => ({
       title: {
         required,
@@ -209,6 +210,7 @@ export default defineComponent({
       v$: v,
       title,
       namespace,
+      t,
     };
   },
   components: {
