@@ -2,7 +2,7 @@
   <v-col cols="12" sm="8" md="3">
     <h1 class="text-h1">{{ $t('organization.createNewOrganization') }}</h1>
     <p class="text--secondary">{{ $t('organization.createNameOfOrganization') }}</p>
-    <v-form class="text-center">
+    <v-form class="text-center" submit.prevent="">
       <v-text-field
           class="mt-6"
           id="organizationName"
@@ -15,6 +15,7 @@
           :error-messages="titleErrors"
           prepend-inner-icon="$vuetify.icons.organization"
           @blur="$v.title.$touch()"
+          @keydown.enter.prevent="handleCreateOrganization"
           persistent-placeholder
       >
       </v-text-field>

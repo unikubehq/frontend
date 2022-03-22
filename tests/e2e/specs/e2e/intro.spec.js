@@ -94,4 +94,31 @@ describe('Intro', () => {
     cy.wait(500);
     cy.get('button.primary').click();
   });
+
+  it('Allows organization creation keyboard', () => {
+    const organizationName = 'New Organization Name';
+    cy.intercept('POST', '/graphql', (req) => {
+      // This is needed in order to prevent error handler overlay.
+      if (req.body.operationName === 'CreateOrganizationMutation') {
+        // eslint-disable-next-line no-param-reassign
+        req.alias = 'CreateOrganizationMutation';
+        req.reply({
+          data: {
+            createUpdateOrganization: {
+              organization: {
+                id: '12312312312321321',
+                title: organizationName,
+                description: '',
+              },
+            },
+          },
+        });
+      }
+    });
+    cy.visit('/intro');
+    cy.get('button.primary').first().click();
+    cy.get('#organizationName').type(organizationName).trigger('keydown', { keyCode: 13 });
+    cy.wait(500);
+    cy.get('button.primary').click();
+  })
 });
