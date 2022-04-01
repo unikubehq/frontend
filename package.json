@@ -33,7 +33,7 @@
     "monaco-editor": "^0.33.0",
     "monaco-editor-webpack-plugin": "^7.0.1",
     "monaco-yaml": "^4.0.0-alpha.0",
-    "pinia": "^2.0.12",
+    "pinia": "^2.0.13",
     "vue": "^3.2.13",
     "vue-apollo": "^3.1.0",
     "vue-axios": "^3.4.0",
