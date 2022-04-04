@@ -39,7 +39,7 @@
     "vuelidate": "^0.7.7",
     "vuetify": "^2.6.3",
     "vuex": "^3.6.2",
-    "webpack": "^5.69.1"
+    "webpack": "^5.71.0"
   },
   "devDependencies": {
     "@babel/runtime": "^7.17.2",
