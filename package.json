@@ -18,7 +18,7 @@
   "dependencies": {
     "@apollo/client": "^3.5.9",
     "@casl/ability": "^5.4.3",
-    "@casl/vue": "^1.2.2",
+    "@casl/vue": "^2.0.1",
     "@sentry/vue": "^6.17.4",
     "axios": "^0.24.0",
     "core-js": "^3.21.1",
