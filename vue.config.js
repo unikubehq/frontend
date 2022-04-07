@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires,import/no-extraneous-dependencies
+const { VuetifyLoaderPlugin } = require('vuetify-loader');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 // eslint-disable-next-line @typescript-eslint/no-var-requires,import/no-extraneous-dependencies
@@ -30,17 +32,27 @@ plugins.push(new MonacoWebpackPlugin({
     entry: undefined,
     worker: {
       id: 'yaml-worker',
-      entry: path.resolve(__dirname, 'node_modules/monaco-yaml/lib/esm/yaml.worker'),
+      entry: path.resolve(__dirname, 'node_modules/monaco-yaml/yaml.worker'),
     },
   }],
 }));
 
+plugins.push(new VuetifyLoaderPlugin({ styles: 'expose' }));
+
 module.exports = {
-  transpileDependencies: [
-    'vuetify',
-  ],
+  transpileDependencies: true,
+  pluginOptions: {
+    vuetify: {}, // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vuetify-loader
+  },
   configureWebpack: {
     plugins,
+    resolve: {
+      fallback: {
+        http: false,
+        https: false,
+        zlib: false,
+      },
+    },
   },
   chainWebpack: (config) => {
     config

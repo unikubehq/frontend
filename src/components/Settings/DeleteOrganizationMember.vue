@@ -1,10 +1,10 @@
 <template>
   <v-dialog
-      v-model="show"
+      v-model="dialog"
       persistent
       width="550"
     >
-      <v-card v-if="show" class="py-8 px-7">
+      <v-card v-if="dialog" class="py-8 px-7">
         <v-card-title class="headline">
           Remove {{ memberName }}
         </v-card-title>
@@ -18,20 +18,20 @@
           <v-container fluid class="py-0">
             <v-row>
           <v-col class="py-0"><v-btn
-            large
+            size="large"
             block
             :ripple="false"
             text
             @click="$emit('hide')"
-          >{{ $t('general.disagree') }}</v-btn>
+          >{{ t('general.disagree') }}</v-btn>
             </v-col>
           <v-col class="py-0"><v-btn
-            large
+            size="large"
             block
             :ripple="false"
             color="error"
             @click="deleteMember"
-          >{{ $t('settings.roles.remove') }}</v-btn>
+          >{{ t('settings.roles.remove') }}</v-btn>
             </v-col>
           </v-row>
           </v-container>
@@ -41,18 +41,42 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
 
-@Component({})
-export default class DeleteOrganizationMember extends Vue {
-  @Prop() readonly show: boolean | undefined
+import { defineComponent } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-  @Prop() readonly memberName!: string
-
-  deleteMember(): void {
-    this.$emit('delete');
-  }
-}
+export default defineComponent({
+  setup() {
+    const { t } = useI18n({ useScope: 'global' });
+    return {
+      t,
+    };
+  },
+  props: {
+    show: {
+      type: Boolean,
+    },
+    memberName: {
+      type: String,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      dialog: false,
+    };
+  },
+  methods: {
+    deleteMember(): void {
+      this.$emit('delete');
+    },
+  },
+  watch: {
+    show(newVal) {
+      this.dialog = newVal;
+    },
+  },
+});
 </script>
 
 <style lang="scss" scoped>

@@ -1,45 +1,38 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { shallowMount, createLocalVue } from '@vue/test-utils';
-import Vuetify from 'vuetify';
-import VueRouter from 'vue-router';
+import { shallowMount } from '@vue/test-utils';
 import ProjectList from '@/components/Projects/ProjectList.vue';
+import { TProjectNode, TProjectRepositoryStatus, TProjectSpecType } from '@/generated/graphql';
 
-const project = {
+const project: TProjectNode = {
   title: 'Openlane-project',
-  modified: '2021-01-07T19:28:29.100759+00:00',
+  kind: 'ProjectNode',
+  created: new Date().getTime(),
+  accessUsername: '',
+  specRepository: '',
+  repositoryStatus: TProjectRepositoryStatus.Ok,
+  specType: TProjectSpecType.Helm,
+  keycloakData: {},
   description: 'This is an awesome project',
   currentCommit: '3b24b97cc930107e2c7b742cbcd38d1e43dce780',
   id: '4bfcc9e3-a709-47a5-96eb-f144106bbe70',
-  slug: 'openlane-project',
-  decks: {
-    resultCount: 1,
-  },
+  decks: [],
   members: [
     {
       user:
         {
-          firstName: 'Prudence',
-          lastName: 'Stehr',
-          avatar: 'http://www.nwrUZidjgbnaWPHdGQgKhgwLvjMWPY.com/',
+          kind: 'UserNode',
+          id: '1111',
+          givenName: 'Prudence',
+          familyName: 'Stehr',
+          avatarImage: 'http://www.nwrUZidjgbnaWPHdGQgKhgwLvjMWPY.com/',
         },
     },
   ],
 };
 
 describe('Overview.vue', () => {
-  const localVue = createLocalVue();
-
-  let vuetify: Vuetify;
-  beforeEach(() => {
-    vuetify = new Vuetify();
-    localVue.use(VueRouter);
-  });
-
   it('renders correctly', async () => {
-    const wrapper = shallowMount(ProjectList, {
-      localVue,
-      vuetify,
-    });
+    const wrapper = shallowMount(ProjectList);
     expect(wrapper.get('h3').text()).toContain('No Projects Found');
     wrapper.setProps({ project });
     await wrapper.vm.$nextTick();
@@ -56,14 +49,15 @@ describe('Overview.vue', () => {
     };
     const mutate = jest.fn().mockImplementation(() => Promise.resolve(data));
     const wrapper = shallowMount(ProjectList, {
-      localVue,
-      vuetify,
-      propsData: {
+      props: {
         project,
+        loading: false,
       },
-      mocks: {
-        $apollo: {
-          mutate,
+      global: {
+        mocks: {
+          $apollo: {
+            mutate,
+          },
         },
       },
     });
@@ -77,9 +71,7 @@ describe('Overview.vue', () => {
 
   it('gets correct avatar initials', async () => {
     const wrapper = shallowMount(ProjectList, {
-      localVue,
-      vuetify,
-      propsData: {
+      props: {
         project,
       },
     });

@@ -1,27 +1,26 @@
-import Vue from 'vue';
-import VueI18n from 'vue-i18n';
-import LocaleMessages = VueI18n.LocaleMessages;
+import de from '@/locales/de.json';
+import en from '@/locales/en.json';
+import { createI18n } from 'vue-i18n';
 
-Vue.use(VueI18n);
+type GermanSchema = typeof de;
+type EnglishSchema = typeof en;
 
-function loadLocaleMessages() {
-  const locales = require.context('./locales', true, /[A-Za-z0-9-_,\s]+\.json$/i);
-  const messages: LocaleMessages = {};
-  locales.keys().forEach((key) => {
-    const matched = key.match(/([A-Za-z0-9-_]+)\./i);
-    if (matched && matched.length > 1) {
-      const locale = matched[1];
-      messages[locale] = locales(key);
-    }
-  });
-  return messages;
-}
-
-export default new VueI18n({
+export default createI18n<[GermanSchema, EnglishSchema], 'de' | 'en'>({
   locale: 'de',
+  legacy: false,
   fallbackLocale: 'en',
-  messages: loadLocaleMessages(),
-  dateTimeFormats: {
+  messages: {
+    de,
+    en,
+  },
+  datetimeFormats: {
+    de: {
+      short: {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      },
+    },
     en: {
       short: {
         year: 'numeric',

@@ -1,7 +1,7 @@
 <template>
   <div class="py-5">
-    <h2>{{ $t('settings.organization.title') }}</h2>
-    <p>{{ $t('settings.organization.intro') }}</p>
+    <h2>{{ t('settings.organization.title') }}</h2>
+    <p>{{ t('settings.organization.intro') }}</p>
     <v-divider></v-divider>
     <v-row class="pt-3">
       <v-col cols="12">
@@ -22,29 +22,29 @@
                   id="orga-avatar-file"
                   @change="handleUpload">
               <v-img width="96" contain  ref="preview" alt="Organization Logo"
-                  :src="this.previewUrl || this.$store.state.context.organization.avatarImage || 'https://cdn.zeplin.io/5f84546964e43c2749571f59/assets/2192D830-FF56-4E41-8DBA-F504CEFA64FC.svg'"/>
+                  :src="this.previewUrl || context?.organization?.avatarImage || 'https://cdn.zeplin.io/5f84546964e43c2749571f59/assets/2192D830-FF56-4E41-8DBA-F504CEFA64FC.svg'"/>
             </label>
           </v-avatar>
         </v-badge>
       </v-col>
       <v-col cols="8" class="mt-8">
-        <h2>{{ $t('settings.organization.info') }}</h2>
+        <h2>{{ t('settings.organization.info') }}</h2>
         <v-form>
           <v-text-field
-            :label="$t('settings.organization.name')"
+            :label="t('settings.organization.name')"
             name="fullname"
             filled
-            outlined
+            variant="outlined"
             type="text"
-            :placeholder="$t('settings.organization.enterName')"
+            :placeholder="t('settings.organization.enterName')"
             v-model="organizationName"
-            prepend-inner-icon="$vuetify.icons.user"
+            prepend-inner-icon="$user"
             @blur="$v.fullName.$touch()"
             @change="setDataChanged"
               persistent-placeholder
           />
-          <v-btn color="primary" :disabled="!dataChanged" large elevation="0" :ripple="false">
-            {{ $t('general.saveChanges') }}
+          <v-btn color="primary" :disabled="!dataChanged" size="large" elevation="0">
+            {{ t('general.saveChanges') }}
           </v-btn>
         </v-form>
       </v-col>
@@ -53,17 +53,17 @@
       </v-col>
       <v-col cols="8" class="mt-8">
       <danger-zone
-        :explanation="$t('settings.account.disableExplanation')"
+        :explanation="t('settings.account.disableExplanation')"
       >
-        <h3>{{ $t('settings.organization.disable') }}</h3>
-        <p>{{ $t('settings.organization.disableWarning') }}
-          <a href="#">{{ $t('settings.organization.delete') }}</a>
+        <h3>{{ t('settings.organization.disable') }}</h3>
+        <p>{{ t('settings.organization.disableWarning') }}
+          <a href="#">{{ t('settings.organization.delete') }}</a>
         </p>
         <v-btn
           solid
           color="error"
           class="white--text"
-        >{{ $t('settings.organization.delete') }}</v-btn>
+        >{{ t('settings.organization.delete') }}</v-btn>
       </danger-zone>
       </v-col>
       </v-row>
@@ -72,50 +72,67 @@
 </template>
 
 <script lang="ts">
-import { Component, Ref } from 'vue-property-decorator';
+import { defineComponent, ref, reactive } from 'vue';
 import { OrganizationQuery } from '@/generated/graphql';
-import { UploadComponent } from '@/components/mixins';
 import DangerZone from '@/components/Settings/DangerZone.vue';
+import setupUpload from '@/utils/upload';
+import { AxiosError } from 'axios';
+import { useQuery } from '@vue/apollo-composable';
+import useContextStore from '@/stores/context';
+import { useI18n } from 'vue-i18n';
 
-@Component({
+export default defineComponent({
   components: {
     DangerZone,
   },
-})
-export default class OrganizationSettings extends UploadComponent {
-  @Ref() readonly preview!: HTMLImageElement
-
-  previewUrl: string | null = null
-
-  dataChanged = false
-
-  dialog = false
-
-  uploadUrl = '/orgas-http/upload-avatar/';
-
-  get organizationName(): string {
-    return this.$store.state.context.organization.title;
-  }
-
-  getUploadUrl(): string {
-    return `${this.uploadUrl + this.$store.state.context.organization.id}/`;
-  }
-
-  uploadCallback(): void {
-    this.$apollo.query({
-      query: OrganizationQuery,
-      variables: {
-        id: this.$store.state.context.organization.id,
-      },
-    }).then((result) => {
-      this.$store.commit('context/setOrganization', result.data.organization);
+  setup() {
+    const dataChanged = ref(false);
+    const uploadUrl = '/orgas-http/upload-avatar/';
+    const context = useContextStore();
+    const { t } = useI18n({ useScope: 'global' });
+    const variables = reactive({
+      id: context?.organization?.id,
     });
-  }
+    const uploadCallback = (): void => {
+      const { result, error } = useQuery(OrganizationQuery, variables);
+      if (result && !error) {
+        context.setOrganization(result.value.organization);
+      }
+    };
 
-  setDataChanged(): void {
-    this.dataChanged = true;
-  }
-}
+    const uploadError = (err: AxiosError) => {
+      console.log(err);
+    };
+
+    const setDataChanged = () => {
+      dataChanged.value = true;
+    };
+
+    const { previewUrl, handleUpload } = setupUpload(
+      `${uploadUrl}${context?.organization?.id}/`,
+      uploadCallback,
+      uploadError,
+    );
+    return {
+      context,
+      previewUrl,
+      handleUpload,
+      setDataChanged,
+      t,
+    };
+  },
+  data() {
+    return {
+      dialog: false,
+    };
+  },
+
+  computed: {
+    organizationName(): string {
+      return this.context?.organization?.title || '';
+    },
+  },
+});
 </script>
 
 <style>

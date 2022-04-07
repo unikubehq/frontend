@@ -14,10 +14,8 @@
         <v-card-text>
           <div>
             <p>
-              <v-icon x-large>
-                $vuetify.icons.bigSorry
-              </v-icon>
-              {{ $t(error.message) }}
+              <v-icon x-size="large">$bigSorry</v-icon>
+              {{ t(error.message) }}
             </p>
             {{ error.error }}
           </div>
@@ -27,7 +25,7 @@
             <v-row>
           <v-col class="py-0">
             <v-btn
-              large
+              size="large"
               block
               :ripple="false"
               text
@@ -45,23 +43,34 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { defineComponent } from 'vue';
 import { UnikubeError } from '@/typing';
+import useErrorStore from '@/stores/errors';
+import { useI18n } from 'vue-i18n';
 
-@Component({})
-export default class ErrorHandler extends Vue {
-  get errors(): UnikubeError {
-    return this.$store.state.errors.errors;
-  }
-
-  get showErrorDialog(): boolean {
-    return this.$store.state.errors.errors.length > 0;
-  }
-
-  handleAcknowledge(): void {
-    this.$store.commit('errors/clearError');
-  }
-}
+export default defineComponent({
+  setup() {
+    const errorStore = useErrorStore();
+    const { t } = useI18n({ useScope: 'global' });
+    return {
+      errorStore,
+      t,
+    };
+  },
+  computed: {
+    errors(): UnikubeError[] {
+      return this.errorStore.errors;
+    },
+    showErrorDialog(): boolean {
+      return this.errorStore.errors.length > 0;
+    },
+  },
+  methods: {
+    handleAcknowledge(): void {
+      this.errorStore.clearError();
+    },
+  },
+});
 </script>
 
 <style>

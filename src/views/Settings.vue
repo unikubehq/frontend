@@ -1,63 +1,62 @@
 <template>
-  <div class="white my-8">
+  <div class="bg-white my-8">
   <v-row>
     <v-col cols="3">
       <v-tabs
-        vertical
+        direction="vertical"
         class="fill-height"
-        style="min-height: 500px;"
-        background-color="#F7F7F7"
+        style="min-height: 500px; background-color: #F7F7F7;"
       >
         <v-tab :ripple="false" class="vertical-tabs"
             :to="{name: 'settings.account'}">
             <v-icon left>
               {{
                 $route.name === 'settings.account' ?
-                '$vuetify.icons.accountBlue' :
-                '$vuetify.icons.account'
+                '$accountBlue' :
+                '$account'
               }}
-            </v-icon>{{ $t('settings.account.title') }}</v-tab>
+            </v-icon>{{ t('settings.account.title') }}</v-tab>
         <v-tab :ripple="false" class="vertical-tabs"
-            v-if="$store.state.context.organization &&
-            $can('edit', $store.state.context.organization)"
+            v-if="context.organization &&
+            $can('edit', context.organization)"
         :to="{name: 'settings.organization'}">
             <v-icon left>
               {{
                 $route.name === 'settings.organization' ?
-                '$vuetify.icons.organizationSettingsBlue' :
-                '$vuetify.icons.organizationSettings'
+                '$organizationSettingsBlue' :
+                '$organizationSettings'
               }}
-            </v-icon>{{ $t('settings.organization.title') }}</v-tab>
+            </v-icon>{{ t('settings.organization.title') }}</v-tab>
         <v-tab :ripple="false" class="vertical-tabs"
         :to="{name: 'settings.roles'}"
-        v-if="$store.state.context.organization &&
-        $can('edit', $store.state.context.organization)"
+        v-if="context.organization &&
+        $can('edit', context.organization)"
         >
             <v-icon left>
               {{
                 $route.name === 'settings.roles' ?
-                '$vuetify.icons.organizationRolesBlue' :
-                '$vuetify.icons.organizationRoles'
+                '$organizationRolesBlue' :
+                '$organizationRoles'
               }}
-            </v-icon>{{ $t('settings.organizationRoles.title') }}</v-tab>
+            </v-icon>{{ t('settings.organizationRoles.title') }}</v-tab>
         <v-tab :ripple="false" class="vertical-tabs"
         :to="{name: 'settings.notifications'}">
             <v-icon left>
               {{
                 $route.name === 'settings.notifications' ?
-                '$vuetify.icons.notificationBlue' :
-                '$vuetify.icons.notification'
+                '$notificationBlue' :
+                '$notification'
               }}
-            </v-icon>{{ $t('settings.notifications.title') }}</v-tab>
+            </v-icon>{{ t('settings.notifications.title') }}</v-tab>
         <v-tab :ripple="false" class="vertical-tabs"
         :to="{name: 'settings.payment'}"
-          v-if="$store.state.context.organization &&
-          $can('edit', $store.state.context.organization)">
+          v-if="context.organization &&
+          $can('edit', context.organization)">
             <v-icon left>
               {{
                 $route.name === 'settings.payment' ?
-                '$vuetify.icons.paymentBlue' :
-                '$vuetify.icons.payment'
+                '$paymentBlue' :
+                '$payment'
               }}
             </v-icon>
             Payment
@@ -75,10 +74,21 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue';
+import useContextStore from '@/stores/context';
+import { useI18n } from 'vue-i18n';
 
-export default {
+export default defineComponent({
   name: 'SettingsView',
-};
+  setup() {
+    const context = useContextStore();
+    const { t } = useI18n({ useScope: 'global' });
+    return {
+      context,
+      t,
+    };
+  },
+});
 </script>
 
 <style scoped>

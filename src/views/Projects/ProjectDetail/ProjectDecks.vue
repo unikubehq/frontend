@@ -2,7 +2,8 @@
   <div>
     <v-row v-if="!deckEdit">
       <v-col cols="6" v-for="pkg in project.decks" :key="pkg.id">
-        <v-card outlined class="projectDeck">
+        <v-card variant="outlined" class="projectDeck"
+          v-if="!pkg.disabled || $can('edit', project)">
           <v-card-title>
             <v-row>
               <v-col cols="8">
@@ -13,18 +14,15 @@
                 <v-divider style="height: 24px" class="mx-4 mb-n1" vertical></v-divider>
                 <v-icon size="24"
                   class="mr-2 projectDeck-edit"
-                  @click="setDeckEdit(pkg)">
-                  $vuetify.icons.edit
-                </v-icon>
+                  @click="setDeckEdit(pkg)">$edit</v-icon>
               </v-col>
-              <v-divider></v-divider>
             </v-row>
           </v-card-title>
           <v-card-text>
             <v-divider class="mb-2"></v-divider>
             <v-col cols="12">
-              <v-icon>$vuetify.icons.deployments</v-icon>
-              {{ $tc('deployment.Deployment', pkg.deployments.length) }}
+              <v-icon>$deployments</v-icon>
+              {{ t('deployment.Deployment', pkg.deployments.length) }}
             </v-col>
             <v-col cols="12" class="d-flex flex-wrap">
               <span
@@ -46,6 +44,7 @@
         :deck="deckToBeEdited"
         :environment="environment"
         :sopsProviders="project.sops"
+        :specType="project.specType"
         @change="deckEdit = false; $emit('update')"
       ></edit-deck>
     </v-row>
@@ -53,7 +52,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { defineComponent, PropType, ref } from 'vue';
 import {
   TDeckNode,
   TProjectNode,
@@ -61,42 +60,52 @@ import {
 import EditDeck from '@/components/Projects/EditDeck.vue';
 import { CliHintMessage } from '@/typing';
 import CliHint from '@/components/general/CliHint.vue';
+import { useI18n } from 'vue-i18n';
 
-@Component({
+export default defineComponent({
   components: {
     EditDeck,
     CliHint,
   },
-})
-export default class ProjectDecks extends Vue {
-  @Prop() readonly project!: TProjectNode;
-
-  deckEdit = false;
-
-  deckToBeEdited: TDeckNode | undefined;
-
-  memberDrawer = false;
-
-  deckCliHintMessage: CliHintMessage[] = [
-    {
-      command: 'unikube deck install',
-      hint: this.$t('cli.deck.install').toString(),
+  props: {
+    project: {
+      type: Object as PropType<TProjectNode>,
     },
-    {
-      command: 'unikube deck ingress',
-      hint: this.$t('cli.deck.ingress').toString(),
+  },
+  setup() {
+    const { t } = useI18n({ useScope: 'global' });
+    const deckCliHintMessage = ref([
+      {
+        command: 'unikube deck install',
+        hint: t('cli.deck.install').toString(),
+      },
+      {
+        command: 'unikube deck ingress',
+        hint: t('cli.deck.ingress').toString(),
+      },
+    ] as CliHintMessage[]);
+    return {
+      t,
+      deckCliHintMessage,
+    };
+  },
+  data() {
+    return {
+      deckEdit: false,
+      deckToBeEdited: undefined as TDeckNode | undefined,
+      memberDrawer: false,
+    };
+  },
+  methods: {
+    setEdit(): void {
+      this.$router.push({ query: { edit: 'true' } });
     },
-  ];
-
-  setEdit(): void {
-    this.$router.push({ query: { edit: 'true' } });
-  }
-
-  setDeckEdit(pkg: TDeckNode): void {
-    this.deckToBeEdited = pkg;
-    this.deckEdit = true;
-  }
-}
+    setDeckEdit(pkg: TDeckNode): void {
+      this.deckToBeEdited = pkg;
+      this.deckEdit = true;
+    },
+  },
+});
 </script>
 
 <style lang="scss" scoped>

@@ -4,12 +4,14 @@
     "module": "esnext",
     "strict": true,
     "jsx": "preserve",
-    "importHelpers": true,
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "useDefineForClassFields": true,
+    "resolveJsonModule": true,
     "sourceMap": true,
     "baseUrl": ".",
     "types": [
@@ -18,8 +20,7 @@
       "chai",
       "vuetify",
       "vue-apollo",
-      //"vue-cli-plugin-apollo/types",
-      "jest"
+      "jest",
     ],
     "paths": {
       "@/*": [
@@ -41,7 +42,7 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "tests/**/*.ts",
-    "tests/**/*.tsx"
+    "tests/**/*.tsx",
   ],
   "exclude": [
     "node_modules"

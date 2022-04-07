@@ -1,14 +1,14 @@
 <template>
   <v-container fluid >
     <v-skeleton-loader type="heading" tile height="50" class="mb-2 mt-5"
-      v-if="$apollo.queries.graphqlProject.loading || $apollo.queries.organization.loading"/>
+      v-if="!graphqlProject || !organization"/>
     <h1 class="text-h1 mt-5" :class="overlay ? 'ml-3' : ''" v-else>
-      {{ $t('projects.addMembers') }} - {{ project.title }}
+      {{ t('projects.addMembers') }} - {{ project.title }}
     </h1>
     <v-card>
     <v-row>
       <v-card-text class="px-10"
-          v-if="$apollo.queries.graphqlProject.loading || $apollo.queries.organization.loading">
+          v-if="!graphqlProject || !organization">
         <v-skeleton-loader type="text" tile width="50%"/>
         <v-row class="mt-3">
           <v-col cols="6"><v-skeleton-loader height="40" type="heading" tile width="90%"/></v-col>
@@ -20,8 +20,8 @@
         <v-col :cols="overlay ? 12 : 7">
           <v-alert
             dense
-            outlined
-            icon="$vuetify.icons.warning"
+            variant="outlined"
+            icon="$warning"
             type="error"
             v-if="memberChoices.length === 0">
             Looks like all your organization members are already part of this project!
@@ -39,26 +39,26 @@
                 label="Member"
                 :items="memberChoices"
                 v-model="member.user"
-                outlined
-                prepend-inner-icon="$vuetify.icons.organization"
-                :placeholder="$t('project.chooseMember')"
+                variant="outlined"
+                prepend-inner-icon="$organization"
+                :placeholder="t('project.chooseMember')"
                   persistent-placeholder
               ></v-select>
             </v-col>
             <v-col :cols="overlay ? 6 : 5">
               <v-select
-                :label="$t('project.role')"
+                :label="t('project.role')"
                 v-model="member.role"
                 :items="projectMemberRoles"
-                outlined
-                prepend-inner-icon="$vuetify.icons.organization"
-                :placeholder="$t('projects.selectRole')"
+                variant="outlined"
+                prepend-inner-icon="$organization"
+                :placeholder="t('projects.selectRole')"
                   persistent-placeholder
               ></v-select>
             </v-col>
             <v-col :cols="overlay ? 3 : 2"
                 :class="overlay ? 'mt-n10 mb-6' : 'mt-7'" v-if="idx !== 0">
-              <v-btn color="error" large @click="removeMemberForm(idx)">Remove</v-btn>
+              <v-btn color="error" size="large" @click="removeMemberForm(idx)">Remove</v-btn>
             </v-col>
           </v-row>
         </v-form>
@@ -66,19 +66,18 @@
           <v-col cols="12">
             <v-btn :ripple="false" color="transparent" elevation="0" @click="addMemberForm" text
                 :class="overlay ? 'mt-5' : 'mt-n5'" v-if="memberChoices.length">
-              <v-icon size="24" class="mr-2">
-              $vuetify.icons.addRound
-              </v-icon>{{ $t('user.addAnother') }}
+              <v-icon size="24" class="mr-2">$addRound</v-icon>
+              {{ t('user.addAnother') }}
             </v-btn>
           </v-col>
           <v-col :cols="overlay ? 5 : 2">
             <v-btn
               color="primary"
               block
-              large
+              size="large"
               @click="submit"
               :disabled="!allMembersValid"
-            >{{ $tc('project.addMember', members.length) }}</v-btn>
+            >{{ t('project.addMember', members.length) }}</v-btn>
           </v-col>
         </v-row>
       </v-col>
@@ -89,9 +88,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import { email } from 'vuelidate/lib/validators';
-import VueI18n from 'vue-i18n';
+import { defineComponent, PropType, ref } from 'vue';
+import { email } from '@vuelidate/validators';
+import VueI18n, { useI18n } from 'vue-i18n';
 import {
   CreateProjectMemberMutation,
   Maybe,
@@ -103,122 +102,126 @@ import {
   TProjectMemberRoleEnum,
   TProjectNode,
 } from '@/generated/graphql';
+import useContextStore from '@/stores/context';
+import { useRoute } from 'vue-router';
+import { useQuery, useResult } from '@vue/apollo-composable';
 import TranslateResult = VueI18n.TranslateResult;
 
-@Component({
+export default defineComponent({
   validations: {
     email,
   },
-  apollo: {
-    organization: {
-      query: OrganizationMembersQuery,
-      variables() {
-        return {
-          id: this.$store.state.context.organization.id,
-        };
-      },
-      skip() {
-        return !this.organizationSet;
-      },
+  setup() {
+    const project = ref(null as Maybe<TProjectNode>);
+    const context = useContextStore();
+    const { t } = useI18n({ useScope: 'global' });
+    const orgaVariables = {
+      id: context.organization?.id,
+    };
+    const orgaQuery = useQuery(OrganizationMembersQuery, {
+      variables: orgaVariables,
+      skip: !context?.organization,
+    });
+
+    const route = useRoute();
+    const projectVariables = {
+      id: route.params.slug,
+    };
+    const { result } = useQuery(ProjectDetailQuery, {
+      variables: projectVariables,
+    });
+    const graphqlProject = useResult(
+      result,
+      null,
+      (data: TProjectDetailQueryResult) => data.project,
+    );
+    return {
+      context,
+      project,
+      organization: orgaQuery.result,
+      graphqlProject,
+      t,
+    };
+  },
+  props: {
+    projectProp: {
+      type: Object as PropType<TProjectNode>,
+      required: false,
     },
-    graphqlProject: {
-      query: ProjectDetailQuery,
-      variables() {
-        return {
-          id: this.$route.params.slug,
-        };
-      },
-      update(data: TProjectDetailQueryResult) {
-        this.project = data.project;
-      },
+    overlay: {
+      type: Boolean,
+      default: false,
     },
   },
-})
-export default class AddTeamMember extends Vue {
-  @Prop() readonly projectProp: TProjectNode | undefined
-
-  @Prop({ default: false }) readonly overlay!: boolean
-
-  email = '';
-
-  project: TProjectNode | null = null;
-
-  members = [
-    { user: null, role: TProjectMemberRoleEnum.Member },
-  ]
-
-  get memberChoices(): Array<{value: string, text: string}> {
-    const result : Array<{value: string, text: string}> = [];
-    this.$data?.organization?.members?.forEach((member: TOrganizationMember) => {
-      if (!this.project?.members?.every(
-        (projectMember: Maybe<TProjectMember>) => projectMember?.user?.id !== member?.user?.id,
-      )) {
-        return;
+  data() {
+    return {
+      email: '',
+      members: [] as { user: null, role: TProjectMemberRoleEnum.Member }[],
+    };
+  },
+  computed: {
+    memberChoices(): Array<{ value: string, text: string }> {
+      const result: Array<{ value: string, text: string }> = [];
+      this.organization?.members?.forEach((member: Maybe<TOrganizationMember>) => {
+        if (!this.project?.members?.every(
+          (projectMember: Maybe<TProjectMember>) => projectMember?.user?.id !== member?.user?.id,
+        )) {
+          return;
+        }
+        if (member && member?.user) {
+          const name = member.user?.familyName || member.user?.givenName
+            ? `${member.user?.givenName} ${member.user?.familyName}` : member.user.id;
+          result.push({
+            value: member.user.id,
+            text: name,
+          });
+        }
+      });
+      return result;
+    },
+    projectMemberRoles(): Array<{ value: string, text: TranslateResult }> {
+      return [
+        { value: TProjectMemberRoleEnum.Admin, text: this.t('general.admin') },
+        { value: TProjectMemberRoleEnum.Member, text: this.t('general.member') },
+      ];
+    },
+    allMembersValid(): boolean {
+      return this.members.every((member) => member.user && member.role);
+    },
+  },
+  methods: {
+    addMemberForm(): void {
+      this.members.push({ user: null, role: TProjectMemberRoleEnum.Member });
+    },
+    removeMemberForm(idx: number): void {
+      delete this.members[idx];
+    },
+    submit(): void {
+      this.members.forEach((member) => {
+        if (member.user && this.project) {
+          this.$apollo.mutate({
+            mutation: CreateProjectMemberMutation,
+            variables: {
+              user: member.user,
+              role: member.role,
+              id: this.project.id,
+            },
+          });
+        }
+      });
+      if (this.overlay) {
+        this.$emit('done');
+      } else {
+        this.$router.push({ name: 'overview' });
       }
-      if (member && member?.user) {
-        const name = member.user?.familyName || member.user?.givenName
-          ? `${member.user?.givenName} ${member.user?.familyName}` : member.user.id;
-        result.push({
-          value: member.user.id,
-          text: name,
-        });
-      }
-    });
-    return result;
-  }
-
-  get projectMemberRoles(): Array<{value: string, text: TranslateResult}> {
-    return [
-      { value: TProjectMemberRoleEnum.Admin, text: this.$t('general.admin') },
-      { value: TProjectMemberRoleEnum.Member, text: this.$t('general.member') },
-    ];
-  }
-
-  get organizationSet(): boolean {
-    return !!this.$store.state.context.organization;
-  }
-
-  addMemberForm(): void {
-    this.members.push({ user: null, role: TProjectMemberRoleEnum.Member });
-  }
-
-  removeMemberForm(idx: number): void {
-    Vue.delete(
-      this.members,
-      idx,
-    );
-  }
-
-  submit(): void {
-    this.members.forEach((member) => {
-      if (member.user && this.project) {
-        this.$apollo.mutate({
-          mutation: CreateProjectMemberMutation,
-          variables: {
-            user: member.user,
-            role: member.role,
-            id: this.project.id,
-          },
-        });
-      }
-    });
-    if (this.overlay) {
-      this.$emit('done');
-    } else {
-      this.$router.push({ name: 'overview' });
-    }
-  }
-
-  get allMembersValid(): boolean {
-    return this.members.every((member) => member.user && member.role);
-  }
-
+    },
+  },
   created(): void {
     if (this.projectProp) {
       this.project = this.projectProp;
     }
-  }
-}
+  },
+});
 </script>
 
 <style scoped>

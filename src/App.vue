@@ -5,10 +5,10 @@
     <v-snackbar v-model="message.show" :key="message.id" :style="{'margin-top': (idx * 80) + 'px'}"
         :color="message.error ? 'error' : 'primary'" top right v-for="(message, idx) in messages">
         <v-icon size="40" v-if="message.error">
-          $vuetify.icons.errorWhiteBg
+          $errorWhiteBg
         </v-icon>
         <v-icon size="40" v-else>
-          $vuetify.icons.tickWhiteBg
+          $tickWhiteBg
         </v-icon>
         <span class="font-weight-medium">
           {{ message.message }}
@@ -19,55 +19,56 @@
         </v-btn>
       </template>
     </v-snackbar>
-    <v-overlay :value="overlay">
-      <v-progress-circular
-        indeterminate
-        size="64"
-        color="#CEFFE9"
-      ></v-progress-circular>
-    </v-overlay>
   </v-app>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { Component, Watch } from 'vue-property-decorator';
-import { UserDetailQuery } from '@/generated/graphql';
+import { defineComponent } from 'vue';
+import { TUserDetailQueryResult, TUserDetailQueryVariables, UserDetailQuery } from '@/generated/graphql';
 import { SnackbarMessage } from '@/typing';
+import useAuthStore from '@/stores/auth';
+import useContextStore from '@/stores/context';
+import { useQuery, UseQueryReturn } from '@vue/apollo-composable';
 
-@Component({})
-export default class App extends Vue {
-  get overlay(): boolean {
-    return this.$store.state.ui.overlay;
-  }
+export default defineComponent({
+  setup() {
+    const auth = useAuthStore();
+    const context = useContextStore();
+    const variables = {
+      id: auth.uuid,
+    };
+    const { result, error } = useQuery(
+      UserDetailQuery,
+      variables,
+    ) as UseQueryReturn<TUserDetailQueryResult, TUserDetailQueryVariables>;
 
-  get rawRpt():string {
-    return this.$store.state.auth.rawRpt;
-  }
+    if (result) {
+      auth.avatarImage = result?.value?.user?.avatarImage || '';
+    }
+    if (error) {
+      console.warn('Could not fetch user avatar');
+    }
 
-  get messages(): SnackbarMessage[] {
-    return this.$store.state.context.messages.filter((message: SnackbarMessage) => message.show);
-  }
-
-  @Watch('rawRpt', { immediate: true })
-  rawRptChanged(): void {
-    this.$ability.update(this.$store.getters['auth/caslRules']);
-  }
-
-  created(): void {
-    this.$apollo.query({
-      query: UserDetailQuery,
-      variables: {
-        id: this.$store.state.auth.uuid,
+    return {
+      auth,
+      context,
+    };
+  },
+  computed: {
+    rawRpt():string {
+      return this.auth.rawRpt;
+    },
+    messages(): SnackbarMessage[] {
+      return this.context.messages.filter((message: SnackbarMessage) => message.show);
+    },
+  },
+  watch: {
+    rawRpt: {
+      immediate: true,
+      handler(): void {
+        this.$ability.update(this.auth.caslRules);
       },
-    }).then((res) => {
-      this.$store.commit('auth/setAvatar', res.data.user.avatarImage);
-    });
-  }
-}
+    },
+  },
+});
 </script>
-
-<style lang="scss">
-@import "styles/main";
-
-</style>

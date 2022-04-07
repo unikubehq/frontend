@@ -1,42 +1,59 @@
 <template>
   <v-col cols="12" sm="8" md="3" class="text-center">
     <div v-if="rptRefreshed">
-      <v-icon size="60">$vuetify.icons.done</v-icon>
-      <h1>{{ $t('organization.wereDone') }}</h1>
+      <v-icon size="60">$done</v-icon>
+      <h1>{{ t('organization.wereDone') }}</h1>
       <p class="text--secondary">
-        {{ $t('organization.tada', { orgaTitle: this.orgaTitle }) }}
+        {{ t('organization.tada', { orgaTitle: this.orgaTitle }) }}
       </p>
-      <router-link to="/overview">{{ $t('organization.goToDashboard') }}</router-link>
+      <router-link to="/overview">{{ t('organization.goToDashboard') }}</router-link>
     </div>
     <div v-else>
       <div class="text-center">
         <div class="orga-loader"></div>
       </div>
-      <h1>{{ $t('organization.finishingUp') }}</h1>
-      <p class="text--secondary">{{ $t('organization.pleaseWait') }}</p>
+      <h1>{{ t('organization.finishingUp') }}</h1>
+      <p class="text--secondary">{{ t('organization.pleaseWait') }}</p>
     </div>
   </v-col>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { defineComponent, ref } from 'vue';
+import useAuthStore from '@/stores/auth';
+import { useI18n } from 'vue-i18n';
 
-@Component({})
-export default class OrgaDone extends Vue {
-  @Prop() readonly orgaId: string | undefined
+export default defineComponent({
+  props: {
+    orgaId: {
+      type: String,
+      required: false,
+    },
+    orgaTitle: {
+      type: String,
+      required: false,
+    },
+  },
 
-  @Prop() readonly orgaTitle: string | undefined
+  setup() {
+    const auth = useAuthStore();
+    const { t } = useI18n({ useScope: 'global' });
+    const rptRefreshed = ref(false);
+    const snackbar = ref(false);
 
-  snackbar = false;
-
-  rptRefreshed = false;
-
-  created(): void {
-    this.$store.dispatch('auth/refresh', -1).then(() => {
+    return {
+      rptRefreshed,
+      snackbar,
+      auth,
+      t,
+    };
+  },
+  created() {
+    this.auth.refresh(-1).then(() => {
       this.rptRefreshed = true;
     });
-  }
-}
+  },
+});
 </script>
 
 <style scoped>

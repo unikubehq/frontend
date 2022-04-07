@@ -6,7 +6,7 @@
             :is="loading ? 'span' : 'router-link'"
             :to="projectUrl"
             class="mr-6 d-inline-block">
-          <v-icon size="48">$vuetify.icons.project</v-icon>
+          <v-icon size="48">$project</v-icon>
         </component>
         <component
             :is="loading ? 'span' : 'router-link'"
@@ -17,7 +17,7 @@
             <span v-else>
               {{ project.title}}
               <span class="project-card__role">
-                {{ $can('edit', project) ? $t('general.admin') : $t('general.member') }}
+                {{ $can('edit', project) ? t('general.admin') : t('general.member') }}
               </span>
             </span>
           </h3>
@@ -28,7 +28,7 @@
         <v-tooltip top>
           <template v-slot:activator="{ on, attrs }">
             <div v-on="on" v-bind="attrs" class="d-inline-block">
-              <small>{{ $t('projects.projectStatus') }}:</small>
+              <small>{{ t('projects.projectStatus') }}:</small>
               <v-avatar size="9" class="ml-2"
                 :color="getProjectStatusLevel(project.repositoryStatus)" />
             </div>
@@ -44,25 +44,24 @@
               class="project-card__edit"
               :to="editUrl"
           >
-            <v-icon size="24">$vuetify.icons.edit</v-icon>
+            <v-icon size="24">$edit</v-icon>
           </component>
           <v-divider style="height: 24px" class="mx-4 mb-n1" vertical></v-divider>
-          <v-icon class="project-card__sync" @click="syncRepo(project)" size="24">
-            $vuetify.icons.sync
-          </v-icon>
+          <v-icon class="project-card__sync" @click="syncRepo(project)" size="24">$sync</v-icon>
           <v-divider style="height: 24px" class="mx-4 mb-n1" vertical></v-divider>
-          <v-icon @click="deleteProjectDialog(project)" size="24" class="project-card__delete">
-            $vuetify.icons.delete
-          </v-icon>
+          <v-icon
+            @click="deleteProjectDialog(project)"
+            size="24"
+            class="project-card__delete">$delete</v-icon>
         </div>
       </v-col>
     </v-row>
-    <v-row class="white px-7">
-      <v-divider class="mr-7"></v-divider>
+    <v-row class="px-9 d-flex align-center">
+      <v-divider class="project-card__divider"></v-divider>
       <component
           :is="loading ? 'span' : 'router-link'"
           :to="projectUrl">
-        <v-icon class="project-card__detail" size="24">$vuetify.icons.dropdown</v-icon>
+        <v-icon class="project-card__detail" size="24px">$dropdown</v-icon>
       </component>
     </v-row>
     <v-row justify="space-around" class="white pl-5 pt-3 pb-3 pr-10">
@@ -81,7 +80,7 @@
           <span v-if="loading"><v-skeleton-loader type="heading" tile width="70"/></span>
           <span v-else>{{ project.decks.length }}</span>
         </h4>
-        <small>{{ $t('projects.numberDecks') }}</small>
+        <small>{{ t('projects.numberDecks') }}</small>
       </v-col>
       <v-divider vertical></v-divider>
       <v-col>
@@ -89,7 +88,7 @@
           <span v-if="loading"><v-skeleton-loader type="heading" tile width="70"/></span>
           <span v-else>{{ modifiedDate }}</span>
         </h4>
-        <small>{{ $t('projects.lastUpdate') }}</small>
+        <small>{{ t('projects.lastUpdate') }}</small>
       </v-col>
       <v-divider vertical></v-divider>
       <v-col class="text-right pr-10">
@@ -102,85 +101,101 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import { TProjectNode, UpdateProjectRepositoryMutation } from '@/generated/graphql';
+import { defineComponent, PropType, ref } from 'vue';
+import { Maybe, TProjectNode, UpdateProjectRepositoryMutation } from '@/generated/graphql';
 import { CliHintMessage } from '@/typing/index';
 import CliHint from '@/components/general/CliHint.vue';
 import DeleteProject from '@/components/Projects/DeleteProject.vue';
 import ProjectMemberAvatars from '@/components/Projects/ProjectMemberAvatars.vue';
 import Converter from '@/utils/converter';
+import { useI18n } from 'vue-i18n';
 
-@Component({
-  components: { CliHint, DeleteProject, ProjectMemberAvatars },
-})
-export default class ProjectList extends Vue {
-  @Prop() readonly project: TProjectNode | undefined
-
-  @Prop({ default: false }) readonly loading!: boolean
-
-  deleteProject: TProjectNode | null = null
-
-  showDeleteDialog = false
-
-  drawer = false;
-
-  projectCliHintMessage: CliHintMessage[] = [
-    {
-      command: 'unikube project up',
-      hint: this.$t('cli.project.up'),
-    },
-    {
-      command: 'unikube project prune',
-      hint: this.$t('cli.project.prune'),
-    },
-  ];
-
-  getReadableProjectStatus = Converter.getReadableProjectStatus
-
-  getProjectStatusLevel = Converter.getProjectStatusLevel
-
-  get modifiedDate(): string {
-    if (this.project?.currentCommitDateTime) {
-      return this.$d(new Date(this.project?.currentCommitDateTime), 'short');
-    }
-    return '-';
-  }
-
-  get editUrl(): string {
-    return this.loading ? '' : `/project/${this.project?.id}?edit=true`;
-  }
-
-  get projectUrl(): string {
-    return this.loading ? '' : `/project/${this.project?.id}`;
-  }
-
-  syncRepo(project: TProjectNode): void {
-    this.$apollo.mutate({
-      mutation: UpdateProjectRepositoryMutation,
-      variables: {
-        id: project.id,
+export default defineComponent({
+  components: {
+    CliHint,
+    DeleteProject,
+    ProjectMemberAvatars,
+  },
+  setup() {
+    const { t, d } = useI18n({ useScope: 'global' });
+    const projectCliHintMessage = ref([
+      {
+        command: 'unikube project up',
+        hint: t('cli.project.up'),
       },
-    }).then(() => {
-      this.$store.commit('context/addSnackbarMessage', {
-        message: this.$t('projects.sync').toString(),
-        error: false,
+      {
+        command: 'unikube project prune',
+        hint: t('cli.project.prune'),
+      },
+    ] as CliHintMessage[]);
+    return {
+      projectCliHintMessage,
+      t,
+      d,
+    };
+  },
+  props: {
+    project: {
+      type: Object as PropType<TProjectNode>,
+      required: false,
+    },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  data() {
+    return {
+      deleteProject: null as Maybe<TProjectNode>,
+      showDeleteDialog: false,
+      drawer: false,
+      getReadableProjectStatus: Converter.getReadableProjectStatus,
+      getProjectStatusLevel: Converter.getProjectStatusLevel,
+    };
+  },
+  computed: {
+    modifiedDate(): string {
+      if (this.project?.currentCommitDateTime) {
+        return this.d(new Date(this.project?.currentCommitDateTime), 'short');
+      }
+      return '-';
+    },
+    editUrl(): string {
+      return this.loading ? '' : `/project/${this.project?.id}?edit=true`;
+    },
+    projectUrl(): string {
+      return this.loading ? '' : `/project/${this.project?.id}`;
+    },
+  },
+  methods: {
+    syncRepo(project: TProjectNode): void {
+      this.$apollo.mutate({
+        mutation: UpdateProjectRepositoryMutation,
+        variables: {
+          id: project.id,
+        },
+      }).then(() => {
+        this.$store.commit('context/addSnackbarMessage', {
+          message: this.t('projects.sync').toString(),
+          error: false,
+        });
+      }).catch(() => {
+        this.$store.commit('context/addSnackbarMessage', {
+          message: this.t('projects.syncFail').toString(),
+          error: true,
+        });
       });
-    }).catch(() => {
-      this.$store.commit('context/addSnackbarMessage', {
-        message: this.$t('projects.syncFail').toString(),
-        error: true,
-      });
-    });
-  }
-
-  deleteProjectDialog(project: TProjectNode): void {
-    this.deleteProject = project;
-    this.showDeleteDialog = true;
-  }
-}
+    },
+    deleteProjectDialog(project: TProjectNode): void {
+      this.deleteProject = project;
+      this.showDeleteDialog = true;
+    },
+  },
+});
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+@import "@/styles/_ci";
 .project-card{
   &__wrapper {
     box-shadow: 0 2px 40px 0 rgba(183, 183, 183, 0.15);
@@ -210,5 +225,15 @@ export default class ProjectList extends Vue {
 hr {
   height: 42px;
   align-self: center;
+}
+.project-card__divider {
+  flex-basis: auto;
+  margin-right: 15px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.project-card__detail svg {
+  height: 24px;
+  width: 24px;
 }
 </style>

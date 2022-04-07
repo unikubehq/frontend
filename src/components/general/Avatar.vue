@@ -2,7 +2,7 @@
   <v-menu open-on-hover top offset-y :close-on-content-click="false">
     <template v-slot:activator="{ on }">
       <v-avatar v-on="on" size="46"
-          class="initials-avatar avatar-list-item avatar__unikube" color="primary"
+          class="initials-avatar avatar-list-item avatar__unikube"
           :style="avatarStyles">
             <img v-if="avatar.image" :src="avatar.image" alt="User Avatar">
             <span v-else class="avatar-initials">{{ avatar.initials }}</span>
@@ -35,7 +35,7 @@
               {{ avatar.role }}
             </v-list-item-title>
             <v-list-item-subtitle>
-              {{ $t('user.role') }}
+              {{ t('user.role') }}
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
@@ -45,12 +45,46 @@
 </template>
 
 <script lang="ts">
-import Component from 'vue-class-component';
-import { AvatarMixin } from '@/components/mixins';
+import { computed, defineComponent, PropType } from 'vue';
+import { Avatar } from '@/typing';
+import { useI18n } from 'vue-i18n';
 
-@Component
-export default class UnikubeAvatar extends AvatarMixin {
+type AvatarColor = {
+  color: string,
+  backgroundColor: string
 }
+
+export default defineComponent({
+  name: 'UserAvatar',
+  props: {
+    avatarProp: {
+      type: Object as PropType<Avatar>,
+      required: true,
+    },
+  },
+  setup(props) {
+    const { t } = useI18n({ useScope: 'global' });
+    const randomHSL = (name: string, lum: string): string => {
+      const number = name.length;
+      const firstLetter = name[0].charCodeAt(0);
+      const lastLetter = name[name.length - 1].charCodeAt(0);
+
+      const avatarNumber = (number + firstLetter + lastLetter) / 10;
+
+      return `hsla(${Math.floor(360 * avatarNumber)},70%,${lum},1)`;
+    };
+    const avatarColor = (lum: string): string => randomHSL(props.avatarProp.name, lum);
+    const avatarStyles = computed((): AvatarColor => ({
+      color: avatarColor('50%'),
+      backgroundColor: `${avatarColor('95%')} !important`,
+    }));
+    return {
+      avatarStyles,
+      avatar: computed(() => props.avatarProp),
+      t,
+    };
+  },
+});
 </script>
 
 <style scoped>

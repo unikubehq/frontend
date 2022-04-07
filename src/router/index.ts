@@ -1,12 +1,13 @@
-import Vue from 'vue';
 import * as Sentry from '@sentry/vue';
-import VueRouter, { Route, RouteConfig } from 'vue-router';
-import CreateOrganization from '@/views/Organizations/CreateOrganization.vue';
+import {
+  createRouter,
+  createWebHistory,
+  RouteRecordRaw,
+} from 'vue-router';
 import i18n from '@/i18n';
+import CreateOrganization from '@/views/Organizations/CreateOrganization.vue';
 
-Vue.use(VueRouter);
-
-const routes: Array<RouteConfig> = [
+const routes: RouteRecordRaw[] = [
   {
     path: '/intro',
     name: 'create-organization',
@@ -25,7 +26,7 @@ const routes: Array<RouteConfig> = [
         name: 'overview',
         component: () => import(/* webpackChunkName: "about" */ '../views/Projects.vue'),
         meta: {
-          label: i18n.t('views.projects'),
+          label: i18n.global.t('views.projects'),
         },
       },
       {
@@ -33,7 +34,7 @@ const routes: Array<RouteConfig> = [
         name: 'settings',
         component: () => import(/* webpackChunkName: "settings" */ '../views/Settings.vue'),
         meta: {
-          label: i18n.t('views.settingsLabel'),
+          label: i18n.global.t('views.settingsLabel'),
         },
         redirect: { name: 'settings.account' },
         children: [
@@ -42,7 +43,7 @@ const routes: Array<RouteConfig> = [
             name: 'settings.account',
             component: () => import(/* webpackChunkName: "settings" */ '../views/Settings/AccountSettings.vue'),
             meta: {
-              label: i18n.t('views.settings.account'),
+              label: i18n.global.t('views.settings.account'),
             },
           },
           {
@@ -50,7 +51,7 @@ const routes: Array<RouteConfig> = [
             name: 'settings.notifications',
             component: () => import(/* webpackChunkName: "settings" */ '../views/Settings/NotificationSettings.vue'),
             meta: {
-              label: i18n.t('views.settings.notifications'),
+              label: i18n.global.t('views.settings.notifications'),
             },
           },
           {
@@ -58,7 +59,7 @@ const routes: Array<RouteConfig> = [
             name: 'settings.roles',
             component: () => import(/* webpackChunkName: "settings" */ '../views/Settings/OrganizationRoles.vue'),
             meta: {
-              label: i18n.t('views.settings.roles'),
+              label: i18n.global.t('views.settings.roles'),
             },
           },
           {
@@ -66,7 +67,7 @@ const routes: Array<RouteConfig> = [
             name: 'settings.organization',
             component: () => import(/* webpackChunkName: "settings" */ '../views/Settings/OrganizationSettings.vue'),
             meta: {
-              label: i18n.t('views.settings.organization'),
+              label: i18n.global.t('views.settings.organization'),
             },
           },
           {
@@ -74,7 +75,7 @@ const routes: Array<RouteConfig> = [
             name: 'settings.payment',
             component: () => import(/* webpackChunkName: "settings" */ '../views/Settings/Payment.vue'),
             meta: {
-              label: i18n.t('views.settings.payment'),
+              label: i18n.global.t('views.settings.payment'),
             },
           },
         ],
@@ -84,7 +85,7 @@ const routes: Array<RouteConfig> = [
         name: 'create New Project',
         component: () => import(/* webpackChunkName: "about" */ '../views/Projects/CreateProject.vue'),
         meta: {
-          label: i18n.t('views.createProject'),
+          label: i18n.global.t('views.createProject'),
         },
       },
       {
@@ -92,7 +93,7 @@ const routes: Array<RouteConfig> = [
         name: 'project.addMembers',
         component: () => import('../views/Projects/AddTeamMember.vue'),
         meta: {
-          label: i18n.t('views.addMembers'),
+          label: i18n.global.t('views.addMembers'),
         },
       },
       {
@@ -100,7 +101,7 @@ const routes: Array<RouteConfig> = [
         name: 'project.detail',
         component: () => import('../views/Projects/ProjectDetail.vue'),
         meta: {
-          label: i18n.t('views.project.detail'),
+          label: i18n.global.t('views.project.detail'),
         },
         redirect: { name: 'project.detail.decks' },
         children: [
@@ -109,7 +110,7 @@ const routes: Array<RouteConfig> = [
             name: 'project.detail.decks',
             component: () => import('../views/Projects/ProjectDetail/ProjectDecks.vue'),
             meta: {
-              label: i18n.t('views.project.decks'),
+              label: i18n.global.t('views.project.decks'),
             },
           },
           {
@@ -117,7 +118,7 @@ const routes: Array<RouteConfig> = [
             name: 'project.detail.members',
             component: () => import('../views/Projects/ProjectDetail/ProjectMembers.vue'),
             meta: {
-              label: i18n.t('views.project.members'),
+              label: i18n.global.t('views.project.members'),
             },
           },
           {
@@ -125,7 +126,7 @@ const routes: Array<RouteConfig> = [
             name: 'project.detail.sops',
             component: () => import('../views/Projects/ProjectDetail/Sops.vue'),
             meta: {
-              label: i18n.t('views.project.sops'),
+              label: i18n.global.t('views.project.sops'),
             },
           },
           {
@@ -133,7 +134,7 @@ const routes: Array<RouteConfig> = [
             name: 'project.detail.clusterSettings',
             component: () => import('../views/Projects/ProjectDetail/ClusterSettings.vue'),
             meta: {
-              label: i18n.t('views.project.clusterSettings'),
+              label: i18n.global.t('views.project.clusterSettings'),
             },
           },
         ],
@@ -142,15 +143,19 @@ const routes: Array<RouteConfig> = [
   },
 ];
 
-const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
+const router = createRouter({
+  history: createWebHistory(process.env.BASE_URL),
   routes,
 });
 
-router.beforeEach((to: Route, from, next) => {
-  document.title = `${to?.meta?.label} | Unikube`;
-  Sentry.configureScope((scope) => scope.setTransactionName(to?.meta?.label));
+router.beforeEach((to, from, next) => {
+  const label = to?.meta?.label as string;
+  if (label) {
+    document.title = `${label} | Unikube`;
+    Sentry.configureScope((scope) => scope.setTransactionName(label));
+  } else {
+    document.title = 'Unikube';
+  }
   next();
 });
 

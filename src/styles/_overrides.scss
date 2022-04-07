@@ -1,13 +1,37 @@
 .v-application {
   letter-spacing: -0.2px;
 }
-.v-text-field--outlined .v-label {
-  left: -12px !important;
+/* Input field overrides */
+.v-field--variant-outlined .v-label.v-field-label--floating {
+  transform: translateY(-20px) translateX(-15px);
+  color: $unikube-blue;
+  font-weight: 500;
 }
-.v-text-field--outlined .v-input__prepend-inner ~ .v-text-field__slot .v-label {
-  left: -43px !important;
-  transform: translateY(-37px) scale(0.75);
+.v-field--active.v-field--variant-outlined .v-field__outline__notch::before {
+  opacity: var(--v-field-border-opacity);
 }
+.v-text-field .v-input__details {
+  padding-inline-start: 0;
+  margin-bottom: 30px;
+}
+.v-field__input {
+  color: $unikube-blue;
+}
+/* Input field overrides end */
+
+/* Tabs */
+.v-tab {
+  color: $grey-1;
+}
+.v-tab--selected {
+  color: $unikube-blue;
+}
+.v-tab__slider {
+  color: $unikube-green;
+  height: 3px;
+}
+/* Tabs End */
+
 .v-application--is-ltr .v-text-field--outlined legend {
   display: none;
 }
@@ -67,7 +91,7 @@ select:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0px 1000px #fff inset;
   transition: background-color 5000s ease-in-out 0s;
 }
-.v-application .v-navigation-drawer__content {
+.v-application .unikube-navigation .v-navigation-drawer__content {
   overflow-y: visible;
   overflow-x: visible;
 }
@@ -79,19 +103,55 @@ select:-webkit-autofill:focus {
   justify-content: space-between;
 }
 
-.v-tab {
-  text-transform: none !important;
-  letter-spacing: 0.2px !important;
-  &--active {
-    background-color: #fff;
-    color: $unikube-blue !important;
+/* Switch */
+.v-selection-control__wrapper {
+  color: $grey-1;
+}
+.v-switch--inset .v-switch__thumb {
+  color: rgb(var(--v-theme-surface)) !important;
+}
+/* Switch End*/
 
-  }
+
+.v-theme--light {
+  --v-medium-emphasis-opacity: 1 !important;
+  --v-theme-on-primary: 255,255,255 !important;
 }
 
-.v-input--switch__thumb.theme--light {
-  left: 5px !important;
+.v-app-bar__content {
+  justify-content: inherit;
 }
-.v-input--switch__thumb.theme--light.primary--text {
-  color: white !important;
+
+.v-overlay {
+  z-index: 1008 !important;
+}
+.v-field {
+  color: $grey-1;
+  background: #fff;
+}
+.v-field--variant-outlined.v-field--focused .v-field__outline {
+  --v-field-border-width: 1px;
+  color: $unikube-green;
+}
+.v-text-field__prefix {
+  margin-left: 10px;
+}
+.v-select__selections,
+.v-text-field__prefix,
+.v-text-field__suffix {
+  color: $unikube-blue;
+  opacity: 1;
+}
+.v-menu .v-list {
+  color: $unikube-blue;
+}
+.v-card--variant-contained, .v-card--variant-contained-flat {
+  background-color: rgb(255, 255, 255);
+}
+.v-card--variant-outlined,
+.v-btn--variant-outlined {
+  border-color: rgb(var(--v-theme-secondary-border));
+}
+.v-btn--variant-outlined {
+  color: rgb(var(--v-theme-secondary-border));
 }

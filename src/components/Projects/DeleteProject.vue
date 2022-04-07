@@ -1,29 +1,29 @@
 <template>
   <v-dialog
-      v-model="show"
+      v-model="dialog"
       persistent
       width="550"
       class="project-delete__modal"
     >
-      <v-card v-if="show" class="py-8 px-7">
+      <v-card v-if="dialog" class="py-8 px-7">
         <v-card-title class="headline">
-          {{ $t('projects.deleteModal.title', { title: project.title }) }}
+          {{ t('projects.deleteModal.title', { title: project.title }) }}
         </v-card-title>
         <v-card-text>
-          <div>{{ $t('projects.deleteModal.intro', { title: project.title }) }}<br><br>
+          <div>{{ t('projects.deleteModal.intro', { title: project.title }) }}<br><br>
           </div>
           <v-alert
             dense
-            outlined
-            icon="$vuetify.icons.warning"
-            type="error">{{ $t('projects.deleteModal.warning') }}</v-alert>
+            variant="outlined"
+            icon="$warning"
+            type="error">{{ t('projects.deleteModal.warning') }}</v-alert>
           <v-text-field
             name="projectName"
             filled
-            outlined
+            variant="outlined"
             type="text"
             v-model="deleteTitle"
-            prepend-inner-icon="$vuetify.icons.projectInput"
+            prepend-inner-icon="$projectInput"
             persistent-placeholder
             class="project-delete__modal-input"
           />
@@ -32,18 +32,18 @@
           <v-container fluid class="py-0">
             <v-row>
           <v-col class="py-0"><v-btn
-            large
+            size="large"
             color="#a1a9b2"
-            outlined
+            variant="outlined"
             elevation="0"
             block
             :ripple="false"
             text
             @click="$emit('hide')"
-          >{{ $t('general.disagree') }}</v-btn>
+          >{{ t('general.disagree') }}</v-btn>
             </v-col>
           <v-col class="py-0"><v-btn
-            large
+            size="large"
             block
             elevation="0"
             :ripple="false"
@@ -51,7 +51,7 @@
             class="project-delete__submit"
             @click="deleteAndHide"
             :disabled="deleteTitle !== project.title"
-          >{{ $t('projects.deleteModal.agree') }}</v-btn>
+          >{{ t('projects.deleteModal.agree') }}</v-btn>
             </v-col>
           </v-row>
           </v-container>
@@ -61,38 +61,60 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { defineComponent, PropType } from 'vue';
 import { DeleteProject, TProjectNode } from '@/generated/graphql';
+import { useI18n } from 'vue-i18n';
 
-@Component({})
-export default class ProjectList extends Vue {
-  @Prop() readonly project!: TProjectNode
-
-  @Prop() readonly show: boolean | undefined
-
-  deleteTitle = ''
-
-  deleteAndHide():void {
-    this.$emit('hide');
-    this.deleteProject(this.project.id);
-  }
-
-  deleteProject(id: string): void {
-    this.$apollo.mutate({
-      mutation: DeleteProject,
-      variables: {
-        id,
-      },
-    })
-      .then((data) => {
-        if (data.data.deleteProject.ok) {
-          this.$emit('deleted');
-          this.$parent.$emit('deletion');
-        }
+export default defineComponent({
+  props: {
+    project: {
+      type: Object as PropType<TProjectNode>,
+      required: true,
+    },
+    show: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  setup() {
+    const { t } = useI18n({ useScope: 'global' });
+    return {
+      t,
+    };
+  },
+  data() {
+    return {
+      deleteTitle: '',
+      dialog: false,
+    };
+  },
+  methods: {
+    deleteAndHide():void {
+      this.$emit('hide');
+      this.deleteProject(this.project.id);
+    },
+    deleteProject(id: string): void {
+      this.$apollo.mutate({
+        mutation: DeleteProject,
+        variables: {
+          id,
+        },
       })
-      .catch((err) => console.log(err));
-  }
-}
+        .then((data) => {
+          if (data.data.deleteProject.ok) {
+            this.$emit('deleted');
+            this.$parent?.$emit('deletion');
+          }
+        })
+        .catch((err) => console.log(err));
+    },
+  },
+  watch: {
+    show(newVal) {
+      this.dialog = newVal;
+    },
+  },
+});
 </script>
 
 <style lang="scss" scoped>

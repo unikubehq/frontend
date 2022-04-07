@@ -1,7 +1,7 @@
 <template>
   <div class="py-5">
-    <h2>{{ $t('settings.account.title') }}</h2>
-    <p>{{ $t('settings.account.intro') }}</p>
+    <h2>{{ t('settings.account.title') }}</h2>
+    <p>{{ t('settings.account.intro') }}</p>
     <v-divider></v-divider>
     <v-row class="pt-3">
       <v-col cols="12">
@@ -27,49 +27,49 @@
           </v-avatar>
         </v-badge>
         <a href="#" class="text--secondary d-block mt-2" @click="deleteAvatar">
-          {{ $t('settings.account.removeAvatar') }}
+          {{ t('settings.account.removeAvatar') }}
         </a>
       </v-col>
       <v-col cols="8" class="mt-8">
         <v-row>
-          <v-icon large>$vuetify.icons.personalInfo</v-icon>
-          <h2 class="d-inline ml-2">{{ $t('settings.account.personalnformation') }}</h2>
+          <v-icon size="large">$personalInfo</v-icon>
+          <h2 class="d-inline ml-2">{{ t('settings.account.personalnformation') }}</h2>
         </v-row>
         <v-form>
           <v-text-field
-              :label="$t('settings.account.fullName')"
+              :label="t('settings.account.fullName')"
               name="fullname"
               filled
-              outlined
+              variant="outlined"
               disabled
               type="text"
-              :placeholder="$t('settings.account.enterName')"
+              :placeholder="t('settings.account.enterName')"
               v-model="fullName"
-              prepend-inner-icon="$vuetify.icons.user"
+              prepend-inner-icon="$user"
               @blur="$v.fullName.$touch()"
               persistent-placeholder
           />
           <v-text-field
-              :label="$t('settings.account.email')"
+              :label="t('settings.account.email')"
               name="login"
               filled
-              outlined
+              variant="outlined"
               disabled
               type="text"
-              :placeholder="$t('settings.account.enterEmail')"
+              :placeholder="t('settings.account.enterEmail')"
               v-model="email"
               @keyup.enter="register"
-              prepend-inner-icon="$vuetify.icons.email"
+              prepend-inner-icon="$email"
               @blur="$v.email.$touch()"
               persistent-placeholder
           />
           <div class="mb-3">
-            {{ $t('settings.account.updateProfileInformation') }}
+            {{ t('settings.account.updateProfileInformation') }}
             <a
               href="#"
               class="link--secondary"
               @click="changeGeneralInformation">
-              {{ $t('settings.account.generalInformation') }}
+              {{ t('settings.account.generalInformation') }}
             </a>
           </div>
         </v-form>
@@ -78,23 +78,23 @@
         <v-divider></v-divider>
       </v-col>
       <v-col cols="8" class="mt-8">
-        <h2>{{ $t('settings.account.changePassword') }}</h2>
+        <h2>{{ t('settings.account.changePassword') }}</h2>
         <div class="mb-3">
-          {{ $t('settings.account.updatePassword') }}
+          {{ t('settings.account.updatePassword') }}
         <a
           class="link--secondary"
           href="#"
           @click="updatePassword">
-          {{ $t('settings.account.setNewPassword') }}
+          {{ t('settings.account.setNewPassword') }}
         </a>
         </div>
       </v-col>
       <v-col cols="8" class="mt-8">
         <danger-zone
-          :explanation="$t('settings.account.disableExplanation')"
+          :explanation="t('settings.account.disableExplanation')"
         >
-          <h3>{{ $t('settings.account.disableAccount') }}</h3>
-          <p>{{ $t('settings.account.disableExplanation') }}</p>
+          <h3>{{ t('settings.account.disableAccount') }}</h3>
+          <p>{{ t('settings.account.disableExplanation') }}</p>
           <v-btn color="error" elevation="0" :ripple="false" @click="deleteAccount">
             Delete Account
           </v-btn>
@@ -105,79 +105,76 @@
 </template>
 
 <script lang="ts">
-import { Component } from 'vue-property-decorator';
-import { AxiosResponse } from 'axios';
+import { defineComponent } from 'vue';
+import { AxiosError, AxiosResponse } from 'axios';
 import { DeleteAvatarMutation, TDeleteAvatarMutationResult } from '@/generated/graphql';
-import { UploadComponent } from '@/components/mixins';
 import DangerZone from '@/components/Settings/DangerZone.vue';
+import setupUpload from '@/utils/upload';
+import useAuthStore from '@/stores/auth';
+import { useI18n } from 'vue-i18n';
 
-@Component({
+export default defineComponent({
   components: {
     DangerZone,
   },
-})
-export default class AccountSettings extends UploadComponent {
-  clearText = false
-
-  password = ''
-
-  newPassword = ''
-
-  reEnterNewPassword = ''
-
-  dialog = false
-
-  uploadUrl = '/users-http/upload-avatar/';
-
-  getUploadUrl(): string {
-    return `${this.uploadUrl + this.$store.state.auth.uuid}/`;
-  }
-
-  uploadCallback(res: AxiosResponse): void {
-    this.$store.commit('auth/setAvatar', res.data.url);
-  }
-
-  deleteAvatar(): void {
-    this.$apollo.mutate({
-      mutation: DeleteAvatarMutation,
-      variables: {
-        id: this.$store.state.auth.uuid,
-      },
-    }).then((data) => {
-      const res: TDeleteAvatarMutationResult = data.data;
-      if (res?.deleteAvatar?.ok) {
-        this.previewUrl = '';
-        this.$store.commit('auth/setAvatar', '');
-      }
-    });
-  }
-
-  get fullName(): string {
-    return this.$store.state.auth.username;
-  }
-
-  get email(): string {
-    return this.$store.state.auth.email;
-  }
-
-  get avatarImage(): string {
-    return this.previewUrl || this.$store.state.auth.avatarImage || 'https://cdn.zeplin.io/5f84546964e43c2749571f59/assets/2192D830-FF56-4E41-8DBA-F504CEFA64FC.svg';
-  }
-
-  updatePassword(): void {
-    this.$store.state.auth.client.login({ action: 'UPDATE_PASSWORD' });
-  }
-
-  changeGeneralInformation(): void {
-    this.$store.state.auth.client.login({ action: 'UPDATE_PROFILE' });
-  }
-
-  deleteAccount(): void {
-    this.$store.state.auth.client.login({ action: 'delete_account' });
-  }
-}
+  setup() {
+    const auth = useAuthStore();
+    const { t } = useI18n({ useScope: 'global' });
+    const uploadCallback = (res: AxiosResponse): void => {
+      auth.avatarImage = res.data.url;
+    };
+    const uploadError = (err: AxiosError) => {
+      console.log(err);
+    };
+    const { previewUrl } = setupUpload(
+      `/users-http/upload-avatar/${auth.uuid}/`,
+      uploadCallback,
+      uploadError,
+    );
+    return {
+      auth,
+      previewUrl,
+      t,
+    };
+  },
+  data() {
+    return {
+      clearText: false,
+      password: '',
+      newPassword: '',
+      reEnterNewPassword: '',
+      dialog: false,
+    };
+  },
+  methods: {
+    deleteAvatar(): void {
+      this.$apollo.mutate({
+        mutation: DeleteAvatarMutation,
+        variables: {
+          id: this.auth.uuid,
+        },
+      }).then((data) => {
+        const res: TDeleteAvatarMutationResult = data.data;
+        if (res?.deleteAvatar?.ok) {
+          this.previewUrl = '';
+          this.auth.avatarImage = '';
+        }
+      });
+    },
+  },
+  computed: {
+    fullName(): string {
+      return this.auth.username;
+    },
+    email(): string {
+      return this.auth.email;
+    },
+    avatarImage(): string {
+      return this.previewUrl || this.auth.avatarImage || 'https://cdn.zeplin.io/5f84546964e43c2749571f59/assets/2192D830-FF56-4E41-8DBA-F504CEFA64FC.svg';
+    },
+  },
+});
 </script>
-
 <style scoped>
 
 </style>

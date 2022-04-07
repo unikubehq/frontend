@@ -1,17 +1,24 @@
 <template>
     <v-alert
-    outlined
+    variant="outlined"
     color="error"
     >
-    <h2>{{ $t('settings.dangerZone') }}</h2>
+    <h2>{{ t('settings.dangerZone') }}</h2>
     <slot></slot>
    </v-alert>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
 
-@Component
-export default class DangerZone extends Vue {
-}
+import { defineComponent } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+export default defineComponent({
+  setup() {
+    const { t } = useI18n({ useScope: 'global' });
+    return {
+      t,
+    };
+  },
+});
 </script>

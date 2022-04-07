@@ -1,10 +1,10 @@
 <template>
   <v-dialog
-      v-model="show"
+      v-model="dialog"
       persistent
       width="550"
     >
-      <v-card v-if="show" class="py-8 px-7">
+      <v-card v-if="dialog" class="py-8 px-7">
         <v-card-title class="headline">
           Remove {{ member.user.givenName }} {{ member.user.familyName }} from {{ project.title }}?
         </v-card-title>
@@ -19,15 +19,15 @@
           <v-container fluid class="py-0">
             <v-row>
           <v-col class="py-0"><v-btn
-            large
+            size="large"
             block
             :ripple="false"
             text
             @click="$emit('hide')"
-          >{{ $t('general.disagree') }}</v-btn>
+          >{{ t('general.disagree') }}</v-btn>
             </v-col>
           <v-col class="py-0"><v-btn
-            large
+            size="large"
             block
             :ripple="false"
             color="error"
@@ -42,32 +42,58 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { defineComponent, PropType } from 'vue';
 import { DeleteProjectMemberMutation, TProjectMember, TProjectNode } from '@/generated/graphql';
+import { useI18n } from 'vue-i18n';
 
-@Component({})
-export default class RemoveMember extends Vue {
-  @Prop() readonly project!: TProjectNode
-
-  @Prop() readonly member!: TProjectMember
-
-  @Prop({ default: false }) readonly show!: boolean
-
-  removeProjectMember(): void {
-    if (this.member?.user) {
-      this.$apollo.mutate({
-        mutation: DeleteProjectMemberMutation,
-        variables: {
-          id: this.project.id,
-          user: this.member.user.id,
-        },
-      }).then(() => {
-        this.$emit('removed');
-        this.$emit('hide');
-      });
-    }
-  }
-}
+export default defineComponent({
+  setup() {
+    const { t } = useI18n({ useScope: 'global' });
+    return {
+      t,
+    };
+  },
+  data() {
+    return {
+      dialog: false,
+    };
+  },
+  props: {
+    project: {
+      type: Object as PropType<TProjectNode>,
+      required: true,
+    },
+    member: {
+      type: Object as PropType<TProjectMember>,
+      required: true,
+    },
+    show: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  methods: {
+    removeProjectMember(): void {
+      if (this.member?.user) {
+        this.$apollo.mutate({
+          mutation: DeleteProjectMemberMutation,
+          variables: {
+            id: this.project.id,
+            user: this.member.user.id,
+          },
+        }).then(() => {
+          this.$emit('removed');
+          this.$emit('hide');
+        });
+      }
+    },
+  },
+  watch: {
+    show(newVal) {
+      this.dialog = newVal;
+    },
+  },
+});
 </script>
 
 <style lang="scss" scoped>

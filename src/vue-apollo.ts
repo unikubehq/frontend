@@ -2,8 +2,7 @@
 import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client/core';
 import { setContext } from '@apollo/client/link/context';
 import { ErrorResponse, onError } from '@apollo/client/link/error';
-import VueApollo from 'vue-apollo';
-import store from '@/store';
+import useAuthStore from '@/stores/auth';
 import router from './router';
 
 const httpLink = createHttpLink({
@@ -16,12 +15,15 @@ const refreshLink = onError(({ networkError }: ErrorResponse) => {
   }
 });
 
-const authLink = setContext((_, { headers }) => ({
-  headers: {
-    ...headers,
-    authorization: store.state.auth.rawRpt ? `Bearer ${store.state.auth.rawRpt}` : '',
-  },
-}));
+const authLink = setContext((_, { headers }) => {
+  const auth = useAuthStore();
+  return {
+    headers: {
+      ...headers,
+      authorization: auth.rawRpt ? `Bearer ${auth.rawRpt}` : '',
+    },
+  };
+});
 
 const cache = new InMemoryCache();
 
@@ -30,8 +32,4 @@ const apolloClient = new ApolloClient({
   cache,
 });
 
-export default function setupApolloProvider(): VueApollo {
-  return new VueApollo({
-    defaultClient: apolloClient,
-  });
-}
+export default apolloClient;

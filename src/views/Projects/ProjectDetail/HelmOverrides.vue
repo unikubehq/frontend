@@ -1,6 +1,6 @@
 <template>
   <drawer
-      title="Override Helm Values"
+      :title="`Override Helm Values`"
       :intro="`Override helm values for ${environment.title}.`"
       @hide="$emit('hide')"
   >
@@ -15,7 +15,7 @@
         <v-row>
           <v-col cols="6" class="py-0">
             <v-btn
-              outlined
+              variant="outlined"
               block
               :ripple="false"
               @click="$emit('hide')"
@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { defineComponent, PropType } from 'vue';
 import Editor from '@/components/general/Editor.vue';
 import Drawer from '@/components/general/Drawer.vue';
 import {
@@ -43,52 +43,57 @@ import {
   TEnvironmentNode,
 } from '@/generated/graphql';
 
-@Component({
+export default defineComponent({
   components: {
     Drawer,
     Editor,
   },
-})
-export default class HelmOverrides extends Vue {
-  @Prop() readonly environment!: TEnvironmentNode;
-
-  editorContent = '';
-
-  error = false;
-
-  setError(errorState: number): void {
-    console.log(errorState);
-    this.error = errorState !== 0;
-  }
-
-  save(): void {
-    // Mutation to update helm overrides
-    const variables: TCreateUpdateHelmOverridesMutationVariables = {
-      overrides: this.editorContent,
-      environmentId: this.environment.id,
+  props: {
+    environment: {
+      type: Object as PropType<TEnvironmentNode>,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      editorContent: '',
+      error: false,
     };
-    this.$apollo.mutate({
-      mutation: CreateUpdateHelmOverridesMutation,
-      variables,
-    }).then(() => {
-      this.$emit('hide');
-    }).catch(() => {
-      this.$store.commit('context/addSnackbarMessage', {
-        message: 'An error occurred storing the helm overrides.',
-        error: 2000,
+  },
+  methods: {
+    setError(errorState: number): void {
+      console.log(errorState);
+      this.error = errorState !== 0;
+    },
+    save(): void {
+      // Mutation to update helm overrides
+      const variables: TCreateUpdateHelmOverridesMutationVariables = {
+        overrides: this.editorContent,
+        environmentId: this.environment.id,
+      };
+      this.$apollo.mutate({
+        mutation: CreateUpdateHelmOverridesMutation,
+        variables,
+      }).then(() => {
+        this.$emit('hide');
+      }).catch(() => {
+        this.$store.commit('context/addSnackbarMessage', {
+          message: 'An error occurred storing the helm overrides.',
+          error: 2000,
+        });
       });
-    });
-  }
-
-  get schemas() {
-    if (this.environment && this.environment.valueSchema) {
-      return [JSON.parse(this.environment.valueSchema)];
-    }
-    return [];
-  }
-
+    },
+  },
+  computed: {
+    schemas() {
+      if (this.environment && this.environment.valueSchema) {
+        return [JSON.parse(this.environment.valueSchema)];
+      }
+      return [];
+    },
+  },
   created(): void {
     this.editorContent = this.environment.helmOverrides?.overrides || '';
-  }
-}
+  },
+});
 </script>

@@ -9,11 +9,11 @@
           label="Organization Name"
           name="organizationName"
           filled
-          outlined
+          variant="outlined"
           placeholder="Enter Organization Name"
           v-model="title"
           :error-messages="titleErrors"
-          prepend-inner-icon="$vuetify.icons.organization"
+          prepend-inner-icon="$organization"
           @blur="$v.title.$touch()"
           @keydown.enter.prevent="handleCreateOrganization"
           persistent-placeholder
@@ -22,7 +22,7 @@
       <v-btn
           block
           color="primary"
-          large
+          size="large"
           elevation="0"
           :ripple="false"
           @click="handleCreateOrganization"
@@ -37,57 +37,77 @@
 
 </template>
 <script lang="ts">
-import { Component } from 'vue-property-decorator';
-import { required } from 'vuelidate/lib/validators';
+import {
+  computed,
+  defineComponent,
+  Ref,
+  ref,
+} from 'vue';
+import { required } from '@vuelidate/validators';
 import VueI18n from 'vue-i18n';
 import { CreateOrganizationMutation } from '@/generated/graphql';
-import { validationMixin } from '@/components/mixins';
+import getErrorMessage from '@/utils/validations';
+import useVuelidate, { ValidationArgs } from '@vuelidate/core';
+import useAuthStore from '@/stores/auth';
 import TranslateResult = VueI18n.TranslateResult;
 
-@Component({
-  validations: {
-    title: {
-      required,
+export default defineComponent({
+  setup() {
+    const title = ref('');
+    const auth = useAuthStore();
+    const rules = computed(() => ({
+      title: {
+        required,
+      },
+    }));
+    // TODO change this casting when vuelidate is updated
+    const v = useVuelidate(rules as unknown as ValidationArgs<{title: Ref<string>}>, {
+      title,
+    });
+    return {
+      $v: v,
+      title,
+      auth,
+    };
+  },
+  data() {
+    return {
+      loading: false,
+      errors: [] as TranslateResult[],
+    };
+  },
+  computed: {
+    enableButton(): boolean {
+      return this.$v.title.$invalid;
+    },
+    titleErrors(): TranslateResult[] {
+      return getErrorMessage(this.$v.title.$errors);
     },
   },
-})
-export default class OrganizationTitle extends validationMixin {
-  loading = false
-
-  title = '';
-
-  errors: TranslateResult[] = [];
-
-  get enableButton(): boolean {
-    return this.$v.title.$invalid;
-  }
-
-  get titleErrors(): TranslateResult[] {
-    return this.handleErrors('title');
-  }
-
-  handleCreateOrganization(): void {
-    this.loading = true;
-    this.$apollo.mutate({
-      mutation: CreateOrganizationMutation,
-      variables: {
-        title: this.title,
-      },
-    }).then(({ data }) => {
-      this.loading = false;
-      this.$store.dispatch('auth/refresh', -1).then((refreshed: boolean) => {
-        if (refreshed) {
-          this.$emit(
-            'success',
-            data.createUpdateOrganization?.organization,
-          );
-        } else {
-          console.log('Something went wrong creating a new organization.');
-        }
+  methods: {
+    handleCreateOrganization(): void {
+      this.loading = true;
+      this.$apollo.mutate({
+        mutation: CreateOrganizationMutation,
+        variables: {
+          title: this.title,
+        },
+      }).then(({ data }) => {
+        this.loading = false;
+        this.auth.refresh(-1).then((refreshed: boolean) => {
+          if (refreshed) {
+            this.$emit(
+              'success',
+              data.createUpdateOrganization?.organization,
+            );
+          } else {
+            console.log('Something went wrong creating a new organization.');
+          }
+        });
       });
-    });
-  }
-}
+    },
+  },
+});
 </script>
 
 <style lang="scss" scoped>

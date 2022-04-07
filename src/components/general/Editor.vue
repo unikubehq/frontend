@@ -5,36 +5,43 @@
 </template>
 
 <script lang="ts">
-import Component from 'vue-class-component';
-import Vue from 'vue';
+import { defineComponent, PropType } from 'vue';
 import 'monaco-editor';
 
-import { Prop } from 'vue-property-decorator';
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
-import { setDiagnosticsOptions } from 'monaco-yaml';
+import { SchemasSettings, setDiagnosticsOptions } from 'monaco-yaml';
 import { editor } from 'monaco-editor/esm/vs/editor/editor.api';
 import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
 
-@Component
-export default class Editor extends Vue {
-  @Prop() readonly schemas!: [];
+export default defineComponent({
+  name: 'UnikubeEditor',
+  props: {
+    schemas: {
+      type: Object as PropType<SchemasSettings[]>,
+      required: true,
+    },
+    value: {
+      type: String,
+      required: true,
+    },
+  },
 
-  @Prop() readonly value!: string;
-
-  $refs!: {
-    editor: HTMLElement
-  };
-
-  editor!: IStandaloneCodeEditor;
-
-  errorCount = 0;
-
-  updateErrorCount(): void {
-    const markers = monaco.editor.getModelMarkers({ });
-    this.errorCount = markers.length;
-    this.$emit('error', this.errorCount);
-  }
-
+  // $refs!: {
+  //   editor: HTMLElement
+  // }
+  data() {
+    return {
+      editor: {} as IStandaloneCodeEditor,
+      errorCount: 0,
+    };
+  },
+  methods: {
+    updateErrorCount(): void {
+      const markers = monaco.editor.getModelMarkers({});
+      this.errorCount = markers.length;
+      this.$emit('error', this.errorCount);
+    },
+  },
   mounted(): void {
     monaco.editor.defineTheme('unikube', {
       base: 'vs', // can also be vs-dark or hc-black
@@ -55,8 +62,8 @@ export default class Editor extends Vue {
       schemas: this.schemas,
     });
 
-    this.editor = monaco.editor.create(this.$refs.editor, {
-      value: '',
+    this.editor = monaco.editor.create(this.$refs.editor as HTMLElement, {
+      value: this.value,
       language: 'yaml',
       theme: 'unikube',
       formatOnPaste: true,
@@ -73,8 +80,6 @@ export default class Editor extends Vue {
       },
     });
 
-    this.editor.setValue(this.value);
-
     this.editor.onDidChangeModelDecorations(() => {
       this.updateErrorCount();
     });
@@ -82,8 +87,8 @@ export default class Editor extends Vue {
     this.editor.onDidChangeModelContent(() => {
       this.$emit('input', this.editor.getValue());
     });
-  }
-}
+  },
+});
 </script>
 
 <style lang="scss">

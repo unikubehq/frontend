@@ -1,268 +1,319 @@
 <template>
     <v-navigation-drawer
         app
-        dark
+        class="unikube-navigation"
+        theme="dark"
         width="300"
-        :mini-variant="mini"
+        :rail="mini"
         mini-variant-width="96"
         mobile-breakpoint="0"
         :disable-resize-watcher="true"
     >
-      <template slot="append">
+      <template v-slot:append>
         <v-img src="@/assets/img/navigation_background.svg" alt="Navigation Background"/>
-        <v-list style="position:absolute; bottom: 10px; left: 0; width: 100%;">
-          <v-list-item link :ripple="false" href="https://unikube.io/help/" target="_blank">
-            <v-list-item-icon>
-              <v-icon>$vuetify.icons.help</v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title>{{ $t('navigation.help') }}</v-list-item-title>
-            </v-list-item-content>
+        <v-list style="position:absolute; bottom: 10px; left: 0; width: 100%;"
+            class="navigation-list">
+          <v-list-item href="https://unikube.io/help/" target="_blank" prepend-icon="$help">
+            <v-list-item-title>{{ t('navigation.help') }}</v-list-item-title>
           </v-list-item>
         </v-list>
       </template>
-      <template slot="prepend">
-        <v-list-item class="mt-2" :ripple="false">
-          <v-list-item-content>
+      <template v-slot:prepend>
+        <v-list-item class="mt-2">
+          <v-list-item-header>
             <v-list-item-title class="title">
-              <div class="d-flex"
-                  :class="{'justify-space-between': !mini, 'justify-center': mini}">
-                <router-link :to="{name: 'overview'}">
-                  <v-img src="@/assets/img/Unikube-Logo-H-NoShadow_light.svg" alt="Unikube Logo"
-                      max-height="45" max-width="164" contain v-if="!mini"/>
-                </router-link>
-                <v-btn  icon @click="toggleMini" :ripple="false">
-                  <v-icon medium class="d-block mt-2">
-                    $vuetify.icons.burger
-                  </v-icon>
-                </v-btn>
-              </div>
+              <router-link :to="{name: 'overview'}">
+                <v-img src="@/assets/img/Unikube-Logo-H-NoShadow_light.svg" alt="Unikube Logo"
+                    height="45" width="164" v-if="!mini"/>
+              </router-link>
             </v-list-item-title>
-          </v-list-item-content>
+          </v-list-item-header>
+          <template v-slot:append>
+            <v-btn @click="toggleMini"
+                class="navigation-toggle" width="21" variant="text" icon="$burger"/>
+          </template>
         </v-list-item>
         <v-list-item class="mt-5">
-          <v-list-item-content>
-            <v-list-item-title class="subtitle-2 text-uppercase" v-if="!mini">
-              {{ $t('navigation.organization') }}
-            </v-list-item-title>
-          </v-list-item-content>
+          <v-list-item-title class="text-uppercase" v-if="!mini">
+            {{ t('navigation.organization') }}
+          </v-list-item-title>
         </v-list-item>
         <v-menu
             offset-y
             content-class="organization-dropdown"
             rounded="0"
+            :transition="null"
+            :close-on-content-click="true"
         >
-          <template v-slot:activator="{ attrs, on }">
-            <v-list-item class="mt-2 organization-dropdown--item" two-line v-bind="attrs" v-on="on"
-                :ripple="false"
-                :class="{'flex-wrap': mini}">
-              <v-list-item-avatar>
-                <v-img v-if="$store.state.context.organization &&
-                  $store.state.context.organization.avatarImage"
-                  :src="$store.state.context.organization.avatarImage"
-                  alt="Organization Avatar"/>
-                <v-icon v-else>$vuetify.icons.defaultOrganization</v-icon>
-              </v-list-item-avatar>
+          <template v-slot:activator="{ props }">
+            <v-list-item class="mt-2 organization-dropdown--item" two-line
+                v-bind="getDropdownAttributes(context.organisation, props)"
+                :class="{'flex-wrap': mini, 'justify-center': mini}">
 
-              <v-list-item-content v-if="$store.state.context.organization">
+              <v-list-item-header v-if="context.organization && !mini">
                 <v-list-item-title
                     class="font-weight-bold"
-                    v-if="$store.state.context.organization">
-                  {{ $store.state.context.organization.title }}
+                    v-if="context.organization">
+                  {{ context.organization.title }}
                 </v-list-item-title>
                 <v-list-item-subtitle>
-                  Organization ID: {{ idToVerboseId($store.state.context.organization.id) }}
+                  ID: {{ idToVerboseId(context.organization.id) }}
                 </v-list-item-subtitle>
-              </v-list-item-content>
-              <v-icon small class="float-right organization-dropdown--arrow" v-if="!mini">
-                $vuetify.icons.arrowDownWhite
-              </v-icon>
-              <v-icon small class="organization-dropdown--arrow" v-if="mini">
-                $vuetify.icons.arrowDownWhite
-              </v-icon>
+              </v-list-item-header>
+              <template v-slot:append>
+                <v-list-item-avatar right v-if="!mini">
+                  <v-btn variant="text" icon="$arrowDownWhite"></v-btn>
+                </v-list-item-avatar>
+              </template>
+            <v-icon small class="organization-dropdown--arrow" v-if="mini">$arrowDownWhite</v-icon>
             </v-list-item>
           </template>
           <div class="organization-dropdown--notch"></div>
-          <v-list v-if="allOrganizations">
+          <v-list theme="light" rounded>
             <v-list-item
-                v-for="organization in allOrganizations.results"
+                v-for="organization in allOrganizations"
                 :key="organization.id"
-                link
-                :ripple="false"
                 two-line
                 @click="setOrganizationContext(organization)"
+                v-bind="getDropdownAttributes(organization, {})"
             >
-              <v-list-item-avatar class="organization-dropdown--icon">
-                <v-img :src="organization.avatarImage" max-width="35" contain
-                alt="Organization Avatar" v-if="organization.avatarImage"/>
-                <v-icon v-else>$vuetify.icons.defaultOrganization</v-icon>
-              </v-list-item-avatar>
-              <v-list-item-content>
+              <v-list-item-header>
                 <v-list-item-title v-text="organization.title"></v-list-item-title>
                 <v-list-item-subtitle v-text="'ID: ' + idToVerboseId(organization.id)"/>
-              </v-list-item-content>
+              </v-list-item-header>
             </v-list-item>
             <v-divider />
-            <v-list-item link :to="{name: 'create-organization'}">
-                <v-list-item-icon class="organization-dropdown--icon">
-                  <v-icon>$vuetify.icons.createOrganization</v-icon>
-                </v-list-item-icon>
+            <v-list-item :to="{name: 'create-organization'}" prepend-icon="$createOrganization">
               <v-list-item-title class="text--secondary">
-                {{ $t('navigation.createOrganization') }}
+                {{ t('navigation.createOrganization') }}
               </v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
       </template>
 
-      <v-list>
-        <v-list-item :ripple="false"
+      <v-list class="navigation-list">
+        <v-list-item
             v-for="item in items"
             :key="item.title"
             :to="item.to"
-            link
+            :prepend-icon="item.icon"
+            :rounded="0"
             class="navigation-item"
             active-class="navigation-item--is-active"
         >
-          <v-list-item-icon>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item-content>
+          <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import { ApolloQueryResult } from '@apollo/client';
+import { defineComponent, ref, watch } from 'vue';
 import {
   OrganizationMembersQuery,
   OrganizationsQuery,
-  TOrganizationMember,
-  TOrganizationNode, TOrganizationsQueryResult,
+  TOrganizationMember, TOrganizationMembersQueryResult, TOrganizationMembersQueryVariables,
+  TOrganizationNode, TOrganizationsQueryResult, TOrganizationsQueryVariables,
 } from '@/generated/graphql';
 import Strings from '@/utils/strings';
+import { useI18n } from 'vue-i18n';
+import useAuthStore from '@/stores/auth';
+import useContextStore from '@/stores/context';
+import { useQuery, UseQueryReturn } from '@vue/apollo-composable';
+import { useRoute, useRouter } from 'vue-router';
+import { ApolloQueryResult } from '@apollo/client';
 
-Component.registerHooks([
-  'beforeRouteEnter',
-  'beforeRouteUpdate',
-  'beforeRouteLeave',
-]);
+export default defineComponent({
+  name: 'NavigationSidebar',
+  setup() {
+    const { t } = useI18n({ useScope: 'global' });
+    const auth = useAuthStore();
+    const context = useContextStore();
+    const route = useRoute();
+    const router = useRouter();
+    const items = ref([
+      { icon: '$overview', title: t('views.projects'), to: '/overview' },
+      { icon: '$settings', title: t('views.settingsLabel'), to: '/settings' },
+    ]);
+    const allOrganizations = ref([] as TOrganizationNode[]);
 
-@Component({
-  apollo: {
-    allOrganizations: {
-      query: OrganizationsQuery,
-      fetchPolicy: 'no-cache',
-      result(result: ApolloQueryResult<TOrganizationsQueryResult>) {
-        if (result?.data?.allOrganizations?.results?.length) {
-          // If currently no organization is set - set the first from the result set.
-          if (!this.$store.state.context.organization) {
-            this.initializeOrganization(result.data.allOrganizations.results);
-          } else {
-          // If currently an organization is set, check if it is still contained in the result set.
-            this.checkAndSetOrganization(result.data.allOrganizations.results);
-          }
-        } else if (this.$route.name !== 'create-organization') {
-          this.$router.push({ name: 'create-organization' });
-        }
+    const { result, refetch, onResult } = useQuery(
+      OrganizationsQuery,
+      {},
+      {
+        fetchPolicy: 'no-cache',
       },
+    ) as UseQueryReturn<TOrganizationsQueryResult, TOrganizationsQueryVariables>;
+
+    const r = useQuery(
+      OrganizationMembersQuery,
+      {
+        id: context?.organization?.id,
+      },
+    ) as UseQueryReturn<TOrganizationMembersQueryResult, TOrganizationMembersQueryVariables>;
+    r.onResult((userResult) => {
+      const members = userResult?.data?.organization?.members as TOrganizationMember[];
+      if (members?.length) {
+        const currentMember = members.filter(
+          (member: TOrganizationMember) => member?.user?.id === auth.uuid,
+        )[0];
+        if (currentMember) {
+          context.setOrganizationMember(currentMember as TOrganizationMember);
+        }
+      }
+    });
+
+    const setOrganizationContext = (organization: TOrganizationNode, goToOverview = true): void => {
+      context.setOrganization(organization);
+      if (route.name !== 'overview' && goToOverview) {
+        router.push({ name: 'overview' });
+      }
+    };
+
+    const checkAndSetOrganization = (organizations: TOrganizationNode[]): void => {
+      /* Check if currently set organization is still valid. If not change context organization */
+      let contained = false;
+      organizations.forEach((organization: TOrganizationNode) => {
+        if (context.organization?.id === organization.id) {
+          contained = true;
+        }
+      });
+      // If it is not contained within the result set - set the first.
+      if (!contained && organizations.length) {
+        context.setOrganization(organizations[0]);
+      }
+    };
+    const initializeOrganization = (organizations: TOrganizationNode[]): void => {
+      /* Initialize organization context.
+       *
+       * Currently no organization is set. Initialize from localstorage or use first organization
+       * from query result.
+       */
+      const contextOrganizationId = JSON.parse(localStorage.getItem('contextOrganization') || 'null');
+      // If organization id was stored in localstorage, set it, when present in query result.
+      let organization = organizations[0];
+      if (contextOrganizationId) {
+        const organizationFiltered = organizations.filter(
+          (fOrganization: TOrganizationNode) => fOrganization.id === contextOrganizationId,
+        );
+        if (organizationFiltered.length) {
+          [organization] = organizationFiltered;
+        }
+      }
+      setOrganizationContext(organization, false);
+    };
+    onResult((queryResult: ApolloQueryResult<TOrganizationsQueryResult>) => {
+      if (!queryResult?.data?.allOrganizations?.results?.length) {
+        router.push({ name: 'create-organization' });
+      }
+      allOrganizations.value = (
+          queryResult?.data?.allOrganizations?.results || []
+      ) as TOrganizationNode[];
+      console.log(allOrganizations);
+      // If currently no organization is set - set the first from the result set.
+      if (!context.organization) {
+        initializeOrganization(
+          queryResult?.data?.allOrganizations?.results as TOrganizationNode[],
+        );
+      } else {
+      // If currently an organization is set, check if it is still contained in the result set.
+        checkAndSetOrganization(
+          queryResult?.data?.allOrganizations?.results as TOrganizationNode[],
+        );
+      }
+    });
+
+    return {
+      auth,
+      allOrganizations,
+      checkAndSetOrganization,
+      initializeOrganization,
+      setOrganizationContext,
+      context,
+      t,
+      items,
+      refetchOrgas: refetch,
+    };
+  },
+  data() {
+    return {
+      idToVerboseId: Strings.idToVerboseId,
+      mobile: false,
+    };
+  },
+  methods: {
+    toggleMini(): void {
+      this.context.setSidebarExpansion(!this.context.sidebarExpanded);
+    },
+    getDropdownAttributes(organization: TOrganizationNode, attrs: any) {
+      const result = {} as any;
+      if (organization?.avatarImage) {
+        result['prepend-avatar'] = organization.avatarImage;
+      } else {
+        result['prepend-icon'] = '$defaultOrganization';
+      }
+      return {
+        ...attrs,
+        ...result,
+      };
     },
   },
-})
-export default class Navigation extends Vue {
-  items = [
-    { icon: '$vuetify.icons.overview', title: this.$t('views.projects'), to: '/overview' },
-    { icon: '$vuetify.icons.settings', title: this.$t('views.settingsLabel'), to: '/settings' },
-  ];
-
-  idToVerboseId = Strings.idToVerboseId
-
-  mobile = false;
-
-  toggleMini(): void {
-    this.$store.commit('context/setSidebarExpansion', !this.$store.state.context.sidebarExpanded);
-  }
-
-  get mini(): boolean {
-    return !this.$store.state.context.sidebarExpanded;
-  }
-
-  checkAndSetOrganization(organizations: TOrganizationNode[]): void {
-    /* Check if currently set organization is still valid. If not change context organization */
-    let contained = false;
-    organizations.forEach((organization: TOrganizationNode) => {
-      if (this.$store.state.context.organization.id === organization.id) {
-        contained = true;
-      }
-    });
-    // If it is not contained within the result set - set the first.
-    if (!contained) {
-      this.$store.commit('context/setOrganization', organizations[0]);
-    } else if (!this.$store.state.context.organizationMember) {
-      this.setOrganizationMember(organizations[0]);
-    }
-  }
-
-  initializeOrganization(organizations: TOrganizationNode[]): void {
-    /* Initialize organization context.
-     *
-     * Currently no organization is set. Initialize from localstorage or use first organization
-     * from query result.
-     */
-    const contextOrganizationId = JSON.parse(localStorage.getItem('contextOrganization') || 'null');
-    // If organization id was stored in localstorage, set it, when present in query result.
-    let organization = organizations[0];
-    if (contextOrganizationId) {
-      const organizationFiltered = organizations.filter(
-        (fOrganization: TOrganizationNode) => fOrganization.id === contextOrganizationId,
-      );
-      if (organizationFiltered.length) {
-        [organization] = organizationFiltered;
-      }
-    }
-    this.setOrganizationContext(organization, false);
-  }
-
-  setOrganizationContext(organization: TOrganizationNode, goToOverview = true): void {
-    this.$store.commit('context/setOrganization', organization);
-    this.setOrganizationMember(organization);
-    if (this.$route.name !== 'overview' && goToOverview) {
-      this.$router.push({ name: 'overview' });
-    }
-  }
-
-  setOrganizationMember(organization: TOrganizationNode): void {
-    this.$apollo.query({
-      query: OrganizationMembersQuery,
-      variables: {
-        id: organization.id,
-      },
-    }).then((res) => {
-      const currentMember = res.data.organization.members.filter(
-        (member: TOrganizationMember) => member?.user?.id === this.$store.state.auth.uuid,
-      )[0];
-      this.$store.commit(
-        'context/setOrganizationMember',
-        currentMember,
-      );
-    });
-  }
-
+  computed: {
+    mini(): boolean {
+      return !this.context.sidebarExpanded;
+    },
+  },
   mounted(): void {
-    this.$apollo.queries.allOrganizations.refetch();
-    this.$store.subscribe((mutation: any) => {
-      if (mutation.type === 'auth/setRpt') {
-        this.$apollo.queries.allOrganizations.refetch();
+    this.refetchOrgas();
+    this.auth.$onAction(({ name, after }) => {
+      if (name === 'setRpt') {
+        after(() => {
+          this.refetchOrgas();
+        });
       }
     });
+    this.context.setSidebarExpansion(window.outerWidth > 1180);
+  },
+});
+</script>
 
-    this.$store.commit('context/setSidebarExpansion', window.outerWidth > 1180);
+<style lang="scss">
+@import "@/styles/_ci";
+
+.v-navigation-drawer.unikube-navigation {
+   background-image: linear-gradient(18deg, #0e132e -13%, #252e65 64%);
+
+  .v-navigation-drawer__headline {
+    background-color: $unikube-blue;
+  }
+  .v-list-item {
+    padding-left: 20px;
+    width: 100%;
+    .v-list-item-title {
+      width: 100%;
+    }
   }
 }
-</script>
+.v-navigation-drawer--mini-variant {
+  .v-list-item.navigation-item {
+    padding-left: 16px;
+  }
+  .v-list-item.navigation-item--is-active {
+    padding-left: 12px;
+  }
+  .v-list-item > .organization-dropdown--arrow:not(:first-child) {
+    float: none !important;
+    width: 100% !important;
+    clip: unset !important;
+    position: relative !important;
+    height: 0;
+    text-align: center;
+  }
+  .organization-dropdown--item {
+    &:after {
+      margin-top: -48px;
+    }
+  }
+}
+</style>

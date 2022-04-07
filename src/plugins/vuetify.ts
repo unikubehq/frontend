@@ -1,5 +1,7 @@
-import Vue from 'vue';
-import Vuetify from 'vuetify/lib';
+import { VuetifyOptions } from 'vuetify';
+import * as components from 'vuetify/components';
+
+import { aliases as maliases, mdi } from 'vuetify/lib/iconsets/mdi';
 
 import Account from '@/components/icons/Account.vue';
 import AddMember from '@/components/icons/AddMember.vue';
@@ -63,209 +65,126 @@ import TickWhiteBg from '@/components/icons/TickWhiteBg.vue';
 import ErrorWhiteBg from '@/components/icons/ErrorWhiteBg.vue';
 import Cli from '@/components/icons/Cli.vue';
 import SmallBulb from '@/components/icons/SmallBulb.vue';
+import { IconProps, IconSet } from 'vuetify/dist/vuetify';
+import { h } from 'vue';
 
-Vue.use(Vuetify);
+const aliases = {
+  ...maliases,
+  account: Account,
+  accountBlue: AccountBlue,
+  addMember: AddMember,
+  description: Description,
+  accessUser: AccessUser,
+  accessToken: AccessToken,
+  bigSorry: BigSorry,
+  branch: Branch,
+  createOrganizationBig: CreateOrganizationBig,
+  existingMembers: ExistingMembers,
+  defaultOrganization: DefaultOrganization,
+  joinOrganizationBig: JoinOrganizationBig,
+  repository: Repository,
+  projectInput: ProjectInput,
+  eye: HidePassword,
+  eyeOpen: ShowPassword,
+  burger: Burger,
+  cli: Cli,
+  smallBulb: SmallBulb,
+  cross: Cross,
+  dropdown: DropdownSmallGrey,
+  user: User,
+  email: Email,
+  logout: Logout,
+  helm: Helm,
+  notification: Notification,
+  notificationBlue: NotificationBlue,
+  password: Password,
+  checkboxOn: CheckboxChecked,
+  checkboxOff: CheckboxUnchecked,
+  permission: Permission,
+  overview: Overview,
+  activity: Activity,
+  help: Help,
+  settings: Settings,
+  joinOrganization: JoinOrganization,
+  createOrganization: CreateOrganization,
+  arrowDownWhite: ArrowDownWhite,
+  personalInfo: PersonalInfo,
+  noProjectsFound: NoProjectsFound,
+  addProject: AddProject,
+  search: Search,
+  project: Project,
+  delete: Delete,
+  edit: Edit,
+  deployments: Deployments,
+  organization: Organization,
+  arrowRightWhite: ArrowRightWhite,
+  arrowRightGrey: ArrowRightGrey,
+  addRound: AddRound,
+  done: Done,
+  copy: Copy,
+  warning: Warning,
+  organizationSettings: OrganizationSettings,
+  organizationSettingsBlue: OrganizationSettingsBlue,
+  organizationRoles: OrganizationRoles,
+  organizationRolesBlue: OrganizationRolesBlue,
+  payment: Payment,
+  paymentBlue: PaymentBlue,
+  sync: Sync,
+  tickWhiteBg: TickWhiteBg,
+  errorWhiteBg: ErrorWhiteBg,
+};
 
-export default new Vuetify({
+const custom: IconSet = {
+  component: (props: IconProps) => h(`<component :is="${props.icon}">`),
+};
+
+const vuetifyOptions: VuetifyOptions = {
   theme: {
+    defaultTheme: 'light',
     themes: {
       light: {
-        primary: '#45D093',
-        secondary: '#F8FFFC',
-        anchor: '#45D093',
-        error: '#ff7364',
-        neutral: '#C4CCD4',
+        dark: false,
+        variables: {
+          'input-control-height': '42px',
+          'input-padding-top': '11px',
+          'field-padding-bottom': '11px',
+          'field-color': '#343D6F',
+          'theme-on-background': '52, 61, 111',
+          'theme-on-surface': '52, 61, 111',
+          'theme-on-white': '52, 61, 111',
+          'theme-secondary-border': '196, 204, 212',
+        },
+        colors: {
+          primary: '#45D093',
+          secondary: '#F8FFFC',
+          anchor: '#45D093',
+          error: '#ff7364',
+          neutral: '#C4CCD4',
+          info: '#2196F3',
+          success: '#4CAF50',
+          warning: '#FB8C00',
+          background: '#FCFCFD',
+          surface: '#FCFCFD',
+          white: '#FFFFFF',
+        },
       },
     },
   },
   icons: {
-    values: {
-      account: {
-        component: Account,
-      },
-      accountBlue: {
-        component: AccountBlue,
-      },
-      addMember: {
-        component: AddMember,
-      },
-      description: {
-        component: Description,
-      },
-      accessUser: {
-        component: AccessUser,
-      },
-      accessToken: {
-        component: AccessToken,
-      },
-      bigSorry: {
-        component: BigSorry,
-      },
-      branch: {
-        component: Branch,
-      },
-      createOrganizationBig: {
-        component: CreateOrganizationBig,
-      },
-      existingMembers: {
-        component: ExistingMembers,
-      },
-      defaultOrganization: {
-        component: DefaultOrganization,
-      },
-      joinOrganizationBig: {
-        component: JoinOrganizationBig,
-      },
-      repository: {
-        component: Repository,
-      },
-      projectInput: {
-        component: ProjectInput,
-      },
-      eye: {
-        component: HidePassword,
-      },
-      eyeOpen: {
-        component: ShowPassword,
-      },
-      burger: {
-        component: Burger,
-      },
-      cli: {
-        component: Cli,
-      },
-      smallBulb: {
-        component: SmallBulb,
-      },
-      cross: {
-        component: Cross,
-      },
-      dropdown: {
-        component: DropdownSmallGrey,
-      },
-      user: {
-        component: User,
-      },
-      email: {
-        component: Email,
-      },
-      logout: {
-        component: Logout,
-      },
-      helm: {
-        component: Helm,
-      },
-      notification: {
-        component: Notification,
-      },
-      notificationBlue: {
-        component: NotificationBlue,
-      },
-      password: {
-        component: Password,
-      },
-      checkboxOn: {
-        component: CheckboxChecked,
-      },
-      checkboxOff: {
-        component: CheckboxUnchecked,
-      },
-      permission: {
-        component: Permission,
-      },
-      overview: {
-        component: Overview,
-      },
-      activity: {
-        component: Activity,
-      },
-      help: {
-        component: Help,
-      },
-      settings: {
-        component: Settings,
-      },
-      joinOrganization: {
-        component: JoinOrganization,
-      },
-      createOrganization: {
-        component: CreateOrganization,
-      },
-      arrowDownWhite: {
-        component: ArrowDownWhite,
-      },
-      personalInfo: {
-        component: PersonalInfo,
-      },
-      noProjectsFound: {
-        component: NoProjectsFound,
-      },
-      addProject: {
-        component: AddProject,
-      },
-      search: {
-        component: Search,
-      },
-      project: {
-        component: Project,
-      },
-      delete: {
-        component: Delete,
-      },
-      edit: {
-        component: Edit,
-      },
-      deployments: {
-        component: Deployments,
-      },
-      organization: {
-        component: Organization,
-      },
-      arrowRightWhite: {
-        component: ArrowRightWhite,
-      },
-      arrowRightGrey: {
-        component: ArrowRightGrey,
-      },
-      addRound: {
-        component: AddRound,
-      },
-      done: {
-        component: Done,
-      },
-      copy: {
-        component: Copy,
-      },
-      warning: {
-        component: Warning,
-      },
-      organizationSettings: {
-        component: OrganizationSettings,
-      },
-      organizationSettingsBlue: {
-        component: OrganizationSettingsBlue,
-      },
-      organizationRoles: {
-        component: OrganizationRoles,
-      },
-      organizationRolesBlue: {
-        component: OrganizationRolesBlue,
-      },
-      payment: {
-        component: Payment,
-      },
-      paymentBlue: {
-        component: PaymentBlue,
-      },
-      sync: {
-        component: Sync,
-      },
-      tickWhiteBg: {
-        component: TickWhiteBg,
-      },
-      errorWhiteBg: {
-        component: ErrorWhiteBg,
-      },
+    defaultSet: 'mdi',
+    aliases,
+    sets: {
+      custom,
+      mdi,
     },
   },
-});
+  defaults: {
+    global: {
+      ripple: false,
+      elevation: 0,
+    },
+  },
+  components,
+};
+
+export default vuetifyOptions;

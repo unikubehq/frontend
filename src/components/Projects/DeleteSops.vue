@@ -1,28 +1,27 @@
 <template>
   <v-dialog
-      v-model="show"
+      v-model="dialog"
       persistent
-      width="550"
     >
-      <v-card v-if="show" class="py-8 px-7">
+      <v-card v-if="dialog" class="py-8 px-7">
         <v-card-title class="headline">
-          {{ $t('projects.deleteSopsModal.title', { title: sops.title }) }}
+          {{ t('projects.deleteSopsModal.title', { title: sops.title }) }}
         </v-card-title>
         <v-card-text>
-          <div>{{ $t('projects.deleteSopsModal.intro', { title: sops.title }) }}<br><br>
+          <div>{{ t('projects.deleteSopsModal.intro', { title: sops.title }) }}<br><br>
           </div>
           <v-alert
             dense
-            outlined
-            icon="$vuetify.icons.warning"
-            type="error">{{ $t('projects.deleteSopsModal.warning') }}</v-alert>
+            variant="outlined"
+            icon="$warning"
+            type="error">{{ t('projects.deleteSopsModal.warning') }}</v-alert>
           <v-text-field
             name="sopsName"
             filled
-            outlined
+            variant="outlined"
             type="text"
             v-model="deleteTitle"
-            prepend-inner-icon="$vuetify.icons.accessToken"
+            prepend-inner-icon="$accessToken"
               persistent-placeholder
           />
         </v-card-text>
@@ -30,21 +29,21 @@
           <v-container fluid class="py-0">
             <v-row>
           <v-col class="py-0"><v-btn
-            large
+            size="large"
             block
             :ripple="false"
             text
             @click="$emit('hide')"
-          >{{ $t('general.disagree') }}</v-btn>
+          >{{ t('general.disagree') }}</v-btn>
             </v-col>
           <v-col class="py-0"><v-btn
-            large
+            size="large"
             block
             :ripple="false"
             color="error"
             @click="deleteAndHide"
             :disabled="deleteTitle !== sops.title"
-          >{{ $t('projects.deleteSopsModal.agree') }}</v-btn>
+          >{{ t('projects.deleteSopsModal.agree') }}</v-btn>
             </v-col>
           </v-row>
           </v-container>
@@ -54,37 +53,59 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { defineComponent, PropType } from 'vue';
 import { DeleteSops, TSopsProviderNode } from '@/generated/graphql';
+import { useI18n } from 'vue-i18n';
 
-@Component({})
-export default class SopsDeleteDialog extends Vue {
-  @Prop() readonly sops!: TSopsProviderNode
-
-  @Prop() readonly show: boolean | undefined
-
-  deleteTitle = ''
-
-  deleteAndHide():void {
-    this.$emit('hide');
-    this.deleteSops(this.sops.id);
-  }
-
-  deleteSops(id: string): void {
-    this.$apollo.mutate({
-      mutation: DeleteSops,
-      variables: {
-        input: id,
-      },
-    })
-      .then((data) => {
-        if (data.data.deleteSops.ok) {
-          this.$emit('deleted');
-        }
+export default defineComponent({
+  setup() {
+    const { t } = useI18n({ useScope: 'global' });
+    return {
+      t,
+    };
+  },
+  props: {
+    sops: {
+      type: Object as PropType<TSopsProviderNode>,
+      required: true,
+    },
+    show: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  data() {
+    return {
+      deleteTitle: '',
+      dialog: false,
+    };
+  },
+  methods: {
+    deleteAndHide():void {
+      this.$emit('hide');
+      this.deleteSops(this.sops.id);
+    },
+    deleteSops(id: string): void {
+      this.$apollo.mutate({
+        mutation: DeleteSops,
+        variables: {
+          input: id,
+        },
       })
-      .catch((err) => console.log(err));
-  }
-}
+        .then((data) => {
+          if (data.data.deleteSops.ok) {
+            this.$emit('deleted');
+          }
+        })
+        .catch((err) => console.log(err));
+    },
+  },
+  watch: {
+    show(newVal) {
+      this.dialog = newVal;
+    },
+  },
+});
 </script>
 
 <style lang="scss" scoped>

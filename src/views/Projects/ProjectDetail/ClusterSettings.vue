@@ -9,13 +9,13 @@
                 label="Port"
                 name="port"
                 filled
-                outlined
+                variant="outlined"
                 type="number"
                 placeholder="Enter Port"
                 v-model="port"
                 :error-messages="portErrors"
-                @blur="$v.port.$touch()"
-                prepend-inner-icon="$vuetify.icons.projectInput"
+                @blur="v$.port.$touch()"
+                prepend-inner-icon="$projectInput"
                 persistent-placeholder
               />
             </v-col>
@@ -23,14 +23,14 @@
         <v-row>
           <v-col cols="4">
             <v-btn
-              large
+              size="large"
               block
               :ripple="false"
               color="primary"
               @click="submit"
               :loading="loading"
-              :disabled="$v.$invalid"
-            >{{ $t('general.save') }}</v-btn>
+              :disabled="v$.$invalid"
+            >{{ t('general.save') }}</v-btn>
             </v-col>
           </v-row>
         </v-form>
@@ -40,79 +40,108 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Watch } from 'vue-property-decorator';
+import {
+  computed,
+  defineComponent,
+  PropType, Ref,
+  ref,
+} from 'vue';
 import {
   required, minValue, maxValue,
-} from 'vuelidate/lib/validators';
-import VueI18n from 'vue-i18n';
+} from '@vuelidate/validators';
+import VueI18n, { useI18n } from 'vue-i18n';
 import {
-  Scalars,
   TProjectNode,
   TUpdateClusterSettingsInput, TUpdateClusterSettingsPayload, UpdateClusterSettings,
 } from '@/generated/graphql';
-import { validationMixin } from '@/components/mixins';
+import { FetchResult } from '@apollo/client';
+import useVuelidate, { ValidationArgs } from '@vuelidate/core';
+import getErrorMessage from '@/utils/validations';
+import useErrorStore from '@/stores/errors';
 import TranslateResult = VueI18n.TranslateResult;
 
-@Component({
-  validations: {
-    port: {
-      required,
-      minValue: minValue(1024),
-      maxValue: maxValue(65535),
+export default defineComponent({
+  props: {
+    project: {
+      type: Object as PropType<TProjectNode>,
+      required: false,
     },
   },
-})
-export default class ClusterSettings extends validationMixin {
-  @Prop() readonly project: TProjectNode | undefined
-
-  port: string | null = null
-
-  loading = false
-
-  get portErrors(): TranslateResult[] {
-    return this.handleErrors('port');
-  }
-
-  submit(): void {
-    if (!this.port || !this.project || !this.project.clusterSettings) {
-      return;
-    }
-    const variables: TUpdateClusterSettingsInput = {
-      clientMutationId: null,
-      id: this.project.clusterSettings.id,
-      port: parseInt(this.port, 10),
-      project: this.project.id,
-    };
-    this.loading = true;
-    this.$apollo.mutate({
-      mutation: UpdateClusterSettings,
-      variables: {
-        input: variables,
+  setup() {
+    const port = ref('');
+    const { t } = useI18n({ useScope: 'global' });
+    const rules = computed(() => ({
+      port: {
+        required,
+        minValue: minValue(1024),
+        maxValue: maxValue(65535),
       },
-    })
-      .then((data: TUpdateClusterSettingsPayload) => {
-        this.loading = false;
-        if (data?.clusterSettings?.port) {
-          this.port = data.clusterSettings.port?.toString();
-        }
-        this.$emit('update');
+    })) as unknown as ValidationArgs<{ // TODO change casting when vuelidate is updated
+      port: Ref<string>,
+    }>;
+    const v = useVuelidate(rules, { port });
+    const errorStore = useErrorStore();
+    return {
+      errorStore,
+      v$: v,
+      port,
+      t,
+    };
+  },
+  data() {
+    return {
+      loading: false,
+    };
+  },
+  computed: {
+    portErrors(): TranslateResult[] {
+      return getErrorMessage(this.v$.port.$errors);
+    },
+  },
+  methods: {
+    submit(): void {
+      if (!this.port || !this.project || !this.project.clusterSettings) {
+        return;
+      }
+      const variables: TUpdateClusterSettingsInput = {
+        clientMutationId: null,
+        id: this.project.clusterSettings.id,
+        port: parseInt(this.port, 10),
+        project: this.project.id,
+      };
+      this.loading = true;
+      this.$apollo.mutate({
+        mutation: UpdateClusterSettings,
+        variables: {
+          input: variables,
+        },
       })
-      .catch((err) => {
-        this.loading = false;
-        this.$store.commit({
-          type: 'errors/setError',
-          error: err,
-          message: 'Something went wrong.',
-          location: 'ClusterSettings',
+        .then((res: FetchResult<TUpdateClusterSettingsPayload>) => {
+          this.loading = false;
+          if (res.data?.clusterSettings?.port) {
+            this.port = res.data.clusterSettings.port?.toString();
+          }
+          this.$emit('update');
+        })
+        .catch((err) => {
+          this.loading = false;
+          this.errorStore.setError({
+            error: err,
+            code: 300,
+            location: 'ClusterSettings',
+          });
         });
-      });
-  }
-
-  @Watch('project', { immediate: true })
-  projectChanged(newValue: TProjectNode): void {
-    this.port = newValue.clusterSettings?.port?.toString() || '65335';
-  }
-}
+    },
+  },
+  watch: {
+    project: {
+      immediate: true,
+      handler(newValue: TProjectNode): void {
+        this.port = newValue.clusterSettings?.port?.toString() || '65335';
+      },
+    },
+  },
+});
 </script>
 
 <style scoped lang="scss">

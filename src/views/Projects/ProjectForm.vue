@@ -4,102 +4,102 @@
       <v-row>
         <v-col cols="6" class="py-0">
           <v-text-field
-            :label="$t('projects.name')"
+            :label="t('projects.name')"
             name="projectName"
             filled
-            outlined
+            variant="outlined"
             type="text"
             :error-messages="titleErrors"
-            :placeholder="$t('projects.enterName')"
+            :placeholder="t('projects.enterName')"
             v-model="title"
-            @blur="$v.title.$touch()"
-            prepend-inner-icon="$vuetify.icons.projectInput"
+            @blur="v$.title.$touch()"
+            prepend-inner-icon="$projectInput"
             persistent-placeholder
           />
         </v-col>
         <v-col cols="6" class="py-0">
           <v-text-field
-            :label="$t('projects.description')"
+            :label="t('projects.description')"
             name="description"
             filled
-            outlined
+            variant="outlined"
             type="text"
-            :placeholder="$t('projects.enterDescription')"
+            :placeholder="t('projects.enterDescription')"
             v-model="description"
-            prepend-inner-icon="$vuetify.icons.description"
+            prepend-inner-icon="$description"
             persistent-placeholder
           />
         </v-col>
         <v-col cols="6" class="py-0">
           <v-text-field
-            :label="$t('projects.specificationRepository')"
+            :label="t('projects.specificationRepository')"
             name="specRepo"
             filled
-            outlined
+            variant="outlined"
             type="text"
-            :placeholder="$t('projects.enterSpecificationRepository')"
+            :placeholder="t('projects.enterSpecificationRepository')"
             v-model="specRepository"
             :error-messages="specRepositoryErrors"
-            prepend-inner-icon="$vuetify.icons.repository"
-            @blur="$v.specRepository.$touch()"
+            prepend-inner-icon="$repository"
+            @blur="v$.specRepository.$touch()"
             persistent-placeholder
           />
         </v-col>
         <v-col cols="6" class="py-0">
           <v-text-field
-            :label="$t('projects.specificationRepositoryBranch')"
+            :label="t('projects.specificationRepositoryBranch')"
             name="specRepoBranch"
             filled
-            outlined
+            variant="outlined"
             type="text"
-            :placeholder="$t('projects.enterSpecificationRepositoryBranch')"
+            :placeholder="t('projects.enterSpecificationRepositoryBranch')"
             v-model="specRepositoryBranch"
             :error-messages="specRepositoryBranchErrors"
-            prepend-inner-icon="$vuetify.icons.branch"
-            @blur="$v.specRepositoryBranch.$touch()"
+            prepend-inner-icon="$branch"
+            @blur="v$.specRepositoryBranch.$touch()"
             persistent-placeholder
           />
         </v-col>
         <v-col cols="6" class="py-0">
           <v-text-field
-            :label="$t('projects.accessUsername')"
+            :label="t('projects.accessUsername')"
             name="accessUsername"
-            :hint="$t('projects.accessUsernameHint')"
+            :hint="t('projects.accessUsernameHint')"
             autocomplete="off"
             filled
-            outlined
+            variant="outlined"
             type="text"
-            :placeholder="$t('projects.enterAccessUsername')"
+            :placeholder="t('projects.enterAccessUsername')"
             v-model="accessUsername"
             :error-messages="accessUsernameErrors"
-            prepend-inner-icon="$vuetify.icons.accessUser"
-            @change="$v.accessUsername.$touch()"
+            prepend-inner-icon="$accessUser"
+            @change="v$.accessUsername.$touch()"
             persistent-placeholder
           />
         </v-col>
         <v-col cols="6" class="py-0">
           <v-text-field
-            :label="$t('projects.accessToken')"
+            :label="t('projects.accessToken')"
             name="accessToken"
             filled
-            outlined
+            variant="outlined"
             type="password"
-            :placeholder="$t('projects.enterAccessToken')"
+            :placeholder="t('projects.enterAccessToken')"
             v-model="accessToken"
             :error-messages="accessTokenErrors"
-            prepend-inner-icon="$vuetify.icons.accessToken"
-            @change="$v.accessToken.$touch()"
+            prepend-inner-icon="$accessToken"
+            @change="v$.accessToken.$touch()"
             persistent-placeholder
           />
         </v-col>
         <v-col cols="6" class="py-0">
           <v-select
-            :label="$t('projects.specificationType')"
+            :label="t('projects.specificationType')"
             name="specType"
             filled
-            outlined
+            variant="outlined"
             type="text"
-            :placeholder="$t('projects.enterSpecificationType')"
+            :placeholder="t('projects.enterSpecificationType')"
             v-model="specType"
             :items="specTypeChoices"
             persistent-placeholder
@@ -110,8 +110,8 @@
         <v-col cols="12">
           <v-alert
             dense
-            outlined
-            icon="$vuetify.icons.warning"
+            variant="outlined"
+            icon="$warning"
             type="error"
             v-if="submissionError">
             {{ submissionError }}
@@ -130,14 +130,13 @@
                 style="transform: rotate(180deg)"
                 class="mr-1"
                 small
-            >
-              $vuetify.icons.arrowRightGrey
-            </v-icon>{{ $t('general.goBack') }}</a>
+            >$arrowRightGrey</v-icon>
+            {{ t('general.goBack') }}</a>
         </v-col>
         <v-col cols="3">
           <v-btn
           block
-          large
+          size="large"
           color="primary"
           :loading="saveLoading"
           @click="submit"
@@ -154,11 +153,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Watch } from 'vue-property-decorator';
-import { required, url } from 'vuelidate/lib/validators';
-import VueI18n from 'vue-i18n';
-import { ApolloError } from '@apollo/client';
-import { validationMixin } from '@/components/mixins';
+import {
+  computed,
+  defineComponent,
+  PropType, Ref,
+  ref,
+} from 'vue';
+import { required, url } from '@vuelidate/validators';
+import VueI18n, { useI18n } from 'vue-i18n';
+import { ApolloError, FetchResult } from '@apollo/client';
 import {
   CreateProject,
   TCreateProjectMutationResult,
@@ -168,168 +171,188 @@ import {
   TUpdateProjectMutationVariables,
   UpdateProject,
 } from '@/generated/graphql';
+import useVuelidate, { ValidationArgs } from '@vuelidate/core';
+import getErrorMessage from '@/utils/validations';
+import useAuthStore from '@/stores/auth';
 import TranslateResult = VueI18n.TranslateResult;
 
-@Component({
-  validations: {
-    title: {
-      required,
+export default defineComponent({
+  setup() {
+    const title = ref('');
+    const specRepository = ref('');
+    const specRepositoryBranch = ref('');
+    const accessUsername = ref('');
+    const accessToken = ref('');
+    const { t } = useI18n({ useScope: 'global' });
+    const rules = computed(() => ({
+      title: {
+        required,
+      },
+      specRepository: {
+        required,
+        url,
+      },
+      specRepositoryBranch: {
+        required,
+      },
+      accessUsername: {
+      },
+      accessToken: {
+      },
+    })) as unknown as ValidationArgs<{ // TODO change this casting when vuelidate is updated
+      title: Ref<string>,
+      specRepository: Ref<string>,
+      specRepositoryBranch: Ref<string>,
+      accessUsername: Ref<string>,
+      accessToken: Ref<string>,
+    }>;
+    const v = useVuelidate(rules, {
+      title,
+      specRepository,
+      specRepositoryBranch,
+      accessUsername,
+      accessToken,
+    });
+    const auth = useAuthStore();
+    return {
+      auth,
+      v$: v,
+      title,
+      specRepository,
+      specRepositoryBranch,
+      accessUsername,
+      accessToken,
+      t,
+    };
+  },
+  props: {
+    editMode: {
+      type: Boolean,
+      default: false,
     },
-    specRepository: {
-      required,
-      url,
-    },
-    specRepositoryBranch: {
-      required,
-    },
-    accessUsername: {
-    },
-    accessToken: {
+    project: {
+      type: Object as PropType<TProjectNode>,
+      required: false,
     },
   },
-})
-export default class ProjectForm extends validationMixin {
-  @Prop() readonly editMode: boolean | undefined
-
-  @Prop() readonly project: TProjectNode | undefined
-
-  title = '';
-
-  description = '';
-
-  specRepository = '';
-
-  submissionError = '';
-
-  specRepositoryBranch = 'main';
-
-  specType: TSpecicifactionTypeEnum = TSpecicifactionTypeEnum.Helm;
-
-  accessUsername = '';
-
-  accessToken = '';
-
-  repoDir = '';
-
-  id = '';
-
-  specTypeChoices = [TSpecicifactionTypeEnum.Helm]
-
-  saveLoading = false
-
-  get titleErrors(): TranslateResult[] {
-    return this.handleErrors('title');
-  }
-
-  get specRepositoryErrors(): TranslateResult[] {
-    return this.handleErrors('specRepository');
-  }
-
-  get specRepositoryBranchErrors(): TranslateResult[] {
-    return this.handleErrors('specRepositoryBranch');
-  }
-
-  get accessUsernameErrors(): TranslateResult[] {
-    return this.handleErrors('accessUsername');
-  }
-
-  get accessTokenErrors(): TranslateResult[] {
-    return this.handleErrors('accessToken');
-  }
-
-  get disableButton(): boolean {
-    return this.$v.$invalid;
-  }
-
-  get submitButtonText(): TranslateResult {
-    return this.editMode ? this.$t('general.save').toString() : this.$t('general.next').toString();
-  }
-
-  handleEditMode(): void {
-    if (this.project) {
-      this.title = this.project.title;
-      this.description = this.project.description || '';
-      this.specRepository = this.project.specRepository;
-      this.specRepositoryBranch = this.project.specRepositoryBranch || '';
-      this.specType = this.project.specType.toLowerCase() as TSpecicifactionTypeEnum;
-      this.accessUsername = this.project.accessUsername;
-      this.accessToken = this.project.accessUsername;
-      this.id = this.project.id;
-    }
-  }
-
-  @Watch('project')
-  handleProjectChange(): void {
-    this.handleEditMode();
-  }
-
+  data() {
+    return {
+      description: '',
+      submissionError: '',
+      specType: TSpecicifactionTypeEnum.Helm,
+      repoDir: '',
+      id: '',
+      specTypeChoices: Object.values(TSpecicifactionTypeEnum),
+      saveLoading: false,
+    };
+  },
+  computed: {
+    titleErrors(): TranslateResult[] {
+      console.log(this.v$.title.$errors);
+      return getErrorMessage(this.v$.title.$errors);
+    },
+    specRepositoryErrors(): TranslateResult[] {
+      return getErrorMessage(this.v$.specRepository.$errors);
+    },
+    specRepositoryBranchErrors(): TranslateResult[] {
+      return getErrorMessage(this.v$.specRepositoryBranch.$errors);
+    },
+    accessUsernameErrors(): TranslateResult[] {
+      return getErrorMessage(this.v$.accessUsername.$errors);
+    },
+    accessTokenErrors(): TranslateResult[] {
+      return getErrorMessage(this.v$.accessToken.$errors);
+    },
+    disableButton(): boolean {
+      return this.v$.$invalid;
+    },
+    submitButtonText(): TranslateResult {
+      return this.editMode ? this.t('general.save').toString() : this.t('general.next').toString();
+    },
+  },
+  methods: {
+    handleEditMode(): void {
+      if (this.project) {
+        this.title = this.project.title;
+        this.description = this.project.description || '';
+        this.specRepository = this.project.specRepository;
+        this.specRepositoryBranch = this.project.specRepositoryBranch || '';
+        this.specType = this.project.specType.toLowerCase() as TSpecicifactionTypeEnum;
+        this.accessUsername = this.project.accessUsername;
+        this.accessToken = this.project.accessUsername;
+        this.id = this.project.id;
+      }
+    },
+    success(data: FetchResult<TCreateProjectMutationResult>): void {
+      this.saveLoading = false;
+      this.auth.refresh(-1).then((refreshed: boolean) => {
+        if (data.data?.createUpdateProject?.project && refreshed) {
+          if (this.editMode) {
+            this.$router.go(-1);
+          } else {
+            this.$router.push({ name: 'project.addMembers', params: { slug: data.data.createUpdateProject.project.id } });
+          }
+        } else {
+          console.log('Something went wrong creating the project or refreshing the rpt.');
+        }
+      });
+    },
+    failed(err: ApolloError): void {
+      this.saveLoading = false;
+      this.submissionError = err.message;
+    },
+    submit(): void {
+      this.saveLoading = true;
+      const projectVariables: TCreateProjectMutationVariables = {
+        title: this.title,
+        description: this.description,
+        specRepository: this.specRepository,
+        specType: this.specType,
+        specRepositoryBranch: this.specRepositoryBranch,
+        organization: this.$store.state.context.organization.id,
+        accessToken: null,
+        accessUsername: null,
+      };
+      if (this.v$.accessUsername.$dirty) {
+        projectVariables.accessUsername = this.accessUsername;
+      } else if (!projectVariables.accessToken) {
+        delete projectVariables.accessToken;
+      }
+      if (this.v$.accessToken.$dirty) {
+        projectVariables.accessToken = this.accessToken;
+      } else if (!projectVariables.accessUsername) {
+        delete projectVariables.accessUsername;
+      }
+      if (!this.editMode) {
+        const variables: TCreateProjectMutationVariables = projectVariables;
+        this.$apollo.mutate({
+          mutation: CreateProject,
+          variables,
+        })
+          .then(this.success)
+          .catch(this.failed);
+      } else {
+        const variables: TUpdateProjectMutationVariables = { ...projectVariables, id: this.id };
+        this.$apollo.mutate({
+          mutation: UpdateProject,
+          variables,
+        })
+          .then(this.success)
+          .catch(this.failed);
+      }
+    },
+  },
   mounted(): void {
     if (this.editMode) {
       this.handleEditMode();
     }
-  }
-
-  success(data: {data: TCreateProjectMutationResult}): void {
-    this.saveLoading = false;
-    this.$store.dispatch('auth/refresh', -1).then((refreshed: boolean) => {
-      if (data.data?.createUpdateProject?.project && refreshed) {
-        if (this.editMode) {
-          this.$router.go(-1);
-        } else {
-          this.$router.push({ name: 'project.addMembers', params: { slug: data.data.createUpdateProject.project.id } });
-        }
-      } else {
-        console.log('Something went wrong creating the project or refreshing the rpt.');
-      }
-    });
-  }
-
-  failed(err: ApolloError): void {
-    this.saveLoading = false;
-    this.submissionError = err.message;
-  }
-
-  submit(): void {
-    this.saveLoading = true;
-    const projectVariables: TCreateProjectMutationVariables = {
-      title: this.title,
-      description: this.description,
-      specRepository: this.specRepository,
-      specType: this.specType,
-      specRepositoryBranch: this.specRepositoryBranch,
-      organization: this.$store.state.context.organization.id,
-      accessToken: null,
-      accessUsername: null,
-    };
-    if (this.$v.accessUsername.$dirty) {
-      projectVariables.accessUsername = this.accessUsername;
-    } else if (!projectVariables.accessToken) {
-      delete projectVariables.accessToken;
-    }
-    if (this.$v.accessToken.$dirty) {
-      projectVariables.accessToken = this.accessToken;
-    } else if (!projectVariables.accessUsername) {
-      delete projectVariables.accessUsername;
-    }
-    if (!this.editMode) {
-      const variables: TCreateProjectMutationVariables = projectVariables;
-      this.$apollo.mutate({
-        mutation: CreateProject,
-        variables,
-      })
-        .then(this.success)
-        .catch(this.failed);
-    } else {
-      const variables: TUpdateProjectMutationVariables = { ...projectVariables, id: this.id };
-      this.$apollo.mutate({
-        mutation: UpdateProject,
-        variables,
-      })
-        .then(this.success)
-        .catch(this.failed);
-    }
-  }
-}
+  },
+  watch: {
+    project() {
+      this.handleEditMode();
+    },
+  },
+});
 </script>
 
 <style>

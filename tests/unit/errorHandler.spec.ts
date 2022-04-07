@@ -1,41 +1,30 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { createLocalVue, mount } from '@vue/test-utils';
-import Vuetify from 'vuetify';
-import Vuex, { Store } from 'vuex';
+import { mount } from '@vue/test-utils';
 import ErrorHandler from '@/components/ErrorHandler.vue';
-import Errors from '@/store/modules/errors';
+import useErrorStore from '@/stores/errors';
 
 describe('ErrorHandler.vue', () => {
-  const localVue = createLocalVue();
-  localVue.use(Vuex);
-
-  let store: Store<any>;
-  let vuetify: Vuetify;
+  const store = useErrorStore();
   const errorCode = 100;
 
   beforeEach(() => {
-    vuetify = new Vuetify();
-    store = new Vuex.Store({
-      modules: {
-        errors: Errors,
-      },
-    });
+    store.$reset();
   });
 
   it('renders errors correctly', async () => {
     const $t = jest.fn();
     const wrapper = mount(ErrorHandler, {
-      localVue,
-      vuetify,
       store,
       mocks: {
         $t,
       },
     });
     expect(wrapper.html()).not.toContain(errorCode);
-    store.commit({
-      type: 'errors/setError',
-      error: null,
+    store.setError({
+      error: {
+        name: 'test',
+        message: 'test',
+      },
       code: errorCode,
       location: 'Projects.vue',
     });
