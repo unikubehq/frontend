@@ -41,7 +41,7 @@
     "vue-i18n": "^9.2.0-beta.34",
     "vue-router": "^4.0.14",
     "vue2-dropzone": "^3.6.0",
-    "vuetify": "npm:@vuetify/nightly@^3.0.0-next-20220309.0",
+    "vuetify": "^3.0.0-beta.0",
     "vuex": "^4.0.2",
     "webpack": "^5.71.0"
   },
