@@ -1,19 +1,19 @@
 <template>
   <v-container class="project-detail" fluid>
-    <div v-if="project">
+    <div v-if="result && result.project">
       <v-container fluid v-if="!$route.query.edit"
           class="py-5 px-8 bg-white">
         <v-row>
           <v-col cols="6">
-            <h2 class="mb-1 project-detail__title">{{ project.title }}</h2>
-            <small class="d-block">{{ project.description }}</small>
+            <h2 class="mb-1 project-detail__title">{{ result.project.title }}</h2>
+            <small class="d-block">{{ result.project.description }}</small>
             <small class="mt-3">
               <b class="mr-3">{{ t('projects.lastUpdate') }}</b>
-              {{ verboseDate(project.currentCommitDateTime) }}
+              {{ verboseDate(result.project.currentCommitDateTime) }}
             </small>
           </v-col>
           <v-col cols="4">
-            <h4 class="mb-1">{{ verboseDate(project.created) }}</h4>
+            <h4 class="mb-1">{{ verboseDate(result.project.created) }}</h4>
             <small class="d-block">{{ t('projects.dateAdded') }}</small>
           </v-col>
           <v-col cols="2">
@@ -24,9 +24,9 @@
                   variant="outlined"
                   @click="setEdit"
                   :ripple="false"
-                   v-if="$can('edit', project)"
+                   v-if="$can('edit', result.project)"
                 >
-                  <v-icon size="24" class="mr-2" v-if="$can('edit', project)">$edit</v-icon>
+                  <v-icon size="24" class="mr-2" v-if="$can('edit', result.project)">$edit</v-icon>
                   {{ t('projects.editProject') }}
                 </v-btn>
               </div>
@@ -36,7 +36,7 @@
                   class="mt-5"
                   variant="outlined"
                   :ripple="false"
-                  v-if="$can('edit', project)"
+                  v-if="$can('edit', result.project)"
                   @click="showDeleteDialog = true;"
                 >
                   <v-icon size="24" class="mr-2">$delete</v-icon>
@@ -49,8 +49,8 @@
         <v-row>
           <v-col cols="6">
           </v-col>
-          <v-col cols="3" v-if="project.creator">
-            <h4>{{ project.creator.firstName }} {{ project.creator.lastName }}</h4>
+          <v-col cols="3" v-if="result.project.creator">
+            <h4>{{ result.project.creator.firstName }} {{ result.project.creator.lastName }}</h4>
             <small class="d-block">{{ t('projects.createdBy') }}</small>
           </v-col>
         </v-row>
@@ -60,41 +60,41 @@
           <v-tab height="67px" :ripple="false" :to="{name: 'project.detail.decks'}">
             {{ t('deck.Deck', 2) }}
             <span class="tab-count-badge">
-              {{ project.decks.length.toString().padStart(2, '0') }}
+              {{ result.project.decks.length.toString().padStart(2, '0') }}
             </span>
           </v-tab>
-          <v-tab height="67px" v-if="project.sops" :ripple="false"
+          <v-tab height="67px" v-if="result.project.sops" :ripple="false"
               :to="{name: 'project.detail.sops'}">
             {{ t('projects.sops') }}
             <span class="tab-count-badge">
-              {{ project.sops.length.toString().padStart(2, '0') }}
+              {{ result.project.sops.length.toString().padStart(2, '0') }}
             </span>
           </v-tab>
-          <v-tab height="67px" v-if="project.members" :ripple="false"
+          <v-tab height="67px" v-if="result.project.members" :ripple="false"
               :to="{name: 'project.detail.members'}">
             {{ t('projects.members') }}
             <span class="tab-count-badge">
-              {{ project.members.length.toString().padStart(2, '0') }}
+              {{ result.project.members.length.toString().padStart(2, '0') }}
             </span>
           </v-tab>
-          <v-tab height="67px" v-if="project.clusterSettings" :ripple="false"
+          <v-tab height="67px" v-if="result.project.clusterSettings" :ripple="false"
               :to="{name: 'project.detail.clusterSettings'}">
             {{ t('projects.clusterSettings') }}
           </v-tab>
         </v-tabs>
         <div class="py-8">
-          <router-view :project="project" @update="updateProject"></router-view>
+          <router-view :project="result.project" @update="updateProject"></router-view>
         </div>
       </v-container>
       <div class="white py-5 px-8" v-else>
         <div class="px-3">
-          <span class="text--disabled" v-if="project">{{ project.title }}</span>
+          <span class="text--disabled" v-if="result.project">{{ result.project.title }}</span>
           <h2 class="text--semi-bold">{{ t('projects.editProject')}}</h2>
           <v-divider class="mb-5"></v-divider>
         </div>
         <project-form
           :edit-mode="true"
-          :project="project"
+          :project="result.project"
           @sops-created="handleSopsCreated"
         ></project-form>
       </div>
@@ -107,13 +107,13 @@
         :temporary="true"
       >
         <add-team-member
-          v-if="project"
+          v-if="result.project"
           :overlay="true"
-          :project="project"
+          :project="result.project"
           v-on:done="memberDrawer = false"
         ></add-team-member>
       </v-navigation-drawer>
-      <delete-project :show="showDeleteDialog" :project="project"
+      <delete-project :show="showDeleteDialog" :project="result.project"
           @hide="showDeleteDialog = false;"
           @deleted="$router.push({name: 'overview'});"></delete-project>
     </div>
@@ -138,7 +138,7 @@ import AddTeamMember from '@/views/Projects/AddTeamMember.vue';
 import {
   Maybe,
   ProjectDetailQuery,
-  TDeckNode, TProjectDetailQueryResult, TProjectDetailQueryVariables, TProjectNode,
+  TDeckNode, TProjectDetailQueryResult, TProjectDetailQueryVariables,
 } from '@/generated/graphql';
 import { useQuery, UseQueryReturn } from '@vue/apollo-composable';
 import { useRoute } from 'vue-router';
@@ -177,7 +177,7 @@ export default defineComponent({
     );
 
     return {
-      project: result?.value?.project as TProjectNode,
+      result,
       projectNotFound,
       refetchProjects: refetch,
       t,
