@@ -25,7 +25,7 @@
     "@vuelidate/core": "^2.0.0-alpha.40",
     "@vuelidate/validators": "^2.0.0-alpha.28",
     "axios": "^0.26.1",
-    "core-js": "^3.22.0",
+    "core-js": "^3.22.5",
     "graphql": "^16.2.0",
     "graphql-tag": "^2.12.6",
     "jwt-decode": "^3.1.2",
