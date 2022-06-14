@@ -16,7 +16,7 @@
     "test:report": "nyc report --reporter=text"
   },
   "dependencies": {
-    "@apollo/client": "^3.5.10",
+    "@apollo/client": "^3.6.8",
     "@casl/ability": "^5.4.3",
     "@casl/vue": "^2.1.2",
     "@sentry/vue": "^6.19.6",
