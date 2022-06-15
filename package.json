@@ -76,7 +76,7 @@
     "@vue/cli-service": "^5.0.4",
     "@vue/eslint-config-airbnb": "^6.0.0",
     "@vue/eslint-config-typescript": "^10.0.0",
-    "@vue/test-utils": "^2.0.0-rc.20",
+    "@vue/test-utils": "^2.0.1",
     "auto-changelog": "^2.3.0",
     "babel-plugin-istanbul": "^6.1.1",
     "chai": "^4.3.4",
