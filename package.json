@@ -19,7 +19,7 @@
     "@apollo/client": "^3.5.10",
     "@casl/ability": "^5.4.3",
     "@casl/vue": "^2.1.2",
-    "@sentry/vue": "^6.19.6",
+    "@sentry/vue": "^7.20.0",
     "@vue/apollo-composable": "^4.0.0-alpha.16",
     "@vue/apollo-option": "^4.0.0-alpha.16",
     "@vuelidate/core": "^2.0.0-alpha.40",
