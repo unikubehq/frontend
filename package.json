@@ -83,7 +83,7 @@
     "eslint-plugin-vue": "^8.5.0",
     "eslint-plugin-vuejs-accessibility": "^1.1.1",
     "istanbul-lib-coverage": "^3.2.0",
-    "keycloak-js": "^16.1.1",
+    "keycloak-js": "^20.0.3",
     "lint-staged": "^12.3.4",
     "nyc": "^15.1.0",
     "release-it": "^14.12.5",
